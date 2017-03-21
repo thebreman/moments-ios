@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7CB5F5B1B5E790D27F010AAB /* Pods_MomentsInTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */; };
 		D332E6471E80BE6C00778462 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D332E6461E80BE6C00778462 /* AppDelegate.swift */; };
 		D332E6491E80BE6C00778462 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D332E6481E80BE6C00778462 /* ViewController.swift */; };
 		D332E64C1E80BE6C00778462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D332E64A1E80BE6C00778462 /* Main.storyboard */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MomentsInTime.release.xcconfig"; path = "Pods/Target Support Files/Pods-MomentsInTime/Pods-MomentsInTime.release.xcconfig"; sourceTree = "<group>"; };
+		97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MomentsInTime.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D332E6431E80BE6C00778462 /* MomentsInTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomentsInTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D332E6461E80BE6C00778462 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D332E6481E80BE6C00778462 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +50,7 @@
 		D332E6621E80BE6C00778462 /* MomentsInTimeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MomentsInTimeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D332E6661E80BE6D00778462 /* MomentsInTimeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsInTimeUITests.swift; sourceTree = "<group>"; };
 		D332E6681E80BE6D00778462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MomentsInTime.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MomentsInTime/Pods-MomentsInTime.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CB5F5B1B5E790D27F010AAB /* Pods_MomentsInTime.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +79,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6D550315684F2986E39AF5FD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D332E63A1E80BE6C00778462 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +94,8 @@
 				D332E65A1E80BE6C00778462 /* MomentsInTimeTests */,
 				D332E6651E80BE6C00778462 /* MomentsInTimeUITests */,
 				D332E6441E80BE6C00778462 /* Products */,
+				E599F5AFA5259732E24F4470 /* Pods */,
+				6D550315684F2986E39AF5FD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,6 +140,15 @@
 			path = MomentsInTimeUITests;
 			sourceTree = "<group>";
 		};
+		E599F5AFA5259732E24F4470 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */,
+				5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +156,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D332E66B1E80BE6D00778462 /* Build configuration list for PBXNativeTarget "MomentsInTime" */;
 			buildPhases = (
+				95EB6E8D95BF928FC7F5877F /* [CP] Check Pods Manifest.lock */,
 				D332E63F1E80BE6C00778462 /* Sources */,
 				D332E6401E80BE6C00778462 /* Frameworks */,
 				D332E6411E80BE6C00778462 /* Resources */,
+				463527AAB406E0086407BA19 /* [CP] Embed Pods Frameworks */,
+				C945930B3B39762B3A867934 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -256,6 +283,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		463527AAB406E0086407BA19 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MomentsInTime/Pods-MomentsInTime-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		95EB6E8D95BF928FC7F5877F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C945930B3B39762B3A867934 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MomentsInTime/Pods-MomentsInTime-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D332E63F1E80BE6C00778462 /* Sources */ = {
@@ -413,6 +488,7 @@
 		};
 		D332E66C1E80BE6D00778462 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = L46LSX2XUR;
@@ -426,6 +502,7 @@
 		};
 		D332E66D1E80BE6D00778462 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = L46LSX2XUR;
