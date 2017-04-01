@@ -101,7 +101,7 @@ class CommunityController: UICollectionViewController, UICollectionViewDelegateF
     
     private func fetchCommunityVideos()
     {
-        self.videoList.fetchCommunityVideos { error in
+        self.videoList.fetchCommunityVideos { list, error in
             
             self.refreshControl.endRefreshing()
             

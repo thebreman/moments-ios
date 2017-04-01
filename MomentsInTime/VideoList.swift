@@ -8,23 +8,25 @@
 
 import Foundation
 
+typealias VideoListCompletion = (VideoList?, Error?) -> Void
+
 class VideoList
 {
     lazy var videos = [Video]()
     
-    func fetchCommunityVideos(completion: @escaping (Error?) -> Void)
+    func fetchCommunityVideos(completion: VideoListCompletion?)
     {
         APIService().getVideosForCommunity { (videos, error) in
             
             guard error == nil else {
-                completion(error)
+                completion?(nil, error)
                 return
             }
             
             if let fetchedVideos = videos {
                 DispatchQueue.main.async {
                     self.videos = fetchedVideos
-                    completion(nil)
+                    completion?(self, nil)
                 }
             }
         }
