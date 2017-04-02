@@ -8,8 +8,11 @@
 
 import UIKit
 
-class CommunityController: UICollectionViewController, UICollectionViewDelegateFlowLayout
+class CommunityController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    
     private struct Constants {
         static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
         static let IDENTIFIER_NIB_VIDEO_CELL = "VideoCell"
@@ -26,6 +29,9 @@ class CommunityController: UICollectionViewController, UICollectionViewDelegateF
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        self.spinner.startAnimating()
+        
         self.setupCollectionView()
         self.fetchCommunityVideos()
     }
@@ -43,17 +49,17 @@ class CommunityController: UICollectionViewController, UICollectionViewDelegateF
         self.collectionView?.addSubview(self.refreshControl)
     }
     
-    override func numberOfSections(in collectionView: UICollectionView) -> Int
+    func numberOfSections(in collectionView: UICollectionView) -> Int
     {
         return 1
     }
     
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
         return self.videoList.videos.count
     }
     
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDENTIFIER_REUSE_VIDEO_CELL, for: indexPath) as? VideoCell {
             cell.video = self.videoList.videos[indexPath.item]
@@ -109,6 +115,7 @@ class CommunityController: UICollectionViewController, UICollectionViewDelegateF
                 print(error)
             }
             
+            self.spinner.stopAnimating()
             self.collectionView?.reloadData()
         }
     }

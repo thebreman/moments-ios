@@ -13,11 +13,12 @@ private let ACCESS_TOKEN_VALUE = "Bearer c3867c80fcfb0b0c177f012d841fd1c3"
 private let HOST = "https://api.vimeo.com"
 
 //provide this header to let Vimeo know which API version we are working with
-private let VERSION_ACCEPT_HEADER_VALUE = "application/vnd.vimeo.*+json;version=3.2"
 private let VERSION_ACCEPT_HEADER_KEY = "Accept"
+private let VERSION_ACCEPT_HEADER_VALUE = "application/vnd.vimeo.*+json;version=3.2"
 
 typealias BooleanResponseClosure = (_ success: Bool, _ error: Error?) -> Void
 typealias UploadProgressClosure = (_ fractionCompleted: Double) -> Void
+typealias VideoCompletion = ([Video]?, Error?) -> Void
 
 class APIService: NSObject
 {
@@ -30,7 +31,7 @@ class APIService: NSObject
     /**
      * Fetches all the videos in our feed:
      */
-    func getVideosForCommunity(completion: @escaping ([Video]?, Error?) -> Void)
+    func getVideosForCommunity(completion: @escaping VideoCompletion)
     {
         self.request(router: VideoRouter.all) { (response, error) in
             
@@ -60,6 +61,9 @@ class APIService: NSObject
     
     /**
      * Upon successful upload, the uri of the new video will be passed along in the completion handler
+     * But we will probably want to modify this, ideally we would return the newly created/ uploaded Video object here, so that client
+     * can display it in HomeController in the completion handler, but since the video could still be processing, client should only display
+     * videos with a status of "available"... so maybe the completion should just be a BooleanResponseClosure...
      */
     func create(video: Video, uploadProgress: @escaping UploadProgressClosure, completion: @escaping (String?, Error?) -> Void)
     {
@@ -114,6 +118,11 @@ class APIService: NSObject
         }
     }
     
+    /**
+     * Streams and upload to Vimeo with a PUT request to the upload link provided by Vimeo with out ticket:
+     * Calls client provided UploadProgressClosure periodically as the data is being uploaded.
+     * completion handler indicates if the upload was a success or not and passes along an error if there was one:
+     */
     private func upload(video: Video, router: URLRequestConvertible, uploadProgress: @escaping UploadProgressClosure, completion: @escaping BooleanResponseClosure)
     {
         if let localURL = video.localURL, let uploadURL = URL(string: localURL) {
@@ -139,6 +148,11 @@ class APIService: NSObject
         }
     }
     
+    /**
+     * Once video is successfully uploaded to Vimeo, we must complete the transaction with a DELETE request to host+completeURI
+     * If all goes well, the response will contain a location header with the uri of the uploaded video as the value
+     * client will have access to this in the completion hander String? param:
+     */
     private func completeUpload(router: URLRequestConvertible, completion: @escaping (String?, Error?) -> Void)
     {
         Alamofire.request(router)
@@ -162,6 +176,11 @@ class APIService: NSObject
             }
     }
     
+    /**
+     * Now that the upload dance is finally complete, we stil need to update the video w/ metadata: Title and description
+     * We could upload a thumbnail image, but we will let Vimeo handle this for us, this code updates the video object with a PATCH request.
+     * TODO: add completion handler...
+     */
     private func addMetadata(for video: Video)
     {
         self.request(router: VideoRouter.update(video)) { (response, error) in
@@ -171,15 +190,18 @@ class APIService: NSObject
                 return
             }
             
-            //find out about this... this can happen before video is done being processed
-            //meaning, the thumbnail image will not be ready and pictures will be null
-            //should we still try and return a Video obj from the creating method??
+            //response will return updated Video Object w/ metadata, but since we just uploaded the video, it may still be processing 
+            //and some fields may be null, such as thumbnail pictures, since they are being processed/ created...
+            //there is a status field that will indicate if the video is available yet
             print(response ?? "no response")
         }
     }
     
 // MARK: Utilities
     
+    /**
+     * request utitily function for requests with JSON responses:
+     */
     private func request(router: URLRequestConvertible, completion: @escaping (Any?, Error?) -> Void)
     {
         let request = Alamofire.request(router)
