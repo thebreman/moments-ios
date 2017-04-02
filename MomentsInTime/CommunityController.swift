@@ -87,7 +87,9 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
             cell.video = self.videoList.videos[indexPath.item]
             cell.bounds = CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: 1000)
             
+            cell.setNeedsUpdateConstraints()
             cell.updateConstraintsIfNeeded()
+            cell.setNeedsLayout()
             cell.layoutIfNeeded()
             
             let height = cell.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height

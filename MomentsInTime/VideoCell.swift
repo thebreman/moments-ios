@@ -26,6 +26,8 @@ class VideoCell: UICollectionViewCell
         super.awakeFromNib()
         self.drawShadow()
         self.containerView.layer.masksToBounds = true
+        
+        //content view is broken !? need this to make it work:
         self.contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
     
