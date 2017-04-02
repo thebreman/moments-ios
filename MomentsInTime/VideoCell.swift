@@ -8,12 +8,15 @@
 
 import UIKit
 
+private let SPACING_TITLE_SUBTITLE: CGFloat = 2.0
+
 class VideoCell: UICollectionViewCell
 {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var thumbnailImageView: CachedImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var subtitleTopContraint: NSLayoutConstraint!
     
     var video: Video? {
         didSet {
@@ -34,8 +37,23 @@ class VideoCell: UICollectionViewCell
     private func updateUI()
     {
         self.configureThumbnailImage()
+        self.configureLabels()
+    }
+    
+    private func configureLabels()
+    {
         self.titleLabel.text = self.video?.name
-        self.subtitleLabel.text = self.video?.videoDescription
+        
+        if let description = self.video?.videoDescription {
+            self.subtitleTopContraint.constant = SPACING_TITLE_SUBTITLE
+            self.subtitleLabel.text = description
+        }
+        else {
+            
+            //collapse the space constraint b/w title and subtitle:
+            self.subtitleTopContraint.constant = 0.0
+            self.subtitleLabel.text = nil
+        }
     }
     
     private func configureThumbnailImage()
@@ -47,6 +65,8 @@ class VideoCell: UICollectionViewCell
 
 // MARK: Actions
     
+    //might want to have this call a method, so that we could have the thumbnailImageView
+    //recognize touches and call the same method. This way user can tap play or the image to play the video
     @IBAction func handlePlay(_ sender: UIButton)
     {
         if let videoTitle = self.titleLabel.text {
