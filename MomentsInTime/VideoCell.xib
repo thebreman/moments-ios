@@ -47,7 +47,7 @@
                                     <constraint firstAttribute="height" constant="1" id="cYQ-M9-L1x"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PeZ-Qp-yev">
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PeZ-Qp-yev" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="194" y="301" width="42" height="32"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <state key="normal" title="Share">
@@ -57,11 +57,18 @@
                                     <action selector="handleShare:" destination="Wnt-g4-gte" eventType="touchUpInside" id="ke2-mL-gmx"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y66-Vl-xRy">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y66-Vl-xRy" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="380" y="306" width="38" height="22"/>
                                 <state key="normal" image="Options"/>
                                 <connections>
                                     <action selector="handleOptions:" destination="Wnt-g4-gte" eventType="touchUpInside" id="PI8-gW-kly"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UKm-Zv-5eP" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="203" y="88" width="24" height="25"/>
+                                <state key="normal" image="PlayButton"/>
+                                <connections>
+                                    <action selector="handlePlay:" destination="Wnt-g4-gte" eventType="touchUpInside" id="NfU-lo-srU"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -72,6 +79,7 @@
                             <constraint firstItem="i4G-03-3dv" firstAttribute="leading" secondItem="DAz-xY-OdE" secondAttribute="leading" id="3kP-Ht-Vru"/>
                             <constraint firstAttribute="bottom" secondItem="PeZ-Qp-yev" secondAttribute="bottom" constant="8" identifier="share bottom" id="8Or-z4-SLb"/>
                             <constraint firstItem="Y66-Vl-xRy" firstAttribute="centerY" secondItem="PeZ-Qp-yev" secondAttribute="centerY" identifier="options center" id="Dqy-rN-t7Y"/>
+                            <constraint firstItem="UKm-Zv-5eP" firstAttribute="centerX" secondItem="i4G-03-3dv" secondAttribute="centerX" id="EuA-lr-rAY"/>
                             <constraint firstAttribute="trailing" secondItem="PIY-i8-7Yl" secondAttribute="trailing" identifier="separator trailing" id="GZJ-O3-0GR"/>
                             <constraint firstItem="i4G-03-3dv" firstAttribute="top" secondItem="DAz-xY-OdE" secondAttribute="top" id="Jbr-v9-sSc"/>
                             <constraint firstAttribute="trailing" secondItem="Y66-Vl-xRy" secondAttribute="trailing" constant="12" identifier="options trailing" id="Rq5-fo-SdV"/>
@@ -79,6 +87,7 @@
                             <constraint firstItem="PeZ-Qp-yev" firstAttribute="centerX" secondItem="DAz-xY-OdE" secondAttribute="centerX" identifier="share center x" id="er1-cS-SWM"/>
                             <constraint firstItem="PIY-i8-7Yl" firstAttribute="leading" secondItem="DAz-xY-OdE" secondAttribute="leading" identifier="sep leading" id="ewH-on-AmW"/>
                             <constraint firstItem="fPw-KP-Sda" firstAttribute="leading" secondItem="DAz-xY-OdE" secondAttribute="leading" constant="12" identifier="title label leading" id="gn4-Ab-ok2"/>
+                            <constraint firstItem="UKm-Zv-5eP" firstAttribute="centerY" secondItem="i4G-03-3dv" secondAttribute="centerY" id="hXg-9Q-7bR"/>
                             <constraint firstItem="6A7-Im-XA3" firstAttribute="leading" secondItem="DAz-xY-OdE" secondAttribute="leading" constant="12" identifier="sub leading" id="nGt-dD-Jt6"/>
                             <constraint firstItem="PeZ-Qp-yev" firstAttribute="top" secondItem="PIY-i8-7Yl" secondAttribute="bottom" priority="999" constant="8" identifier="share top" id="o3C-cO-nIN"/>
                             <constraint firstAttribute="trailing" secondItem="6A7-Im-XA3" secondAttribute="trailing" constant="12" identifier="sub trailing" id="qpO-OK-7Wp"/>
@@ -112,5 +121,6 @@
     </objects>
     <resources>
         <image name="Options" width="38" height="9"/>
+        <image name="PlayButton" width="24" height="25"/>
     </resources>
 </document>

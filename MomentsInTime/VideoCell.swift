@@ -47,6 +47,13 @@ class VideoCell: UICollectionViewCell
 
 // MARK: Actions
     
+    @IBAction func handlePlay(_ sender: UIButton)
+    {
+        if let videoTitle = self.titleLabel.text {
+            print("play: \(videoTitle)")
+        }
+    }
+    
     @IBAction func handleShare(_ sender: UIButton)
     {
         print("handle Share")
