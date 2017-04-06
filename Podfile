@@ -4,4 +4,5 @@ use_frameworks!
 target 'MomentsInTime' do
 pod 'PureLayout'
 pod 'Alamofire'
+pod 'SDWebImage'
 end
