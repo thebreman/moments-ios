@@ -46,14 +46,14 @@ enum VideoRouter: URLRequestConvertible
     
     func asURLRequest() throws -> URLRequest
     {
-        let url = try APIService.baseAPIEndpoint.asURL()
+        let url = try VimeoConnector.baseAPIEndpoint.asURL()
         
         var urlRequest = URLRequest(url: url.appendingPathComponent(self.path))
         urlRequest.httpMethod = self.method.rawValue
         
         //api version header and auth token header:
-        urlRequest.setValue(APIService.versionAPIHeaderValue, forHTTPHeaderField: APIService.versionAPIHeaderKey)
-        urlRequest.setValue(APIService.accessTokenValue, forHTTPHeaderField: APIService.accessTokenKey)
+        urlRequest.setValue(VimeoConnector.versionAPIHeaderValue, forHTTPHeaderField: VimeoConnector.versionAPIHeaderKey)
+        urlRequest.setValue(VimeoConnector.accessTokenValue, forHTTPHeaderField: VimeoConnector.accessTokenKey)
         
         //add any necessary params:
         switch self {

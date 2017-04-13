@@ -12,12 +12,13 @@
 		680BE07F1E8E2C9500A5D339 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE07E1E8E2C9500A5D339 /* Views.swift */; };
 		680BE0811E8E2C9D00A5D339 /* ViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE0801E8E2C9D00A5D339 /* ViewControllers.swift */; };
 		680BE0841E8E2D7200A5D339 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE0831E8E2D7200A5D339 /* Video.swift */; };
-		680BE0891E8E2E9B00A5D339 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE0861E8E2E9B00A5D339 /* APIService.swift */; };
 		680BE08A1E8E2E9B00A5D339 /* VideoRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE0871E8E2E9B00A5D339 /* VideoRouter.swift */; };
 		680BE08B1E8E2E9B00A5D339 /* UploadRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE0881E8E2E9B00A5D339 /* UploadRouter.swift */; };
 		680BE08D1E8E2FE700A5D339 /* BouncingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE08C1E8E2FE700A5D339 /* BouncingButton.swift */; };
 		680BE08F1E8E301D00A5D339 /* CachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE08E1E8E301D00A5D339 /* CachedImageView.swift */; };
 		680BE0911E8E4A4B00A5D339 /* VideoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE0901E8E4A4B00A5D339 /* VideoList.swift */; };
+		680CEB991E9F670E009ED223 /* VimeoConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680CEB981E9F670E009ED223 /* VimeoConnector.swift */; };
+		680CEB9B1E9F67B0009ED223 /* BackgroundSessionManagers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680CEB9A1E9F67B0009ED223 /* BackgroundSessionManagers.swift */; };
 		6811A1E61E826E9C006362E8 /* CommunityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811A1E51E826E9C006362E8 /* CommunityController.swift */; };
 		6811A1E81E826EB2006362E8 /* MyMomentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811A1E71E826EB2006362E8 /* MyMomentsController.swift */; };
 		68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FED1E824DE100C1B320 /* Fonts.swift */; };
@@ -56,12 +57,13 @@
 		680BE07E1E8E2C9500A5D339 /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		680BE0801E8E2C9D00A5D339 /* ViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllers.swift; sourceTree = "<group>"; };
 		680BE0831E8E2D7200A5D339 /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
-		680BE0861E8E2E9B00A5D339 /* APIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		680BE0871E8E2E9B00A5D339 /* VideoRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoRouter.swift; sourceTree = "<group>"; };
 		680BE0881E8E2E9B00A5D339 /* UploadRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadRouter.swift; sourceTree = "<group>"; };
 		680BE08C1E8E2FE700A5D339 /* BouncingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BouncingButton.swift; sourceTree = "<group>"; };
 		680BE08E1E8E301D00A5D339 /* CachedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedImageView.swift; sourceTree = "<group>"; };
 		680BE0901E8E4A4B00A5D339 /* VideoList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoList.swift; sourceTree = "<group>"; };
+		680CEB981E9F670E009ED223 /* VimeoConnector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VimeoConnector.swift; sourceTree = "<group>"; };
+		680CEB9A1E9F67B0009ED223 /* BackgroundSessionManagers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundSessionManagers.swift; sourceTree = "<group>"; };
 		6811A1E51E826E9C006362E8 /* CommunityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityController.swift; sourceTree = "<group>"; };
 		6811A1E71E826EB2006362E8 /* MyMomentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMomentsController.swift; sourceTree = "<group>"; };
 		68EB8FED1E824DE100C1B320 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -121,7 +123,8 @@
 		680BE0851E8E2E6B00A5D339 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				680BE0861E8E2E9B00A5D339 /* APIService.swift */,
+				680CEB981E9F670E009ED223 /* VimeoConnector.swift */,
+				680CEB9A1E9F67B0009ED223 /* BackgroundSessionManagers.swift */,
 				680BE0871E8E2E9B00A5D339 /* VideoRouter.swift */,
 				680BE0881E8E2E9B00A5D339 /* UploadRouter.swift */,
 			);
@@ -452,12 +455,13 @@
 				680BE07D1E8E20A200A5D339 /* VideoCell.swift in Sources */,
 				68EB8FF01E824E2800C1B320 /* Colors.swift in Sources */,
 				68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */,
-				680BE0891E8E2E9B00A5D339 /* APIService.swift in Sources */,
 				680BE07F1E8E2C9500A5D339 /* Views.swift in Sources */,
 				680BE08F1E8E301D00A5D339 /* CachedImageView.swift in Sources */,
+				680CEB9B1E9F67B0009ED223 /* BackgroundSessionManagers.swift in Sources */,
 				680BE08B1E8E2E9B00A5D339 /* UploadRouter.swift in Sources */,
 				680BE0811E8E2C9D00A5D339 /* ViewControllers.swift in Sources */,
 				D332E6471E80BE6C00778462 /* AppDelegate.swift in Sources */,
+				680CEB991E9F670E009ED223 /* VimeoConnector.swift in Sources */,
 				6811A1E61E826E9C006362E8 /* CommunityController.swift in Sources */,
 				6811A1E81E826EB2006362E8 /* MyMomentsController.swift in Sources */,
 				680BE0911E8E4A4B00A5D339 /* VideoList.swift in Sources */,

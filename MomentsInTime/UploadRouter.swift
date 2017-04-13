@@ -26,7 +26,7 @@ enum UploadRouter: URLRequestConvertible
             
         //append completeURI onto baseAPIEndpoint
         //do not use url.appendPathComponent, b/c it will encode completeURI the wrong way:
-        case .complete(completeURI: let uri): return APIService.baseAPIEndpoint + uri
+        case .complete(completeURI: let uri): return VimeoConnector.baseAPIEndpoint + uri
         }
     }
     
@@ -51,8 +51,8 @@ enum UploadRouter: URLRequestConvertible
         urlRequest.httpMethod = self.method.rawValue
         
         //api version header and auth token header:
-        urlRequest.setValue(APIService.versionAPIHeaderValue, forHTTPHeaderField: APIService.versionAPIHeaderKey)
-        urlRequest.setValue(APIService.accessTokenValue, forHTTPHeaderField: APIService.accessTokenKey)
+        urlRequest.setValue(VimeoConnector.versionAPIHeaderValue, forHTTPHeaderField: VimeoConnector.versionAPIHeaderKey)
+        urlRequest.setValue(VimeoConnector.accessTokenValue, forHTTPHeaderField: VimeoConnector.accessTokenKey)
         
         return urlRequest
     }

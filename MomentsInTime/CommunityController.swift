@@ -92,8 +92,10 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
         if let cell = self.offscreenCell {
+            
             cell.video = self.videoList.videos[indexPath.item]
             cell.bounds = CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: 1000)
+            cell.preferredCellWidth = collectionView.bounds.width
             
             cell.setNeedsUpdateConstraints()
             cell.updateConstraintsIfNeeded()
@@ -101,6 +103,7 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
             cell.layoutIfNeeded()
             
             let height = cell.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+            print(height)
             return CGSize(width: collectionView.bounds.width, height: height)
         }
         
