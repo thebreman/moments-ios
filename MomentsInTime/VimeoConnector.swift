@@ -31,7 +31,7 @@ class VimeoConnector: NSObject
     static let versionAPIHeaderKey: String = VERSION_ACCEPT_HEADER_KEY
     
     /**
-     * Fetches all the videos in our feed:
+     * Fetches all the videos from out vimeo account me/videos:
      */
     func getVideosForCommunity(completion: @escaping VideoCompletion)
     {
@@ -58,8 +58,6 @@ class VimeoConnector: NSObject
             completion(nil, error)
         }
     }
-    
-    //MARK: Upload Videos
     
     /**
      * Upon successful upload, the uri of the new video will be passed along in the completion handler
@@ -97,7 +95,7 @@ class VimeoConnector: NSObject
         }
     }
     
-    //MARK: Private
+//MARK: Private
     
     /**
      * We cannot rely on completion handlers and response handlers to chain the necessary upload flow requests since we are background compatable
@@ -135,7 +133,6 @@ class VimeoConnector: NSObject
                 return
             }
             
-            //pass along completion handler
             self.completeUpload(video: video, router: UploadRouter.complete(completeURI: completeURI), uploadCompletion: uploadCompletion)
             
             //call system completion handler for this background task:
@@ -157,7 +154,7 @@ class VimeoConnector: NSObject
         BackgroundUploadCompleteSessionManager.shared.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
             
             guard let httpResponse = task.response as? HTTPURLResponse, let locationURI = httpResponse.allHeaderFields["Location"] as? String else {
-                let error = NSError(domain: "completeUpload", code: 400, userInfo: [NSLocalizedDescriptionKey: "Could not get location header"])
+                let error = NSError(domain: "VimeoConnector.completeUpload", code: 400, userInfo: [NSLocalizedDescriptionKey: "Could not get location header"])
                 uploadCompletion(nil, error)
                 return
             }
@@ -173,7 +170,6 @@ class VimeoConnector: NSObject
                 return
             }
             
-            //add metadata and pass along the completion handler
             self.addMetadata(for: video, uploadCompletion: uploadCompletion)
             
             //call system completion handler for this background task:
@@ -194,6 +190,8 @@ class VimeoConnector: NSObject
         BackgroundUploadVideoMetadataSessionManager.shared.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
             
             print(task.response!)
+            //response will contain JSON data of the newly created video object
+            //it is probably still being processed by Vimeo, though so the thumbnail images will be null...
         }
         
         BackgroundUploadVideoMetadataSessionManager.shared.delegate.taskDidComplete = { session, task, error in
@@ -212,7 +210,7 @@ class VimeoConnector: NSObject
         BackgroundUploadVideoMetadataSessionManager.shared.download(VideoRouter.update(video))
     }
     
-    // MARK: Utilities
+// MARK: Utilities
     
     /**
      * request utitily function for requests with JSON responses:

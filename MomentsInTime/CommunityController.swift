@@ -71,7 +71,6 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
     {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDENTIFIER_REUSE_VIDEO_CELL, for: indexPath) as? VideoCell {
             cell.video = self.videoList.videos[indexPath.item]
-            cell.setNeedsUpdateConstraints()
             return cell
         }
         
@@ -82,7 +81,6 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
         let video = self.videoList.videos[indexPath.item]
-        
         let size = VideoCell.sizeForVideo(video, width: collectionView.bounds.width)
 
         return size

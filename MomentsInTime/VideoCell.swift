@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import PureLayout
+
 
 private let SPACING_TITLE_SUBTITLE: CGFloat = 2.0
 
 private let _sizingCell = Bundle.main.loadNibNamed(String(describing: VideoCell.self), owner: nil, options: nil)?.first as! VideoCell
+private var _sizingWidth = NSLayoutConstraint()
 
 class VideoCell: UICollectionViewCell
 {
@@ -31,15 +34,23 @@ class VideoCell: UICollectionViewCell
     {
         let cell = _sizingCell
         
-        cell.video = video
         cell.bounds = CGRect(x: 0, y: 0, width: width, height: 1000)
+
+        cell.video = video
+        
+        // the system fitting does not honor the bounded width^ from above (it sizes the label as wide as possible)
+        // we'll set a manual width constraint so we fully autolayout when asking for a fitted size
+        cell.contentView.removeConstraint(_sizingWidth)
+        _sizingWidth = cell.contentView.autoSetDimension(ALDimension.width, toSize: width)
+        // life sux
         
         cell.setNeedsUpdateConstraints()
         cell.updateConstraintsIfNeeded()
         cell.setNeedsLayout()
         cell.layoutIfNeeded()
         
-        let height = cell.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        let autoSize = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let height = autoSize.height
         print(height)
         
         let size =  CGSize(width: width, height: height)
@@ -52,9 +63,6 @@ class VideoCell: UICollectionViewCell
         super.awakeFromNib()
         self.drawShadow()
         self.containerView.layer.masksToBounds = true
-        
-        //content view is broken !? need this to make it work:
-        self.contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
     
     private func updateUI()
