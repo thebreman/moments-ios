@@ -79,36 +79,13 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
         return UICollectionViewCell()
     }
     
-    //offscreen cell for height calculation
-    private lazy var offscreenCell: VideoCell? = {
-        let topLevelObjects = Bundle.main.loadNibNamed(Constants.IDENTIFIER_NIB_VIDEO_CELL, owner: nil, options: nil)
-        if let cell = topLevelObjects?[0] as? VideoCell {
-            cell.translatesAutoresizingMaskIntoConstraints = false
-            return cell
-        }
-        return nil
-    }()
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
-        if let cell = self.offscreenCell {
-            
-            cell.video = self.videoList.videos[indexPath.item]
-            cell.bounds = CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: 1000)
-            cell.preferredCellWidth = collectionView.bounds.width
-            
-            cell.setNeedsUpdateConstraints()
-            cell.updateConstraintsIfNeeded()
-            cell.setNeedsLayout()
-            cell.layoutIfNeeded()
-            
-            let height = cell.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
-            print(height)
-            return CGSize(width: collectionView.bounds.width, height: height)
-        }
+        let video = self.videoList.videos[indexPath.item]
         
-        assert(false, "unable to size offscreen cell")
-        return CGSize.zero
+        let size = VideoCell.sizeForVideo(video, width: collectionView.bounds.width)
+
+        return size
     }
     
 // MARK: Refresh

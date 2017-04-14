@@ -10,6 +10,8 @@ import UIKit
 
 private let SPACING_TITLE_SUBTITLE: CGFloat = 2.0
 
+private let _sizingCell = Bundle.main.loadNibNamed(String(describing: VideoCell.self), owner: nil, options: nil)?.first as! VideoCell
+
 class VideoCell: UICollectionViewCell
 {
     @IBOutlet weak var containerView: UIView!
@@ -45,6 +47,28 @@ class VideoCell: UICollectionViewCell
         didSet {
             self.updateUI()
         }
+    }
+    
+    class func sizeForVideo(_ video: Video, width: CGFloat) -> CGSize
+    {
+        let cell = _sizingCell
+        
+        cell.video = video
+        cell.bounds = CGRect(x: 0, y: 0, width: width, height: 1000)
+        
+        //            cell.preferredCellWidth = collectionView.bounds.width
+        
+        cell.setNeedsUpdateConstraints()
+        cell.updateConstraintsIfNeeded()
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
+        
+        let height = cell.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        print(height)
+        
+        let size =  CGSize(width: width, height: height)
+        
+        return size
     }
     
     override func awakeFromNib()
