@@ -42,7 +42,6 @@ class VideoCell: UICollectionViewCell
         // we'll set a manual width constraint so we fully autolayout when asking for a fitted size
         cell.contentView.removeConstraint(_sizingWidth)
         _sizingWidth = cell.contentView.autoSetDimension(ALDimension.width, toSize: width)
-        // life sux
         
         cell.setNeedsUpdateConstraints()
         cell.updateConstraintsIfNeeded()
