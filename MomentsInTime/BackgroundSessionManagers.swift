@@ -8,9 +8,11 @@
 
 import Alamofire
 
-//create a session manager with background configuration:
-//only create a background session with a given identifier once:
-//for multiple sessions they each need their own identifier
+/**
+ * Create a session manager with background configuration.
+ * Only create a background session with a given identifier once.
+ * For multiple sessions they each need their own identifier...
+ */
 
 class BackgroundUploadSessionManager: Alamofire.SessionManager
 {
@@ -21,7 +23,7 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
         return sessionManager
     }()
     
-    var savedCompletionHandler: (() -> Void)?
+    var systemCompletionHandler: (() -> Void)?
 }
 
 class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
@@ -32,7 +34,7 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
         return sessionManager
     }()
     
-    var savedCompletionHandler: (() -> Void)?
+    var systemCompletionHandler: (() -> Void)?
 
     var completeURI: String?
 }
@@ -45,6 +47,6 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
         return sessionManager
     }()
     
-    var savedCompletionHandler: (() -> Void)?
+    var systemCompletionHandler: (() -> Void)?
 }
 

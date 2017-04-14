@@ -31,7 +31,7 @@ class VimeoConnector: NSObject
     static let versionAPIHeaderKey: String = VERSION_ACCEPT_HEADER_KEY
     
     /**
-     * Fetches all the videos from out vimeo account me/videos:
+     * Fetches all the videos from our vimeo account (me/videos):
      */
     func getVideosForCommunity(completion: @escaping VideoCompletion)
     {
@@ -54,7 +54,7 @@ class VimeoConnector: NSObject
             }
             
             //catch all parsing errors:
-            let error = NSError(domain: "VimeoConnector.getVideosForCommunity", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
+            let error = NSError(domain: "VimeoConnector.getVideosForCommunity:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
             completion(nil, error)
         }
     }
@@ -90,7 +90,7 @@ class VimeoConnector: NSObject
             }
             
             //catch any errors:
-            let error = NSError(domain: "VimeoConnector", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
+            let error = NSError(domain: "VimeoConnector.create:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
             completion(nil, error)
         }
     }
@@ -98,7 +98,7 @@ class VimeoConnector: NSObject
 //MARK: Private
     
     /**
-     * We cannot rely on completion handlers and response handlers to chain the necessary upload flow requests since we are background compatable
+     * We cannot rely on completion/ response handlers to chain the necessary upload flow requests since we are background compatable.
      * We can only rely on the session delegate callbacks/ closures, and we can just pass along the upload completion handler
      * until the very end of the process, then call it...
      */
@@ -106,7 +106,7 @@ class VimeoConnector: NSObject
     {
         //Create video file url:
         guard let localURL = video.localURL, let uploadURL = URL(string: localURL) else {
-            let error = NSError(domain: "VimeoConnector", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't create valid video file url"])
+            let error = NSError(domain: "VimeoConnector.upload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't create valid video file url"])
             uploadCompletion(nil, error)
             return
         }
@@ -128,7 +128,7 @@ class VimeoConnector: NSObject
             
             //complete the upload:
             guard let completeURI = BackgroundUploadCompleteSessionManager.shared.completeURI else {
-                let error = NSError(domain: "CompleteUpload", code: 400, userInfo: [NSLocalizedDescriptionKey: "No valid completeURI"])
+                let error = NSError(domain: "VimeoConnector.upload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "No valid completeURI"])
                 uploadCompletion(nil, error)
                 return
             }
@@ -136,7 +136,7 @@ class VimeoConnector: NSObject
             self.completeUpload(video: video, router: UploadRouter.complete(completeURI: completeURI), uploadCompletion: uploadCompletion)
             
             //call system completion handler for this background task:
-            BackgroundUploadSessionManager.shared.savedCompletionHandler?()
+            BackgroundUploadSessionManager.shared.systemCompletionHandler?()
         }
         
         //start the task:
@@ -144,9 +144,9 @@ class VimeoConnector: NSObject
     }
     
     /**
-     * Since completing the upload is part of the background compatable upload flow, we need to use a download task
-     * This works create b/c the response will be saved temporarily to disk, we can inspect/ grab the location header,
-     * and add video metadata, completing the upload flow...
+     * Since completing the upload is part of the background compatable upload flow, we need to use a download task.
+     * This works great b/c the response will be saved temporarily to disk, we can inspect/ grab the location header,
+     * and add the video metadata, completing the upload flow...
      */
     private func completeUpload(video: Video, router: URLRequestConvertible, uploadCompletion: @escaping UploadCompletionHandler)
     {
@@ -154,7 +154,7 @@ class VimeoConnector: NSObject
         BackgroundUploadCompleteSessionManager.shared.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
             
             guard let httpResponse = task.response as? HTTPURLResponse, let locationURI = httpResponse.allHeaderFields["Location"] as? String else {
-                let error = NSError(domain: "VimeoConnector.completeUpload", code: 400, userInfo: [NSLocalizedDescriptionKey: "Could not get location header"])
+                let error = NSError(domain: "VimeoConnector.completeUpload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Could not get location header"])
                 uploadCompletion(nil, error)
                 return
             }
@@ -173,7 +173,7 @@ class VimeoConnector: NSObject
             self.addMetadata(for: video, uploadCompletion: uploadCompletion)
             
             //call system completion handler for this background task:
-            BackgroundUploadCompleteSessionManager.shared.savedCompletionHandler?()
+            BackgroundUploadCompleteSessionManager.shared.systemCompletionHandler?()
         }
         
         //start the task:
@@ -181,8 +181,8 @@ class VimeoConnector: NSObject
     }
     
     /**
-     * again we will use a download task for this request so we can do it in the background
-     * we can inspect/ parse the JSON response in downloadTaskDidFinishDownloadingToURL:
+     * again we will use a download task for this request so we can remain background compatable.
+     * we can inspect/ parse the JSON newly uploaded Video object response in downloadTaskDidFinishDownloadingToURL:
      */
     private func addMetadata(for video: Video, uploadCompletion: @escaping UploadCompletionHandler)
     {
@@ -203,7 +203,7 @@ class VimeoConnector: NSObject
             }
             
             //call system completion handler for this background task:
-            BackgroundUploadVideoMetadataSessionManager.shared.savedCompletionHandler?()
+            BackgroundUploadVideoMetadataSessionManager.shared.systemCompletionHandler?()
         }
         
         //start the task:

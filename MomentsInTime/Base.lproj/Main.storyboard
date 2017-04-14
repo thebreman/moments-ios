@@ -28,7 +28,9 @@
                                 <rect key="frame" x="276" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                <state key="normal" title="+"/>
+                                <state key="normal" title="+">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <segue destination="hLJ-EC-isI" kind="presentation" id="fpE-Mv-Qnc"/>
                                 </connections>
@@ -48,6 +50,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </textAttributes>
                     </navigationBar>
                     <connections>
                         <segue destination="XSC-mP-BNu" kind="relationship" relationship="rootViewController" id="4CG-31-UeM"/>
@@ -55,12 +61,12 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yUS-Gr-Zeg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2844" y="450"/>
+            <point key="canvasLocation" x="2890" y="450"/>
         </scene>
-        <!--View Controller-->
+        <!--New Moment-->
         <scene sceneID="74a-UX-Qjj">
             <objects>
-                <viewController id="XSC-mP-BNu" sceneMemberID="viewController">
+                <viewController id="XSC-mP-BNu" customClass="NewMomentController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sdL-8j-G2y"/>
                         <viewControllerLayoutGuide type="bottom" id="o8Z-rn-88W"/>
@@ -70,11 +76,31 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
-                    <navigationItem key="navigationItem" id="Q6x-tD-0m5"/>
+                    <navigationItem key="navigationItem" title="New Moment" id="Q6x-tD-0m5">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="Bef-Ho-8jc">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="bFu-MX-Ugj" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Submit">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.69999999999999996" alpha="0.80249357875753424" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleSubmit:" destination="XSC-mP-BNu" eventType="touchUpInside" id="8KM-El-cei"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="submitButton" destination="bFu-MX-Ugj" id="Ksm-aP-c7B"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="di5-tN-qqt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3679" y="451"/>
+            <point key="canvasLocation" x="3751" y="451"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="RGx-Nt-bJ5">

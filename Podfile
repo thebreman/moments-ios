@@ -8,4 +8,5 @@ pod 'SDWebImage'
 pod 'FacebookCore'
 pod 'FacebookLogin'
 pod 'FacebookShare'
+pod 'DZNEmptyDataSet'
 end
