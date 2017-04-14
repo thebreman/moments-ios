@@ -19,29 +19,7 @@ class VideoCell: UICollectionViewCell
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var subtitleTopContraint: NSLayoutConstraint!
-    
-    //collection of horizontal padding constraints:
-    //container view horizontal padding and label horizontal padding
-    //changes in storyboard will update these... 
-    //we need to set preferredMaxLayoutWidth on the lables in flowLayout.sizeForItem...
-    //the sum of these constraint's constants will be the necessary padding:
-    @IBOutlet var horizontalPaddingConstraints: [NSLayoutConstraint]!
-    
-    var labelHorizontalPadding: CGFloat {
-        var sum: CGFloat = 0
-        self.horizontalPaddingConstraints.forEach { sum = $0.constant + sum }
-        return sum
-    }
-    
-    //collectionView flowLayout delegate will set this in sizeForItem...
-    var preferredCellWidth: CGFloat? {
-        didSet {
-            if let width = self.preferredCellWidth {
-                self.titleLabel.preferredMaxLayoutWidth = width - self.labelHorizontalPadding
-                self.subtitleLabel.preferredMaxLayoutWidth = width - self.labelHorizontalPadding
-            }
-        }
-    }
+
     
     var video: Video? {
         didSet {
@@ -55,8 +33,6 @@ class VideoCell: UICollectionViewCell
         
         cell.video = video
         cell.bounds = CGRect(x: 0, y: 0, width: width, height: 1000)
-        
-        //            cell.preferredCellWidth = collectionView.bounds.width
         
         cell.setNeedsUpdateConstraints()
         cell.updateConstraintsIfNeeded()

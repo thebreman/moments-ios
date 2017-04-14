@@ -116,10 +116,6 @@
                 <outlet property="subtitleTopContraint" destination="w78-hO-7HO" id="iQM-je-lW0"/>
                 <outlet property="thumbnailImageView" destination="i4G-03-3dv" id="cxM-wc-I2e"/>
                 <outlet property="titleLabel" destination="fPw-KP-Sda" id="UKo-t2-Xa7"/>
-                <outletCollection property="horizontalPaddingConstraints" destination="qoc-dP-VGJ" collectionClass="NSMutableArray" id="rJ8-da-XvJ"/>
-                <outletCollection property="horizontalPaddingConstraints" destination="HAi-st-nW8" collectionClass="NSMutableArray" id="zdB-MJ-Xqt"/>
-                <outletCollection property="horizontalPaddingConstraints" destination="gn4-Ab-ok2" collectionClass="NSMutableArray" id="sH0-1N-M0P"/>
-                <outletCollection property="horizontalPaddingConstraints" destination="2k4-pg-CqP" collectionClass="NSMutableArray" id="xeV-qF-4Z7"/>
             </connections>
             <point key="canvasLocation" x="117" y="132.5"/>
         </collectionViewCell>
