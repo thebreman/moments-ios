@@ -143,9 +143,4 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     {
         return self.emptyStateView
     }
-    
-    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool
-    {
-        return true
-    }
 }

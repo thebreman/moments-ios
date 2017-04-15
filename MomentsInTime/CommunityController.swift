@@ -21,11 +21,19 @@ class CommunityController: UIViewController
         return refreshControl
     }()
     
-    //manages self.collectionView:
+    private var emptyStateView: MITEmptyStateView = {
+        let view = MITEmptyStateView()
+        view.title = "Where are all the moments?"
+        view.message = "Even if you're not ready to film, you can create the plans for an interview now."
+        view.actionButton.setTitle("Let's make a moment", for: .normal)
+        view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
+        return view
+    }()
+    
     private lazy var adapter: MITVideoCollectionViewAdapter = {
        let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    videos: self.videoList.videos,
-                                                   emptyStateView: UIView(),
+                                                   emptyStateView: self.emptyStateView,
                                                    accessoryView: nil)
         return adapter
     }()
@@ -48,7 +56,14 @@ class CommunityController: UIViewController
         }, completion: nil)
     }
     
-//MARK: CollectionView
+    //MARK: Actions
+    
+    @objc private func handleNewMoment()
+    {
+        print("handle new moment")
+    }
+    
+    //MARK: CollectionView
     
     private func setupCollectionView()
     {
@@ -60,7 +75,7 @@ class CommunityController: UIViewController
         self.collectionView?.addSubview(self.refreshControl)
     }
     
-// MARK: Refresh
+    // MARK: Refresh
     
     @objc private func refresh()
     {

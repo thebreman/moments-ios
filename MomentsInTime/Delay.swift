@@ -8,7 +8,7 @@
 
 import Foundation
 
-func wait(_ seconds: Double, then closure: @escaping () -> Void)
+func wait(seconds: Double, then closure: @escaping () -> Void)
 {
     DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
         closure()

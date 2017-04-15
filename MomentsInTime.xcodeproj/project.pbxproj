@@ -23,6 +23,8 @@
 		6811A1E81E826EB2006362E8 /* MyMomentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811A1E71E826EB2006362E8 /* MyMomentsController.swift */; };
 		6825E1371EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1361EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift */; };
 		6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1381EA20525003DEF20 /* ContainerCell.swift */; };
+		6825E13B1EA20A7C003DEF20 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E13A1EA20A7C003DEF20 /* EmptyStateView.swift */; };
+		6825E13D1EA2119F003DEF20 /* MITEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */; };
 		687145A81EA082C800773E1F /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687145A71EA082C800773E1F /* Delay.swift */; };
 		68C0682A1EA0924B0037D4A3 /* NewMomentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C068291EA0924B0037D4A3 /* NewMomentController.swift */; };
 		68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FED1E824DE100C1B320 /* Fonts.swift */; };
@@ -72,6 +74,8 @@
 		6811A1E71E826EB2006362E8 /* MyMomentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMomentsController.swift; sourceTree = "<group>"; };
 		6825E1361EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITVideoCollectionViewAdapter.swift; sourceTree = "<group>"; };
 		6825E1381EA20525003DEF20 /* ContainerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerCell.swift; sourceTree = "<group>"; };
+		6825E13A1EA20A7C003DEF20 /* EmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITEmptyStateView.swift; sourceTree = "<group>"; };
 		687145A71EA082C800773E1F /* Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
 		68C068291EA0924B0037D4A3 /* NewMomentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMomentController.swift; sourceTree = "<group>"; };
 		68EB8FED1E824DE100C1B320 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -207,6 +211,8 @@
 				680BE07A1E8E204000A5D339 /* VideoCell.xib */,
 				680BE07C1E8E20A200A5D339 /* VideoCell.swift */,
 				6825E1381EA20525003DEF20 /* ContainerCell.swift */,
+				6825E13A1EA20A7C003DEF20 /* EmptyStateView.swift */,
+				6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -480,6 +486,8 @@
 				680BE07F1E8E2C9500A5D339 /* Views.swift in Sources */,
 				680BE08F1E8E301D00A5D339 /* CachedImageView.swift in Sources */,
 				680CEB9B1E9F67B0009ED223 /* BackgroundSessionManagers.swift in Sources */,
+				6825E13D1EA2119F003DEF20 /* MITEmptyStateView.swift in Sources */,
+				6825E13B1EA20A7C003DEF20 /* EmptyStateView.swift in Sources */,
 				680BE08B1E8E2E9B00A5D339 /* UploadRouter.swift in Sources */,
 				680BE0811E8E2C9D00A5D339 /* ViewControllers.swift in Sources */,
 				D332E6471E80BE6C00778462 /* AppDelegate.swift in Sources */,
