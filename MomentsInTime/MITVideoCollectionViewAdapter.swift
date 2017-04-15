@@ -11,67 +11,6 @@ import DZNEmptyDataSet
 import PureLayout
 
 /**
- * This is a cell that can optionally be displayed at the top of a UICollectionView (section 0).
- * It has an accessoryView:UIView property which will simply be displayed entirely in this cell.
- * This is great for UIViewControllers that need to display a message or ad to a user as the first item of the UICollectionView.
- * The Organizer has an optional accessoryView:UIView? property and when this is set, this cell will be displayed,
- * containing the view at the top of the collectionView in section 0, item 0...
- */
-
-private let _sizingCell = Bundle.main.loadNibNamed(String(describing: AccessoryCell.self), owner: nil, options: nil)?.first as! AccessoryCell
-private var _sizingWidth = NSLayoutConstraint()
-
-class AccessoryCell: UICollectionViewCell
-{
-    var accessoryView = UIView()
-    
-    class func sizeForCell(withWidth width: CGFloat) -> CGSize
-    {
-        let cell = _sizingCell
-        cell.bounds = CGRect(x: 0, y: 0, width: width, height: 1000)
-        
-        // the system fitting does not honor the bounded width^ from above (it sizes the label as wide as possible)
-        // we'll set a manual width constraint so we fully autolayout when asking for a fitted size:
-        cell.contentView.removeConstraint(_sizingWidth)
-        _sizingWidth = cell.contentView.autoSetDimension(ALDimension.width, toSize: width)
-        
-        cell.setNeedsUpdateConstraints()
-        cell.updateConstraintsIfNeeded()
-        cell.setNeedsLayout()
-        cell.layoutIfNeeded()
-        
-        let autoSize = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-        let height = autoSize.height
-        
-        return CGSize(width: width, height: height)
-    }
-    
-    override init(frame: CGRect)
-    {
-        super.init(frame: frame)
-        self.setup()
-    }
-    
-    required init?(coder aDecoder: NSCoder)
-    {
-        super.init(coder: aDecoder)
-        self.setup()
-    }
-    
-    override func awakeFromNib()
-    {
-        super.awakeFromNib()
-        self.setup()
-    }
-    
-    private func setup()
-    {
-        self.contentView.addSubview(self.accessoryView)
-        self.accessoryView.autoPinEdgesToSuperviewEdges()
-    }
-}
-
-/**
  * Manages UICollectionViews throughout the app that display VideoCells...
  * The collectionViews are still responsible for loading and refreshing their content (VideoList),
  * but this class manages displaying the [Video].
@@ -80,33 +19,41 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
 {
     private struct Identifiers {
         static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
-        static let IDENTIFIER_REUSE_ACCESSORY_CELL = "accessoryCell"
+        static let IDENTIFIER_REUSE_CONTAINER_CELL = "accessoryCell"
         static let IDENTIFIER_NIB_VIDEO_CELL = "VideoCell"
     }
     
-    var collectionView = UICollectionView()
+    var collectionView: UICollectionView!
     
-    lazy var videos = [Video]()
+    var videos = [Video]() {
+        didSet {
+            self.collectionView.reloadData()
+        }
+    }
     
     var emptyStateView = UIView()
     
     //optional top view that will be contained in a cell in section 0 at the top:
-    //good for announcements etc...
+    //good for announcements, ads etc.
+    //if it becomes necessary we could allow for an array of these views...
     var accessoryView: UIView? {
         didSet {
             
             //setup collectionView to display an AccessoryCell at the top:
-            self.collectionView.register(AccessoryCell.self, forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_ACCESSORY_CELL)
+            if self.accessoryView != nil {
+                self.collectionView.register(ContainerCell.self, forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
+            }
         }
     }
     
-    init(withCollectionView collectionView: UICollectionView, videos: [Video], emptyStateView: UIView)
+    init(withCollectionView collectionView: UICollectionView, videos: [Video], emptyStateView: UIView, accessoryView: UIView?)
     {
         super.init()
         
         self.collectionView = collectionView
         self.videos = videos
         self.emptyStateView = emptyStateView
+        self.accessoryView = accessoryView
         
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
@@ -143,13 +90,13 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         case 0:
             
             if let accessoryView = self.accessoryView,
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_ACCESSORY_CELL, for: indexPath) as? AccessoryCell {
-                cell.accessoryView = accessoryView
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL, for: indexPath) as? ContainerCell {
+                cell.view = accessoryView
                 return cell
             }
             
             assert(false, "dequeued cell was of an unknown type!")
-            return AccessoryCell()
+            return ContainerCell()
         
         case 1:
             
@@ -174,7 +121,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         
         case 0:
             
-            let size = AccessoryCell.sizeForCell(withWidth: collectionView.bounds.width)
+            let size = ContainerCell.sizeForCell(withWidth: collectionView.bounds.width)
             return size
         
         case 1:

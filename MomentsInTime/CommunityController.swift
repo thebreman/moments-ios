@@ -8,15 +8,10 @@
 
 import UIKit
 
-class CommunityController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+class CommunityController: UIViewController
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
-    
-    private struct Constants {
-        static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
-        static let IDENTIFIER_NIB_VIDEO_CELL = "VideoCell"
-    }
     
     lazy var videoList = VideoList()
     
@@ -24,6 +19,15 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         return refreshControl
+    }()
+    
+    //manages self.collectionView:
+    private lazy var adapter: MITVideoCollectionViewAdapter = {
+       let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
+                                                   videos: self.videoList.videos,
+                                                   emptyStateView: UIView(),
+                                                   accessoryView: nil)
+        return adapter
     }()
     
     override func viewDidLoad()
@@ -53,37 +57,7 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
             flowLayout.minimumLineSpacing = 0
         }
         
-        self.collectionView?.register(UINib(nibName: Constants.IDENTIFIER_NIB_VIDEO_CELL, bundle: nil), forCellWithReuseIdentifier: Constants.IDENTIFIER_REUSE_VIDEO_CELL)
         self.collectionView?.addSubview(self.refreshControl)
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int
-    {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
-    {
-        return self.videoList.videos.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
-    {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDENTIFIER_REUSE_VIDEO_CELL, for: indexPath) as? VideoCell {
-            cell.video = self.videoList.videos[indexPath.item]
-            return cell
-        }
-        
-        assert(false, "dequeued cell was of an unknown type!")
-        return UICollectionViewCell()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-    {
-        let video = self.videoList.videos[indexPath.item]
-        let size = VideoCell.sizeForVideo(video, width: collectionView.bounds.width)
-
-        return size
     }
     
 // MARK: Refresh
@@ -104,7 +78,7 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
             }
             
             self.spinner.stopAnimating()
-            self.collectionView?.reloadData()
+            self.adapter.videos = self.videoList.videos
         }
     }
 }
