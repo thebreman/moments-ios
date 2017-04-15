@@ -9,7 +9,6 @@
 import UIKit
 import PureLayout
 
-
 private let SPACING_TITLE_SUBTITLE: CGFloat = 2.0
 
 private let _sizingCell = Bundle.main.loadNibNamed(String(describing: VideoCell.self), owner: nil, options: nil)?.first as! VideoCell

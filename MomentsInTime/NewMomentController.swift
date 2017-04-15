@@ -15,12 +15,14 @@ class NewMomentController: UIViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        self.submitButton.isEnabled = false
+        self.submitButton.isEnabled = true
     }
     
 //MARK: Actions
     
-    @IBAction func handleSubmit(_ sender: BouncingButton) {
+    @IBAction func handleSubmit(_ sender: BouncingButton)
+    {
+        print("handle Submit")
     }
     
 }
