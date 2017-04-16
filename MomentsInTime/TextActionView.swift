@@ -1,14 +1,14 @@
 //
-//  EmptyStateView.swift
+//  TextActionView.swift
 //  MomentsInTime
 //
-//  Created by Andrew Ferrarone on 4/15/17.
+//  Created by Andrew Ferrarone on 4/16/17.
 //  Copyright © 2017 Tikkun Olam. All rights reserved.
 //
 
 import UIKit
 
-class EmptyStateView: UIView
+class TextActionView: UIView
 {
     private let containerView: UIView = {
         let view = UIView(frame: .zero)
@@ -150,17 +150,19 @@ class EmptyStateView: UIView
     
     private func setupConstraints()
     {
-        //title, and message views are contained w/in containerView
-        self.centerXAnchor.constraint(equalTo: self.actionButton.centerXAnchor).isActive = true
+        //configure everything inside of containerView:
+        self.containerView.addContraints(withFormat: "V:|-4-[v0]-4-[v1]-4-[v2]|", views: self.titleLabel, self.messageLabel, self.actionButton)
+        self.containerView.addContraints(withFormat: "H:|[v0]|", views: self.titleLabel)
+        self.containerView.addContraints(withFormat: "H:|[v0]|", views: self.messageLabel)
+        self.containerView.addContraints(withFormat: "H:|->=0-[v0]->=0-|", views: self.actionButton)
+        self.actionButton.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor).isActive = true
         
-        self.addContraints(withFormat: "V:|[v0]-4-[v1]-4-[v2]|", views: self.titleLabel, self.messageLabel, self.actionButton)
-        self.addContraints(withFormat: "H:|[v0]|", views: self.titleLabel)
-        self.addContraints(withFormat: "H:|[v0]|", views: self.messageLabel)
-        self.addContraints(withFormat: "H:|->=0-[v0]->=0-|", views: self.actionButton)
+        //pin the containerView to our edges:
+        self.addContraints(withFormat: "V:|[v0]|", views: self.containerView)
+        self.addContraints(withFormat: "H:|->=20-[v0]->=20-|", views: self.containerView)
         
-        //center containerView:
-        self.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor).isActive = true
-        self.centerYAnchor.constraint(equalTo: self.containerView.centerYAnchor).isActive = true
+        self.containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        self.containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
 }
 

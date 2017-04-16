@@ -9,6 +9,8 @@
 import UIKit
 import DZNEmptyDataSet
 
+private let IDENTIFIER_SEGUE_NEW_MOMENT = "NewMoment"
+
 class MyMomentsController: UIViewController
 {
     @IBOutlet weak var collectionView: UICollectionView!
@@ -22,8 +24,8 @@ class MyMomentsController: UIViewController
         return refreshControl
     }()
     
-    private var emptyStateView: MITEmptyStateView = {
-        let view = MITEmptyStateView()
+    private var emptyStateView: MITTextActionView = {
+        let view = MITTextActionView()
         view.title = "Where are all the moments?"
         view.message = "Even if you're not ready to film, you can create the plans for an interview now."
         view.actionButton.setTitle("Let's make a moment", for: .normal)
@@ -53,8 +55,13 @@ class MyMomentsController: UIViewController
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
         super.viewWillTransition(to: size, with: coordinator)
+        
         coordinator.animate(alongsideTransition: { (_) in
-            self.collectionView.collectionViewLayout.invalidateLayout()
+            
+            if self.collectionView != nil {
+                self.collectionView.collectionViewLayout.invalidateLayout()
+            }
+            
         }, completion: nil)
     }
     
@@ -62,7 +69,7 @@ class MyMomentsController: UIViewController
     
     @objc private func handleNewMoment()
     {
-        print("handle new moment")
+        self.performSegue(withIdentifier: IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
     }
     
     //MARK: CollectionView
@@ -72,6 +79,7 @@ class MyMomentsController: UIViewController
         if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .vertical
             flowLayout.minimumLineSpacing = 0
+            flowLayout.sectionInset = .zero
         }
         
         self.collectionView?.addSubview(self.refreshControl)
@@ -83,13 +91,8 @@ class MyMomentsController: UIViewController
     {
         print("refreshing")
         
-        wait(seconds: 3) {
+        wait(seconds: 2) {
             self.refreshControl.endRefreshing()
-        }
-        
-        print(self.emptyStateView.frame)
-        if let emptyView = self.emptyStateView as? MITEmptyStateView {
-            print(emptyView.actionButton.frame)
         }
     }
 }

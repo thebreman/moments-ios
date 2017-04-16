@@ -8,7 +8,6 @@
 
 import UIKit
 import DZNEmptyDataSet
-import PureLayout
 
 /**
  * Manages UICollectionViews throughout the app that display VideoCells...
@@ -19,8 +18,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
 {
     private struct Identifiers {
         static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
-        static let IDENTIFIER_REUSE_CONTAINER_CELL = "accessoryCell"
-        static let IDENTIFIER_NIB_VIDEO_CELL = "VideoCell"
+        static let IDENTIFIER_REUSE_CONTAINER_CELL = "containerCell"
     }
     
     var collectionView: UICollectionView!
@@ -36,15 +34,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     //optional top view that will be contained in a cell in section 0 at the top:
     //good for announcements, ads etc.
     //if it becomes necessary we could allow for an array of these views...
-    var accessoryView: UIView? {
-        didSet {
-            
-            //setup collectionView to display an AccessoryCell at the top:
-            if self.accessoryView != nil {
-                self.collectionView.register(ContainerCell.self, forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
-            }
-        }
-    }
+    var accessoryView: UIView?
     
     init(withCollectionView collectionView: UICollectionView, videos: [Video], emptyStateView: UIView, accessoryView: UIView?)
     {
@@ -55,9 +45,14 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         self.emptyStateView = emptyStateView
         self.accessoryView = accessoryView
         
+        if self.accessoryView != nil {
+            self.collectionView.register(UINib(nibName: String(describing: ContainerCell.self), bundle: nil), forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
+            self.collectionView.contentInset.top = 10
+        }
+        
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
-        self.collectionView.register(UINib(nibName: Identifiers.IDENTIFIER_NIB_VIDEO_CELL, bundle: nil), forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_VIDEO_CELL)
+        self.collectionView.register(UINib(nibName: String(describing: VideoCell.self), bundle: nil), forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_VIDEO_CELL)
         
         self.collectionView.emptyDataSetDelegate = self
         self.collectionView.emptyDataSetSource = self
@@ -74,9 +69,11 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     {
         switch section {
         case 0:
-            return self.accessoryView != nil ? 1 : 0
+            let itemCount = self.accessoryView != nil ? 1 : 0
+            return itemCount
         case 1:
-            return self.videos.count
+            let itemCount = self.videos.count
+            return itemCount
         default:
             assert(false, "unknown section in collectionView!")
             return 0
@@ -91,7 +88,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
             
             if let accessoryView = self.accessoryView,
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL, for: indexPath) as? ContainerCell {
-                cell.view = accessoryView
+                cell.containedView = accessoryView
                 return cell
             }
             
@@ -116,13 +113,16 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-    {
+    {        
         switch indexPath.section {
         
         case 0:
             
-            let size = ContainerCell.sizeForCell(withWidth: collectionView.bounds.width)
-            return size
+            if let viewToDisplay = self.accessoryView {
+                let size = ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: viewToDisplay)
+                return size
+            }
+            return .zero
         
         case 1:
             

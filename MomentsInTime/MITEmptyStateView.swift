@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MITEmptyStateView: EmptyStateView
+class MITTextActionView: TextActionView
 {
     override func setup()
     {
@@ -22,12 +22,7 @@ class MITEmptyStateView: EmptyStateView
         
         self.actionFont = UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightSemibold)
         self.setActionColor(UIColor.mitActionblue, forState: .normal)
-    }
-    
-    override var intrinsicContentSize: CGSize {
-        if !(super.intrinsicContentSize.height > 0) {
-            return CGSize(width: 100, height: 100)
-        }
-        return super.intrinsicContentSize
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
     }
 }

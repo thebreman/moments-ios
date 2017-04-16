@@ -15,7 +15,7 @@ class NewMomentController: UIViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        self.submitButton.isEnabled = true
+        self.submitButton.isEnabled = false
     }
     
 //MARK: Actions
@@ -25,4 +25,9 @@ class NewMomentController: UIViewController
         print("handle Submit")
     }
     
+    @IBAction func handleCancel(_ sender: BouncingButton)
+    {
+        //end editing/ first responders then dismiss
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
 }

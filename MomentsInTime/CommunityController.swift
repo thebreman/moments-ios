@@ -21,8 +21,8 @@ class CommunityController: UIViewController
         return refreshControl
     }()
     
-    private var emptyStateView: MITEmptyStateView = {
-        let view = MITEmptyStateView()
+    private var emptyStateView: MITTextActionView = {
+        let view = MITTextActionView()
         view.title = "Where are all the moments?"
         view.message = "Even if you're not ready to film, you can create the plans for an interview now."
         view.actionButton.setTitle("Let's make a moment", for: .normal)
@@ -30,11 +30,20 @@ class CommunityController: UIViewController
         return view
     }()
     
+    private var interviewView: MITTextActionView = {
+        let view = MITTextActionView()
+        view.title = "Make a Moment"
+        view.message = "Who do you know that has a story to tell?"
+        view.actionButton.setTitle("Ask To Interview", for: .normal)
+        view.actionButton.addTarget(self, action: #selector(handleAskToInterview), for: .touchUpInside)
+        return view
+    }()
+    
     private lazy var adapter: MITVideoCollectionViewAdapter = {
        let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    videos: self.videoList.videos,
                                                    emptyStateView: self.emptyStateView,
-                                                   accessoryView: nil)
+                                                   accessoryView: self.interviewView)
         return adapter
     }()
     
@@ -43,7 +52,6 @@ class CommunityController: UIViewController
         super.viewDidLoad()
         
         self.spinner.startAnimating()
-        
         self.setupCollectionView()
         self.fetchCommunityVideos()
     }
@@ -51,8 +59,15 @@ class CommunityController: UIViewController
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
         super.viewWillTransition(to: size, with: coordinator)
+        
         coordinator.animate(alongsideTransition: { (_) in
-            self.collectionView.collectionViewLayout.invalidateLayout()
+            
+            //this call is necessary b/c tabBarController receives this method and will call it on all its
+            //viewControllers, which are then forced to load, but they might not have outlets set yet...
+            if self.collectionView != nil {
+                self.collectionView.collectionViewLayout.invalidateLayout()
+            }
+            
         }, completion: nil)
     }
     
@@ -63,6 +78,11 @@ class CommunityController: UIViewController
         print("handle new moment")
     }
     
+    @objc private func handleAskToInterview()
+    {
+        print("handle Ask To Interview")
+    }
+    
     //MARK: CollectionView
     
     private func setupCollectionView()
@@ -70,6 +90,7 @@ class CommunityController: UIViewController
         if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .vertical
             flowLayout.minimumLineSpacing = 0
+            flowLayout.sectionInset = .zero
         }
         
         self.collectionView?.addSubview(self.refreshControl)
