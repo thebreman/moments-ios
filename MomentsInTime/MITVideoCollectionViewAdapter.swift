@@ -16,7 +16,8 @@ import DZNEmptyDataSet
  */
 class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
-    private struct Identifiers {
+    private struct Identifiers
+    {
         static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
         static let IDENTIFIER_REUSE_CONTAINER_CELL = "containerCell"
     }
@@ -46,7 +47,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         self.accessoryView = accessoryView
         
         if self.accessoryView != nil {
-            self.collectionView.register(UINib(nibName: String(describing: ContainerCell.self), bundle: nil), forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
+            self.collectionView.register(ContainerCell.self, forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
             self.collectionView.contentInset.top = 10
         }
         

@@ -26,7 +26,6 @@
 		6825E13D1EA2119F003DEF20 /* MITEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */; };
 		687145A81EA082C800773E1F /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687145A71EA082C800773E1F /* Delay.swift */; };
 		68C0682A1EA0924B0037D4A3 /* NewMomentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C068291EA0924B0037D4A3 /* NewMomentController.swift */; };
-		68E580571EA367F0002E8C6A /* ContainerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68E580561EA367F0002E8C6A /* ContainerCell.xib */; };
 		68E580591EA37504002E8C6A /* TextActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E580581EA37504002E8C6A /* TextActionView.swift */; };
 		68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FED1E824DE100C1B320 /* Fonts.swift */; };
 		68EB8FF01E824E2800C1B320 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FEF1E824E2800C1B320 /* Colors.swift */; };
@@ -78,7 +77,6 @@
 		6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITEmptyStateView.swift; sourceTree = "<group>"; };
 		687145A71EA082C800773E1F /* Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
 		68C068291EA0924B0037D4A3 /* NewMomentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMomentController.swift; sourceTree = "<group>"; };
-		68E580561EA367F0002E8C6A /* ContainerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContainerCell.xib; sourceTree = "<group>"; };
 		68E580581EA37504002E8C6A /* TextActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextActionView.swift; sourceTree = "<group>"; };
 		68EB8FED1E824DE100C1B320 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		68EB8FEF1E824E2800C1B320 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -212,7 +210,6 @@
 				6825E1361EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift */,
 				680BE07A1E8E204000A5D339 /* VideoCell.xib */,
 				680BE07C1E8E20A200A5D339 /* VideoCell.swift */,
-				68E580561EA367F0002E8C6A /* ContainerCell.xib */,
 				6825E1381EA20525003DEF20 /* ContainerCell.swift */,
 				68E580581EA37504002E8C6A /* TextActionView.swift */,
 				6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */,
@@ -406,7 +403,6 @@
 				D332E6511E80BE6C00778462 /* LaunchScreen.storyboard in Resources */,
 				680BE07B1E8E204000A5D339 /* VideoCell.xib in Resources */,
 				D332E64E1E80BE6C00778462 /* Assets.xcassets in Resources */,
-				68E580571EA367F0002E8C6A /* ContainerCell.xib in Resources */,
 				D332E64C1E80BE6C00778462 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

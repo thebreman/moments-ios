@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PureLayout
 
 class CommunityController: UIViewController
 {
@@ -60,15 +61,9 @@ class CommunityController: UIViewController
     {
         super.viewWillTransition(to: size, with: coordinator)
         
-        coordinator.animate(alongsideTransition: { (_) in
-            
-            //this call is necessary b/c tabBarController receives this method and will call it on all its
-            //viewControllers, which are then forced to load, but they might not have outlets set yet...
-            if self.collectionView != nil {
-                self.collectionView.collectionViewLayout.invalidateLayout()
-            }
-            
-        }, completion: nil)
+        if self.collectionView != nil {
+            self.collectionView.collectionViewLayout.invalidateLayout()
+        }
     }
     
     //MARK: Actions

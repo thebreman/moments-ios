@@ -17,69 +17,28 @@ import PureLayout
  * containing the view at the top of the collectionView in section 0, item 0...
  */
 
-private let _sizingCell = Bundle.main.loadNibNamed(String(describing: ContainerCell.self), owner: nil, options: nil)?.first
+private let _sizingCell = ContainerCell()
 private var _sizingWidth = NSLayoutConstraint()
 
 class ContainerCell: UICollectionViewCell
 {
-    @IBOutlet weak var containerView: UIView!
-    
-    var containedView: UIView? {
+    var containedView: UIView! {
         didSet {
-            self.updateUI()
+            
+            if self.contentView.subviews.count > 0 {
+                self.contentView.subviews.forEach({ $0.removeFromSuperview() })
+            }
+            
+            self.contentView.addSubview(self.containedView)
+            self.containedView.autoPinEdgesToSuperviewEdges()
+            self.layoutIfNeeded()
         }
     }
     
     class func sizeForCell(withWidth width: CGFloat, containedView: UIView) -> CGSize
     {
-        if let cell = _sizingCell as? ContainerCell {
-            cell.bounds = CGRect(x: 0, y: 0, width: width, height: 1000)
-            cell.containedView = containedView
-            
-            // the system fitting does not honor the bounded width^ from above (it sizes the label as wide as possible)
-            // we'll set a manual width constraint so we fully autolayout when asking for a fitted size:
-            cell.contentView.removeConstraint(_sizingWidth)
-            _sizingWidth = cell.contentView.autoSetDimension(ALDimension.width, toSize: width)
-            
-            cell.setNeedsUpdateConstraints()
-            cell.updateConstraintsIfNeeded()
-            cell.setNeedsLayout()
-            cell.layoutIfNeeded()
-            
-            let autoSize = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-            let height = autoSize.height
-            
-            let size = CGSize(width: width, height: height)
-            return size
-        }
-        
-        return .zero
-    }
-    
-    private func updateUI()
-    {
-        if let viewToDisplay = self.containedView {
-            
-            self.containerView.subviews.forEach({ $0.removeFromSuperview() })
-            
-            self.containerView.addSubview(viewToDisplay)
-            viewToDisplay.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
-        }
-    }
-    
-    override func layoutSubviews()
-    {
-        super.layoutSubviews()
-        self.updateUI()
-    }
-    
-    override init(frame: CGRect)
-    {
-        super.init(frame: frame)
-    }
-    
-    required init?(coder aDecoder: NSCoder)
-    {
-        super.init(coder: aDecoder)
+        containedView.layoutIfNeeded()
+        let size = CGSize(width: width, height: containedView.bounds.height)
+        return size
     }
 }
