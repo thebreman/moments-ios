@@ -83,5 +83,11 @@ extension UIView
     {
         self.layer.shadowPath = UIBezierPath(roundedRect: self.layer.bounds, cornerRadius: self.layer.cornerRadius).cgPath
     }
+    
+    //copies a view so that you are not pointing to the same view:
+    func copyView<T: UIView>() -> T
+    {
+        return NSKeyedUnarchiver.unarchiveObject(with: NSKeyedArchiver.archivedData(withRootObject: self)) as! T
+    }
 }
 

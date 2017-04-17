@@ -157,12 +157,15 @@ class TextActionView: UIView
         self.containerView.addContraints(withFormat: "H:|->=0-[v0]->=0-|", views: self.actionButton)
         self.actionButton.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor).isActive = true
         
-        //pin the containerView to our edges:
-        self.addContraints(withFormat: "V:|[v0]|", views: self.containerView)
-        self.addContraints(withFormat: "H:|->=20-[v0]->=20-|", views: self.containerView)
-        
         self.containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         self.containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+        //pin the containerView to our edges:
+        //The above centering constraints should be enough to get the look we want (this is true),
+        //however, in order for out actionButton to receive touch events, we need to make sure the top and bottom edges
+        //are being pushed on so that we have a height:
+        self.addContraints(withFormat: "V:|[v0]|", views: self.containerView)
+        self.addContraints(withFormat: "H:|->=20-[v0]->=20-|", views: self.containerView)
     }
 }
 

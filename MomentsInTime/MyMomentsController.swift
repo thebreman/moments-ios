@@ -37,7 +37,7 @@ class MyMomentsController: UIViewController
         let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
                                                     videos: self.videoList.videos,
                                                     emptyStateView: self.emptyStateView,
-                                                    accessoryView: nil)
+                                                    bannerView: nil, accessoryView: nil)
         return adapter
     }()
 

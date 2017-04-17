@@ -38,7 +38,6 @@ class ContainerCell: UICollectionViewCell
     class func sizeForCell(withWidth width: CGFloat, containedView: UIView) -> CGSize
     {
         containedView.layoutIfNeeded()
-        let size = CGSize(width: width, height: containedView.bounds.height)
-        return size
+        return CGSize(width: width, height: containedView.bounds.height)
     }
 }
