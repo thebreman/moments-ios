@@ -22,7 +22,6 @@ class VideoCell: UICollectionViewCell
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var subtitleTopContraint: NSLayoutConstraint!
 
-    
     var video: Video? {
         didSet {
             self.updateUI()
