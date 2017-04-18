@@ -246,7 +246,7 @@ extension VimeoConnector
         var videos = [Video]()
         
         for videoObject in data {
-            if let video = Video.from(parameters: videoObject) {
+            if let clip = videoObject["clip"] as? [String: Any], let video = Video.from(parameters: clip) {
                 videos.append(video)
             }
         }

@@ -11,7 +11,7 @@ import PureLayout
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
 
-class CommunityController: UIViewController
+class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -33,29 +33,12 @@ class CommunityController: UIViewController
         return view
     }()
     
-    private var interviewView: UIView = {
-        let textActionView = MITTextActionView()
-        textActionView.title = "Make a Moment"
-        textActionView.message = "Who do you know that has a story to tell?"
-        textActionView.actionButton.setTitle("Ask To Interview", for: .normal)
-        textActionView.actionButton.addTarget(self, action: #selector(handleAskToInterview), for: .touchUpInside)
-        
-        let containerView = UIView()
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        containerView.addSubview(textActionView)
-        textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0))
-        
-        return containerView
-    }()
-    
     private lazy var adapter: MITVideoCollectionViewAdapter = {
-        let accessoryView = MITVideoCollectionViewAdapter.AccessoryView(view: self.interviewView, frequency: FREQUENCY_ACCESSORY_VIEW)
         let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    videos: self.videoList.videos,
                                                    emptyStateView: self.emptyStateView,
                                                    bannerView: nil,
-                                                   accessoryView: accessoryView)
+                                                   delegate: self)
         return adapter
     }()
     
@@ -101,6 +84,30 @@ class CommunityController: UIViewController
         
         self.collectionView.contentInset.top = 10
         self.collectionView?.addSubview(self.refreshControl)
+    }
+    
+    //MARK: MITVideoCollectionViewAdapterDelegate
+    
+    func accessoryView(for adapter: MITVideoCollectionViewAdapter) -> UIView
+    {
+        let textActionView = MITTextActionView()
+        textActionView.title = "Make a Moment"
+        textActionView.message = "Who do you know that has a story to tell?"
+        textActionView.actionButton.setTitle("Ask To Interview", for: .normal)
+        textActionView.actionButton.addTarget(self, action: #selector(handleAskToInterview), for: .touchUpInside)
+        
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        containerView.addSubview(textActionView)
+        textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0))
+        
+        return containerView
+    }
+    
+    func accessoryViewFrequency(forAdaptor adapter: MITVideoCollectionViewAdapter) -> Int
+    {
+        return 7
     }
     
     // MARK: Refresh
