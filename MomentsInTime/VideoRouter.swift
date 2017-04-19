@@ -8,7 +8,8 @@
 
 import Alamofire
 
-private let FILTER_FEED_VALUE = "uri,name,description,link,pictures.sizes,status"
+private let FILTER_VIDEOS_VALUE = "uri,name,description,link,pictures.sizes,status"
+private let FILTER_FEED_VALUE = "clip.uri,clip.name,clip.description,clip.link,clip.created_time,clip.pictures.sizes,clip.user.name,clip.user.pictures.sizes,clip.status"
 
 protocol VideoRouterCompliant
 {
@@ -34,7 +35,7 @@ enum VideoRouter: URLRequestConvertible
     
     var path: String {
         switch self {
-        case .all: return "/me/videos"
+        case .all: return "/me/feed"
         case .create: return "/me/videos"
         case .update(let video): return video.uri
         case .destroy: return ""
@@ -46,14 +47,14 @@ enum VideoRouter: URLRequestConvertible
     
     func asURLRequest() throws -> URLRequest
     {
-        let url = try APIService.baseAPIEndpoint.asURL()
+        let url = try VimeoConnector.baseAPIEndpoint.asURL()
         
         var urlRequest = URLRequest(url: url.appendingPathComponent(self.path))
         urlRequest.httpMethod = self.method.rawValue
         
         //api version header and auth token header:
-        urlRequest.setValue(APIService.versionAPIHeaderValue, forHTTPHeaderField: APIService.versionAPIHeaderKey)
-        urlRequest.setValue(APIService.accessTokenValue, forHTTPHeaderField: APIService.accessTokenKey)
+        urlRequest.setValue(VimeoConnector.versionAPIHeaderValue, forHTTPHeaderField: VimeoConnector.versionAPIHeaderKey)
+        urlRequest.setValue(VimeoConnector.accessTokenValue, forHTTPHeaderField: VimeoConnector.accessTokenKey)
         
         //add any necessary params:
         switch self {

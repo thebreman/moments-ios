@@ -49,7 +49,7 @@ extension UIView
     
     func roundCorners()
     {
-        self.layer.cornerRadius = 6
+        self.layer.cornerRadius = 4
     }
     
     func roundCorners(corners: UIRectCorner, radius: CGFloat)
@@ -60,9 +60,9 @@ extension UIView
         self.layer.mask = mask
     }
     
-    func drawShadow(withOffset offset: CGFloat)
+    func drawShadow(withOffset offset: CGSize)
     {
-        self.layer.shadowOffset = CGSize(width: 0.0, height: offset)
+        self.layer.shadowOffset = offset
         self.layer.shadowColor = UIColor.mitShadow.cgColor
         self.layer.shadowRadius = 1.5
         self.layer.shadowOpacity = 0.40
@@ -74,7 +74,7 @@ extension UIView
     
     func drawShadow()
     {
-        self.drawShadow(withOffset: 0.5)
+        self.drawShadow(withOffset: CGSize(width: 1.0, height: 1.0))
     }
     
     // shadowPath is very fast but does not resize even with autolayout
@@ -82,6 +82,12 @@ extension UIView
     func rasterizeShadow()
     {
         self.layer.shadowPath = UIBezierPath(roundedRect: self.layer.bounds, cornerRadius: self.layer.cornerRadius).cgPath
+    }
+    
+    //copies a view so that you are not pointing to the same view:
+    func copyView<T: UIView>() -> T
+    {
+        return NSKeyedUnarchiver.unarchiveObject(with: NSKeyedArchiver.archivedData(withRootObject: self)) as! T
     }
 }
 

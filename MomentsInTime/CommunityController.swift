@@ -7,16 +7,14 @@
 //
 
 import UIKit
+import PureLayout
 
-class CommunityController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+private let FREQUENCY_ACCESSORY_VIEW = 2
+
+class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
-    
-    private struct Constants {
-        static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
-        static let IDENTIFIER_NIB_VIDEO_CELL = "VideoCell"
-    }
     
     lazy var videoList = VideoList()
     
@@ -26,12 +24,29 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
         return refreshControl
     }()
     
+    private var emptyStateView: MITTextActionView = {
+        let view = MITTextActionView()
+        view.title = "Where are all the moments?"
+        view.message = "Even if you're not ready to film, you can create the plans for an interview now."
+        view.actionButton.setTitle("Let's make a moment", for: .normal)
+        view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
+        return view
+    }()
+    
+    private lazy var adapter: MITVideoCollectionViewAdapter = {
+        let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
+                                                   videos: self.videoList.videos,
+                                                   emptyStateView: self.emptyStateView,
+                                                   bannerView: nil,
+                                                   delegate: self)
+        return adapter
+    }()
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
         self.spinner.startAnimating()
-        
         self.setupCollectionView()
         self.fetchCommunityVideos()
     }
@@ -39,76 +54,63 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
         super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: { (_) in
+        
+        if self.collectionView != nil {
             self.collectionView.collectionViewLayout.invalidateLayout()
-        }, completion: nil)
+        }
     }
     
-//MARK: CollectionView
+    //MARK: Actions
+    
+    @objc private func handleNewMoment()
+    {
+        print("handle new moment")
+    }
+    
+    @objc private func handleAskToInterview()
+    {
+        print("handle Ask To Interview")
+    }
+    
+    //MARK: CollectionView
     
     private func setupCollectionView()
     {
         if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .vertical
             flowLayout.minimumLineSpacing = 0
+            flowLayout.sectionInset = .zero
         }
         
-        self.collectionView?.register(UINib(nibName: Constants.IDENTIFIER_NIB_VIDEO_CELL, bundle: nil), forCellWithReuseIdentifier: Constants.IDENTIFIER_REUSE_VIDEO_CELL)
+        self.collectionView.contentInset.top = 10
         self.collectionView?.addSubview(self.refreshControl)
     }
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int
-    {
-        return 1
-    }
+    //MARK: MITVideoCollectionViewAdapterDelegate
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
+    func accessoryView(for adapter: MITVideoCollectionViewAdapter) -> UIView
     {
-        return self.videoList.videos.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
-    {
-        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDENTIFIER_REUSE_VIDEO_CELL, for: indexPath) as? VideoCell {
-            cell.video = self.videoList.videos[indexPath.item]
-            cell.setNeedsUpdateConstraints()
-            return cell
-        }
+        let textActionView = MITTextActionView()
+        textActionView.title = "Make a Moment"
+        textActionView.message = "Who do you know that has a story to tell?"
+        textActionView.actionButton.setTitle("Ask To Interview", for: .normal)
+        textActionView.actionButton.addTarget(self, action: #selector(handleAskToInterview), for: .touchUpInside)
         
-        assert(false, "dequeued cell was of an unknown type!")
-        return UICollectionViewCell()
-    }
-    
-    //offscreen cell for height calculation
-    private lazy var offscreenCell: VideoCell? = {
-        let topLevelObjects = Bundle.main.loadNibNamed(Constants.IDENTIFIER_NIB_VIDEO_CELL, owner: nil, options: nil)
-        if let cell = topLevelObjects?[0] as? VideoCell {
-            cell.translatesAutoresizingMaskIntoConstraints = false
-            return cell
-        }
-        return nil
-    }()
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-    {
-        if let cell = self.offscreenCell {
-            cell.video = self.videoList.videos[indexPath.item]
-            cell.bounds = CGRect(x: 0, y: 0, width: collectionView.bounds.width, height: 1000)
-            
-            cell.setNeedsUpdateConstraints()
-            cell.updateConstraintsIfNeeded()
-            cell.setNeedsLayout()
-            cell.layoutIfNeeded()
-            
-            let height = cell.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
-            return CGSize(width: collectionView.bounds.width, height: height)
-        }
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
         
-        assert(false, "unable to size offscreen cell")
-        return CGSize.zero
+        containerView.addSubview(textActionView)
+        textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0))
+        
+        return containerView
     }
     
-// MARK: Refresh
+    func accessoryViewFrequency(forAdaptor adapter: MITVideoCollectionViewAdapter) -> Int
+    {
+        return 7
+    }
+    
+    // MARK: Refresh
     
     @objc private func refresh()
     {
@@ -126,7 +128,7 @@ class CommunityController: UIViewController, UICollectionViewDelegate, UICollect
             }
             
             self.spinner.stopAnimating()
-            self.collectionView?.reloadData()
+            self.adapter.videos = self.videoList.videos
         }
     }
 }

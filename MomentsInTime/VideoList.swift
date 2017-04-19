@@ -16,7 +16,7 @@ class VideoList
     
     func fetchCommunityVideos(completion: VideoListCompletion?)
     {
-        APIService().getVideosForCommunity { (videos, error) in
+        VimeoConnector().getVideosForCommunity { (videos, error) in
             
             guard error == nil else {
                 completion?(nil, error)
