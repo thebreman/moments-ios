@@ -8,20 +8,10 @@
 
 import UIKit
 
-private let _sectionTitles = ["Interviewing", "Description", "Video", "Notes"]
-
-class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource
+class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate
 {
     @IBOutlet weak var submitButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
-    
-//    enum NewMomentSection
-//    {
-//        case interviewing
-//        case description
-//        case video
-//        case notes
-//    }
     
     private struct Identifiers
     {
@@ -59,30 +49,31 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.tableView.dataSource = self
         self.tableView.contentInset.top = 10
         
+        //setup sectionHeaderViews:
         self.tableView.register(UINib(nibName: String(describing: MITSectionHeaderView.self), bundle: nil), forHeaderFooterViewReuseIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER)
         self.tableView.estimatedSectionHeaderHeight = 64
         self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         self.tableView.sectionFooterHeight = 0
         
+        //setup ActiveLinkCells:
         self.tableView.register(UINib(nibName: String(describing: ActiveLinkCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK)
+        
+        //setup NoteCells:
+        self.tableView.register(UINib(nibName: String(describing: MITNoteCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_NOTE)
+        
         self.tableView.estimatedRowHeight = 100
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        
-        self.tableView.register(UINib(nibName: String(describing: MITNoteCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_NOTE)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
     {
-        return _sectionTitles.count
+        return NewMomentSetting.titles.count
     }
-    
-    //rewrite this shit with switch statements and clean it up:
-    //try making an enum where the associated value is the string for the active label...
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
     {
         if let sectionHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER) as? MITSectionHeaderView {
-            sectionHeaderView.title = _sectionTitles[section]
+            sectionHeaderView.title = NewMomentSetting.titles[section]
             return sectionHeaderView
         }
         
@@ -90,53 +81,87 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         return MITSectionHeaderView()
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
-    {
-        return UITableViewAutomaticDimension
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if section == 3 {
-            return 5
+        //Notes section must have all the notes + the top Add a new note activeLinkCell:
+        if section == NewMomentSetting.notes.rawValue {
+            return NewMomentSetting.defaultNotes.count + 1
         }
-        else {
-            return 1
-        }
+        
+        //just 1 activeLinkCell for all other sections:
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        //notes section:
-        if indexPath.section == 3 {
+        switch indexPath.section {
             
-            //first cell is create new note link:
+        case NewMomentSetting.interviewing.rawValue, NewMomentSetting.description.rawValue, NewMomentSetting.video.rawValue:
+            
+            //activeLink cell:
+            guard let setting = NewMomentSetting(rawValue: indexPath.section) else {
+                assert(false, "indexPath section is unknown")
+                return UITableViewCell()
+            }
+            
+            return self.activeLinkCell(forSetting: setting, withTableView: tableView)
+
+            
+        case NewMomentSetting.notes.rawValue:
+            
+            //first cell is activeLink cell:
             if indexPath.row == 0 {
-                if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
-                    cell.activeLabel.text = "Add a new note"
-                    cell.detailDisclosureButton.isHidden = true
-                    return cell
+                
+                guard let setting = NewMomentSetting(rawValue: indexPath.section) else {
+                    assert(false, "indexPath section is unknown")
+                    return UITableViewCell()
                 }
                 
-                return ActiveLinkCell()
+                return self.activeLinkCell(forSetting: setting, withTableView: tableView)
             }
             
-            //note cells:
-            if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_NOTE) as? MITNoteCell {
-                cell.noteTextLabel.text = "This is a note about an interesting question that someone might want to ask when they are interviewing someone. There will be stock notes and user-created notes."
-                return cell
-            }
+            //the rest of the cells are note cells:
+            //but since cell at row 0 is not a note cell (activeLinkCell) we need to subtract 1 from the index:
+            let note = NewMomentSetting.defaultNotes[indexPath.row - 1]
+            return self.noteCell(forNote: note, withTableView: tableView)
             
-            return MITNoteCell()
+        default:
+            
+            assert(false, "indexPath section is unknown")
+            return UITableViewCell()
         }
-        
-        //active link cells for everything else:
+    }
+    
+    //MARK: ActiveLinkCellDelegate:
+    
+    func activeLinkCell(_ activeLinkCell: ActiveLinkCell, handleSelection selection: String)
+    {
+        print(selection)
+    }
+    
+    //MARK: Utilities:
+    func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell
+    {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
-            cell.activeLabel.text = "Select a special person to interview"
-            cell.detailDisclosureButton.isHidden = (indexPath.section == 2 ? false : true)
+            cell.activeLabel.text = setting.text
+            cell.activeLinks = setting.activeLinks
+            cell.detailDisclosureButton.isHidden = setting == .video ? false : true
+            cell.delegate = self
             return cell
         }
         
+        assert(false, "dequeued cell was of unknown type")
         return ActiveLinkCell()
+    }
+    
+    func noteCell(forNote note: Note, withTableView tableView: UITableView) -> MITNoteCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_NOTE) as? MITNoteCell {
+            cell.noteTextLabel.text = note.text
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return MITNoteCell()
     }
 }

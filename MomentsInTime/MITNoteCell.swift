@@ -26,4 +26,18 @@ class MITNoteCell: UITableViewCell
     {
         print("handle note options")
     }
+    
+    //MARK: Utilities:
+    
+    override func setSelected(_ selected: Bool, animated: Bool)
+    {
+        super.setSelected(selected, animated: animated)
+        selected ? self.touchDown() : self.touchUp()
+    }
+    
+    override func setHighlighted(_ highlighted: Bool, animated: Bool)
+    {
+        super.setHighlighted(highlighted, animated: animated)
+        highlighted ? self.touchDown() : self.touchUp()
+    }
 }

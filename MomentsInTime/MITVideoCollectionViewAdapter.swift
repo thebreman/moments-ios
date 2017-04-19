@@ -49,6 +49,8 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     //if it becomes necessary we could allow for an array of these views...
     private var bannerView: UIView?
     
+    var allowsEmptyStateScrolling = false
+    
     init(withCollectionView collectionView: UICollectionView, videos: [Video], emptyStateView: UIView, bannerView: UIView?, delegate: MITVideoCollectionViewAdapterDelegate?)
     {
         super.init()
@@ -146,7 +148,6 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
                     assert(false, "dequeued cell was of an unknown type!")
                     return UICollectionViewCell()
                 }
-                
             }
             
             //otherwise return a video cell:
@@ -204,6 +205,11 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView!
     {
         return self.emptyStateView
+    }
+    
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool
+    {
+        return self.allowsEmptyStateScrolling
     }
     
     //MARK: Utilities:

@@ -39,6 +39,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
                                                    emptyStateView: self.emptyStateView,
                                                    bannerView: nil,
                                                    delegate: self)
+        adapter.allowsEmptyStateScrolling = true
         return adapter
     }()
     
