@@ -26,7 +26,7 @@ protocol MITVideoCollectionViewAdapterDelegate: class
  */
 class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 {
-    private struct Identifiers
+    private enum Identifiers
     {
         static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
         static let IDENTIFIER_REUSE_CONTAINER_CELL = "containerCell"

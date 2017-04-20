@@ -33,7 +33,7 @@ enum NewMomentSetting: Int
             Note(withText: "This is where we can show question prompts, like the ones everyone will see by default"),
             Note(withText: "We will also allow users to create and edit their own notes in case they want to go freeform"),
             Note(withText: "This is a note about an interesting question that someone might want to ask when they are interviewing someone. There will be stock notes and user-created notes."),
-            Note(withText: "Anoter note, possibly user-created with some ideas for an interview. I am going to make this a long note because, hey, I can do whatever I want. I am the user and I am in control. I want to make sure that a longer note will still look right in this app too!")
+            Note(withText: "Another note, possibly user-created with some ideas for an interview. I am going to make this a long note because, hey, I can do whatever I want. I am the user and I am in control. I want to make sure that a longer note will still look right in this app too!")
         ]
         
         return notes
