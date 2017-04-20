@@ -22,6 +22,7 @@ class MITNoteCell: UITableViewCell
     }
     
     //MARK: Actions
+    
     @IBAction func handleOptions(_ sender: BouncingButton)
     {
         print("handle note options")

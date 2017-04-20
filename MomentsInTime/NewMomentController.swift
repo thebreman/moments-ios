@@ -130,21 +130,37 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, handleSelection selection: String)
     {
-        print(selection)
-        //am I allowed to know that the activeLink arrays are all of count 1
-        //except video which has Start Filming at index 1 and upload a video at index 2?
+        switch selection {
         
-        if selection == COPY_LINK_START_FILMING
-        {
-            // open camera
-        }
-        else if selection == COPY_LINK_UPLOAD_VIDEO
-        {
-            // open photo roll
-        }
-        else
-        {
-            //...
+        case COPY_SELECT_INTERVIEW_SUBJECT:
+            
+            print("select interview subject")
+            break
+            
+        case COPY_CREATE_DESCRIPTION:
+            
+            print("create description")
+            break
+            
+        case COPY_LINK_START_FILMING:
+            
+            //open camera
+            print("open camera")
+            break
+            
+        case COPY_LINK_UPLOAD_VIDEO:
+            
+            //open Photos roll
+            print("open Photos")
+            break
+            
+        case COPY_CREATE_NOTE:
+            
+            print("add note")
+            break
+            
+        default:
+            break
         }
     }
     
