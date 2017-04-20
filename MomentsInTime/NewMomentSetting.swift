@@ -8,6 +8,10 @@
 
 import Foundation
 
+private let COPY_CREATE_VIDEO = "Start filming or upload a video"
+let COPY_LINK_START_FILMING = "Start filming"
+let COPY_LINK_UPLOAD_VIDEO = "upload a video"
+
 enum NewMomentSetting: Int
 {
     case interviewing = 0
@@ -35,7 +39,7 @@ enum NewMomentSetting: Int
         switch self {
         case .interviewing: return "Select a special person to interview"
         case .description: return "Add a title and description"
-        case .video: return "Start filming or upload a video"
+        case .video: return COPY_CREATE_VIDEO
         case .notes: return "Add a new note"
         }
     }
@@ -44,7 +48,7 @@ enum NewMomentSetting: Int
         switch self {
         case .interviewing: return ["Select a special person to interview"]
         case .description: return ["Add a title and description"]
-        case .video: return ["Start filming", "upload a video"]
+        case .video: return [COPY_LINK_START_FILMING, COPY_LINK_UPLOAD_VIDEO]
         case .notes: return ["Add a new note"]
         }
     }

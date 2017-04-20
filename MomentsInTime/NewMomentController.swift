@@ -94,39 +94,33 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
+        //get NewMomentSetting for corresponding section:
+        guard let setting = NewMomentSetting(rawValue: indexPath.section) else {
+            assert(false, "indexPath section is unknown")
+            return UITableViewCell()
+        }
+        
         switch indexPath.section {
             
         case NewMomentSetting.interviewing.rawValue, NewMomentSetting.description.rawValue, NewMomentSetting.video.rawValue:
             
-            //activeLink cell:
-            guard let setting = NewMomentSetting(rawValue: indexPath.section) else {
-                assert(false, "indexPath section is unknown")
-                return UITableViewCell()
-            }
-            
+            //all activeLinkCells:
             return self.activeLinkCell(forSetting: setting, withTableView: tableView)
 
             
         case NewMomentSetting.notes.rawValue:
             
-            //first cell is activeLink cell:
+            //first cell is activeLinkCell:
             if indexPath.row == 0 {
-                
-                guard let setting = NewMomentSetting(rawValue: indexPath.section) else {
-                    assert(false, "indexPath section is unknown")
-                    return UITableViewCell()
-                }
-                
                 return self.activeLinkCell(forSetting: setting, withTableView: tableView)
             }
             
-            //the rest of the cells are note cells:
+            //the rest of the cells are MITNoteCells:
             //but since cell at row 0 is not a note cell (activeLinkCell) we need to subtract 1 from the index:
             let note = NewMomentSetting.defaultNotes[indexPath.row - 1]
             return self.noteCell(forNote: note, withTableView: tableView)
             
         default:
-            
             assert(false, "indexPath section is unknown")
             return UITableViewCell()
         }
@@ -137,6 +131,21 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, handleSelection selection: String)
     {
         print(selection)
+        //am I allowed to know that the activeLink arrays are all of count 1
+        //except video which has Start Filming at index 1 and upload a video at index 2?
+        
+        if selection == COPY_LINK_START_FILMING
+        {
+            // open camera
+        }
+        else if selection == COPY_LINK_UPLOAD_VIDEO
+        {
+            // open photo roll
+        }
+        else
+        {
+            //...
+        }
     }
     
     //MARK: Utilities:

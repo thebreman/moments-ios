@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DZNEmptyDataSet
 
 private let IDENTIFIER_SEGUE_NEW_MOMENT = "NewMoment"
 
