@@ -8,10 +8,13 @@
 
 import UIKit
 import PureLayout
+import AVKit
+import AVFoundation
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
+private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
-class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate
+class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterPlayerDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -40,6 +43,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
                                                    bannerView: nil,
                                                    delegate: self)
         adapter.allowsEmptyStateScrolling = true
+        adapter.playerDelegate = self
         return adapter
     }()
     
@@ -52,12 +56,35 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         self.fetchCommunityVideos()
     }
     
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        self.collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
         super.viewWillTransition(to: size, with: coordinator)
         
         if self.collectionView != nil {
             self.collectionView.collectionViewLayout.invalidateLayout()
+        }
+    }
+    
+    //for IDENTIFIER_SEGUE_PLAYER, sender will be the Video to play in AVPlayer:
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.identifier == IDENTIFIER_SEGUE_PLAYER && sender is Video {
+            
+            if let playerController = segue.destination.contentViewController as? AVPlayerViewController,
+                let video = sender as? Video,
+                let videoURLString = video.playbackURL,
+                let videoURL = URL(string: videoURLString) {
+                
+                playerController.title = video.name
+                playerController.player = AVPlayer(url: videoURL)
+                playerController.player?.play()
+            }
         }
     }
     
@@ -104,6 +131,20 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0))
         
         return containerView
+    }
+    
+    //MARK: MITVideoCollectionViewAdapterPlayerDelegate
+    
+    func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
+    {
+        video.fetchPlaybackURL { (_, error) in
+            
+            guard error == nil else {
+                return
+            }
+            
+            self.performSegue(withIdentifier: IDENTIFIER_SEGUE_PLAYER, sender: video)
+        }
     }
     
     func accessoryViewFrequency(forAdaptor adapter: MITVideoCollectionViewAdapter) -> Int

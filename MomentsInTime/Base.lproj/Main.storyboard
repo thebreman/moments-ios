@@ -64,11 +64,12 @@
                     <connections>
                         <outlet property="collectionView" destination="HFt-ze-xZN" id="OTK-jw-bap"/>
                         <outlet property="spinner" destination="SRf-yi-611" id="fRz-yw-ShW"/>
+                        <segue destination="e3s-4x-RTz" kind="show" identifier="myMomentsToPlayer" id="ibu-DI-7Ln"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gc6-67-h1v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2016.8" y="451.12443778110946"/>
+            <point key="canvasLocation" x="1849" y="866"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="HAh-Kw-glc">
@@ -89,7 +90,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yUS-Gr-Zeg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2890" y="450"/>
+            <point key="canvasLocation" x="2886" y="1246"/>
         </scene>
         <!--New Moment-->
         <scene sceneID="74a-UX-Qjj">
@@ -159,7 +160,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="di5-tN-qqt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3749.5999999999999" y="450.22488755622192"/>
+            <point key="canvasLocation" x="3780" y="1245"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="RGx-Nt-bJ5">
@@ -181,7 +182,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1kh-Qx-V3e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140" y="138.98050974512745"/>
+            <point key="canvasLocation" x="-26" y="397"/>
         </scene>
         <!--Community-->
         <scene sceneID="GZ3-ca-aEy">
@@ -191,9 +192,10 @@
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-4"/>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="cc5-Z0-P9x">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" backIndicatorImage=" " id="cc5-Z0-P9x">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
@@ -207,7 +209,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="i56-ym-nUe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1077.5999999999999" y="-262.21889055472263"/>
+            <point key="canvasLocation" x="948" y="-94"/>
         </scene>
         <!--Moments In Time-->
         <scene sceneID="IpB-re-JO2">
@@ -246,15 +248,28 @@
                             <constraint firstAttribute="trailing" secondItem="xzF-qz-0gc" secondAttribute="trailing" id="x6D-za-GOX"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Moments In Time" id="bgh-Mz-knt"/>
+                    <navigationItem key="navigationItem" title="Moments In Time" id="bgh-Mz-knt">
+                        <barButtonItem key="backBarButtonItem" title=" " id="tjD-3c-ynZ"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="xzF-qz-0gc" id="cQe-dJ-z14"/>
                         <outlet property="spinner" destination="OHd-NN-at6" id="qlZ-M5-WZ4"/>
+                        <segue destination="e3s-4x-RTz" kind="show" identifier="communityToPlayer" id="o7j-gd-ln6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fSe-db-Ixq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2017" y="-262"/>
+            <point key="canvasLocation" x="1849" y="-94"/>
+        </scene>
+        <!--Video Title-->
+        <scene sceneID="JvO-CQ-w4Y">
+            <objects>
+                <avPlayerViewController hidesBottomBarWhenPushed="YES" videoGravity="AVLayerVideoGravityResizeAspect" id="e3s-4x-RTz" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" title="Video Title" id="Qh3-kz-4is"/>
+                </avPlayerViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jMW-wF-Usa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2886" y="396"/>
         </scene>
         <!--My Moments-->
         <scene sceneID="Ikm-1t-fJW">
@@ -280,13 +295,17 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G9f-7I-qj2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1077.5999999999999" y="451.12443778110946"/>
+            <point key="canvasLocation" x="948" y="866"/>
         </scene>
     </scenes>
     <resources>
+        <image name=" " width="16" height="16"/>
         <image name="Community" width="24" height="18"/>
         <image name="MyMoments" width="21" height="20"/>
         <image name="PlusButton" width="28" height="28"/>
         <image name="cancel-1" width="45" height="45"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="o7j-gd-ln6"/>
+    </inferredMetricsTieBreakers>
 </document>

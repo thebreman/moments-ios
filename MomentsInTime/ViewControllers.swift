@@ -10,7 +10,7 @@ import UIKit
 
 extension UIViewController
 {
-    //add this var to UIViewController
+    //I like to use this in prepareForSegue, so we don't have to check if we are inside of a NavController:
     var contentViewController: UIViewController {
         if let navCon = self as? UINavigationController {
             return navCon.visibleViewController ?? self

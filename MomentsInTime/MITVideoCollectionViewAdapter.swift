@@ -19,12 +19,17 @@ protocol MITVideoCollectionViewAdapterDelegate: class
     func accessoryView(for adapter: MITVideoCollectionViewAdapter) -> UIView
 }
 
+protocol MITVideoCollectionViewAdapterPlayerDelegate: class
+{
+    func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
+}
+
 /**
  * Manages UICollectionViews throughout the app that display VideoCells...
  * The collectionViews are still responsible for loading and refreshing their content (VideoList),
  * but this class manages displaying the [Video].
  */
-class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VideoCellDelegate
 {
     private enum Identifiers
     {
@@ -35,6 +40,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     private var collectionView: UICollectionView!
     
     private weak var delegate: MITVideoCollectionViewAdapterDelegate?
+    weak var playerDelegate: MITVideoCollectionViewAdapterPlayerDelegate?
     
     var videos = [Video]() {
         didSet {
@@ -196,7 +202,14 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         return self.allowsEmptyStateScrolling
     }
     
-    //MARK: Utilities:
+    //MARK: VideoCellDelegate
+    
+    func videoCell(_ videoCell: VideoCell, playButtonWasTappedForVideo video: Video)
+    {
+        self.playerDelegate?.adapter(adapter: self, handlePlayForVideo: video)
+    }
+    
+    //MARK: Utilities
     
     private func configureData()
     {
@@ -235,6 +248,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_VIDEO_CELL, for: indexPath) as? VideoCell {
             cell.video = video
+            cell.delegate = self
             return cell
         }
         

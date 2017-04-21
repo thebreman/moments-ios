@@ -113,7 +113,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         //get NewMomentSetting for corresponding section:
         guard let setting = NewMomentSetting(rawValue: indexPath.section) else {
-            assert(false, "indexPath section is unknown")
+            assert(false, "NewMomentSetting invalid")
             return UITableViewCell()
         }
         
@@ -234,7 +234,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         pickerController.allowsEditing = true
         pickerController.delegate = self
         
-        //for photoLibrary sourceType, iPad must use popover (for camera it should be fullscreeen)
+        //for photoLibrary sourceType, iPad must use popover (for camera it should be fullscreeen).
         //on iPhone, default popover adapts to modal fullscreen automatically:
         pickerController.modalPresentationStyle = (sourceType == .camera ? .fullScreen : .popover)
         
@@ -333,7 +333,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
             cell.activeLabel.text = setting.text
             cell.activeLinks = setting.activeLinks
-            cell.detailDisclosureButton.isHidden = setting == .video ? false : true
+            cell.detailDisclosureButton.isHidden = (setting == .video ? false : true)
             cell.delegate = self
             return cell
         }

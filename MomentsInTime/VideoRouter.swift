@@ -9,7 +9,6 @@
 import Alamofire
 
 private let FILTER_VIDEOS_VALUE = "uri,name,description,link,pictures.sizes,status"
-private let FILTER_FEED_VALUE = "clip.uri,clip.name,clip.description,clip.link,clip.created_time,clip.pictures.sizes,clip.user.name,clip.user.pictures.sizes,clip.status"
 
 protocol VideoRouterCompliant
 {
@@ -21,6 +20,7 @@ enum VideoRouter: URLRequestConvertible
 {
     case all
     case create
+    case read(Video)
     case update(Video)
     case destroy(Video)
     
@@ -28,6 +28,7 @@ enum VideoRouter: URLRequestConvertible
         switch self {
         case .all: return .get
         case .create: return .post
+        case .read: return .get
         case .update: return .patch
         case .destroy: return .delete
         }
@@ -35,13 +36,13 @@ enum VideoRouter: URLRequestConvertible
     
     var path: String {
         switch self {
-        case .all: return "/me/feed"
+        case .all: return "/me/videos"
         case .create: return "/me/videos"
+        case .read(let video): return video.uri
         case .update(let video): return video.uri
         case .destroy: return ""
         }
     }
-    
     
 // MARK: URLRequestConvertible
     
@@ -59,7 +60,7 @@ enum VideoRouter: URLRequestConvertible
         //add any necessary params:
         switch self {
         case .all:
-            urlRequest = try URLEncoding.default.encode(urlRequest, with: ["fields": FILTER_FEED_VALUE])
+            urlRequest = try URLEncoding.default.encode(urlRequest, with: ["fields": FILTER_VIDEOS_VALUE])
             
         case .create:
             urlRequest = try URLEncoding.default.encode(urlRequest, with: ["type": "streaming"])

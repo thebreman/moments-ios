@@ -9,6 +9,7 @@
 import UIKit
 
 private let IDENTIFIER_SEGUE_NEW_MOMENT = "NewMoment"
+private let IDENTIFIER_SEGUE_PLAYER = "myMomentsToPlayer"
 
 class MyMomentsController: UIViewController
 {
@@ -50,6 +51,12 @@ class MyMomentsController: UIViewController
         //fetch videos here
         //for now just pass something so that adapter gets instantiated and returns the empty state view:
         self.adapter.videos = self.videoList.videos        
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
