@@ -19,6 +19,7 @@ protocol MITVideoCollectionViewAdapterDelegate: class
     func accessoryView(for adapter: MITVideoCollectionViewAdapter) -> UIView
 }
 
+//delegate to pass which video needs to be played after user taps playButton:
 protocol MITVideoCollectionViewAdapterPlayerDelegate: class
 {
     func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)

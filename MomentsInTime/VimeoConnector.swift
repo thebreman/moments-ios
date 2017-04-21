@@ -288,6 +288,7 @@ extension VimeoConnector
         var maxHeight = 0
         var urlString: String? = nil
         
+        //loop through each Video file and select the highest quality one based on height:
         for file in files {
             
             if let videoHeight = file["height"] as? Int {
@@ -299,6 +300,7 @@ extension VimeoConnector
             }
         }
         
+        print("selected video height: \(maxHeight)")
         return urlString
     }
 }
