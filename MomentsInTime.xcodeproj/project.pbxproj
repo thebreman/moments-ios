@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6804A0CC1EAAE70A0012193C /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6804A0CB1EAAE70A0012193C /* AVKit.framework */; };
 		680BE07B1E8E204000A5D339 /* VideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680BE07A1E8E204000A5D339 /* VideoCell.xib */; };
 		680BE07D1E8E20A200A5D339 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE07C1E8E20A200A5D339 /* VideoCell.swift */; };
 		680BE07F1E8E2C9500A5D339 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE07E1E8E2C9500A5D339 /* Views.swift */; };
@@ -67,6 +68,7 @@
 
 /* Begin PBXFileReference section */
 		5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MomentsInTime.release.xcconfig"; path = "Pods/Target Support Files/Pods-MomentsInTime/Pods-MomentsInTime.release.xcconfig"; sourceTree = "<group>"; };
+		6804A0CB1EAAE70A0012193C /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		680BE07A1E8E204000A5D339 /* VideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCell.xib; sourceTree = "<group>"; };
 		680BE07C1E8E20A200A5D339 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		680BE07E1E8E2C9500A5D339 /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6804A0CC1EAAE70A0012193C /* AVKit.framework in Frameworks */,
 				7CB5F5B1B5E790D27F010AAB /* Pods_MomentsInTime.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -255,6 +258,7 @@
 		6D550315684F2986E39AF5FD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6804A0CB1EAAE70A0012193C /* AVKit.framework */,
 				97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */,
 			);
 			name = Frameworks;

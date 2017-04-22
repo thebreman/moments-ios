@@ -64,7 +64,7 @@
                     <connections>
                         <outlet property="collectionView" destination="HFt-ze-xZN" id="OTK-jw-bap"/>
                         <outlet property="spinner" destination="SRf-yi-611" id="fRz-yw-ShW"/>
-                        <segue destination="e3s-4x-RTz" kind="show" identifier="myMomentsToPlayer" id="ibu-DI-7Ln"/>
+                        <segue destination="e3s-4x-RTz" kind="presentation" identifier="myMomentsToPlayer" modalPresentationStyle="fullScreen" id="ibu-DI-7Ln"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gc6-67-h1v" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -192,7 +192,7 @@
                         <offsetWrapper key="titlePositionAdjustment" horizontal="0.0" vertical="-4"/>
                     </tabBarItem>
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="cc5-Z0-P9x">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="cc5-Z0-P9x">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -254,19 +254,17 @@
                     <connections>
                         <outlet property="collectionView" destination="xzF-qz-0gc" id="cQe-dJ-z14"/>
                         <outlet property="spinner" destination="OHd-NN-at6" id="qlZ-M5-WZ4"/>
-                        <segue destination="e3s-4x-RTz" kind="show" identifier="communityToPlayer" id="o7j-gd-ln6"/>
+                        <segue destination="e3s-4x-RTz" kind="presentation" identifier="communityToPlayer" modalPresentationStyle="fullScreen" id="o7j-gd-ln6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fSe-db-Ixq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1849" y="-94"/>
         </scene>
-        <!--Video Title-->
+        <!--AV Player View Controller-->
         <scene sceneID="JvO-CQ-w4Y">
             <objects>
-                <avPlayerViewController hidesBottomBarWhenPushed="YES" videoGravity="AVLayerVideoGravityResizeAspect" id="e3s-4x-RTz" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" title="Video Title" id="Qh3-kz-4is"/>
-                </avPlayerViewController>
+                <avPlayerViewController hidesBottomBarWhenPushed="YES" videoGravity="AVLayerVideoGravityResizeAspect" id="e3s-4x-RTz" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jMW-wF-Usa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2886" y="396"/>
@@ -306,6 +304,6 @@
         <image name="cancel-1" width="45" height="45"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="o7j-gd-ln6"/>
+        <segue reference="ibu-DI-7Ln"/>
     </inferredMetricsTieBreakers>
 </document>

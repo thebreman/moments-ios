@@ -71,17 +71,12 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         }
     }
     
-    //for IDENTIFIER_SEGUE_PLAYER, sender will be the Video to play in AVPlayer:
+    //for IDENTIFIER_SEGUE_PLAYER, sender will be the videoURL to pass to AVPlayer:
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-        if segue.identifier == IDENTIFIER_SEGUE_PLAYER && sender is Video {
+        if segue.identifier == IDENTIFIER_SEGUE_PLAYER && sender is URL {
             
-            if let playerController = segue.destination.contentViewController as? AVPlayerViewController,
-                let video = sender as? Video,
-                let videoURLString = video.playbackURL,
-                let videoURL = URL(string: videoURLString) {
-                
-                playerController.title = video.name
+            if let playerController = segue.destination.contentViewController as? AVPlayerViewController, let videoURL = sender as? URL {
                 playerController.player = AVPlayer(url: videoURL)
                 playerController.player?.play()
             }
@@ -137,13 +132,15 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     
     func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
     {
-        video.fetchPlaybackURL { (_, error) in
+        video.fetchPlaybackURL { (urlString, error) in
             
             guard error == nil else {
                 return
             }
             
-            self.performSegue(withIdentifier: IDENTIFIER_SEGUE_PLAYER, sender: video)
+            if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
+                self.performSegue(withIdentifier: IDENTIFIER_SEGUE_PLAYER, sender: videoURL)
+            }
         }
     }
     
