@@ -51,14 +51,14 @@ extension UIAlertController
     {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        if okButton {
-            alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-        }
-        
         if settingsButton {
             alertController.addAction(UIAlertAction(title: "Settings", style: .default, handler: { action in
                 UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!, options: [:], completionHandler: nil)
             }))
+        }
+        
+        if okButton {
+            alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         }
         
         presenter.present(alertController, animated: true, completion: nil)

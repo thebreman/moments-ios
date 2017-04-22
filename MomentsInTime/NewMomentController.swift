@@ -186,23 +186,23 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         let sourceType = UIImagePickerControllerSourceType.camera
         let mediaType = kUTTypeMovie as String
-
-        //check for camera/ microphone permission,
-        //if .notAuthorized alert user and send them to Settings:
-        guard self.videoAuthorizationStatus == .authorized && self.audioAuthorizationStatus == .authorized else {
-            UIAlertController.alertUser(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_DENIED_CAMERA_ACCESS_MESSAGE, okButton: false, settingsButton: true)
-            return
-        }
         
-        //check that we have a camera that can record video:
+        //check that we have a camera that can record video and verify mediaType:
         guard UIImagePickerController.isSourceTypeAvailable(sourceType),
             let mediaTypes = UIImagePickerController.availableMediaTypes(for: sourceType),
             mediaTypes.contains(mediaType) else {
-            UIAlertController.explain(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_CAMERA_UNAVAILABLE_MESSAGE)
-            return
+                UIAlertController.explain(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_CAMERA_UNAVAILABLE_MESSAGE)
+                return
         }
         
-        self.showImagePicker(forSourceType: sourceType, mediaTypes: [mediaType], fromView: sender)
+        AVCaptureDevice.verifyVideoAndAudioAuthorization(authorizedHandler: {
+            
+            self.showImagePicker(forSourceType: sourceType, mediaTypes: [mediaType], fromView: sender)
+            
+        }, notAuthorizedHandler: {
+            
+            UIAlertController.alertUser(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_DENIED_CAMERA_ACCESS_MESSAGE, okButton: true, settingsButton: true)
+        })
     }
     
     private func openPhotos(fromView sender: UIView)
@@ -210,20 +210,21 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         let sourceType = UIImagePickerControllerSourceType.photoLibrary
         let mediaType = kUTTypeMovie as String
         
-        //check photolibrary permission:
-        //if .notAuthorized alert user and send them to Settings:
-        guard self.photoLibraryAuthorizationStatus == .authorized else {
-            UIAlertController.alertUser(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: false, settingsButton: true)
-            return
-        }
-        
         //verify mediaType:
         guard let mediaTypes = UIImagePickerController.availableMediaTypes(for: sourceType), mediaTypes.contains(mediaType) else {
             UIAlertController.explain(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_VIDEO_MEDIA_TYPE_UNAVAILABLE_PHOTO_LIBRARY_MESSAGE)
             return
         }
         
-        self.showImagePicker(forSourceType: .photoLibrary, mediaTypes: [mediaType], fromView: sender)
+        //verify Photo Library authorization and proceed accordingly:
+        PHPhotoLibrary.verifyAuthorization(authorizedHandler: {
+            
+            self.showImagePicker(forSourceType: .photoLibrary, mediaTypes: [mediaType], fromView: sender)
+
+        }, notAuthorizedHandler: {
+            
+            UIAlertController.alertUser(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: true, settingsButton: true)
+        })
     }
     
     private func showImagePicker(forSourceType sourceType: UIImagePickerControllerSourceType, mediaTypes: [String], fromView sender: UIView)
@@ -244,88 +245,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         presentationController?.permittedArrowDirections = [.left]
         
         self.present(pickerController, animated: true, completion: nil)
-    }
-    
-    private enum MediaAuthorizationResult {
-        case authorized
-        case notAuthorized
-    }
-    
-    private var videoAuthorizationStatus: MediaAuthorizationResult {
-        
-        var status: MediaAuthorizationResult = .authorized
-        
-        switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
-            
-        case .authorized:
-            status = .authorized
-            
-        case .notDetermined:
-            
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo) { granted in
-                
-                if !granted {
-                    status = .notAuthorized
-                }
-                status = .authorized
-            }
-            
-        default:
-            status = .notAuthorized
-        }
-        
-        return status
-    }
-    
-    private var audioAuthorizationStatus: MediaAuthorizationResult {
-        
-        var status: MediaAuthorizationResult = .authorized
-        
-        switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeAudio) {
-            
-        case .authorized:
-            status = .authorized
-            
-        case .notDetermined:
-            
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeAudio) { granted in
-                
-                if !granted {
-                    status = .notAuthorized
-                }
-                status = .authorized
-            }
-            
-        default:
-            status = .notAuthorized
-        }
-        
-        return status
-    }
-    
-    private var photoLibraryAuthorizationStatus: MediaAuthorizationResult {
-        
-        var status: MediaAuthorizationResult = .authorized
-        
-        switch PHPhotoLibrary.authorizationStatus() {
-        
-        case .authorized:
-            status = .authorized
-            
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization { authorizationStatus in
-                
-                if authorizationStatus != .authorized {
-                    status = .notAuthorized
-                }
-                status = .authorized
-            }
-            
-        default:
-            status = .notAuthorized
-        }
-        
-        return status
     }
     
     private func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell
