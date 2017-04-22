@@ -9,7 +9,8 @@
 import Alamofire
 
 private let ACCESS_TOKEN_KEY = "Authorization"
-private let ACCESS_TOKEN_VALUE = "Bearer aa145c1d9bb318d4ef2a459c732503bc"
+private let ACCESS_TOKEN_VALUE_STAGING = "Bearer aa145c1d9bb318d4ef2a459c732503bc"
+private let ACESS_TOKEN_VALUE_PRODUCTION = "Bearer d63a52e30fff72f2fd868dfed35b318c"
 
 private let HOST = "https://api.vimeo.com"
 
@@ -19,14 +20,14 @@ private let VERSION_ACCEPT_HEADER_VALUE = "application/vnd.vimeo.*+json;version=
 
 typealias BooleanResponseClosure = (_ success: Bool, _ error: Error?) -> Void
 typealias UploadProgressClosure = (_ fractionCompleted: Double) -> Void
-typealias UploadCompletionHandler = (String?, Error?) -> Void
+typealias StringCompletionHandler = (String?, Error?) -> Void
 typealias VideoCompletion = ([Video]?, Error?) -> Void
 
 class VimeoConnector: NSObject
 {
     static let baseAPIEndpoint: String = HOST
     static let accessTokenKey: String = ACCESS_TOKEN_KEY
-    static let accessTokenValue: String = ACCESS_TOKEN_VALUE
+    static let accessTokenValue: String = ACESS_TOKEN_VALUE_PRODUCTION
     static let versionAPIHeaderValue: String = VERSION_ACCEPT_HEADER_VALUE
     static let versionAPIHeaderKey: String = VERSION_ACCEPT_HEADER_KEY
     
@@ -45,8 +46,9 @@ class VimeoConnector: NSObject
             if let result = response as? [String: Any], let data = result["data"] as? [[String: Any]] {
                 
                 let videos = self.videos(fromData: data)
+                
                 if videos.count == 0 {
-                    print("No videos made it through something probably went wrong.")
+                    print("No videos made it through - something probably went wrong.")
                 }
                 
                 completion(videos, nil)
@@ -60,9 +62,36 @@ class VimeoConnector: NSObject
     }
     
     /**
-     * Upon successful upload, the uri of the new video will be passed along in the completion handler
+     * Fetches playback urlString for specified Video, urlString passed along in the completion handler:
+     * AuthToken must be for a Pro Account in order for the response to contain the correct fields...
      */
-    func create(video: Video, uploadProgress: @escaping UploadProgressClosure, completion: @escaping UploadCompletionHandler)
+    func getPlaybackURL(forVideo video: Video, completion: @escaping StringCompletionHandler)
+    {
+        self.request(router: VideoRouter.read(video)) { (response, error) in
+            
+            guard error == nil else {
+                completion(nil, error)
+                return
+            }
+            
+            if let result = response as? [String: Any], let files = result["files"] as? [[String: Any]] {
+                
+                if let playbackURLString = self.playbackURLString(fromFiles: files) {
+                    completion(playbackURLString, nil)
+                    return
+                }
+            }
+            
+            //catch all parsing errors:
+            let error = NSError(domain: "VimeoConnector.getVideosForCommunity:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
+            completion(nil, error)
+        }
+    }
+    
+    /**
+     * Upon successful upload, the uri of the new video will be passed along in the completion handler:
+     */
+    func create(video: Video, uploadProgress: @escaping UploadProgressClosure, completion: @escaping StringCompletionHandler)
     {
         self.request(router: VideoRouter.create) { (response, error) in
             
@@ -102,7 +131,7 @@ class VimeoConnector: NSObject
      * We can only rely on the session delegate callbacks/ closures, and we can just pass along the upload completion handler
      * until the very end of the process, then call it...
      */
-    private func upload(video: Video, router: URLRequestConvertible, uploadProgress: @escaping UploadProgressClosure, uploadCompletion: @escaping UploadCompletionHandler)
+    private func upload(video: Video, router: URLRequestConvertible, uploadProgress: @escaping UploadProgressClosure, uploadCompletion: @escaping StringCompletionHandler)
     {
         //Create video file url:
         guard let localURL = video.localURL, let uploadURL = URL(string: localURL) else {
@@ -148,7 +177,7 @@ class VimeoConnector: NSObject
      * This works great b/c the response will be saved temporarily to disk, we can inspect/ grab the location header,
      * and add the video metadata, completing the upload flow...
      */
-    private func completeUpload(video: Video, router: URLRequestConvertible, uploadCompletion: @escaping UploadCompletionHandler)
+    private func completeUpload(video: Video, router: URLRequestConvertible, uploadCompletion: @escaping StringCompletionHandler)
     {
         //configure delegate callbacks for the SessionManager:
         BackgroundUploadCompleteSessionManager.shared.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
@@ -184,7 +213,7 @@ class VimeoConnector: NSObject
      * again we will use a download task for this request so we can remain background compatable.
      * we can inspect/ parse the JSON newly uploaded Video object response in downloadTaskDidFinishDownloadingToURL:
      */
-    private func addMetadata(for video: Video, uploadCompletion: @escaping UploadCompletionHandler)
+    private func addMetadata(for video: Video, uploadCompletion: @escaping StringCompletionHandler)
     {
         //configure delegate callbacks for the SessionManager:
         BackgroundUploadVideoMetadataSessionManager.shared.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
@@ -237,21 +266,42 @@ class VimeoConnector: NSObject
 }
 
 /**
- * Extension for Video parsing
+ * Extension for Parsing:
  */
 extension VimeoConnector
 {
-    func videos(fromData data: [[String: Any]]) -> [Video]
+    fileprivate func videos(fromData data: [[String: Any]]) -> [Video]
     {
         var videos = [Video]()
         
         for videoObject in data {
-            if let clip = videoObject["clip"] as? [String: Any], let video = Video.from(parameters: clip) {
+            if let video = Video.from(parameters: videoObject) {
                 videos.append(video)
             }
         }
         
         return videos
+    }
+    
+    fileprivate func playbackURLString(fromFiles files: [[String: Any]]) -> String?
+    {
+        var maxHeight = 0
+        var urlString: String? = nil
+        
+        //loop through each Video file and select the highest quality one based on height:
+        for file in files {
+            
+            if let videoHeight = file["height"] as? Int {
+                
+                if videoHeight > maxHeight {
+                    maxHeight = videoHeight
+                    urlString = file["link_secure"] as? String
+                }
+            }
+        }
+        
+        print("selected video height: \(maxHeight)")
+        return urlString
     }
 }
 

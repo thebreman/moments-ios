@@ -1,4 +1,5 @@
 PODS:
+  - ActiveLabel (0.7.1)
   - Alamofire (4.4.0)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
@@ -32,6 +33,7 @@ PODS:
   - SDWebImage/Core (4.0.0)
 
 DEPENDENCIES:
+  - ActiveLabel
   - Alamofire
   - DZNEmptyDataSet
   - FacebookCore
@@ -41,6 +43,7 @@ DEPENDENCIES:
   - SDWebImage
 
 SPEC CHECKSUMS:
+  ActiveLabel: 68625f22775f51c31bb691ca8de20f1e5a3bc825
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
@@ -53,6 +56,6 @@ SPEC CHECKSUMS:
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
 
-PODFILE CHECKSUM: 0993caa0b10ac4076ce4bcc25f5a8fa4b7ebea2e
+PODFILE CHECKSUM: b6f485a15a5c05382239ba780a0778351681512b
 
 COCOAPODS: 1.2.0.beta.1

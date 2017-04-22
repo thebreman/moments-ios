@@ -9,6 +9,9 @@
 import UIKit
 import DZNEmptyDataSet
 
+private let SECTION_BANNER_TOP = 0
+private let SECTION_VIDEO_FEED = 1
+
 //delegate for optional accessoryView to be displayed every nth cell (n is frequency):
 protocol MITVideoCollectionViewAdapterDelegate: class
 {
@@ -16,14 +19,20 @@ protocol MITVideoCollectionViewAdapterDelegate: class
     func accessoryView(for adapter: MITVideoCollectionViewAdapter) -> UIView
 }
 
+//delegate to pass which video needs to be played after user taps playButton:
+protocol MITVideoCollectionViewAdapterPlayerDelegate: class
+{
+    func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
+}
+
 /**
  * Manages UICollectionViews throughout the app that display VideoCells...
  * The collectionViews are still responsible for loading and refreshing their content (VideoList),
  * but this class manages displaying the [Video].
  */
-class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VideoCellDelegate
 {
-    private struct Identifiers
+    private enum Identifiers
     {
         static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
         static let IDENTIFIER_REUSE_CONTAINER_CELL = "containerCell"
@@ -32,6 +41,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     private var collectionView: UICollectionView!
     
     private weak var delegate: MITVideoCollectionViewAdapterDelegate?
+    weak var playerDelegate: MITVideoCollectionViewAdapterPlayerDelegate?
     
     var videos = [Video]() {
         didSet {
@@ -48,6 +58,8 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     //good for announcements, ads etc.
     //if it becomes necessary we could allow for an array of these views...
     private var bannerView: UIView?
+    
+    var allowsEmptyStateScrolling = false
     
     init(withCollectionView collectionView: UICollectionView, videos: [Video], emptyStateView: UIView, bannerView: UIView?, delegate: MITVideoCollectionViewAdapterDelegate?)
     {
@@ -86,12 +98,11 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     {
         switch section {
             
-        case 0:
+        case SECTION_BANNER_TOP:
             
-            let itemCount = self.bannerView != nil ? 1 : 0
-            return itemCount
+            return self.bannerView != nil ? 1 : 0
         
-        case 1:
+        case SECTION_VIDEO_FEED:
             
             if let data = self.videosAndAccessoryViews {
                 return data.count
@@ -110,53 +121,33 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     {
         switch indexPath.section {
         
-        case 0:
+        case SECTION_BANNER_TOP:
             
-            if let bannerView = self.bannerView,
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL, for: indexPath) as? ContainerCell {
-                cell.containedView = bannerView
-                return cell
+            if let bannerView = self.bannerView {
+                
+                return self.containerCell(forView: bannerView, atIndexPath: indexPath, withCollectionView: collectionView)
             }
             
-            assert(false, "dequeued cell was of an unknown type!")
-            return ContainerCell()
+            return UICollectionViewCell()
         
-        case 1:
+        case SECTION_VIDEO_FEED:
             
             //check if we have videos and accessoryViews, then return the appropriate cell:
             if let data = self.videosAndAccessoryViews {
                 
                 if let video = data[indexPath.item] as? Video {
                     
-                    if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_VIDEO_CELL, for: indexPath) as? VideoCell {
-                        cell.video = video
-                        return cell
-                    }
-                    
-                    assert(false, "dequeued cell was of an unknown type!")
-                    return UICollectionViewCell()
+                    return self.videoCell(forVideo: video, atIndexPath: indexPath, withCollectionView: collectionView)
                 }
                 else if let accessoryView = data[indexPath.item] as? UIView {
                     
-                    if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL, for: indexPath) as? ContainerCell {
-                        cell.containedView = accessoryView
-                        return cell
-                    }
-                    
-                    assert(false, "dequeued cell was of an unknown type!")
-                    return UICollectionViewCell()
+                    return self.containerCell(forView: accessoryView, atIndexPath: indexPath, withCollectionView: collectionView)
                 }
-                
             }
             
             //otherwise return a video cell:
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_VIDEO_CELL, for: indexPath) as? VideoCell {
-                cell.video = self.videos[indexPath.item]
-                return cell
-            }
-            
-            assert(false, "dequeued cell was of an unknown type!")
-            return UICollectionViewCell()
+            let video = self.videos[indexPath.item]
+            return self.videoCell(forVideo: video, atIndexPath: indexPath, withCollectionView: collectionView)
         
         default:
             
@@ -169,15 +160,16 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     {        
         switch indexPath.section {
         
-        case 0:
+        case SECTION_BANNER_TOP:
             
             if let viewToDisplay = self.bannerView {
                 let size = ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: viewToDisplay)
                 return size
             }
+            
             return .zero
         
-        case 1:
+        case SECTION_VIDEO_FEED:
             
             if let data = self.videosAndAccessoryViews {
                 
@@ -206,16 +198,31 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         return self.emptyStateView
     }
     
-    //MARK: Utilities:
+    func emptyDataSetShouldAllowScroll(_ scrollView: UIScrollView!) -> Bool
+    {
+        return self.allowsEmptyStateScrolling
+    }
+    
+    //MARK: VideoCellDelegate
+    
+    func videoCell(_ videoCell: VideoCell, playButtonWasTappedForVideo video: Video)
+    {
+        self.playerDelegate?.adapter(adapter: self, handlePlayForVideo: video)
+    }
+    
+    //MARK: Utilities
     
     private func configureData()
     {
+        //instantiate array to hold both videos and accessoryViews:
         self.videosAndAccessoryViews = [Any]()
         
         if let dataDelegate = self.delegate {
             
             let frequency = dataDelegate.accessoryViewFrequency(forAdaptor: self)
             
+            //Go through self.videos, moving each object 1 by 1 into self.videosAndAccessoryViews,
+            //append an accessoryView every nth index (n being frequency):
             for (index, video) in videos.enumerated() {
                 
                 self.videosAndAccessoryViews?.append(video)
@@ -225,6 +232,29 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
                 }
             }
         }
+    }
+    
+    private func containerCell(forView view: UIView, atIndexPath indexPath: IndexPath, withCollectionView: UICollectionView) -> ContainerCell
+    {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL, for: indexPath) as? ContainerCell {
+            cell.containedView = view
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of an unknown type!")
+        return ContainerCell()
+    }
+    
+    private func videoCell(forVideo video: Video, atIndexPath indexPath: IndexPath,  withCollectionView: UICollectionView) -> VideoCell
+    {
+        if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_VIDEO_CELL, for: indexPath) as? VideoCell {
+            cell.video = video
+            cell.delegate = self
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of an unknown type!")
+        return VideoCell()
     }
 }
 

@@ -10,9 +10,13 @@ import UIKit
 import PureLayout
 
 private let SPACING_TITLE_SUBTITLE: CGFloat = 2.0
-
 private let _sizingCell = Bundle.main.loadNibNamed(String(describing: VideoCell.self), owner: nil, options: nil)?.first
 private var _sizingWidth = NSLayoutConstraint()
+
+protocol VideoCellDelegate: class
+{
+    func videoCell(_ videoCell: VideoCell, playButtonWasTappedForVideo video: Video)
+}
 
 class VideoCell: UICollectionViewCell
 {
@@ -22,12 +26,13 @@ class VideoCell: UICollectionViewCell
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var subtitleTopContraint: NSLayoutConstraint!
 
-    
     var video: Video? {
         didSet {
             self.updateUI()
         }
     }
+    
+    weak var delegate: VideoCellDelegate?
     
     class func sizeForVideo(_ video: Video, width: CGFloat) -> CGSize
     {
@@ -92,12 +97,10 @@ class VideoCell: UICollectionViewCell
 
 // MARK: Actions
     
-    //might want to have this call a method, so that we could have the thumbnailImageView
-    //recognize touches and call the same method. This way user can tap play or the image to play the video
     @IBAction func handlePlay(_ sender: UIButton)
     {
-        if let videoTitle = self.titleLabel.text {
-            print("play: \(videoTitle)")
+        if let video = self.video {
+            self.delegate?.videoCell(self, playButtonWasTappedForVideo: video)
         }
     }
     

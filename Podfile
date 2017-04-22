@@ -9,4 +9,5 @@ pod 'FacebookCore'
 pod 'FacebookLogin'
 pod 'FacebookShare'
 pod 'DZNEmptyDataSet'
+pod 'ActiveLabel'
 end

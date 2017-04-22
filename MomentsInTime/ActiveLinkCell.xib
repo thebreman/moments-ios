@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="activeLink" rowHeight="69" id="xPk-3G-YZH" customClass="ActiveLinkCell" customModule="MomentsInTime" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="429" height="69"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xPk-3G-YZH" id="Yjc-aW-qsE">
+                <rect key="frame" x="0.0" y="0.0" width="429" height="68.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="600" text="Select Something with this link" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DHY-gs-XnJ" customClass="ActiveLabel" customModule="ActiveLabel">
+                        <rect key="frame" x="16" y="10" width="235" height="44.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="highlightedColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="detailDisclosure" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZBy-Xp-KwX" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                        <rect key="frame" x="263" y="20.5" width="22" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="22" id="7rk-sY-1jt"/>
+                            <constraint firstAttribute="height" constant="22" id="BP9-yp-giF"/>
+                        </constraints>
+                        <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    </button>
+                </subviews>
+                <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="DHY-gs-XnJ" firstAttribute="top" secondItem="Yjc-aW-qsE" secondAttribute="topMargin" constant="2" id="6dz-o3-z5d"/>
+                    <constraint firstItem="DHY-gs-XnJ" firstAttribute="leading" secondItem="Yjc-aW-qsE" secondAttribute="leadingMargin" constant="8" id="WL3-Hs-Zfw"/>
+                    <constraint firstItem="ZBy-Xp-KwX" firstAttribute="centerY" secondItem="DHY-gs-XnJ" secondAttribute="centerY" id="azq-pq-n52"/>
+                    <constraint firstItem="ZBy-Xp-KwX" firstAttribute="leading" secondItem="DHY-gs-XnJ" secondAttribute="trailing" constant="12" id="fex-xX-y2u"/>
+                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="ZBy-Xp-KwX" secondAttribute="trailing" constant="8" id="g2n-Ii-0Dt"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="DHY-gs-XnJ" secondAttribute="bottom" constant="6" id="kYc-5W-Ru3"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <connections>
+                <outlet property="activeLabel" destination="DHY-gs-XnJ" id="JOb-gc-smF"/>
+                <outlet property="detailDisclosureButton" destination="ZBy-Xp-KwX" id="SYN-qb-bGd"/>
+            </connections>
+            <point key="canvasLocation" x="58.5" y="17.5"/>
+        </tableViewCell>
+    </objects>
+</document>

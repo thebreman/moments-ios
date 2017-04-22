@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="note" rowHeight="144" id="rTe-5u-wa1" customClass="MITNoteCell" customModule="MomentsInTime" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="144"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rTe-5u-wa1" id="f21-10-uzZ">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="143.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U48-9b-WAc">
+                        <rect key="frame" x="12" y="6" width="351" height="131.5"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7DA-Dq-yu0">
+                                <rect key="frame" x="12" y="12" width="327" height="95.5"/>
+                                <string key="text">This is a note about an interesting question that someone might want to ask when they are interviewing someone. There will be stock notes and user-created notes. Just a few more words!</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3IV-4j-vz4" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="305" y="115.5" width="38" height="12"/>
+                                <state key="normal" image="Options"/>
+                                <connections>
+                                    <action selector="handleOptions:" destination="rTe-5u-wa1" eventType="touchUpInside" id="VIA-hw-4zg"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="3IV-4j-vz4" secondAttribute="trailing" constant="8" id="4en-f6-JkS"/>
+                            <constraint firstItem="7DA-Dq-yu0" firstAttribute="top" secondItem="U48-9b-WAc" secondAttribute="top" constant="12" id="5o9-jw-jE5"/>
+                            <constraint firstItem="3IV-4j-vz4" firstAttribute="top" secondItem="7DA-Dq-yu0" secondAttribute="bottom" constant="8" id="9zX-eN-y8l"/>
+                            <constraint firstAttribute="trailing" secondItem="7DA-Dq-yu0" secondAttribute="trailing" constant="12" id="WsB-0X-ckK"/>
+                            <constraint firstItem="7DA-Dq-yu0" firstAttribute="leading" secondItem="U48-9b-WAc" secondAttribute="leading" constant="12" id="dmG-yC-brc"/>
+                            <constraint firstAttribute="bottom" secondItem="3IV-4j-vz4" secondAttribute="bottom" constant="4" id="pCm-N7-7u4"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstItem="U48-9b-WAc" firstAttribute="leading" secondItem="f21-10-uzZ" secondAttribute="leading" constant="12" id="1oO-gW-kLO"/>
+                    <constraint firstAttribute="trailing" secondItem="U48-9b-WAc" secondAttribute="trailing" constant="12" id="4kc-un-FsQ"/>
+                    <constraint firstItem="U48-9b-WAc" firstAttribute="top" secondItem="f21-10-uzZ" secondAttribute="top" constant="6" id="Nu9-lt-Y2q"/>
+                    <constraint firstAttribute="bottom" secondItem="U48-9b-WAc" secondAttribute="bottom" constant="6" id="oYW-c3-ZsN"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="containerView" destination="U48-9b-WAc" id="vdB-Cx-g8n"/>
+                <outlet property="noteTextLabel" destination="7DA-Dq-yu0" id="BZv-cZ-yT6"/>
+            </connections>
+            <point key="canvasLocation" x="12.5" y="28"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Options" width="38" height="9"/>
+    </resources>
+</document>
