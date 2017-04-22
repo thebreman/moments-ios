@@ -37,6 +37,7 @@
 		688E5D0D1EA74A2C00BF258F /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E5D0C1EA74A2C00BF258F /* Note.swift */; };
 		688E5D0F1EA883BA00BF258F /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E5D0E1EA883BA00BF258F /* Alerts.swift */; };
 		68C0682A1EA0924B0037D4A3 /* NewMomentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C068291EA0924B0037D4A3 /* NewMomentController.swift */; };
+		68C5D6711EAB3AB100BD2AB4 /* FetchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C5D6701EAB3AB100BD2AB4 /* FetchView.swift */; };
 		68E580591EA37504002E8C6A /* TextActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E580581EA37504002E8C6A /* TextActionView.swift */; };
 		68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FED1E824DE100C1B320 /* Fonts.swift */; };
 		68EB8FF01E824E2800C1B320 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FEF1E824E2800C1B320 /* Colors.swift */; };
@@ -99,6 +100,7 @@
 		688E5D0C1EA74A2C00BF258F /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		688E5D0E1EA883BA00BF258F /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
 		68C068291EA0924B0037D4A3 /* NewMomentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMomentController.swift; sourceTree = "<group>"; };
+		68C5D6701EAB3AB100BD2AB4 /* FetchView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchView.swift; sourceTree = "<group>"; };
 		68E580581EA37504002E8C6A /* TextActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextActionView.swift; sourceTree = "<group>"; };
 		68EB8FED1E824DE100C1B320 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		68EB8FEF1E824E2800C1B320 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				6825E1361EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift */,
 				68E580581EA37504002E8C6A /* TextActionView.swift */,
 				6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */,
+				68C5D6701EAB3AB100BD2AB4 /* FetchView.swift */,
 			);
 			name = Components;
 			sourceTree = "<group>";
@@ -550,6 +553,7 @@
 				68C0682A1EA0924B0037D4A3 /* NewMomentController.swift in Sources */,
 				687145A81EA082C800773E1F /* Delay.swift in Sources */,
 				680BE08D1E8E2FE700A5D339 /* BouncingButton.swift in Sources */,
+				68C5D6711EAB3AB100BD2AB4 /* FetchView.swift in Sources */,
 				680BE0841E8E2D7200A5D339 /* Video.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

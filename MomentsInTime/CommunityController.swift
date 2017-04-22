@@ -14,7 +14,7 @@ import AVFoundation
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
-class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterPlayerDelegate
+class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterPlayerDelegate, MITVideoCollectionViewAdapterInfiniteScrollDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -44,6 +44,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
                                                    delegate: self)
         adapter.allowsEmptyStateScrolling = true
         adapter.playerDelegate = self
+        adapter.infiniteScrollDelegate = self
         return adapter
     }()
     
@@ -111,6 +112,11 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     
     //MARK: MITVideoCollectionViewAdapterDelegate
     
+    func accessoryViewFrequency(forAdaptor adapter: MITVideoCollectionViewAdapter) -> Int
+    {
+        return 7
+    }
+    
     func accessoryView(for adapter: MITVideoCollectionViewAdapter) -> UIView
     {
         let textActionView = MITTextActionView()
@@ -144,9 +150,28 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         }
     }
     
-    func accessoryViewFrequency(forAdaptor adapter: MITVideoCollectionViewAdapter) -> Int
+//MARK: MITVideoCollectionViewAdapterInfiniteScrollDelegate
+    
+    private var fetchView: FetchView?
+    
+    func fetchingView(for adapter: MITVideoCollectionViewAdapter) -> UIView
     {
-        return 7
+        let fetchView = FetchView()
+        fetchView.shouldAnimate = true
+        self.fetchView = fetchView
+        return fetchView
+    }
+    
+    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping ([Video]?) -> Void)
+    {
+        self.videoList.fetchNextCommunityVideos { (_, newVideos, error) in
+            
+            if let error = error {
+                print(error)
+            }
+            
+            completion(newVideos)
+        }
     }
     
     // MARK: Refresh
