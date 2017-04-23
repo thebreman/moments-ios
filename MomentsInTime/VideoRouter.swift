@@ -60,11 +60,9 @@ enum VideoRouter: URLRequestConvertible
         //add any necessary params:
         switch self {
         case .all:
-            //urlRequest = try URLEncoding.default.encode(urlRequest, with: ["per_page": 25])
             let urlString = VimeoConnector.baseAPIEndpoint + self.path
             let url = try urlString.asURL()
             urlRequest.url = url
-            break
             
         case .create:
             urlRequest = try URLEncoding.default.encode(urlRequest, with: ["type": "streaming"])

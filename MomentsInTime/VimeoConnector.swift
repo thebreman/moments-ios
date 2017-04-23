@@ -31,20 +31,14 @@ class VimeoConnector: NSObject
     static let versionAPIHeaderValue: String = VERSION_ACCEPT_HEADER_VALUE
     static let versionAPIHeaderKey: String = VERSION_ACCEPT_HEADER_KEY
     
-    
-    
-    //TODO: remove in place of VideoList owning this
-    static let initialPagePath: String = "/me/videos"
-    static var nextPagePath: String = initialPagePath
-    
     /**
      * Fetches all the videos from our vimeo account (me/videos).
      * page is path to get videos from Vimeo API, in the response we update our static pagePath w/ the next page,
      * so that the next call can use this var to fetch the next page:
      */
-    func getVideosForCommunity(forPage page: String, completion: @escaping VideoCompletion)
+    func getVideosForCommunity(forPagePath pagePath: String, completion: @escaping VideoListCompletion)
     {
-        self.request(router: VideoRouter.all(page)) { (response, error) in
+        self.request(router: VideoRouter.all(pagePath)) { (response, error) in
             
             guard error == nil else {
                 completion(nil, error)
@@ -54,25 +48,17 @@ class VimeoConnector: NSObject
             if let result = response as? [String: Any],
                 let paging = result["paging"] as? [String: Any],
                 let data = result["data"] as? [[String: Any]] {
-                            
-                print(paging)
-                
-                
-                //TODO: Create full VideoList
-                
-                //update pagePath w/ the next page to fetch:
-                if let nextPage = paging["next"] as? String {
-                    VimeoConnector.nextPagePath = nextPage
-                    print("NEXT PAGE: \(nextPage)")
-                }
                 
                 let videos = self.videos(fromData: data)
+                let nextPagePath = self.nextPagePath(fromPaging: paging)
                 
                 if videos.count == 0 {
                     print("No videos made it through - something probably went wrong.")
                 }
                 
-                completion(videos, nil)
+                let videoList = VideoList(videos: videos, nextPagePath: nextPagePath)
+                
+                completion(videoList, nil)
                 return
             }
             
@@ -85,18 +71,9 @@ class VimeoConnector: NSObject
     /**
      * Wrapper for getVideosForCommunity:forPage:completion:, using VimeoConnector.initialPagePath as the first path to fetch:
      */
-    func getVideosForCommunity(completion: @escaping VideoCompletion)
+    func getCommunityVideos(forPagePath pagePath: String, completion: @escaping VideoListCompletion)
     {
-        self.getVideosForCommunity(forPage: VimeoConnector.initialPagePath, completion: completion)
-    }
-    
-    /**
-     * Wrapper for getVideosForCommunity:forPage:completion:.
-     * This one uses our static nextPagePath, which is continuously updated w/ the path for the next page:
-     */
-    func getMoreVideoForCommunity(completion: @escaping VideoCompletion)
-    {
-        self.getVideosForCommunity(forPage: VimeoConnector.nextPagePath, completion: completion)
+        self.getVideosForCommunity(forPagePath: pagePath, completion: completion)
     }
     
     /**
@@ -319,6 +296,15 @@ extension VimeoConnector
         }
         
         return videos
+    }
+    
+    fileprivate func nextPagePath(fromPaging paging: [String: Any]) -> String?
+    {
+        if let nextPage = paging["next"] as? String {
+            return nextPage
+        }
+        
+        return nil
     }
     
     fileprivate func playbackURLString(fromFiles files: [[String: Any]]) -> String?

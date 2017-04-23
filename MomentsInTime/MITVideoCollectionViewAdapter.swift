@@ -61,9 +61,6 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         }
     }
     
-    //if we have accessoryView, we will need an array of videos and accessoryViews:
-    private var videosAndAccessoryViews: [Any]?
-    
     private var emptyStateView = UIView()
     
     //optional top view that will be contained in a cell in section 0 at the top:
@@ -87,16 +84,40 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
             self.collectionView.register(ContainerCell.self, forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
         }
         
-        if self.delegate != nil {
-            self.configureData()
-        }
-        
         self.collectionView.delegate = self
         self.collectionView.dataSource = self
         self.collectionView.register(UINib(nibName: String(describing: VideoCell.self), bundle: nil), forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_VIDEO_CELL)
         
         self.collectionView.emptyDataSetDelegate = self
         self.collectionView.emptyDataSetSource = self
+    }
+    
+    private var videosAndAccessoryViews: [Any] {
+        
+        //instantiate array to hold both videos and accessoryViews:
+        var videosAndAccessoryViews = [Any]()
+        
+        //if we have a delegate, setup the array with the corresponding data and return it:
+        if let dataDelegate = self.delegate {
+            
+            let frequency = dataDelegate.accessoryViewFrequency(forAdaptor: self)
+            
+            //Go through self.videos, moving each object 1 by 1 into self.videosAndAccessoryViews,
+            //append an accessoryView every nth index (n being frequency):
+            for (index, video) in videos.enumerated() {
+                
+                videosAndAccessoryViews.append(video)
+                
+                if ((index % frequency) == (frequency - 1)) {
+                    videosAndAccessoryViews.append(dataDelegate.accessoryView(for: self))
+                }
+            }
+            
+            return videosAndAccessoryViews
+        }
+        
+        //if no delegate, then no accessory views so just return videos:
+        return self.videos
     }
     
     //MARK: CollectionView
@@ -116,11 +137,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         
         case SECTION_VIDEO_FEED:
             
-            if let data = self.videosAndAccessoryViews {
-                return data.count
-            }
-            
-            return self.videos.count
+            return self.videosAndAccessoryViews.count
             
         case SECTION_VIDEO_FETCH:
             
@@ -137,7 +154,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     {
         
         switch indexPath.section {
-        
+            
         case SECTION_BANNER_TOP:
             
             if let bannerView = self.bannerView {
@@ -145,25 +162,18 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
             }
             
             return UICollectionViewCell()
-        
+            
         case SECTION_VIDEO_FEED:
             
-            //check if we have videos and accessoryViews, then return the appropriate cell:
-            if let data = self.videosAndAccessoryViews {
-                
-                if let video = data[indexPath.item] as? Video {
-                    
-                    return self.videoCell(forVideo: video, atIndexPath: indexPath, withCollectionView: collectionView)
-                }
-                else if let accessoryView = data[indexPath.item] as? UIView {
-                    
-                    return self.containerCell(forView: accessoryView, atIndexPath: indexPath, withCollectionView: collectionView)
-                }
+            if let video = self.videosAndAccessoryViews[indexPath.item] as? Video {
+                return self.videoCell(forVideo: video, atIndexPath: indexPath, withCollectionView: collectionView)
+            }
+            else if let accessoryView = self.videosAndAccessoryViews[indexPath.item] as? UIView {
+                return self.containerCell(forView: accessoryView, atIndexPath: indexPath, withCollectionView: collectionView)
             }
             
-            //otherwise return a video cell:
-            let video = self.videos[indexPath.item]
-            return self.videoCell(forVideo: video, atIndexPath: indexPath, withCollectionView: collectionView)
+            assert(false, "unknown object in dataSource")
+            return UICollectionViewCell()
             
         case SECTION_VIDEO_FETCH:
             
@@ -173,7 +183,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
             }
             
             return UICollectionViewCell()
-        
+            
         default:
             
             assert(false, "unknown section in collectionView!")
@@ -191,16 +201,15 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
                     self.videos += videosToDisplay
                     self.collectionView.reloadData()
                     print(self.videos.count)
-                    print("/n/n")
                 }
             }
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
-    {        
+    {
         switch indexPath.section {
-        
+            
         case SECTION_BANNER_TOP:
             
             if let viewToDisplay = self.bannerView {
@@ -209,21 +218,18 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
             }
             
             return .zero
-        
+            
         case SECTION_VIDEO_FEED:
             
-            if let data = self.videosAndAccessoryViews {
-                
-                if let video = data[indexPath.row] as? Video {
-                    return VideoCell.sizeForVideo(video, width: collectionView.bounds.width)
-                }
-                else if let accessoryView = data[indexPath.row] as? UIView {
-                    return ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
-                }
+            if let video = self.videosAndAccessoryViews[indexPath.row] as? Video {
+                return VideoCell.sizeForVideo(video, width: collectionView.bounds.width)
+            }
+            else if let accessoryView = self.videosAndAccessoryViews[indexPath.row] as? UIView {
+                return ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
             }
             
-            let video = self.videos[indexPath.item]
-            return VideoCell.sizeForVideo(video, width: collectionView.bounds.width)
+            assert(false, "unknown object in dataSource")
+            return .zero
             
         case SECTION_VIDEO_FETCH:
             
@@ -233,7 +239,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
             }
             
             return .zero
-        
+            
         default:
             
             assert(false, "unknown section in collectionView!")
@@ -261,28 +267,6 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     }
     
     //MARK: Utilities
-    
-    private func configureData()
-    {
-        //instantiate array to hold both videos and accessoryViews:
-        self.videosAndAccessoryViews = [Any]()
-        
-        if let dataDelegate = self.delegate {
-            
-            let frequency = dataDelegate.accessoryViewFrequency(forAdaptor: self)
-            
-            //Go through self.videos, moving each object 1 by 1 into self.videosAndAccessoryViews,
-            //append an accessoryView every nth index (n being frequency):
-            for (index, video) in videos.enumerated() {
-                
-                self.videosAndAccessoryViews?.append(video)
-
-                if ((index % frequency) == (frequency - 1)) {
-                    self.videosAndAccessoryViews?.append(dataDelegate.accessoryView(for: self))
-                }
-            }
-        }
-    }
     
     private func containerCell(forView view: UIView, atIndexPath indexPath: IndexPath, withCollectionView: UICollectionView) -> ContainerCell
     {
