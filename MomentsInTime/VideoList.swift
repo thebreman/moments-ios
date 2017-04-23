@@ -15,7 +15,10 @@ class VideoList: NSObject
 {
     lazy var videos = [Video]()
     
-    private(set) var page = 0 //what is this for?
+    var hasNextPage: Bool {
+        return self.nextPagePath != nil
+    }
+    
     private static let firstPagePath: String = "/me/videos"
     private(set) var nextPagePath: String?
     
@@ -53,25 +56,21 @@ class VideoList: NSObject
     
     func fetchNextCommunityVideos(completion: VideoListNewVideosCompletion?)
     {
-        if let nextPage = self.nextPagePath {
+        guard let nextPage = self.nextPagePath else { return }
+        
+        VimeoConnector().getCommunityVideos(forPagePath: nextPage) { (videoList, error) in
             
-            VimeoConnector().getCommunityVideos(forPagePath: nextPage) { (videoList, error) in
+            guard error == nil else {
+                completion?(nil, nil, error)
+                return
+            }
+            
+            if let fetchedVideoList = videoList {
                 
-                guard error == nil else {
-                    completion?(nil, nil, error)
-                    return
-                }
-                
-                if let fetchedVideoList = videoList {
-                    
-                    DispatchQueue.main.async {
-                        self.videos += fetchedVideoList.videos
-                        self.nextPagePath = fetchedVideoList.nextPagePath
-                        
-                        if fetchedVideoList.nextPagePath != nil { self.page += 1 }
-                        
-                        completion?(self, fetchedVideoList.videos, nil)
-                    }
+                DispatchQueue.main.async {
+                    self.videos += fetchedVideoList.videos
+                    self.nextPagePath = fetchedVideoList.nextPagePath
+                    completion?(self, fetchedVideoList.videos, nil)
                 }
             }
         }

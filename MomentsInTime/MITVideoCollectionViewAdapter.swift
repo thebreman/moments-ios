@@ -14,6 +14,8 @@ private let SECTION_BANNER_TOP = 0
 private let SECTION_VIDEO_FEED = 1
 private let SECTION_VIDEO_FETCH = 2
 
+fileprivate let videoCellHeightCache = NSCache<NSString, NSNumber>()
+
 //delegate for optional accessoryView to be displayed every nth cell (n is frequency):
 protocol MITVideoCollectionViewAdapterDelegate: class
 {
@@ -30,10 +32,8 @@ protocol MITVideoCollectionViewAdapterPlayerDelegate: class
 //delegate for fetch/ infinite scroll provides view to be displayed while fetching and handles fetching more content:
 protocol MITVideoCollectionViewAdapterInfiniteScrollDelegate: class
 {
-    func fetchingView(for adapter: MITVideoCollectionViewAdapter) -> UIView
-    
     //fetch new videos and call completion w/ those videos:
-    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping ([Video]?) -> Void)
+    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping () -> Void)
 }
 
 /**
@@ -47,19 +47,32 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     {
         static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
         static let IDENTIFIER_REUSE_CONTAINER_CELL = "containerCell"
+        static let IDENTIFIER_REUSE_SPINNER_CELL = "spinnerCell"
     }
     
     private var collectionView: UICollectionView!
     
-    private weak var delegate: MITVideoCollectionViewAdapterDelegate?
+    weak var accessoryViewdelegate: MITVideoCollectionViewAdapterDelegate? {
+        didSet {
+            self.collectionView.register(ContainerCell.self, forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
+        }
+    }
+    
     weak var playerDelegate: MITVideoCollectionViewAdapterPlayerDelegate?
-    weak var infiniteScrollDelegate: MITVideoCollectionViewAdapterInfiniteScrollDelegate?
+    
+    weak var infiniteScrollDelegate: MITVideoCollectionViewAdapterInfiniteScrollDelegate? {
+        didSet {
+            self.collectionView.register(UINib(nibName: String(describing: SpinnerCell.self), bundle: nil), forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_SPINNER_CELL)
+        }
+    }
     
     var videos = [Video]() {
         didSet {
-            self.collectionView.reloadData()
+            self.refreshData()
         }
     }
+    
+    private var videosAndAccessoryViews = [Any]()
     
     private var emptyStateView = UIView()
     
@@ -69,8 +82,9 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     private var bannerView: UIView?
     
     var allowsEmptyStateScrolling = false
+    var allowsInfiniteScrolling = false
     
-    init(withCollectionView collectionView: UICollectionView, videos: [Video], emptyStateView: UIView, bannerView: UIView?, delegate: MITVideoCollectionViewAdapterDelegate?)
+    init(withCollectionView collectionView: UICollectionView, videos: [Video], emptyStateView: UIView, bannerView: UIView?)
     {
         super.init()
         
@@ -78,9 +92,8 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         self.videos = videos
         self.emptyStateView = emptyStateView
         self.bannerView = bannerView
-        self.delegate = delegate
         
-        if self.bannerView != nil || self.delegate != nil {
+        if self.bannerView != nil {
             self.collectionView.register(ContainerCell.self, forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
         }
         
@@ -90,34 +103,6 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         
         self.collectionView.emptyDataSetDelegate = self
         self.collectionView.emptyDataSetSource = self
-    }
-    
-    private var videosAndAccessoryViews: [Any] {
-        
-        //instantiate array to hold both videos and accessoryViews:
-        var videosAndAccessoryViews = [Any]()
-        
-        //if we have a delegate, setup the array with the corresponding data and return it:
-        if let dataDelegate = self.delegate {
-            
-            let frequency = dataDelegate.accessoryViewFrequency(forAdaptor: self)
-            
-            //Go through self.videos, moving each object 1 by 1 into self.videosAndAccessoryViews,
-            //append an accessoryView every nth index (n being frequency):
-            for (index, video) in videos.enumerated() {
-                
-                videosAndAccessoryViews.append(video)
-                
-                if ((index % frequency) == (frequency - 1)) {
-                    videosAndAccessoryViews.append(dataDelegate.accessoryView(for: self))
-                }
-            }
-            
-            return videosAndAccessoryViews
-        }
-        
-        //if no delegate, then no accessory views so just return videos:
-        return self.videos
     }
     
     //MARK: CollectionView
@@ -132,19 +117,17 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         switch section {
             
         case SECTION_BANNER_TOP:
-            
-            return self.bannerView != nil ? 1 : 0
+            let count = self.bannerView != nil ? 1 : 0
+            return count
         
         case SECTION_VIDEO_FEED:
-            
             return self.videosAndAccessoryViews.count
             
         case SECTION_VIDEO_FETCH:
+            let count = self.infiniteScrollDelegate != nil && self.allowsInfiniteScrolling ? 1 : 0
+            return count
             
-            return self.infiniteScrollDelegate != nil ? 1 : 0
-        
         default:
-            
             assert(false, "unknown section in collectionView!")
             return 0
         }
@@ -152,7 +135,6 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        
         switch indexPath.section {
             
         case SECTION_BANNER_TOP:
@@ -177,11 +159,13 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
             
         case SECTION_VIDEO_FETCH:
             
-            if let delegate = self.infiniteScrollDelegate {
-                let view = delegate.fetchingView(for: self)
-                return self.containerCell(forView: view, atIndexPath: indexPath, withCollectionView: collectionView)
+            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_SPINNER_CELL, for: indexPath) as? SpinnerCell {
+                cell.spinner.startAnimating()
+                cell.rasterizeShadow()
+                return cell
             }
             
+            assert(false, "dequeued cell was of an unknown type!")
             return UICollectionViewCell()
             
         default:
@@ -191,16 +175,19 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         }
     }
     
+    private var fetching = false
+    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
     {
+        guard !self.fetching else { return }
+        
         if indexPath.section == SECTION_VIDEO_FETCH {
             
-            self.infiniteScrollDelegate?.fetchNewVideos(for: self) { newVideos in
-                
-                if let videosToDisplay = newVideos {
-                    self.videos += videosToDisplay
-                    self.collectionView.reloadData()
-                    print(self.videos.count)
+            self.fetching = true
+            self.infiniteScrollDelegate?.fetchNewVideos(for: self) {
+                if let spinnerCell = cell as? SpinnerCell {
+                    spinnerCell.spinner.stopAnimating()
+                    self.fetching = false
                 }
             }
         }
@@ -209,7 +196,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
         switch indexPath.section {
-            
+        
         case SECTION_BANNER_TOP:
             
             if let viewToDisplay = self.bannerView {
@@ -222,7 +209,19 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         case SECTION_VIDEO_FEED:
             
             if let video = self.videosAndAccessoryViews[indexPath.row] as? Video {
-                return VideoCell.sizeForVideo(video, width: collectionView.bounds.width)
+                
+                var height = CGFloat(0)
+                
+                if let cachedHeight = videoCellHeightCache.object(forKey: video.uri as NSString) as? CGFloat {
+                    height = cachedHeight
+                }
+                else {
+                    let fittedSize = VideoCell.sizeForVideo(video, width: collectionView.bounds.width)
+                    height = fittedSize.height
+                    videoCellHeightCache.setObject(height as NSNumber, forKey: video.uri as NSString)
+                }
+
+                return CGSize(width: self.collectionView.bounds.width, height: height)
             }
             else if let accessoryView = self.videosAndAccessoryViews[indexPath.row] as? UIView {
                 return ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
@@ -233,12 +232,8 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
             
         case SECTION_VIDEO_FETCH:
             
-            if let delegate = self.infiniteScrollDelegate {
-                let view = delegate.fetchingView(for: self)
-                return ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: view)
-            }
-            
-            return .zero
+            let size = SpinnerCell.sizeForSpinnerCell(withWidth: collectionView.bounds.width)
+            return size
             
         default:
             
@@ -267,6 +262,40 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     }
     
     //MARK: Utilities
+    
+    private func refreshData()
+    {
+        print("refreshing Data")
+        
+        self.populateData()
+        self.collectionView.reloadData()
+    }
+    
+    private func populateData()
+    {
+        //instantiate array to hold both videos and accessoryViews:
+        self.videosAndAccessoryViews = [Any]()
+        
+        //if we have a delegate, setup the array with the corresponding data and return it,
+        //otherwise just copy self.videos:
+        guard let dataDelegate = self.accessoryViewdelegate else {
+            self.videosAndAccessoryViews = self.videos
+            return
+        }
+        
+        let frequency = dataDelegate.accessoryViewFrequency(forAdaptor: self)
+        
+        //Go through self.videos, moving each object 1 by 1 into self.videosAndAccessoryViews,
+        //append an accessoryView every nth index (n being frequency):
+        for (index, video) in videos.enumerated() {
+            
+            self.videosAndAccessoryViews.append(video)
+            
+            if (index % frequency) == (frequency - 1) {
+                self.videosAndAccessoryViews.append(dataDelegate.accessoryView(for: self))
+            }
+        }
+    }
     
     private func containerCell(forView view: UIView, atIndexPath indexPath: IndexPath, withCollectionView: UICollectionView) -> ContainerCell
     {

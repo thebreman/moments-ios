@@ -40,11 +40,12 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    videos: self.videoList.videos,
                                                    emptyStateView: self.emptyStateView,
-                                                   bannerView: nil,
-                                                   delegate: self)
+                                                   bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
+        adapter.accessoryViewdelegate = self
         adapter.playerDelegate = self
         adapter.infiniteScrollDelegate = self
+        adapter.allowsInfiniteScrolling = true
         return adapter
     }()
     
@@ -60,6 +61,11 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
+        
+        //need this in case we rotate, switch tabs, then rotate back...
+        //when we come back to this screen, the layout will be where we left it
+        //even though viewWilTransition: gets called on all VCs in the tab bar controller,
+        //when we come back on screen the collectinView width is no longer valid.
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
@@ -106,7 +112,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
             flowLayout.sectionInset = .zero
         }
         
-        self.collectionView.contentInset.top = 10
+        self.collectionView.contentInset.top = 12
         self.collectionView?.addSubview(self.refreshControl)
     }
     
@@ -150,27 +156,21 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         }
     }
     
-//MARK: MITVideoCollectionViewAdapterInfiniteScrollDelegate
+    //MARK: MITVideoCollectionViewAdapterInfiniteScrollDelegate
     
-    private var fetchView: FetchView?
-    
-    func fetchingView(for adapter: MITVideoCollectionViewAdapter) -> UIView
-    {
-        let fetchView = FetchView()
-        fetchView.shouldAnimate = true
-        self.fetchView = fetchView
-        return fetchView
-    }
-    
-    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping ([Video]?) -> Void)
-    {
-        self.videoList.fetchNextCommunityVideos { (_, newVideos, error) in
+    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping () -> Void) {
+        self.videoList.fetchNextCommunityVideos { (_, videos, error) in
             
             if let error = error {
                 print(error)
             }
             
-            completion(newVideos)
+            if let newVideos = videos {
+                self.adapter.videos += newVideos
+            }
+            
+            self.adapter.allowsInfiniteScrolling = self.videoList.hasNextPage
+            completion()
         }
     }
     
@@ -193,6 +193,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
             
             self.spinner.stopAnimating()
             self.adapter.videos = self.videoList.videos
+            self.adapter.allowsInfiniteScrolling = true
         }
     }
 }
