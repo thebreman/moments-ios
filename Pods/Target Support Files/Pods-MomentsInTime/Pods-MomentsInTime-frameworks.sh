@@ -101,7 +101,6 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/FacebookShare/FacebookShare.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PureLayout/PureLayout.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SVPullToRefresh/SVPullToRefresh.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/ActiveLabel/ActiveLabel.framework"
@@ -116,7 +115,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/FacebookShare/FacebookShare.framework"
   install_framework "$BUILT_PRODUCTS_DIR/PureLayout/PureLayout.framework"
   install_framework "$BUILT_PRODUCTS_DIR/SDWebImage/SDWebImage.framework"
-  install_framework "$BUILT_PRODUCTS_DIR/SVPullToRefresh/SVPullToRefresh.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

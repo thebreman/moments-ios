@@ -10,5 +10,4 @@ pod 'FacebookLogin'
 pod 'FacebookShare'
 pod 'DZNEmptyDataSet'
 pod 'ActiveLabel'
-pod 'SVPullToRefresh'
 end
