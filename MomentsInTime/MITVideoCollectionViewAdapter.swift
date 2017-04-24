@@ -43,14 +43,8 @@ protocol MITVideoCollectionViewAdapterInfiniteScrollDelegate: class
  */
 class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, VideoCellDelegate
 {
-    private enum Identifiers
-    {
-        static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
-        static let IDENTIFIER_REUSE_CONTAINER_CELL = "containerCell"
-        static let IDENTIFIER_REUSE_SPINNER_CELL = "spinnerCell"
-    }
-    
-    private var collectionView: UICollectionView!
+    var allowsEmptyStateScrolling = false
+    var allowsInfiniteScrolling = false
     
     weak var accessoryViewdelegate: MITVideoCollectionViewAdapterDelegate? {
         didSet {
@@ -72,6 +66,15 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         }
     }
     
+    private enum Identifiers
+    {
+        static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
+        static let IDENTIFIER_REUSE_CONTAINER_CELL = "containerCell"
+        static let IDENTIFIER_REUSE_SPINNER_CELL = "spinnerCell"
+    }
+    
+    private var collectionView: UICollectionView!
+    
     private var videosAndAccessoryViews = [Any]()
     
     private var emptyStateView = UIView()
@@ -80,9 +83,6 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     //good for announcements, ads etc.
     //if it becomes necessary we could allow for an array of these views...
     private var bannerView: UIView?
-    
-    var allowsEmptyStateScrolling = false
-    var allowsInfiniteScrolling = false
     
     init(withCollectionView collectionView: UICollectionView, videos: [Video], emptyStateView: UIView, bannerView: UIView?)
     {

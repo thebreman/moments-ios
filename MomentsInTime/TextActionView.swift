@@ -10,49 +10,6 @@ import UIKit
 
 class TextActionView: UIView
 {
-    private let containerView: UIView = {
-        let view = UIView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private let titleLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        return label
-    }()
-    
-    private let messageLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        return label
-    }()
-    
-    override init(frame: CGRect)
-    {
-        super.init(frame: frame)
-        self.setup()
-    }
-    
-    required init?(coder aDecoder: NSCoder)
-    {
-        super.init(coder: aDecoder)
-        self.setup()
-    }
-    
-    override func layoutSubviews()
-    {
-        let labelHorizontalInset: CGFloat = 40.0
-        self.titleLabel.preferredMaxLayoutWidth = self.bounds.width - (labelHorizontalInset * 2)
-        self.messageLabel.preferredMaxLayoutWidth = self.bounds.width - (labelHorizontalInset * 2)
-        
-        super.layoutSubviews()
-    }
-    
     //MARK: Public
     //dynamic properties allow for UIAppearance proxy support
     
@@ -132,8 +89,51 @@ class TextActionView: UIView
     {
         self.actionButton.setTitleColor(color, for: state)
     }
-    
+
     //MARK: Private
+    
+    private let containerView: UIView = {
+        let view = UIView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private let messageLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        return label
+    }()
+    
+    override init(frame: CGRect)
+    {
+        super.init(frame: frame)
+        self.setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder)
+    {
+        super.init(coder: aDecoder)
+        self.setup()
+    }
+    
+    override func layoutSubviews()
+    {
+        let labelHorizontalInset: CGFloat = 40.0
+        self.titleLabel.preferredMaxLayoutWidth = self.bounds.width - (labelHorizontalInset * 2)
+        self.messageLabel.preferredMaxLayoutWidth = self.bounds.width - (labelHorizontalInset * 2)
+        
+        super.layoutSubviews()
+    }
     
     func setup()
     {

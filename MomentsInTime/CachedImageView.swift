@@ -11,6 +11,13 @@ import SDWebImage
 
 class CachedImageView: UIImageView
 {
+    func loadImageFromCache(withUrlString urlString: String)
+    {
+        if let imageURL = URL(string: urlString) {
+            self.sd_setImage(with: imageURL)
+        }
+    }
+    
     override init(frame: CGRect)
     {
         super.init(frame: frame)
@@ -27,12 +34,5 @@ class CachedImageView: UIImageView
     {
         self.contentMode = .scaleAspectFill
         self.clipsToBounds = true
-    }
-    
-    func loadImageFromCache(withUrlString urlString: String)
-    {
-        if let imageURL = URL(string: urlString) {
-            self.sd_setImage(with: imageURL)
-        }
     }
 }

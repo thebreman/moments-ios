@@ -139,7 +139,7 @@ class VimeoConnector: NSObject
         }
     }
     
-//MARK: Private
+    //MARK: Private
     
     /**
      * We cannot rely on completion/ response handlers to chain the necessary upload flow requests since we are background compatable.
@@ -254,7 +254,7 @@ class VimeoConnector: NSObject
         BackgroundUploadVideoMetadataSessionManager.shared.download(VideoRouter.update(video))
     }
     
-// MARK: Utilities
+    // MARK: Utilities
     
     /**
      * request utitily function for requests with JSON responses:
