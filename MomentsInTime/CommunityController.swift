@@ -158,7 +158,8 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     
     //MARK: MITVideoCollectionViewAdapterInfiniteScrollDelegate
     
-    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping () -> Void) {
+    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping () -> Void)
+    {
         self.videoList.fetchNextCommunityVideos { (_, videos, error) in
             
             if let error = error {

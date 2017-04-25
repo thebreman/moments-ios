@@ -66,6 +66,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         }
     }
     
+    
     private enum Identifiers
     {
         static let IDENTIFIER_REUSE_VIDEO_CELL = "videoCell"
@@ -179,15 +180,15 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath)
     {
-        guard !self.fetching else { return }
-        
         if indexPath.section == SECTION_VIDEO_FETCH {
+            
+            guard !self.fetching else { return }
             
             self.fetching = true
             self.infiniteScrollDelegate?.fetchNewVideos(for: self) {
+                self.fetching = false
                 if let spinnerCell = cell as? SpinnerCell {
                     spinnerCell.spinner.stopAnimating()
-                    self.fetching = false
                 }
             }
         }
