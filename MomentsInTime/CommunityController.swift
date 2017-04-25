@@ -12,9 +12,11 @@ import AVKit
 import AVFoundation
 import FacebookCore
 import FacebookLogin
+import FacebookShare
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
+private let URL_APP_LINK_STRING = "https://fb.me/1717667415199470"
 
 class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterPlayerDelegate, MITVideoCollectionViewAdapterInfiniteScrollDelegate
 {
@@ -131,6 +133,27 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     private func handleFacebookInvite()
     {
         print("handle facebook invite")
+        
+        //this is a bunch of test code:
+        
+        if let appURL = URL(string: URL_APP_LINK_STRING) {
+            
+            let invite = AppInvite(appLink: appURL)
+            
+            do {
+                
+                //find out if DoCatch is necessary here:
+                try AppInvite.Dialog.show(from: self, invite: invite, completion: { result in
+                    switch result {
+                    case .success: print("successful fb invite")
+                    case .failed(let error): print("failed with error: \(error)")
+                    }
+                })
+            }
+            catch let error {
+                print(error)
+            }
+        }
     }
     
     private func handleMessageInvite(sender: UIView)

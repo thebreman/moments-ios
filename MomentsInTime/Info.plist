@@ -50,8 +50,11 @@
     <key>CFBundleURLTypes</key>
     <array>
         <dict>
+            <key>CFBundleURLName</key>
+            <string>com.tikkunolam.momentsintime</string>
             <key>CFBundleURLSchemes</key>
             <array>
+                <string>momentsintime</string>
                 <string>fb1717626881870190</string>
             </array>
         </dict>
