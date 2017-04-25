@@ -10,6 +10,8 @@ import UIKit
 import PureLayout
 import AVKit
 import AVFoundation
+import FacebookCore
+import FacebookLogin
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
@@ -56,6 +58,10 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         self.spinner.startAnimating()
         self.setupCollectionView()
         self.fetchCommunityVideos()
+        
+        self.checkForUser {
+            print("We have a user!")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -225,6 +231,29 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     }
     
     //MARK: Utilities
+    
+    private func checkForUser(completion: @escaping () -> Void)
+    {
+        guard AccessToken.current != nil else {
+            
+            let loginController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as! LoginController
+            
+            loginController.loginCompletionHandler = {
+                loginController.presentingViewController?.dismiss(animated: true) {
+                    completion()
+                }
+            }
+            
+            self.present(loginController, animated: true, completion: nil)
+            return
+        }
+        
+        /*
+         * LoginController will only call completion upon successful login, so at this point,
+         * we are all set with a current user (AccessToken.current is no longer nil...)
+         */
+        completion()
+    }
     
     private func setupCollectionView()
     {
