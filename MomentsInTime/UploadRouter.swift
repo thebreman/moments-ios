@@ -24,8 +24,8 @@ enum UploadRouter: URLRequestConvertible
         switch self {
         case .create(ticketID: _, uploadLink: let link): return link
             
-        //append completeURI onto baseAPIEndpoint
-        //do not use url.appendPathComponent, b/c it will encode completeURI the wrong way:
+        //append completeURI onto baseAPIEndpoint.
+        //Do not use url.appendPathComponent, b/c it will encode completeURI the wrong way:
         case .complete(completeURI: let uri): return VimeoConnector.baseAPIEndpoint + uri
         }
     }

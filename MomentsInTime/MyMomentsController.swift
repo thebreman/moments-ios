@@ -37,8 +37,7 @@ class MyMomentsController: UIViewController
         let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
                                                     videos: self.videoList.videos,
                                                     emptyStateView: self.emptyStateView,
-                                                    bannerView: nil,
-                                                    delegate: nil)
+                                                    bannerView: nil)
         return adapter
     }()
 
@@ -56,6 +55,11 @@ class MyMomentsController: UIViewController
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
+        
+        //need this in case we rotate, switch tabs, then rotate back...
+        //when we come back to this screen, the layout will be where we left it
+        //even though viewWilTransition: gets called on all VCs in the tab bar controller,
+        //when we come back on screen the collectinView width is no longer valid.
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     

@@ -18,7 +18,7 @@ protocol VideoRouterCompliant
 
 enum VideoRouter: URLRequestConvertible
 {
-    case all
+    case all(String) //pageURL
     case create
     case read(Video)
     case update(Video)
@@ -36,7 +36,7 @@ enum VideoRouter: URLRequestConvertible
     
     var path: String {
         switch self {
-        case .all: return "/me/videos"
+        case .all(let pagePath): return pagePath
         case .create: return "/me/videos"
         case .read(let video): return video.uri
         case .update(let video): return video.uri
@@ -60,7 +60,9 @@ enum VideoRouter: URLRequestConvertible
         //add any necessary params:
         switch self {
         case .all:
-            urlRequest = try URLEncoding.default.encode(urlRequest, with: ["fields": FILTER_VIDEOS_VALUE])
+            let urlString = VimeoConnector.baseAPIEndpoint + self.path
+            let url = try urlString.asURL()
+            urlRequest.url = url
             
         case .create:
             urlRequest = try URLEncoding.default.encode(urlRequest, with: ["type": "streaming"])

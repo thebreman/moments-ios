@@ -32,26 +32,33 @@ class VimeoConnector: NSObject
     static let versionAPIHeaderKey: String = VERSION_ACCEPT_HEADER_KEY
     
     /**
-     * Fetches all the videos from our vimeo account (me/videos):
+     * Fetches all the videos from our vimeo account (me/videos).
+     * page is path to get videos from Vimeo API, in the response we update our static pagePath w/ the next page,
+     * so that the next call can use this var to fetch the next page:
      */
-    func getVideosForCommunity(completion: @escaping VideoCompletion)
+    func getVideosForCommunity(forPagePath pagePath: String, completion: @escaping VideoListCompletion)
     {
-        self.request(router: VideoRouter.all) { (response, error) in
+        self.request(router: VideoRouter.all(pagePath)) { (response, error) in
             
             guard error == nil else {
                 completion(nil, error)
                 return
             }
             
-            if let result = response as? [String: Any], let data = result["data"] as? [[String: Any]] {
+            if let result = response as? [String: Any],
+                let paging = result["paging"] as? [String: Any],
+                let data = result["data"] as? [[String: Any]] {
                 
                 let videos = self.videos(fromData: data)
+                let nextPagePath = self.nextPagePath(fromPaging: paging)
                 
                 if videos.count == 0 {
                     print("No videos made it through - something probably went wrong.")
                 }
                 
-                completion(videos, nil)
+                let videoList = VideoList(videos: videos, nextPagePath: nextPagePath)
+                
+                completion(videoList, nil)
                 return
             }
             
@@ -59,6 +66,14 @@ class VimeoConnector: NSObject
             let error = NSError(domain: "VimeoConnector.getVideosForCommunity:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
             completion(nil, error)
         }
+    }
+    
+    /**
+     * Wrapper for getVideosForCommunity:forPage:completion:, using VimeoConnector.initialPagePath as the first path to fetch:
+     */
+    func getCommunityVideos(forPagePath pagePath: String, completion: @escaping VideoListCompletion)
+    {
+        self.getVideosForCommunity(forPagePath: pagePath, completion: completion)
     }
     
     /**
@@ -124,7 +139,7 @@ class VimeoConnector: NSObject
         }
     }
     
-//MARK: Private
+    //MARK: Private
     
     /**
      * We cannot rely on completion/ response handlers to chain the necessary upload flow requests since we are background compatable.
@@ -239,7 +254,7 @@ class VimeoConnector: NSObject
         BackgroundUploadVideoMetadataSessionManager.shared.download(VideoRouter.update(video))
     }
     
-// MARK: Utilities
+    // MARK: Utilities
     
     /**
      * request utitily function for requests with JSON responses:
@@ -281,6 +296,15 @@ extension VimeoConnector
         }
         
         return videos
+    }
+    
+    fileprivate func nextPagePath(fromPaging paging: [String: Any]) -> String?
+    {
+        if let nextPage = paging["next"] as? String {
+            return nextPage
+        }
+        
+        return nil
     }
     
     fileprivate func playbackURLString(fromFiles files: [[String: Any]]) -> String?

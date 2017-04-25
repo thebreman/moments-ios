@@ -65,6 +65,27 @@ class VideoCell: UICollectionViewCell
         self.drawShadow()
         self.containerView.layer.masksToBounds = true
     }
+
+    // MARK: Actions
+    
+    @IBAction func handlePlay(_ sender: UIButton)
+    {
+        if let video = self.video {
+            self.delegate?.videoCell(self, playButtonWasTappedForVideo: video)
+        }
+    }
+    
+    @IBAction func handleShare(_ sender: UIButton)
+    {
+        print("handle Share")
+    }
+    
+    @IBAction func handleOptions(_ sender: UIButton)
+    {
+        print("handle Options")
+    }
+    
+    // MARK: Utilities
     
     private func updateUI()
     {
@@ -93,24 +114,5 @@ class VideoCell: UICollectionViewCell
         if let imageURLString = self.video?.thumbnailImageURL {
             self.thumbnailImageView.loadImageFromCache(withUrlString: imageURLString)
         }
-    }
-
-// MARK: Actions
-    
-    @IBAction func handlePlay(_ sender: UIButton)
-    {
-        if let video = self.video {
-            self.delegate?.videoCell(self, playButtonWasTappedForVideo: video)
-        }
-    }
-    
-    @IBAction func handleShare(_ sender: UIButton)
-    {
-        print("handle Share")
-    }
-    
-    @IBAction func handleOptions(_ sender: UIButton)
-    {
-        print("handle Options")
     }
 }

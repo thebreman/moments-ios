@@ -14,7 +14,7 @@ import AVFoundation
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
-class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterPlayerDelegate
+class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterPlayerDelegate, MITVideoCollectionViewAdapterInfiniteScrollDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -40,10 +40,12 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    videos: self.videoList.videos,
                                                    emptyStateView: self.emptyStateView,
-                                                   bannerView: nil,
-                                                   delegate: self)
+                                                   bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
+        adapter.accessoryViewdelegate = self
         adapter.playerDelegate = self
+        adapter.infiniteScrollDelegate = self
+        adapter.allowsInfiniteScrolling = true
         return adapter
     }()
     
@@ -59,6 +61,11 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
+        
+        //need this in case we rotate, switch tabs, then rotate back...
+        //when we come back to this screen, the layout will be where we left it
+        //even though viewWilTransition: gets called on all VCs in the tab bar controller,
+        //when we come back on screen the collectinView width is no longer valid.
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
@@ -105,11 +112,16 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
             flowLayout.sectionInset = .zero
         }
         
-        self.collectionView.contentInset.top = 10
+        self.collectionView.contentInset.top = 12
         self.collectionView?.addSubview(self.refreshControl)
     }
     
     //MARK: MITVideoCollectionViewAdapterDelegate
+    
+    func accessoryViewFrequency(forAdaptor adapter: MITVideoCollectionViewAdapter) -> Int
+    {
+        return 7
+    }
     
     func accessoryView(for adapter: MITVideoCollectionViewAdapter) -> UIView
     {
@@ -144,9 +156,22 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         }
     }
     
-    func accessoryViewFrequency(forAdaptor adapter: MITVideoCollectionViewAdapter) -> Int
-    {
-        return 7
+    //MARK: MITVideoCollectionViewAdapterInfiniteScrollDelegate
+    
+    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping () -> Void) {
+        self.videoList.fetchNextCommunityVideos { (_, videos, error) in
+            
+            if let error = error {
+                print(error)
+            }
+            
+            if let newVideos = videos {
+                self.adapter.videos += newVideos
+            }
+            
+            self.adapter.allowsInfiniteScrolling = self.videoList.hasNextPage
+            completion()
+        }
     }
     
     // MARK: Refresh
@@ -168,6 +193,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
             
             self.spinner.stopAnimating()
             self.adapter.videos = self.videoList.videos
+            self.adapter.allowsInfiniteScrolling = true
         }
     }
 }
