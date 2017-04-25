@@ -97,23 +97,50 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         print("handle new moment")
     }
     
-    @objc private func handleAskToInterview()
+    @objc private func handleAskToInterview(_ sender: BouncingButton)
     {
-        print("handle Ask To Interview")
+        //Display AlertActionSheet for user to choose Facebook or iMessage,
+        //must be popover for iPad:
+        let controller = UIAlertController(title: "Ask To Interview", message: nil, preferredStyle: .actionSheet)
+        controller.popoverPresentationController?.sourceView = sender
+        controller.popoverPresentationController?.sourceRect = sender.bounds
+        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        
+        let facebookAction = UIAlertAction(title: "Ask on Facebook", style: .default) { action in
+            self.handleFacebookInvite()
+        }
+        controller.addAction(facebookAction)
+        
+        let messageAction = UIAlertAction(title: "Message...", style: .default) { action in
+            self.handleMessageInvite(sender: sender)
+        }
+        controller.addAction(messageAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        
+        self.present(controller, animated: true, completion: nil)
     }
     
-    //MARK: CollectionView
-    
-    private func setupCollectionView()
+    private func handleFacebookInvite()
     {
-        if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.scrollDirection = .vertical
-            flowLayout.minimumLineSpacing = 0
-            flowLayout.sectionInset = .zero
-        }
+        print("handle facebook invite")
+    }
+    
+    private func handleMessageInvite(sender: UIView)
+    {
+        //present UIActivityViewController,
+        //must be popover for iPad:
+        let message = "Hello, I would like to interview you on the Moments In Time app!"
+        let link = URL(string: "https://marvelapp.com/fj8ic86/screen/26066627")!
         
-        self.collectionView.contentInset.top = 12
-        self.collectionView?.addSubview(self.refreshControl)
+        let controller = UIActivityViewController(activityItems: [message, link], applicationActivities: nil)
+        
+        controller.popoverPresentationController?.sourceView = sender
+        controller.popoverPresentationController?.sourceRect = sender.bounds
+        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        
+        self.present(controller, animated: true, completion: nil)
     }
     
     //MARK: MITVideoCollectionViewAdapterDelegate
@@ -133,7 +160,6 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        
         containerView.addSubview(textActionView)
         textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0))
         
@@ -196,5 +222,19 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
             self.adapter.videos = self.videoList.videos
             self.adapter.allowsInfiniteScrolling = true
         }
+    }
+    
+    //MARK: Utilities
+    
+    private func setupCollectionView()
+    {
+        if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.scrollDirection = .vertical
+            flowLayout.minimumLineSpacing = 0
+            flowLayout.sectionInset = .zero
+        }
+        
+        self.collectionView.contentInset.top = 12
+        self.collectionView?.addSubview(self.refreshControl)
     }
 }
