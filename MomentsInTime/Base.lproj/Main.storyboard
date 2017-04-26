@@ -24,6 +24,9 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HFt-ze-xZN">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="bMn-n8-g2U"/>
+                                </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ud3-Pe-jDb">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -41,9 +44,10 @@
                             <constraint firstItem="h5K-2H-Tkd" firstAttribute="top" secondItem="HFt-ze-xZN" secondAttribute="bottom" id="8Pp-1i-Nqa"/>
                             <constraint firstItem="SRf-yi-611" firstAttribute="centerY" secondItem="vun-7s-oyp" secondAttribute="centerY" id="DRc-TU-wCM"/>
                             <constraint firstItem="SRf-yi-611" firstAttribute="centerX" secondItem="vun-7s-oyp" secondAttribute="centerX" id="HdV-2L-oOI"/>
-                            <constraint firstItem="HFt-ze-xZN" firstAttribute="leading" secondItem="vun-7s-oyp" secondAttribute="leading" id="MSk-Uo-dSz"/>
-                            <constraint firstAttribute="trailing" secondItem="HFt-ze-xZN" secondAttribute="trailing" id="bYk-uL-scT"/>
+                            <constraint firstItem="HFt-ze-xZN" firstAttribute="leading" secondItem="vun-7s-oyp" secondAttribute="leading" priority="750" id="MSk-Uo-dSz"/>
+                            <constraint firstAttribute="trailing" secondItem="HFt-ze-xZN" secondAttribute="trailing" priority="750" id="bYk-uL-scT"/>
                             <constraint firstItem="HFt-ze-xZN" firstAttribute="top" secondItem="d88-Ky-hRH" secondAttribute="bottom" id="f4h-Ou-WnH"/>
+                            <constraint firstItem="HFt-ze-xZN" firstAttribute="centerX" secondItem="vun-7s-oyp" secondAttribute="centerX" id="oXe-ge-k9h"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="My Moments" id="M2w-s3-x2y">
@@ -244,6 +248,9 @@
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="xzF-qz-0gc">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="skc-C7-YmQ"/>
+                                </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="NyD-Sg-vYh">
                                     <size key="itemSize" width="50" height="50"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -256,14 +263,15 @@
                                 <rect key="frame" x="178" y="267" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="OHd-NN-at6" firstAttribute="centerX" secondItem="Hfw-TY-Rnm" secondAttribute="centerX" id="Ji8-Md-QUn"/>
-                            <constraint firstItem="xzF-qz-0gc" firstAttribute="leading" secondItem="Hfw-TY-Rnm" secondAttribute="leading" id="VCr-J5-4xt"/>
+                            <constraint firstItem="xzF-qz-0gc" firstAttribute="leading" secondItem="Hfw-TY-Rnm" secondAttribute="leading" priority="750" id="VCr-J5-4xt"/>
                             <constraint firstItem="OHd-NN-at6" firstAttribute="centerY" secondItem="Hfw-TY-Rnm" secondAttribute="centerY" id="cEc-nO-EoC"/>
+                            <constraint firstItem="xzF-qz-0gc" firstAttribute="centerX" secondItem="Hfw-TY-Rnm" secondAttribute="centerX" id="dNw-Eu-dvt"/>
                             <constraint firstItem="7Pn-KE-l7C" firstAttribute="top" secondItem="xzF-qz-0gc" secondAttribute="bottom" id="fN7-Uu-Ysc"/>
                             <constraint firstItem="xzF-qz-0gc" firstAttribute="top" secondItem="nIw-MW-iby" secondAttribute="bottom" id="pYY-lz-q0a"/>
-                            <constraint firstAttribute="trailing" secondItem="xzF-qz-0gc" secondAttribute="trailing" id="x6D-za-GOX"/>
+                            <constraint firstAttribute="trailing" secondItem="xzF-qz-0gc" secondAttribute="trailing" priority="750" id="x6D-za-GOX"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Moments In Time" id="bgh-Mz-knt">
@@ -322,6 +330,6 @@
         <image name="cancel-1" width="45" height="45"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ibu-DI-7Ln"/>
+        <segue reference="o7j-gd-ln6"/>
     </inferredMetricsTieBreakers>
 </document>

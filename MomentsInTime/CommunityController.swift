@@ -76,8 +76,11 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
+    //MARK: Trait Collection layout:
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
+        print("viewWillTransitionToSize")
         super.viewWillTransition(to: size, with: coordinator)
         
         if self.collectionView != nil {
