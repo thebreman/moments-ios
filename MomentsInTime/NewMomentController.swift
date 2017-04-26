@@ -77,7 +77,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.tableView.register(UINib(nibName: String(describing: MITSectionHeaderView.self), bundle: nil), forHeaderFooterViewReuseIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER)
         self.tableView.estimatedSectionHeaderHeight = 64
         self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        self.tableView.sectionFooterHeight = 0
+        self.tableView.sectionFooterHeight = 8
         
         //setup ActiveLinkCells:
         self.tableView.register(UINib(nibName: String(describing: ActiveLinkCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK)

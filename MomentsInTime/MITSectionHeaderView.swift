@@ -11,6 +11,8 @@ import PureLayout
 
 class MITSectionHeaderView: UITableViewHeaderFooterView
 {
+    @IBOutlet weak var titleLabel: UILabel!
+    
     var title: String?  {
         didSet {
             self.titleLabel.text = self.title
@@ -18,16 +20,11 @@ class MITSectionHeaderView: UITableViewHeaderFooterView
         }
     }
     
-    @IBOutlet weak var titleLabel: UILabel!
-    
-    override func awakeFromNib()
-    {
+    override func awakeFromNib() {
         super.awakeFromNib()
-        self.setup()
-    }
-    
-    private func setup()
-    {
+        
+        //setting th background color in IB has been deprecated
+        //so we are required to do this:
         self.contentView.backgroundColor = UIColor.mitBackground
     }
 }

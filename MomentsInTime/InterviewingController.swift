@@ -8,6 +8,8 @@
 
 import UIKit
 
+private let COPY_TEXT_PLACEHOLDER_NAME_FIELD = "Enter name"
+private let COPY_TEXT_PLACEHOLDER_ROLE_FIELD = "Enter role"
 private let COPY_TITLE_BUTTON_SELECT_PICTURE = "Select from camera roll"
 
 enum InterviewingSection: Int
@@ -19,9 +21,19 @@ enum InterviewingSection: Int
     static var titles: [String] {
         return ["Name", "Role", "Picture (optional)"]
     }
+    
+    //for name and role return textField placeholder text
+    //for picture return activeLabel text
+    var cellContentText: String {
+        switch self {
+        case .name: return COPY_TEXT_PLACEHOLDER_NAME_FIELD
+        case .role: return COPY_TEXT_PLACEHOLDER_ROLE_FIELD
+        case .picture: return COPY_TITLE_BUTTON_SELECT_PICTURE
+        }
+    }
 }
 
-class InterviewingController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate
+class InterviewingController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UITextFieldDelegate
 {
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
@@ -30,6 +42,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     private enum Identifiers
     {
         static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLink"
+        static let IDENTIFIER_CELL_TEXT_FIELD = "textFieldCell"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
     }
     
@@ -65,7 +78,10 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.tableView.register(UINib(nibName: String(describing: MITSectionHeaderView.self), bundle: nil), forHeaderFooterViewReuseIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER)
         self.tableView.estimatedSectionHeaderHeight = 64
         self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        self.tableView.sectionFooterHeight = 0
+        self.tableView.sectionFooterHeight = 16
+        
+        //setup TextFieldCells:
+        self.tableView.register(UINib(nibName: String(describing: TextFieldCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_FIELD)
         
         //setup ActiveLinkCells:
         self.tableView.register(UINib(nibName: String(describing: ActiveLinkCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK)
@@ -79,7 +95,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
     {
         if let sectionHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER) as? MITSectionHeaderView {
-            sectionHeaderView.title = NewMomentSetting.titles[section]
+            sectionHeaderView.title = InterviewingSection.titles[section]
             return sectionHeaderView
         }
         
@@ -94,29 +110,20 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
+        guard let section = InterviewingSection(rawValue: indexPath.section) else {
+            assert(false, "InterviewingSection invalid")
+            return UITableViewCell()
+        }
+        
         switch indexPath.section {
             
-        case InterviewingSection.name.rawValue:
-            
-            return UITableViewCell() //TextFieldCell
-            
-        case InterviewingSection.role.rawValue:
-            
-            return UITableViewCell() //TextFieldCell
+        case InterviewingSection.name.rawValue, InterviewingSection.role.rawValue:
+            return self.textFieldCell(forSection: section, withTableView: tableView)
             
         case InterviewingSection.picture.rawValue:
-            
-            if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
-                cell.activeLabel.text = COPY_TITLE_BUTTON_SELECT_PICTURE
-                cell.activeLinks = [COPY_TITLE_BUTTON_SELECT_PICTURE]
-                cell.delegate = self
-            }
-            
-            assert(false, "dequeued cell was of unknown type")
-            return ActiveLinkCell()
+            return self.activeLinkCell(forSection: section, withTableView: tableView)
             
         default:
-            
             assert(false, "indexPath section is unknown")
             return UITableViewCell()
         }
@@ -131,6 +138,31 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     }
     
     //MARK: Utilities
+    
+    private func textFieldCell(forSection section: InterviewingSection, withTableView tableView: UITableView) -> TextFieldCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_FIELD) as? TextFieldCell {
+            cell.textField.placeholder = section.cellContentText
+            cell.textField.delegate = self
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return TextFieldCell()
+    }
+    
+    private func activeLinkCell(forSection section: InterviewingSection, withTableView tableView: UITableView) -> ActiveLinkCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
+            cell.activeLabel.text = section.cellContentText
+            cell.activeLinks = [section.cellContentText]
+            cell.delegate = self
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return ActiveLinkCell()
+    }
     
     private func openPhotos(fromView sender: UIView)
     {

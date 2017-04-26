@@ -79,10 +79,10 @@
         <scene sceneID="HAh-Kw-glc">
             <objects>
                 <navigationController id="hLJ-EC-isI" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="eqv-Z4-y3z">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="eqv-Z4-y3z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <textAttributes key="titleTextAttributes">
                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                             <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -111,6 +111,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="TYd-KS-ATk">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -171,82 +172,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="di5-tN-qqt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3854" y="1245"/>
-        </scene>
-        <!--Interviewing-->
-        <scene sceneID="0iV-7p-cj8">
-            <objects>
-                <viewController id="qHi-UL-7Kj" customClass="InterviewingController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="XDn-yZ-k2Z"/>
-                        <viewControllerLayoutGuide type="bottom" id="Eox-AA-ssn"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="CtR-e5-I0K">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="k1T-AX-1qx">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
-                                <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="k1T-AX-1qx" firstAttribute="top" secondItem="XDn-yZ-k2Z" secondAttribute="bottom" id="23L-rk-xDv"/>
-                            <constraint firstItem="k1T-AX-1qx" firstAttribute="leading" secondItem="CtR-e5-I0K" secondAttribute="leading" id="mqO-2K-upH"/>
-                            <constraint firstAttribute="trailing" secondItem="k1T-AX-1qx" secondAttribute="trailing" id="rae-fs-Fhf"/>
-                            <constraint firstAttribute="bottom" secondItem="k1T-AX-1qx" secondAttribute="bottom" id="yLp-Sm-Bmj"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Interviewing" id="aBd-GW-0ww">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="CZT-ic-RrD">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="f02-nN-aR0" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
-                                <rect key="frame" x="16" y="-1" width="82" height="45"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Cancel">
-                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="handleCancel:" destination="qHi-UL-7Kj" eventType="touchUpInside" id="8eE-u5-1si"/>
-                                    <action selector="handleCancel:" destination="XSC-mP-BNu" eventType="touchUpInside" id="WBw-f6-UXu"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="Rv8-WM-U0F">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="c8b-JF-taG" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
-                                <rect key="frame" x="276" y="5" width="83" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Save">
-                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="disabled">
-                                    <color key="titleColor" white="0.69999999999999996" alpha="0.80249357880000005" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="selected">
-                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="handleSave:" destination="qHi-UL-7Kj" eventType="touchUpInside" id="sKr-we-CNH"/>
-                                    <action selector="handleSubmit:" destination="XSC-mP-BNu" eventType="touchUpInside" id="TUf-d6-Mrs"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="saveButton" destination="c8b-JF-taG" id="FHd-aT-K3r"/>
-                        <outlet property="tableView" destination="k1T-AX-1qx" id="CHI-Oh-h4r"/>
-                        <outlet property="tableViewBottomConstraint" destination="yLp-Sm-Bmj" id="xR4-gH-Nea"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sI6-kf-q8o" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="6134" y="439"/>
         </scene>
         <!--Description-->
         <scene sceneID="QiY-GO-5Kb">
@@ -471,7 +396,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tMY-Ml-CZK" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MWq-af-ZAP">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="MWq-af-ZAP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -482,12 +407,91 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="qHi-UL-7Kj" kind="relationship" relationship="rootViewController" id="8nS-mF-GG8"/>
+                        <segue destination="iAH-9Z-SNQ" kind="relationship" relationship="rootViewController" id="JvM-MJ-a3r"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HQM-nh-Zk7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5350" y="439"/>
+        </scene>
+        <!--Interviewing-->
+        <scene sceneID="8dJ-2c-iIa">
+            <objects>
+                <viewController id="iAH-9Z-SNQ" customClass="InterviewingController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="t4K-HN-mkN"/>
+                        <viewControllerLayoutGuide type="bottom" id="Mdd-h1-Hiz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pfv-Lb-6So">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="UEi-Nx-Mws">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="UEi-Nx-Mws" firstAttribute="top" secondItem="t4K-HN-mkN" secondAttribute="bottom" id="SEO-1L-g71"/>
+                            <constraint firstItem="UEi-Nx-Mws" firstAttribute="leading" secondItem="pfv-Lb-6So" secondAttribute="leading" id="dhG-rg-G2J"/>
+                            <constraint firstItem="Mdd-h1-Hiz" firstAttribute="top" secondItem="UEi-Nx-Mws" secondAttribute="bottom" id="gKz-Xv-9Rp"/>
+                            <constraint firstAttribute="trailing" secondItem="UEi-Nx-Mws" secondAttribute="trailing" id="sue-zO-ZA0"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Interviewing" id="v0T-U2-QHq">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="mGg-2r-ZyE">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="MMr-it-gEu" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="16" y="-1" width="82" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleCancel:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="A5s-f8-Qe7"/>
+                                    <action selector="handleCancel:" destination="XSC-mP-BNu" eventType="touchUpInside" id="S2U-1C-iLC"/>
+                                    <action selector="handleCancel:" destination="iAH-9Z-SNQ" eventType="touchUpInside" id="wvN-BC-9Vw"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="pYn-pb-UWU">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="Anw-7t-gNo" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="276" y="5" width="83" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.69999999999999996" alpha="0.80249357880000005" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleSave:" destination="iAH-9Z-SNQ" eventType="touchUpInside" id="OTU-Gh-atl"/>
+                                    <action selector="handleSave:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="smo-FI-Jf6"/>
+                                    <action selector="handleSubmit:" destination="XSC-mP-BNu" eventType="touchUpInside" id="3uv-eI-5gp"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="saveButton" destination="Anw-7t-gNo" id="Khk-3F-rd1"/>
+                        <outlet property="tableView" destination="UEi-Nx-Mws" id="nu2-Ia-wIa"/>
+                        <outlet property="tableViewBottomConstraint" destination="gKz-Xv-9Rp" id="28F-AJ-KJd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BF5-sq-Qo9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6133.6000000000004" y="438.53073463268368"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Y92-3o-C5a">
