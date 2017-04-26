@@ -79,7 +79,6 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
-        print("viewWillTransitionToSize")
         super.viewWillTransition(to: size, with: coordinator)
         
         if self.collectionView != nil {
