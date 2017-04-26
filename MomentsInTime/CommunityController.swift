@@ -10,11 +10,16 @@ import UIKit
 import PureLayout
 import AVKit
 import AVFoundation
+import FacebookCore
+import FacebookLogin
+import FacebookShare
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
-class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterPlayerDelegate, MITVideoCollectionViewAdapterInfiniteScrollDelegate
+private let COPY_MESSAGE_INVITE_INTERVIEW = "Hello, I would like to interview you on the Moments In Time app!"
+
+class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterVideoDelegate, MITVideoCollectionViewAdapterInfiniteScrollDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -28,10 +33,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     }()
     
     private var emptyStateView: MITTextActionView = {
-        let view = MITTextActionView()
-        view.title = "Where are all the moments?"
-        view.message = "Even if you're not ready to film, you can create the plans for an interview now."
-        view.actionButton.setTitle("Let's make a moment", for: .normal)
+        let view = MITTextActionView.mitEmptyStateView()
         view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
         return view
     }()
@@ -43,7 +45,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
                                                    bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
         adapter.accessoryViewdelegate = self
-        adapter.playerDelegate = self
+        adapter.videoDelegate = self
         adapter.infiniteScrollDelegate = self
         adapter.allowsInfiniteScrolling = true
         return adapter
@@ -56,6 +58,10 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         self.spinner.startAnimating()
         self.setupCollectionView()
         self.fetchCommunityVideos()
+        
+        self.checkForUser {
+            print("We have a user!")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -69,8 +75,11 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
+    //MARK: Trait Collection layout:
+    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
+        print("viewWillTransitionToSize")
         super.viewWillTransition(to: size, with: coordinator)
         
         if self.collectionView != nil {
@@ -97,23 +106,55 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         print("handle new moment")
     }
     
-    @objc private func handleAskToInterview()
+    @objc private func handleAskToInterview(_ sender: BouncingButton)
     {
-        print("handle Ask To Interview")
+        //Display AlertActionSheet for user to choose Facebook or iMessage,
+        //must be popover for iPad:
+        let controller = UIAlertController(title: "Ask To Interview", message: nil, preferredStyle: .actionSheet)
+        controller.popoverPresentationController?.sourceView = sender
+        controller.popoverPresentationController?.sourceRect = sender.bounds
+        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        
+        let facebookAction = UIAlertAction(title: "Ask on Facebook", style: .default) { action in
+            self.handleFacebookInvite()
+        }
+        controller.addAction(facebookAction)
+        
+        let messageAction = UIAlertAction(title: "Message...", style: .default) { action in
+            self.handleMessageInvite(sender: sender)
+        }
+        controller.addAction(messageAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        
+        self.present(controller, animated: true, completion: nil)
     }
     
-    //MARK: CollectionView
-    
-    private func setupCollectionView()
+    private func handleFacebookInvite()
     {
-        if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-            flowLayout.scrollDirection = .vertical
-            flowLayout.minimumLineSpacing = 0
-            flowLayout.sectionInset = .zero
-        }
+        print("handle facebook invite")
         
-        self.collectionView.contentInset.top = 12
-        self.collectionView?.addSubview(self.refreshControl)
+        //this is a bunch of test code:
+        
+        FacebookConnector().getTaggableFriends()
+        //FacebookConnector().lauchAppInvite(withPresenter: self)
+    }
+    
+    private func handleMessageInvite(sender: UIView)
+    {
+        //present UIActivityViewController,
+        //must be popover for iPad:
+        let message = COPY_MESSAGE_INVITE_INTERVIEW
+        let link = URL(string: "https://marvelapp.com/fj8ic86/screen/26066627")! //just a test appLink for angry birds...
+        
+        let controller = UIActivityViewController(activityItems: [message, link], applicationActivities: nil)
+        
+        controller.popoverPresentationController?.sourceView = sender
+        controller.popoverPresentationController?.sourceRect = sender.bounds
+        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        
+        self.present(controller, animated: true, completion: nil)
     }
     
     //MARK: MITVideoCollectionViewAdapterDelegate
@@ -125,22 +166,18 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     
     func accessoryView(for adapter: MITVideoCollectionViewAdapter) -> UIView
     {
-        let textActionView = MITTextActionView()
-        textActionView.title = "Make a Moment"
-        textActionView.message = "Who do you know that has a story to tell?"
-        textActionView.actionButton.setTitle("Ask To Interview", for: .normal)
+        let textActionView = MITTextActionView.mitAskToInterviewView()
         textActionView.actionButton.addTarget(self, action: #selector(handleAskToInterview), for: .touchUpInside)
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
-        
         containerView.addSubview(textActionView)
         textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0))
         
         return containerView
     }
     
-    //MARK: MITVideoCollectionViewAdapterPlayerDelegate
+    //MARK: MITVideoCollectionViewAdapterVideoDelegate
     
     func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
     {
@@ -156,9 +193,39 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         }
     }
     
+    func adapter(adapter: MITVideoCollectionViewAdapter, handleShareForVideo video: Video)
+    {
+        print("HANDLE SHARE")
+        
+        if let appLinkURL = URL(string: "https://fb.me/1717667415199470") {
+            
+            var linkContent = LinkShareContent(url: appLinkURL)
+            linkContent.taggedPeopleIds = ["AaL-AjaBzLgY9ZaI4rFzFHSExDOGyCieObP774k83t32sO3Fn-Hyvlk57dFukM9r_S20crRA4Rycw6euIzANw_ReAFrRg40zQhR6KkEYjcfrFg"]
+            
+            let dialog = ShareDialog(content: linkContent)
+            dialog.mode = .automatic
+            
+            dialog.completion = { result in
+                switch result {
+                case .success: print("\n\nsuccessful share\n")
+                case .cancelled: print("\n\ncancelled share\n")
+                case .failed(let error): print("\n\nError sharing: \(error)\n")
+                }
+            }
+            
+            do {
+                try dialog.show()
+            }
+            catch let error {
+                print(error)
+            }
+        }
+    }
+    
     //MARK: MITVideoCollectionViewAdapterInfiniteScrollDelegate
     
-    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping () -> Void) {
+    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping () -> Void)
+    {
         self.videoList.fetchNextCommunityVideos { (_, videos, error) in
             
             if let error = error {
@@ -195,5 +262,44 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
             self.adapter.videos = self.videoList.videos
             self.adapter.allowsInfiniteScrolling = true
         }
+    }
+    
+    //MARK: Utilities
+    
+    private func checkForUser(completion: @escaping () -> Void)
+    {
+        guard AccessToken.current != nil else {
+            
+            if let loginController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as?LoginController {
+                
+                loginController.loginCompletionHandler = {
+                    loginController.presentingViewController?.dismiss(animated: true) {
+                        completion()
+                    }
+                }
+                
+                self.present(loginController, animated: true, completion: nil)
+            }
+            
+            return
+        }
+        
+        /**
+         * LoginController will only call completion upon successful login, so at this point,
+         * we are all set with a current user (AccessToken.current is no longer nil...)
+         */
+        completion()
+    }
+    
+    private func setupCollectionView()
+    {
+        if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.scrollDirection = .vertical
+            flowLayout.minimumLineSpacing = 0
+            flowLayout.sectionInset = .zero
+        }
+        
+        self.collectionView.contentInset.top = 12
+        self.collectionView?.addSubview(self.refreshControl)
     }
 }

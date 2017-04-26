@@ -8,6 +8,14 @@
 
 import UIKit
 
+private let COPY_TITLE_ASK_TO_INTERVIEW = "Make a Moment"
+private let COPY_MESSAGE_ASK_TO_INTERVIEW = "Who do you know that has a story to tell?"
+private let COPY_TITLE_BUTTON_ASK_TO_INTERVIEW = "Ask To Interview"
+
+private let COPY_TITLE_EMPTY_STATE = "Where are all the moments?"
+private let COPY_MESSAGE_EMPTY_STATE = "Even if you're not ready to film, you can create the plans for an interview now."
+private let COPY_TITLE_BUTTON_EMPTY_STATE = "Let's make a moment"
+
 class MITTextActionView: TextActionView
 {
     override func setup()
@@ -24,5 +32,25 @@ class MITTextActionView: TextActionView
         self.setActionColor(UIColor.mitActionblue, forState: .normal)
         
         self.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    class func mitEmptyStateView() -> MITTextActionView
+    {
+        let view = MITTextActionView()
+        view.title = COPY_TITLE_EMPTY_STATE
+        view.message = COPY_MESSAGE_EMPTY_STATE
+        view.actionButton.setTitle(COPY_TITLE_BUTTON_EMPTY_STATE, for: .normal)
+        
+        return view
+    }
+    
+    class func mitAskToInterviewView() -> MITTextActionView
+    {
+        let textActionView = MITTextActionView()
+        textActionView.title = COPY_TITLE_ASK_TO_INTERVIEW
+        textActionView.message = COPY_MESSAGE_ASK_TO_INTERVIEW
+        textActionView.actionButton.setTitle(COPY_TITLE_BUTTON_ASK_TO_INTERVIEW, for: .normal)
+        
+        return textActionView
     }
 }

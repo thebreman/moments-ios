@@ -25,10 +25,7 @@ class MyMomentsController: UIViewController
     }()
     
     private var emptyStateView: MITTextActionView = {
-        let view = MITTextActionView()
-        view.title = "Where are all the moments?"
-        view.message = "Even if you're not ready to film, you can create the plans for an interview now."
-        view.actionButton.setTitle("Let's make a moment", for: .normal)
+        let view = MITTextActionView.mitEmptyStateView()
         view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
         return view
     }()
