@@ -183,7 +183,19 @@
                     <view key="view" contentMode="scaleToFill" id="CtR-e5-I0K">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="k1T-AX-1qx">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="k1T-AX-1qx" firstAttribute="top" secondItem="XDn-yZ-k2Z" secondAttribute="bottom" id="23L-rk-xDv"/>
+                            <constraint firstItem="k1T-AX-1qx" firstAttribute="leading" secondItem="CtR-e5-I0K" secondAttribute="leading" id="mqO-2K-upH"/>
+                            <constraint firstAttribute="trailing" secondItem="k1T-AX-1qx" secondAttribute="trailing" id="rae-fs-Fhf"/>
+                            <constraint firstAttribute="bottom" secondItem="k1T-AX-1qx" secondAttribute="bottom" id="yLp-Sm-Bmj"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Interviewing" id="aBd-GW-0ww">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="CZT-ic-RrD">
@@ -228,6 +240,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="saveButton" destination="c8b-JF-taG" id="FHd-aT-K3r"/>
+                        <outlet property="tableView" destination="k1T-AX-1qx" id="CHI-Oh-h4r"/>
+                        <outlet property="tableViewBottomConstraint" destination="yLp-Sm-Bmj" id="xR4-gH-Nea"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sI6-kf-q8o" userLabel="First Responder" sceneMemberID="firstResponder"/>
