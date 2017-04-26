@@ -17,6 +17,8 @@ import FacebookShare
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
+private let COPY_MESSAGE_INVITE_INTERVIEW = "Hello, I would like to interview you on the Moments In Time app!"
+
 class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterVideoDelegate, MITVideoCollectionViewAdapterInfiniteScrollDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
@@ -31,10 +33,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     }()
     
     private var emptyStateView: MITTextActionView = {
-        let view = MITTextActionView()
-        view.title = "Where are all the moments?"
-        view.message = "Even if you're not ready to film, you can create the plans for an interview now."
-        view.actionButton.setTitle("Let's make a moment", for: .normal)
+        let view = MITTextActionView.mitEmptyStateView()
         view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
         return view
     }()
@@ -146,8 +145,8 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     {
         //present UIActivityViewController,
         //must be popover for iPad:
-        let message = "Hello, I would like to interview you on the Moments In Time app!"
-        let link = URL(string: "https://marvelapp.com/fj8ic86/screen/26066627")!
+        let message = COPY_MESSAGE_INVITE_INTERVIEW
+        let link = URL(string: "https://marvelapp.com/fj8ic86/screen/26066627")! //just a test appLink for angry birds...
         
         let controller = UIActivityViewController(activityItems: [message, link], applicationActivities: nil)
         
@@ -167,10 +166,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     
     func accessoryView(for adapter: MITVideoCollectionViewAdapter) -> UIView
     {
-        let textActionView = MITTextActionView()
-        textActionView.title = "Make a Moment"
-        textActionView.message = "Who do you know that has a story to tell?"
-        textActionView.actionButton.setTitle("Ask To Interview", for: .normal)
+        let textActionView = MITTextActionView.mitAskToInterviewView()
         textActionView.actionButton.addTarget(self, action: #selector(handleAskToInterview), for: .touchUpInside)
         
         let containerView = UIView()
