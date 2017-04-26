@@ -16,9 +16,8 @@ import FacebookShare
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
-private let URL_APP_LINK_STRING = "https://fb.me/1717667415199470"
 
-class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterPlayerDelegate, MITVideoCollectionViewAdapterInfiniteScrollDelegate
+class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterVideoDelegate, MITVideoCollectionViewAdapterInfiniteScrollDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -47,7 +46,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
                                                    bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
         adapter.accessoryViewdelegate = self
-        adapter.playerDelegate = self
+        adapter.videoDelegate = self
         adapter.infiniteScrollDelegate = self
         adapter.allowsInfiniteScrolling = true
         return adapter
@@ -136,24 +135,8 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         
         //this is a bunch of test code:
         
-        if let appURL = URL(string: URL_APP_LINK_STRING) {
-            
-            let invite = AppInvite(appLink: appURL)
-            
-            do {
-                
-                //find out if DoCatch is necessary here:
-                try AppInvite.Dialog.show(from: self, invite: invite, completion: { result in
-                    switch result {
-                    case .success: print("successful fb invite")
-                    case .failed(let error): print("failed with error: \(error)")
-                    }
-                })
-            }
-            catch let error {
-                print(error)
-            }
-        }
+        FacebookConnector().getTaggableFriends()
+        //FacebookConnector().lauchAppInvite(withPresenter: self)
     }
     
     private func handleMessageInvite(sender: UIView)
@@ -195,7 +178,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         return containerView
     }
     
-    //MARK: MITVideoCollectionViewAdapterPlayerDelegate
+    //MARK: MITVideoCollectionViewAdapterVideoDelegate
     
     func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
     {
@@ -207,6 +190,35 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
             
             if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
                 self.performSegue(withIdentifier: IDENTIFIER_SEGUE_PLAYER, sender: videoURL)
+            }
+        }
+    }
+    
+    func adapter(adapter: MITVideoCollectionViewAdapter, handleShareForVideo video: Video)
+    {
+        print("HANDLE SHARE")
+        
+        if let appLinkURL = URL(string: "https://fb.me/1717667415199470") {
+            
+            var linkContent = LinkShareContent(url: appLinkURL)
+            linkContent.taggedPeopleIds = ["AaL-AjaBzLgY9ZaI4rFzFHSExDOGyCieObP774k83t32sO3Fn-Hyvlk57dFukM9r_S20crRA4Rycw6euIzANw_ReAFrRg40zQhR6KkEYjcfrFg"]
+            
+            let dialog = ShareDialog(content: linkContent)
+            dialog.mode = .automatic
+            
+            dialog.completion = { result in
+                switch result {
+                case .success: print("\n\nsuccessful share\n")
+                case .cancelled: print("\n\ncancelled share\n")
+                case .failed(let error): print("\n\nError sharing: \(error)\n")
+                }
+            }
+            
+            do {
+                try dialog.show()
+            }
+            catch let error {
+                print(error)
             }
         }
     }
@@ -259,19 +271,21 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     {
         guard AccessToken.current != nil else {
             
-            let loginController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as! LoginController
-            
-            loginController.loginCompletionHandler = {
-                loginController.presentingViewController?.dismiss(animated: true) {
-                    completion()
+            if let loginController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as?LoginController {
+                
+                loginController.loginCompletionHandler = {
+                    loginController.presentingViewController?.dismiss(animated: true) {
+                        completion()
+                    }
                 }
+                
+                self.present(loginController, animated: true, completion: nil)
             }
             
-            self.present(loginController, animated: true, completion: nil)
             return
         }
         
-        /*
+        /**
          * LoginController will only call completion upon successful login, so at this point,
          * we are all set with a current user (AccessToken.current is no longer nil...)
          */

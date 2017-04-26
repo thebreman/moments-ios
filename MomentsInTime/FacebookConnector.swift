@@ -9,9 +9,31 @@
 import Foundation
 import FacebookCore
 import FacebookLogin
+import FacebookShare
 
-private let VERSION_GRAPH_API = GraphAPIVersion(stringLiteral: "2.8")
+private let VERSION_GRAPH_API = GraphAPIVersion(stringLiteral: "2.9")
 private let PERMISSION_PUBLISH_ACTIONS = Permission(name: "publish_actions")
+private let URL_APP_LINK_STRING = "https://fb.me/1717667415199470"
+
+struct MyTaggableFriendsRequest: GraphRequestProtocol
+{
+    var graphPath: String = "/me/taggable_friends"
+    var accessToken: AccessToken? = AccessToken.current
+    var httpMethod: GraphRequestHTTPMethod = .GET
+    var apiVersion: GraphAPIVersion = VERSION_GRAPH_API
+    
+    var parameters: [String : Any]? = ["fields": "data, id, name, picture, paging", "limit": "500"]
+    
+    struct Response: GraphResponseProtocol
+    {
+        init(rawResponse: Any?) {
+            
+            //parse JSON:
+            //the response ids are taggable ids that can be made in a post (place must be supplied as well)
+            print(rawResponse)
+        }
+    }
+}
 
 struct MyFeedPublishRequest: GraphRequestProtocol
 {
@@ -57,6 +79,39 @@ struct MyFeedPostUpdateRequest: GraphRequestProtocol
 
 class FacebookConnector: NSObject
 {
+    func lauchAppInvite(withPresenter presenter: UIViewController)
+    {
+        if let appURL = URL(string: URL_APP_LINK_STRING) {
+            
+            let invite = AppInvite(appLink: appURL)
+            
+            do {
+                
+                //find out if DoCatch is necessary for this:
+                try AppInvite.Dialog.show(from: presenter, invite: invite, completion: { result in
+                    switch result {
+                    case .success: print("successful fb invite")
+                    case .failed(let error): print("failed with error: \(error)")
+                    }
+                })
+            }
+            catch let error {
+                print(error)
+            }
+        }
+    }
+    
+    func getTaggableFriends()
+    {
+        let connection = GraphRequestConnection()
+        
+        connection.add(MyTaggableFriendsRequest()) { (response, result) in
+            print("result: \(result)")
+        }
+        
+        connection.start()
+    }
+    
     func publishVideoToFacebook()
     {
         self.checkPermissions { granted, error in

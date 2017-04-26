@@ -16,6 +16,7 @@ private var _sizingWidth = NSLayoutConstraint()
 protocol VideoCellDelegate: class
 {
     func videoCell(_ videoCell: VideoCell, playButtonWasTappedForVideo video: Video)
+    func videoCell(_ videoCell: VideoCell, shareButtonWasTappedForVideo video: Video)
 }
 
 class VideoCell: UICollectionViewCell
@@ -77,7 +78,9 @@ class VideoCell: UICollectionViewCell
     
     @IBAction func handleShare(_ sender: UIButton)
     {
-        print("handle Share")
+        if let video = self.video {
+            self.delegate?.videoCell(self, shareButtonWasTappedForVideo: video)
+        }
     }
     
     @IBAction func handleOptions(_ sender: UIButton)

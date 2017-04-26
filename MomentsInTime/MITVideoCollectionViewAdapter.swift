@@ -24,9 +24,10 @@ protocol MITVideoCollectionViewAdapterDelegate: class
 }
 
 //delegate to pass which video needs to be played after user taps playButton:
-protocol MITVideoCollectionViewAdapterPlayerDelegate: class
+protocol MITVideoCollectionViewAdapterVideoDelegate: class
 {
     func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
+    func adapter(adapter:  MITVideoCollectionViewAdapter, handleShareForVideo video: Video)
 }
 
 //delegate for fetch/ infinite scroll provides view to be displayed while fetching and handles fetching more content:
@@ -52,7 +53,7 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
         }
     }
     
-    weak var playerDelegate: MITVideoCollectionViewAdapterPlayerDelegate?
+    weak var videoDelegate: MITVideoCollectionViewAdapterVideoDelegate?
     
     weak var infiniteScrollDelegate: MITVideoCollectionViewAdapterInfiniteScrollDelegate? {
         didSet {
@@ -259,7 +260,12 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
     
     func videoCell(_ videoCell: VideoCell, playButtonWasTappedForVideo video: Video)
     {
-        self.playerDelegate?.adapter(adapter: self, handlePlayForVideo: video)
+        self.videoDelegate?.adapter(adapter: self, handlePlayForVideo: video)
+    }
+    
+    func videoCell(_ videoCell: VideoCell, shareButtonWasTappedForVideo video: Video)
+    {
+        self.videoDelegate?.adapter(adapter: self, handleShareForVideo: video)
     }
     
     //MARK: Utilities
