@@ -25,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="bMn-n8-g2U"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="bMn-n8-g2U"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ud3-Pe-jDb">
                                     <size key="itemSize" width="50" height="50"/>
@@ -163,11 +163,138 @@
                     <connections>
                         <outlet property="submitButton" destination="bFu-MX-Ugj" id="Ksm-aP-c7B"/>
                         <outlet property="tableView" destination="TYd-KS-ATk" id="zWp-4g-Q6y"/>
+                        <segue destination="tMY-Ml-CZK" kind="presentation" identifier="newMomentToInterviewing" id="8pJ-IV-bfk"/>
+                        <segue destination="eLY-2x-A2x" kind="presentation" identifier="newMomentToDescription" id="sBM-Up-TOI"/>
+                        <segue destination="9RF-7C-mDN" kind="presentation" identifier="newMomentToNote" id="NOG-fl-7Zg"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="di5-tN-qqt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3780" y="1245"/>
+            <point key="canvasLocation" x="3854" y="1245"/>
+        </scene>
+        <!--Interviewing-->
+        <scene sceneID="0iV-7p-cj8">
+            <objects>
+                <viewController id="qHi-UL-7Kj" customClass="InterviewingController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XDn-yZ-k2Z"/>
+                        <viewControllerLayoutGuide type="bottom" id="Eox-AA-ssn"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="CtR-e5-I0K">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Interviewing" id="aBd-GW-0ww">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="CZT-ic-RrD">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="f02-nN-aR0" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="16" y="-1" width="82" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleCancel:" destination="qHi-UL-7Kj" eventType="touchUpInside" id="8eE-u5-1si"/>
+                                    <action selector="handleCancel:" destination="XSC-mP-BNu" eventType="touchUpInside" id="WBw-f6-UXu"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="Rv8-WM-U0F">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="c8b-JF-taG" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="276" y="5" width="83" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.69999999999999996" alpha="0.80249357880000005" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleSave:" destination="qHi-UL-7Kj" eventType="touchUpInside" id="sKr-we-CNH"/>
+                                    <action selector="handleSubmit:" destination="XSC-mP-BNu" eventType="touchUpInside" id="TUf-d6-Mrs"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="saveButton" destination="c8b-JF-taG" id="FHd-aT-K3r"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sI6-kf-q8o" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6134" y="439"/>
+        </scene>
+        <!--Description-->
+        <scene sceneID="QiY-GO-5Kb">
+            <objects>
+                <viewController id="Lvh-lQ-yEb" customClass="DescriptionController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WVI-sw-M4W"/>
+                        <viewControllerLayoutGuide type="bottom" id="qe9-n0-jKR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="GOb-D2-iXN">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Description" id="mCY-F3-CcA">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="BAb-il-25D">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zPu-rH-bon" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="16" y="-1" width="82" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleCancel:" destination="XSC-mP-BNu" eventType="touchUpInside" id="0PS-IF-61A"/>
+                                    <action selector="handleCancel:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="bau-Hr-eRO"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="hiF-26-XhS">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="KOz-BU-xch" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="276" y="5" width="83" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.69999999999999996" alpha="0.80249357880000005" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleSave:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="zRw-u4-dcb"/>
+                                    <action selector="handleSubmit:" destination="XSC-mP-BNu" eventType="touchUpInside" id="5Bt-Jd-e2c"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="saveButton" destination="KOz-BU-xch" id="xM5-Ft-XCC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="y9b-tJ-VdU" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6134" y="1148"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="RGx-Nt-bJ5">
@@ -207,7 +334,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JMn-yY-RYv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-26" y="-400"/>
+            <point key="canvasLocation" x="-1054" y="396"/>
         </scene>
         <!--Community-->
         <scene sceneID="GZ3-ca-aEy">
@@ -252,7 +379,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="600" id="skc-C7-YmQ"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="skc-C7-YmQ"/>
                                 </constraints>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="NyD-Sg-vYh">
                                     <size key="itemSize" width="50" height="50"/>
@@ -325,6 +452,137 @@
             </objects>
             <point key="canvasLocation" x="948" y="866"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="XEI-he-jP4">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="tMY-Ml-CZK" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="MWq-af-ZAP">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="qHi-UL-7Kj" kind="relationship" relationship="rootViewController" id="8nS-mF-GG8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HQM-nh-Zk7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5350" y="439"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Y92-3o-C5a">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eLY-2x-A2x" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Qw1-bp-rmF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Lvh-lQ-yEb" kind="relationship" relationship="rootViewController" id="WBG-E2-7q5"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VVp-P0-Fo7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5350" y="1149"/>
+        </scene>
+        <!--Note-->
+        <scene sceneID="cfJ-U8-CIV">
+            <objects>
+                <viewController id="HDo-Wc-r1l" customClass="NewNoteController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ejd-tP-QkD"/>
+                        <viewControllerLayoutGuide type="bottom" id="owS-Xx-wEe"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="x4a-Vn-e2l">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Note" id="v5o-CQ-JRy">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="2QB-qu-9dd">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hfD-xo-ven" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="16" y="-1" width="82" height="45"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleCancel:" destination="XSC-mP-BNu" eventType="touchUpInside" id="n96-Ij-MFO"/>
+                                    <action selector="handleCancel:" destination="HDo-Wc-r1l" eventType="touchUpInside" id="qfs-bL-58q"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="aeB-cv-2Wh">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="u9V-nI-C9z" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="276" y="5" width="83" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <state key="normal" title="Save">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="disabled">
+                                    <color key="titleColor" white="0.69999999999999996" alpha="0.80249357880000005" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleSave:" destination="HDo-Wc-r1l" eventType="touchUpInside" id="L9m-HZ-9p0"/>
+                                    <action selector="handleSubmit:" destination="XSC-mP-BNu" eventType="touchUpInside" id="FDK-Ly-yuI"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="saveButton" destination="u9V-nI-C9z" id="PrI-by-Npw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sci-6F-vfs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6134" y="1839"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="koX-No-pxd">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9RF-7C-mDN" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Txa-ws-fil">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="HDo-Wc-r1l" kind="relationship" relationship="rootViewController" id="qHr-ZW-uoo"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9xb-2G-kJB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5350" y="1838"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Community" width="24" height="18"/>
@@ -332,6 +590,6 @@
         <image name="PlusButton" width="18" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="o7j-gd-ln6"/>
+        <segue reference="ibu-DI-7Ln"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -29,6 +29,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLink"
         static let IDENTIFIER_CELL_NOTE = "note"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
+        
+        enum Segues
+        {
+            static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
+            static let ENTER_ITERVIEW_DESCRIPTION = "newMomentToDescription"
+            static let ENTER_NEW_NOTE = "newMomentToNote"
+        }
     }
     
     private var maxVideoDuration: TimeInterval {
@@ -150,12 +157,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         switch selection {
         
         case COPY_SELECT_INTERVIEW_SUBJECT:
-            print("select interview subject")
-            break
+            self.handleInterviewSubject(fromView: activeLinkCell.activeLabel)
             
         case COPY_CREATE_DESCRIPTION:
-            print("create description")
-            break
+            self.handleInterviewDescription()
             
         case COPY_LINK_START_FILMING:
             self.openCamera(fromView: activeLinkCell.activeLabel)
@@ -164,8 +169,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             self.openPhotos(fromView: activeLinkCell.detailDisclosureButton)
             
         case COPY_CREATE_NOTE:
-            print("add note")
-            break
+            self.handleNoteCreation()
             
         default:
             break
@@ -181,6 +185,69 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     //MARK: Utilities:
+    
+    private func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
+            cell.activeLabel.text = setting.text
+            cell.activeLinks = setting.activeLinks
+            cell.detailDisclosureButton.isHidden = (setting == .video ? false : true)
+            cell.delegate = self
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return ActiveLinkCell()
+    }
+    
+    private func noteCell(forNote note: Note, withTableView tableView: UITableView) -> MITNoteCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_NOTE) as? MITNoteCell {
+            cell.noteTextLabel.text = note.text
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return MITNoteCell()
+    }
+    
+    private func handleInterviewSubject(fromView sender: UIView)
+    {
+        let controller = UIAlertController(title: "Interviewee", message: nil, preferredStyle: .actionSheet)
+        controller.popoverPresentationController?.sourceView = sender
+        controller.popoverPresentationController?.sourceRect = sender.bounds
+        controller.popoverPresentationController?.permittedArrowDirections = [.up]
+        
+        let facebookAction = UIAlertAction(title: "Pick from Facebook", style: .default) { action in
+            self.handleFacebookInterviewSelection()
+        }
+        controller.addAction(facebookAction)
+        
+        let manualAction = UIAlertAction(title: "Enter Manually", style: .default) { action in
+            self.handleManualInterviewSelection()
+        }
+        controller.addAction(manualAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    private func handleFacebookInterviewSelection()
+    {
+        print("Pick from Facebook")
+    }
+    
+    private func handleManualInterviewSelection()
+    {
+        self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_SUBJECT, sender: nil)
+    }
+    
+    private func handleInterviewDescription()
+    {
+        self.performSegue(withIdentifier: Identifiers.Segues.ENTER_ITERVIEW_DESCRIPTION, sender: nil)
+    }
     
     private func openCamera(fromView sender: UIView)
     {
@@ -247,28 +314,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.present(pickerController, animated: true, completion: nil)
     }
     
-    private func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell
+    private func handleNoteCreation()
     {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
-            cell.activeLabel.text = setting.text
-            cell.activeLinks = setting.activeLinks
-            cell.detailDisclosureButton.isHidden = (setting == .video ? false : true)
-            cell.delegate = self
-            return cell
-        }
-        
-        assert(false, "dequeued cell was of unknown type")
-        return ActiveLinkCell()
-    }
-    
-    private func noteCell(forNote note: Note, withTableView tableView: UITableView) -> MITNoteCell
-    {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_NOTE) as? MITNoteCell {
-            cell.noteTextLabel.text = note.text
-            return cell
-        }
-        
-        assert(false, "dequeued cell was of unknown type")
-        return MITNoteCell()
+        self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: nil)
     }
 }

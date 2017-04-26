@@ -40,6 +40,9 @@
 		688E5D0B1EA7152A00BF258F /* NewMomentSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E5D0A1EA7152A00BF258F /* NewMomentSetting.swift */; };
 		688E5D0D1EA74A2C00BF258F /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E5D0C1EA74A2C00BF258F /* Note.swift */; };
 		688E5D0F1EA883BA00BF258F /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E5D0E1EA883BA00BF258F /* Alerts.swift */; };
+		688E998D1EB07D1200AEF2F7 /* NewNoteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E998C1EB07D1200AEF2F7 /* NewNoteController.swift */; };
+		688E998F1EB07D2E00AEF2F7 /* DescriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E998E1EB07D2E00AEF2F7 /* DescriptionController.swift */; };
+		688E99911EB07D3B00AEF2F7 /* InterviewingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E99901EB07D3B00AEF2F7 /* InterviewingController.swift */; };
 		68C0682A1EA0924B0037D4A3 /* NewMomentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C068291EA0924B0037D4A3 /* NewMomentController.swift */; };
 		68E580591EA37504002E8C6A /* TextActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E580581EA37504002E8C6A /* TextActionView.swift */; };
 		68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FED1E824DE100C1B320 /* Fonts.swift */; };
@@ -106,6 +109,9 @@
 		688E5D0A1EA7152A00BF258F /* NewMomentSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMomentSetting.swift; sourceTree = "<group>"; };
 		688E5D0C1EA74A2C00BF258F /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		688E5D0E1EA883BA00BF258F /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
+		688E998C1EB07D1200AEF2F7 /* NewNoteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewNoteController.swift; sourceTree = "<group>"; };
+		688E998E1EB07D2E00AEF2F7 /* DescriptionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionController.swift; sourceTree = "<group>"; };
+		688E99901EB07D3B00AEF2F7 /* InterviewingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterviewingController.swift; sourceTree = "<group>"; };
 		68C068291EA0924B0037D4A3 /* NewMomentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMomentController.swift; sourceTree = "<group>"; };
 		68E580581EA37504002E8C6A /* TextActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextActionView.swift; sourceTree = "<group>"; };
 		68EB8FED1E824DE100C1B320 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -209,12 +215,10 @@
 			isa = PBXGroup;
 			children = (
 				68C068291EA0924B0037D4A3 /* NewMomentController.swift */,
-				680CA52A1EA5F36E006A735E /* MITSectionHeaderView.xib */,
-				680CA5241EA5DEB8006A735E /* MITSectionHeaderView.swift */,
-				680CA52C1EA5FCAA006A735E /* MITNoteCell.xib */,
-				680CA52E1EA5FD3A006A735E /* MITNoteCell.swift */,
-				680C20651EA5C9F400757608 /* ActiveLinkCell.xib */,
-				680C20671EA5CB0D00757608 /* ActiveLinkCell.swift */,
+				688E99891EB07CC500AEF2F7 /* Interviewing Flow */,
+				688E998B1EB07CCD00AEF2F7 /* Description Flow */,
+				688E998A1EB07CCA00AEF2F7 /* New Note Flow */,
+				688E99921EB07D9000AEF2F7 /* Utilities */,
 			);
 			name = "New Moment Flow";
 			sourceTree = "<group>";
@@ -225,6 +229,43 @@
 				688133BE1EAF22DF00696D58 /* LoginController.swift */,
 			);
 			name = "Login Flow";
+			sourceTree = "<group>";
+		};
+		688E99891EB07CC500AEF2F7 /* Interviewing Flow */ = {
+			isa = PBXGroup;
+			children = (
+				688E99901EB07D3B00AEF2F7 /* InterviewingController.swift */,
+			);
+			name = "Interviewing Flow";
+			sourceTree = "<group>";
+		};
+		688E998A1EB07CCA00AEF2F7 /* New Note Flow */ = {
+			isa = PBXGroup;
+			children = (
+				688E998C1EB07D1200AEF2F7 /* NewNoteController.swift */,
+			);
+			name = "New Note Flow";
+			sourceTree = "<group>";
+		};
+		688E998B1EB07CCD00AEF2F7 /* Description Flow */ = {
+			isa = PBXGroup;
+			children = (
+				688E998E1EB07D2E00AEF2F7 /* DescriptionController.swift */,
+			);
+			name = "Description Flow";
+			sourceTree = "<group>";
+		};
+		688E99921EB07D9000AEF2F7 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				680CA52A1EA5F36E006A735E /* MITSectionHeaderView.xib */,
+				680CA5241EA5DEB8006A735E /* MITSectionHeaderView.swift */,
+				680CA52C1EA5FCAA006A735E /* MITNoteCell.xib */,
+				680CA52E1EA5FD3A006A735E /* MITNoteCell.swift */,
+				680C20651EA5C9F400757608 /* ActiveLinkCell.xib */,
+				680C20671EA5CB0D00757608 /* ActiveLinkCell.swift */,
+			);
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 		68EB8FEC1E824DC200C1B320 /* Utilities */ = {
@@ -546,6 +587,7 @@
 				68EB8FF51E825A3C00C1B320 /* MITTabBar.swift in Sources */,
 				688133C31EAF26AC00696D58 /* FacebookConnector.swift in Sources */,
 				680CA52F1EA5FD3A006A735E /* MITNoteCell.swift in Sources */,
+				688E998F1EB07D2E00AEF2F7 /* DescriptionController.swift in Sources */,
 				688E5D0B1EA7152A00BF258F /* NewMomentSetting.swift in Sources */,
 				6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */,
 				680BE07D1E8E20A200A5D339 /* VideoCell.swift in Sources */,
@@ -554,6 +596,7 @@
 				68EB8FF01E824E2800C1B320 /* Colors.swift in Sources */,
 				68E580591EA37504002E8C6A /* TextActionView.swift in Sources */,
 				68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */,
+				688E998D1EB07D1200AEF2F7 /* NewNoteController.swift in Sources */,
 				6811AE1F1EAC763E004386E4 /* SpinnerCell.swift in Sources */,
 				680BE07F1E8E2C9500A5D339 /* Views.swift in Sources */,
 				688133BF1EAF22DF00696D58 /* LoginController.swift in Sources */,
@@ -562,6 +605,7 @@
 				680CEB9B1E9F67B0009ED223 /* BackgroundSessionManagers.swift in Sources */,
 				6825E13D1EA2119F003DEF20 /* MITEmptyStateView.swift in Sources */,
 				680BE08B1E8E2E9B00A5D339 /* UploadRouter.swift in Sources */,
+				688E99911EB07D3B00AEF2F7 /* InterviewingController.swift in Sources */,
 				680CA5251EA5DEB8006A735E /* MITSectionHeaderView.swift in Sources */,
 				680BE0811E8E2C9D00A5D339 /* ViewControllers.swift in Sources */,
 				D332E6471E80BE6C00778462 /* AppDelegate.swift in Sources */,
