@@ -11,7 +11,6 @@ import UIKit
 private let COPY_TEXT_PLACEHOLDER_NAME_FIELD = "Enter name"
 private let COPY_TEXT_PLACEHOLDER_ROLE_FIELD = "Enter role"
 private let COPY_TITLE_BUTTON_SELECT_PICTURE = "Select from camera roll"
-
 enum InterviewingSection: Int
 {
     case name = 0
@@ -45,6 +44,11 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         static let IDENTIFIER_CELL_TEXT_FIELD = "textFieldCell"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
     }
+    
+    private lazy var cameraMan: CameraMan = {
+        let cameraMan = CameraMan()
+        return cameraMan
+    }()
     
     override func viewDidLoad()
     {
@@ -134,7 +138,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, handleSelection selection: String)
     {
         guard selection == COPY_TITLE_BUTTON_SELECT_PICTURE else { return }
-        self.openPhotos(fromView: activeLinkCell.activeLabel) //move all of this into CameraMan
+        self.openPhotoPicker(fromView: activeLinkCell.activeLabel)
     }
     
     //MARK: Utilities
@@ -164,8 +168,20 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         return ActiveLinkCell()
     }
     
-    private func openPhotos(fromView sender: UIView)
+    private func openPhotoPicker(fromView sender: UIView)
     {
-        print("open Photos")
+        //must configure popover for iPad support,
+        //iphone will adapt to fullscreen modal automatically:
+        self.cameraMan.pickerController.modalPresentationStyle = .popover
+        self.cameraMan.pickerController.popoverPresentationController?.sourceView = sender
+        self.cameraMan.pickerController.popoverPresentationController?.sourceRect = sender.bounds
+        self.cameraMan.pickerController.popoverPresentationController?.permittedArrowDirections = [.up]
+        
+        self.cameraMan.getPhotoFromLibrary(withPresenter: self) { image in
+            
+            if let interviewSubjectImage = image {
+                print("success we got the image for the interview subject")
+            }
+        }
     }
 }
