@@ -13,7 +13,7 @@ extension UIAlertController
     static func explain(withPresenter presenter: UIViewController, title: String?, message: String?)
     {
         let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "got it", style: .cancel, handler: nil)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         controller.addAction(okAction)
         presenter.present(controller, animated: true, completion: nil)
     }

@@ -11,14 +11,6 @@ import MobileCoreServices
 import AVFoundation
 import Photos
 
-private let COPY_TITLE_ALERT = "Oh No!"
-private let COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE = "We need permission to access your Photos, please change privacy settings."
-private let COPY_DENIED_CAMERA_ACCESS_MESSAGE = "We need permission to use the Camera and the Microphone, please change privacy settings."
-private let COPY_CAMERA_UNAVAILABLE_MESSAGE = "It looks like the Video Camera is unavailable. You can upload a video from you Photos Library instead."
-private let COPY_VIDEO_MEDIA_TYPE_UNAVAILABLE_PHOTO_LIBRARY_MESSAGE = "There are no available videos in your Photo Library."
-
-private let DURATION_MAX_VIDEO_MINUTES = 20
-
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
     @IBOutlet weak var submitButton: BouncingButton!
@@ -38,11 +30,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    private var maxVideoDuration: TimeInterval {
-        let minute: TimeInterval = 60.0
-        let seconds: TimeInterval = Double(DURATION_MAX_VIDEO_MINUTES) * minute
-        return seconds
-    }
+    private var cameraMan: CameraMan = {
+        let cameraMan = CameraMan()
+        cameraMan.maxVideoDurationMinutes = 20
+        return cameraMan
+    }()
     
     override func viewDidLoad()
     {
@@ -163,7 +155,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             self.handleInterviewDescription()
             
         case COPY_LINK_START_FILMING:
-            self.openCamera(fromView: activeLinkCell.activeLabel)
+            self.openVideoCamera()
             
         case COPY_LINK_UPLOAD_VIDEO:
             self.openPhotos(fromView: activeLinkCell.detailDisclosureButton)
@@ -185,6 +177,39 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     //MARK: Utilities:
+    
+    private func openVideoCamera()
+    {
+        self.cameraMan.getVideoFromCamera(withPresenter: self) { url in
+            
+            if let videoURL = url {
+                print("YES we have the video url from the camera!!!! \(videoURL)")
+            }
+            else {
+                print("No we did not get the video url from the camera")
+            }
+        }
+    }
+    
+    private func openPhotos(fromView sender: UIView)
+    {
+        //must configure popover for iPad support,
+        //iphone will adapt to fullscreen modal automatically:
+        self.cameraMan.pickerController.modalPresentationStyle = .popover
+        self.cameraMan.pickerController.popoverPresentationController?.sourceView = sender
+        self.cameraMan.pickerController.popoverPresentationController?.sourceRect = CGRect(origin: CGPoint(x: sender.bounds.midX, y: sender.bounds.minY), size: sender.bounds.size)
+        self.cameraMan.pickerController.popoverPresentationController?.permittedArrowDirections = [.left]
+        
+        self.cameraMan.getVideoFromLibrary(withPresenter: self) { url in
+            
+            if let videoURL = url {
+                print("YES we have the video url from the picker!!!! \(videoURL)")
+            }
+            else {
+                print("No we did not get the video url from the picker")
+            }
+        }
+    }
     
     private func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell
     {
@@ -247,71 +272,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func handleInterviewDescription()
     {
         self.performSegue(withIdentifier: Identifiers.Segues.ENTER_ITERVIEW_DESCRIPTION, sender: nil)
-    }
-    
-    private func openCamera(fromView sender: UIView)
-    {
-        let sourceType = UIImagePickerControllerSourceType.camera
-        let mediaType = kUTTypeMovie as String
-        
-        //check that we have a camera that can record video and verify mediaType:
-        guard UIImagePickerController.isSourceTypeAvailable(sourceType),
-            let mediaTypes = UIImagePickerController.availableMediaTypes(for: sourceType),
-            mediaTypes.contains(mediaType) else {
-                UIAlertController.explain(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_CAMERA_UNAVAILABLE_MESSAGE)
-                return
-        }
-        
-        AVCaptureDevice.verifyVideoAndAudioAuthorization(authorizedHandler: {
-            
-            self.showImagePicker(forSourceType: sourceType, mediaTypes: [mediaType], fromView: sender)
-            
-        }, notAuthorizedHandler: {
-            
-            UIAlertController.alertUser(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_DENIED_CAMERA_ACCESS_MESSAGE, okButton: true, settingsButton: true)
-        })
-    }
-    
-    private func openPhotos(fromView sender: UIView)
-    {
-        let sourceType = UIImagePickerControllerSourceType.photoLibrary
-        let mediaType = kUTTypeMovie as String
-        
-        //verify mediaType:
-        guard let mediaTypes = UIImagePickerController.availableMediaTypes(for: sourceType), mediaTypes.contains(mediaType) else {
-            UIAlertController.explain(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_VIDEO_MEDIA_TYPE_UNAVAILABLE_PHOTO_LIBRARY_MESSAGE)
-            return
-        }
-        
-        //verify Photo Library authorization and proceed accordingly:
-        PHPhotoLibrary.verifyAuthorization(authorizedHandler: {
-            
-            self.showImagePicker(forSourceType: .photoLibrary, mediaTypes: [mediaType], fromView: sender)
-
-        }, notAuthorizedHandler: {
-            
-            UIAlertController.alertUser(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: true, settingsButton: true)
-        })
-    }
-    
-    private func showImagePicker(forSourceType sourceType: UIImagePickerControllerSourceType, mediaTypes: [String], fromView sender: UIView)
-    {
-        let pickerController = UIImagePickerController()
-        pickerController.sourceType = sourceType
-        pickerController.mediaTypes = mediaTypes
-        pickerController.allowsEditing = true
-        pickerController.delegate = self
-        
-        //for photoLibrary sourceType, iPad must use popover (for camera it should be fullscreeen).
-        //on iPhone, default popover adapts to modal fullscreen automatically:
-        pickerController.modalPresentationStyle = (sourceType == .camera ? .fullScreen : .popover)
-        
-        let presentationController = pickerController.popoverPresentationController
-        presentationController?.sourceView = sender
-        presentationController?.sourceRect = CGRect(origin: CGPoint(x: sender.bounds.midX, y: sender.bounds.minY), size: sender.bounds.size)
-        presentationController?.permittedArrowDirections = [.left]
-        
-        self.present(pickerController, animated: true, completion: nil)
     }
     
     private func handleNoteCreation()
