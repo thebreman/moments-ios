@@ -35,6 +35,7 @@
                     </view>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3bK-O3-ApD">
                         <rect key="frame" x="16" y="0.5" width="343" height="50.5"/>
+                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <textInputTraits key="textInputTraits"/>

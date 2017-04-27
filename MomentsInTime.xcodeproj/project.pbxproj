@@ -50,6 +50,8 @@
 		68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FED1E824DE100C1B320 /* Fonts.swift */; };
 		68EB8FF01E824E2800C1B320 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FEF1E824E2800C1B320 /* Colors.swift */; };
 		68EB8FF51E825A3C00C1B320 /* MITTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FF41E825A3C00C1B320 /* MITTabBar.swift */; };
+		68EC74081EB1A7570048DAD2 /* TextViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68EC74071EB1A7570048DAD2 /* TextViewCell.xib */; };
+		68EC740A1EB1A7680048DAD2 /* TextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC74091EB1A7680048DAD2 /* TextViewCell.swift */; };
 		7CB5F5B1B5E790D27F010AAB /* Pods_MomentsInTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */; };
 		D332E6471E80BE6C00778462 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D332E6461E80BE6C00778462 /* AppDelegate.swift */; };
 		D332E64C1E80BE6C00778462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D332E64A1E80BE6C00778462 /* Main.storyboard */; };
@@ -121,6 +123,8 @@
 		68EB8FED1E824DE100C1B320 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		68EB8FEF1E824E2800C1B320 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		68EB8FF41E825A3C00C1B320 /* MITTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITTabBar.swift; sourceTree = "<group>"; };
+		68EC74071EB1A7570048DAD2 /* TextViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextViewCell.xib; sourceTree = "<group>"; };
+		68EC74091EB1A7680048DAD2 /* TextViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
 		97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MomentsInTime.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D332E6431E80BE6C00778462 /* MomentsInTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomentsInTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D332E6461E80BE6C00778462 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -255,6 +259,8 @@
 			isa = PBXGroup;
 			children = (
 				688E998E1EB07D2E00AEF2F7 /* DescriptionController.swift */,
+				68EC74071EB1A7570048DAD2 /* TextViewCell.xib */,
+				68EC74091EB1A7680048DAD2 /* TextViewCell.swift */,
 			);
 			name = "Description Flow";
 			sourceTree = "<group>";
@@ -510,6 +516,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D332E6511E80BE6C00778462 /* LaunchScreen.storyboard in Resources */,
+				68EC74081EB1A7570048DAD2 /* TextViewCell.xib in Resources */,
 				680BE07B1E8E204000A5D339 /* VideoCell.xib in Resources */,
 				680B9B381EB1449E003FE7E5 /* TextFieldCell.xib in Resources */,
 				680CA52B1EA5F36E006A735E /* MITSectionHeaderView.xib in Resources */,
@@ -599,6 +606,7 @@
 				6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */,
 				680BE07D1E8E20A200A5D339 /* VideoCell.swift in Sources */,
 				6825E1371EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift in Sources */,
+				68EC740A1EB1A7680048DAD2 /* TextViewCell.swift in Sources */,
 				6804A0CE1EAAFEB90012193C /* CameraMan.swift in Sources */,
 				68EB8FF01E824E2800C1B320 /* Colors.swift in Sources */,
 				68E580591EA37504002E8C6A /* TextActionView.swift in Sources */,

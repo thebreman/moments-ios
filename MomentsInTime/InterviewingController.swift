@@ -11,6 +11,8 @@ import UIKit
 private let COPY_TEXT_PLACEHOLDER_NAME_FIELD = "Enter name"
 private let COPY_TEXT_PLACEHOLDER_ROLE_FIELD = "Enter role"
 private let COPY_TITLE_BUTTON_SELECT_PICTURE = "Select from camera roll"
+
+//find out if this is weird and whether or not it should be in InterviewingController, or even in its own file?
 enum InterviewingSection: Int
 {
     case name = 0
