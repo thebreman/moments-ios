@@ -34,7 +34,7 @@
                         </constraints>
                     </view>
                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" keyboardDismissMode="interactive" translatesAutoresizingMaskIntoConstraints="NO" id="3n2-bs-R5N">
-                        <rect key="frame" x="16" y="12.5" width="323" height="180.5"/>
+                        <rect key="frame" x="12" y="8.5" width="327" height="184.5"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -52,8 +52,8 @@
                     <constraint firstAttribute="trailing" secondItem="Oa2-eK-o1x" secondAttribute="trailing" id="UBz-gh-EFP"/>
                     <constraint firstAttribute="trailing" secondItem="UsH-cZ-KD8" secondAttribute="trailing" id="YOo-tU-TRx"/>
                     <constraint firstAttribute="bottom" secondItem="UsH-cZ-KD8" secondAttribute="bottom" id="a9p-E3-Kl5"/>
-                    <constraint firstItem="3n2-bs-R5N" firstAttribute="leading" secondItem="w51-te-3py" secondAttribute="leadingMargin" constant="8" id="fOR-eT-PSh"/>
-                    <constraint firstItem="3n2-bs-R5N" firstAttribute="top" secondItem="Oa2-eK-o1x" secondAttribute="bottom" constant="12" id="hPK-jG-Rxx"/>
+                    <constraint firstItem="3n2-bs-R5N" firstAttribute="leading" secondItem="w51-te-3py" secondAttribute="leadingMargin" constant="4" id="fOR-eT-PSh"/>
+                    <constraint firstItem="3n2-bs-R5N" firstAttribute="top" secondItem="Oa2-eK-o1x" secondAttribute="bottom" constant="8" id="hPK-jG-Rxx"/>
                     <constraint firstItem="Oa2-eK-o1x" firstAttribute="leading" secondItem="w51-te-3py" secondAttribute="leading" id="jWg-2i-KDT"/>
                     <constraint firstItem="UsH-cZ-KD8" firstAttribute="leading" secondItem="w51-te-3py" secondAttribute="leading" id="vpu-xS-wFh"/>
                 </constraints>

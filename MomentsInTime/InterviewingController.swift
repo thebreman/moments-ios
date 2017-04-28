@@ -12,6 +12,9 @@ private let COPY_TEXT_PLACEHOLDER_NAME_FIELD = "Enter name"
 private let COPY_TEXT_PLACEHOLDER_ROLE_FIELD = "Enter role"
 private let COPY_TITLE_BUTTON_SELECT_PICTURE = "Select from camera roll"
 
+private let MIN_CHARACTERS_NAME = 10
+private let MAX_CHARACTERS = 100
+
 //find out if this is weird and whether or not it should be in InterviewingController, or even in its own file?
 enum InterviewingSection: Int
 {
@@ -34,7 +37,7 @@ enum InterviewingSection: Int
     }
 }
 
-class InterviewingController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UITextFieldDelegate
+class InterviewingController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UITextFieldDelegate, KeyboardMover
 {
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
@@ -52,12 +55,21 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         return cameraMan
     }()
     
+    private var justLoaded = true
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
         self.saveButton.isEnabled = false
         self.setupTableView()
+        self.listenForKeyboardNotifications(shouldListen: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        super.viewWillDisappear(animated)
+        self.listenForKeyboardNotifications(shouldListen: false)
     }
     
     //MARK: Actions
@@ -65,11 +77,69 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     @IBAction func handleSave(_ sender: BouncingButton)
     {
         print("save Interviewing info")
+        
+        //persist name, role, and photo then:
+        self.tableView.endEditing(true)
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
+        self.tableView.endEditing(true)
         self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    private var currentEditingSection = InterviewingSection.name
+    
+    //MARK: UITextFieldDelegate
+    
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool
+    {
+        if textField.placeholder == InterviewingSection.name.cellContentText {
+            self.currentEditingSection = InterviewingSection.name
+        }
+        else if textField.placeholder == InterviewingSection.role.cellContentText {
+            self.currentEditingSection = InterviewingSection.role
+        }
+        
+        self.tableView.scrollRectToVisible(textField.frame, animated: true)
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text as NSString?
+        let newText = currentText?.replacingCharacters(in: range, with: string)
+        
+        guard let count = newText?.characters.count else { return true }
+        
+        self.saveButton.isEnabled = count >= MIN_CHARACTERS_NAME && textField.placeholder == InterviewingSection.name.cellContentText
+        return count <= MAX_CHARACTERS
+    }
+    
+    //MARK: KeyboardMover
+    
+    func keyboardMoved(notification: Notification)
+    {
+        self.view.layoutIfNeeded() //update pending layout changes then animate:
+        
+        UIView.animateWithKeyboardNotification(notification: notification) { (keyboardHeight, keyboardWindowY) in
+            
+            //first adjust scrollView content:
+            self.tableView.contentInset.bottom = keyboardHeight
+            self.tableView.scrollIndicatorInsets.bottom = keyboardHeight
+            
+            //now make sure that the appropriate section is visible:
+            var pathToScroll = IndexPath()
+            
+            switch self.currentEditingSection {
+            case .name: pathToScroll = IndexPath(row: 0, section: InterviewingSection.name.rawValue)
+            case .role: pathToScroll = IndexPath(row: 0, section: InterviewingSection.role.rawValue)
+            default: break
+            }
+            
+            self.tableView.scrollToRow(at: pathToScroll, at: UITableViewScrollPosition.top, animated: false)
+            self.view.layoutIfNeeded()
+        }
     }
     
     //MARK: TableView
@@ -151,8 +221,15 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     private func textFieldCell(forSection section: InterviewingSection, withTableView tableView: UITableView) -> TextFieldCell
     {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_FIELD) as? TextFieldCell {
+            
             cell.textField.placeholder = section.cellContentText
             cell.textField.delegate = self
+            
+            if self.justLoaded {
+                cell.textField.becomeFirstResponder()
+                self.justLoaded = false
+            }
+            
             return cell
         }
         
