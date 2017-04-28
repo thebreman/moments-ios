@@ -29,6 +29,6 @@ class TextViewView: UIView
     {
         self.addSubview(self.textView)
         self.textView.translatesAutoresizingMaskIntoConstraints = false
-        self.textView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8))
+        self.textView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 8, left: 10, bottom: 8, right: 8))
     }
 }

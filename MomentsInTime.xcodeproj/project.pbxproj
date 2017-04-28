@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		6804A0CC1EAAE70A0012193C /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6804A0CB1EAAE70A0012193C /* AVKit.framework */; };
 		6804A0CE1EAAFEB90012193C /* CameraMan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6804A0CD1EAAFEB90012193C /* CameraMan.swift */; };
-		680B9B381EB1449E003FE7E5 /* TextFieldCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680B9B371EB1449D003FE7E5 /* TextFieldCell.xib */; };
-		680B9B3A1EB144AB003FE7E5 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680B9B391EB144AB003FE7E5 /* TextFieldCell.swift */; };
 		680BE07B1E8E204000A5D339 /* VideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680BE07A1E8E204000A5D339 /* VideoCell.xib */; };
 		680BE07D1E8E20A200A5D339 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE07C1E8E20A200A5D339 /* VideoCell.swift */; };
 		680BE07F1E8E2C9500A5D339 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE07E1E8E2C9500A5D339 /* Views.swift */; };
@@ -53,8 +51,6 @@
 		68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FED1E824DE100C1B320 /* Fonts.swift */; };
 		68EB8FF01E824E2800C1B320 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FEF1E824E2800C1B320 /* Colors.swift */; };
 		68EB8FF51E825A3C00C1B320 /* MITTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FF41E825A3C00C1B320 /* MITTabBar.swift */; };
-		68EC74081EB1A7570048DAD2 /* TextViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68EC74071EB1A7570048DAD2 /* TextViewCell.xib */; };
-		68EC740A1EB1A7680048DAD2 /* TextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC74091EB1A7680048DAD2 /* TextViewCell.swift */; };
 		68EC740C1EB2DA330048DAD2 /* KeyboardMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC740B1EB2DA330048DAD2 /* KeyboardMover.swift */; };
 		68EC740E1EB2EB900048DAD2 /* ScrollViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC740D1EB2EB900048DAD2 /* ScrollViews.swift */; };
 		7CB5F5B1B5E790D27F010AAB /* Pods_MomentsInTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */; };
@@ -87,8 +83,6 @@
 		5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MomentsInTime.release.xcconfig"; path = "Pods/Target Support Files/Pods-MomentsInTime/Pods-MomentsInTime.release.xcconfig"; sourceTree = "<group>"; };
 		6804A0CB1EAAE70A0012193C /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		6804A0CD1EAAFEB90012193C /* CameraMan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraMan.swift; sourceTree = "<group>"; };
-		680B9B371EB1449D003FE7E5 /* TextFieldCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextFieldCell.xib; sourceTree = "<group>"; };
-		680B9B391EB144AB003FE7E5 /* TextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
 		680BE07A1E8E204000A5D339 /* VideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCell.xib; sourceTree = "<group>"; };
 		680BE07C1E8E20A200A5D339 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		680BE07E1E8E2C9500A5D339 /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -131,8 +125,6 @@
 		68EB8FED1E824DE100C1B320 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		68EB8FEF1E824E2800C1B320 /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		68EB8FF41E825A3C00C1B320 /* MITTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITTabBar.swift; sourceTree = "<group>"; };
-		68EC74071EB1A7570048DAD2 /* TextViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TextViewCell.xib; sourceTree = "<group>"; };
-		68EC74091EB1A7680048DAD2 /* TextViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewCell.swift; sourceTree = "<group>"; };
 		68EC740B1EB2DA330048DAD2 /* KeyboardMover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardMover.swift; sourceTree = "<group>"; };
 		68EC740D1EB2EB900048DAD2 /* ScrollViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollViews.swift; sourceTree = "<group>"; };
 		97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MomentsInTime.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,8 +262,6 @@
 			isa = PBXGroup;
 			children = (
 				688E998E1EB07D2E00AEF2F7 /* DescriptionController.swift */,
-				68EC74071EB1A7570048DAD2 /* TextViewCell.xib */,
-				68EC74091EB1A7680048DAD2 /* TextViewCell.swift */,
 				680C8A161EB3321B004CDC5E /* TextViewView.swift */,
 			);
 			name = "Description Flow";
@@ -286,8 +276,6 @@
 				680CA52E1EA5FD3A006A735E /* MITNoteCell.swift */,
 				680C20651EA5C9F400757608 /* ActiveLinkCell.xib */,
 				680C20671EA5CB0D00757608 /* ActiveLinkCell.swift */,
-				680B9B371EB1449D003FE7E5 /* TextFieldCell.xib */,
-				680B9B391EB144AB003FE7E5 /* TextFieldCell.swift */,
 				680C8A141EB323E0004CDC5E /* TextFieldView.swift */,
 			);
 			name = Utilities;
@@ -531,9 +519,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D332E6511E80BE6C00778462 /* LaunchScreen.storyboard in Resources */,
-				68EC74081EB1A7570048DAD2 /* TextViewCell.xib in Resources */,
 				680BE07B1E8E204000A5D339 /* VideoCell.xib in Resources */,
-				680B9B381EB1449E003FE7E5 /* TextFieldCell.xib in Resources */,
 				680CA52B1EA5F36E006A735E /* MITSectionHeaderView.xib in Resources */,
 				D332E64E1E80BE6C00778462 /* Assets.xcassets in Resources */,
 				680CA52D1EA5FCAA006A735E /* MITNoteCell.xib in Resources */,
@@ -622,7 +608,6 @@
 				680BE07D1E8E20A200A5D339 /* VideoCell.swift in Sources */,
 				680C8A151EB323E0004CDC5E /* TextFieldView.swift in Sources */,
 				6825E1371EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift in Sources */,
-				68EC740A1EB1A7680048DAD2 /* TextViewCell.swift in Sources */,
 				6804A0CE1EAAFEB90012193C /* CameraMan.swift in Sources */,
 				68EB8FF01E824E2800C1B320 /* Colors.swift in Sources */,
 				680C8A171EB3321B004CDC5E /* TextViewView.swift in Sources */,
@@ -636,7 +621,6 @@
 				680BE08F1E8E301D00A5D339 /* CachedImageView.swift in Sources */,
 				688E5D0F1EA883BA00BF258F /* Alerts.swift in Sources */,
 				680CEB9B1E9F67B0009ED223 /* BackgroundSessionManagers.swift in Sources */,
-				680B9B3A1EB144AB003FE7E5 /* TextFieldCell.swift in Sources */,
 				6825E13D1EA2119F003DEF20 /* MITEmptyStateView.swift in Sources */,
 				680BE08B1E8E2E9B00A5D339 /* UploadRouter.swift in Sources */,
 				688E99911EB07D3B00AEF2F7 /* InterviewingController.swift in Sources */,
