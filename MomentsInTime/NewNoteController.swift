@@ -11,6 +11,8 @@ import UIKit
 class NewNoteController: UIViewController
 {
     @IBOutlet weak var saveButton: BouncingButton!
+    @IBOutlet weak var textView: UITextView!
+    @IBOutlet weak var textViewBottomConstraint: NSLayoutConstraint!
     
     override func viewDidLoad()
     {

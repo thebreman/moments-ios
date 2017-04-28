@@ -28,7 +28,7 @@ enum DescriptionSection: Int
     }
 }
 
-class DescriptionController: UIViewController, UITableViewDelegate, UITableViewDataSource
+class DescriptionController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate
 {
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
@@ -74,6 +74,15 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.estimatedSectionHeaderHeight = 64
         self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         self.tableView.sectionFooterHeight = 16
+        
+        //setup TextFieldCells:
+        self.tableView.register(UINib(nibName: String(describing: TextFieldCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_FIELD)
+        
+        //setup TextViewCells:
+        self.tableView.register(UINib(nibName: String(describing: TextViewCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_VIEW)
+        
+        self.tableView.estimatedRowHeight = 200
+        self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
@@ -99,6 +108,47 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        return UITableViewCell()
+        guard let section = DescriptionSection(rawValue: indexPath.section) else {
+            assert(false, "DescriptionSection invalid")
+            return UITableViewCell()
+        }
+        
+        switch indexPath.section {
+            
+        case DescriptionSection.title.rawValue:
+            return self.textFieldCell(forSection: section, withTableView: tableView)
+            
+        case DescriptionSection.description.rawValue:
+            return self.textViewCell(forSection: section, withTableView: tableView)
+            
+        default:
+            assert(false, "indexPath section is unknown")
+            return UITableViewCell()
+        }
+    }
+    
+    //MARK: Utilities
+    
+    private func textFieldCell(forSection section: DescriptionSection, withTableView tableView: UITableView) -> TextFieldCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_FIELD) as? TextFieldCell {
+            cell.textField.placeholder = section.placeholderText
+            cell.textField.delegate = self
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return TextFieldCell()
+    }
+    
+    private func textViewCell(forSection section: DescriptionSection, withTableView tableView: UITableView) -> TextViewCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_VIEW) as? TextViewCell {
+            cell.textView.delegate = self
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return TextViewCell()
     }
 }

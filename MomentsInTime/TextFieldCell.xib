@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="textFieldCell" rowHeight="52" id="hfO-gq-BlZ" customClass="TextFieldCell" customModule="MomentsInTime" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="textFieldCell" rowHeight="52" id="hfO-gq-BlZ" customClass="TextFieldCell" customModule="MomentsInTime" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="52"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hfO-gq-BlZ" id="5sb-IT-ZFg">
@@ -34,7 +34,7 @@
                         </constraints>
                     </view>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3bK-O3-ApD">
-                        <rect key="frame" x="16" y="0.5" width="343" height="50.5"/>
+                        <rect key="frame" x="16" y="12.5" width="343" height="26.5"/>
                         <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -43,9 +43,9 @@
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="yKn-hM-UoD" secondAttribute="bottom" id="65H-st-Cra"/>
-                    <constraint firstItem="3bK-O3-ApD" firstAttribute="top" secondItem="lrA-Zl-2ja" secondAttribute="bottom" id="CZ9-Fj-my5"/>
+                    <constraint firstItem="3bK-O3-ApD" firstAttribute="top" secondItem="lrA-Zl-2ja" secondAttribute="bottom" constant="12" id="CZ9-Fj-my5"/>
                     <constraint firstItem="lrA-Zl-2ja" firstAttribute="top" secondItem="5sb-IT-ZFg" secondAttribute="top" id="Wc5-iY-3z7"/>
-                    <constraint firstItem="yKn-hM-UoD" firstAttribute="top" secondItem="3bK-O3-ApD" secondAttribute="bottom" id="cH7-df-f0f"/>
+                    <constraint firstItem="yKn-hM-UoD" firstAttribute="top" secondItem="3bK-O3-ApD" secondAttribute="bottom" constant="12" id="cH7-df-f0f"/>
                     <constraint firstItem="3bK-O3-ApD" firstAttribute="leading" secondItem="5sb-IT-ZFg" secondAttribute="leadingMargin" constant="8" id="cLd-4c-ZOg"/>
                     <constraint firstItem="yKn-hM-UoD" firstAttribute="leading" secondItem="5sb-IT-ZFg" secondAttribute="leading" id="gxo-Dc-TOE"/>
                     <constraint firstAttribute="trailing" secondItem="yKn-hM-UoD" secondAttribute="trailing" id="lQI-jB-tiz"/>

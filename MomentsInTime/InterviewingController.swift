@@ -91,6 +91,9 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         
         //setup ActiveLinkCells:
         self.tableView.register(UINib(nibName: String(describing: ActiveLinkCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK)
+        
+        self.tableView.estimatedRowHeight = 200
+        self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
@@ -122,7 +125,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         }
         
         switch indexPath.section {
-            
+        
         case InterviewingSection.name.rawValue, InterviewingSection.role.rawValue:
             return self.textFieldCell(forSection: section, withTableView: tableView)
             
