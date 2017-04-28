@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PureLayout
 
 private let COPY_TEXT_PLACEHOLDER_NAME_FIELD = "Enter name"
 private let COPY_TEXT_PLACEHOLDER_ROLE_FIELD = "Enter role"
@@ -41,12 +42,34 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
 {
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
+    
+    private lazy var nameFieldView: TextFieldView = {
+        let view = TextFieldView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textField.translatesAutoresizingMaskIntoConstraints = false
+        view.textField.textColor = UIColor.mitText
+        view.textField.font = UIFont.systemFont(ofSize: 16.0)
+        view.textField.placeholder = InterviewingSection.name.cellContentText
+        view.textField.tintColor = UIColor.mitActionblue
+        view.textField.delegate = self
+        return view
+    }()
+    
+    private lazy var roleFieldView: TextFieldView = {
+        let view = TextFieldView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textField.textColor = UIColor.mitText
+        view.textField.font = UIFont.systemFont(ofSize: 16.0)
+        view.textField.placeholder = InterviewingSection.role.cellContentText
+        view.textField.tintColor = UIColor.mitActionblue
+        view.textField.delegate = self
+        return view
+    }()
     
     private enum Identifiers
     {
         static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLink"
-        static let IDENTIFIER_CELL_TEXT_FIELD = "textFieldCell"
+        static let IDENTIFIER_CELL_CONTAINER = "containerCell"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
     }
     
@@ -55,7 +78,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         return cameraMan
     }()
     
-    private var justLoaded = true
+    //private var justLoaded = true
     
     override func viewDidLoad()
     {
@@ -64,6 +87,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.saveButton.isEnabled = false
         self.setupTableView()
         self.listenForKeyboardNotifications(shouldListen: true)
+        self.nameFieldView.textField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -95,10 +119,10 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool
     {
-        if textField.placeholder == InterviewingSection.name.cellContentText {
+        if textField == self.nameFieldView.textField {
             self.currentEditingSection = InterviewingSection.name
         }
-        else if textField.placeholder == InterviewingSection.role.cellContentText {
+        else if textField == self.roleFieldView.textField {
             self.currentEditingSection = InterviewingSection.role
         }
         
@@ -106,13 +130,14 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         return true
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
+    {
         let currentText = textField.text as NSString?
         let newText = currentText?.replacingCharacters(in: range, with: string)
         
         guard let count = newText?.characters.count else { return true }
         
-        self.saveButton.isEnabled = count >= MIN_CHARACTERS_NAME && textField.placeholder == InterviewingSection.name.cellContentText
+        self.saveButton.isEnabled = count >= MIN_CHARACTERS_NAME && textField == self.nameFieldView.textField
         return count <= MAX_CHARACTERS
     }
     
@@ -156,8 +181,8 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         self.tableView.sectionFooterHeight = 16
         
-        //setup TextFieldCells:
-        self.tableView.register(UINib(nibName: String(describing: TextFieldCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_FIELD)
+        //setup ContainerCells:
+        self.tableView.register(ContainerTableViewCell.self, forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_CONTAINER)
         
         //setup ActiveLinkCells:
         self.tableView.register(UINib(nibName: String(describing: ActiveLinkCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK)
@@ -196,8 +221,11 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         
         switch indexPath.section {
         
-        case InterviewingSection.name.rawValue, InterviewingSection.role.rawValue:
-            return self.textFieldCell(forSection: section, withTableView: tableView)
+        case InterviewingSection.name.rawValue:
+            return self.containerCell(forView: self.nameFieldView, withTableView: tableView)
+            
+        case InterviewingSection.role.rawValue:
+            return self.containerCell(forView: self.roleFieldView, withTableView: tableView)
             
         case InterviewingSection.picture.rawValue:
             return self.activeLinkCell(forSection: section, withTableView: tableView)
@@ -218,23 +246,15 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     //MARK: Utilities
     
-    private func textFieldCell(forSection section: InterviewingSection, withTableView tableView: UITableView) -> TextFieldCell
+    private func containerCell(forView view: UIView, withTableView tableView: UITableView) -> ContainerTableViewCell
     {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_FIELD) as? TextFieldCell {
-            
-            cell.textField.placeholder = section.cellContentText
-            cell.textField.delegate = self
-            
-            if self.justLoaded {
-                cell.textField.becomeFirstResponder()
-                self.justLoaded = false
-            }
-            
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_CONTAINER) as? ContainerTableViewCell {
+            cell.containedView = view
             return cell
         }
         
         assert(false, "dequeued cell was of unknown type")
-        return TextFieldCell()
+        return ContainerTableViewCell()
     }
     
     private func activeLinkCell(forSection section: InterviewingSection, withTableView tableView: UITableView) -> ActiveLinkCell

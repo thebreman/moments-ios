@@ -501,7 +501,6 @@
                     <connections>
                         <outlet property="saveButton" destination="Anw-7t-gNo" id="Khk-3F-rd1"/>
                         <outlet property="tableView" destination="UEi-Nx-Mws" id="nu2-Ia-wIa"/>
-                        <outlet property="tableViewBottomConstraint" destination="gKz-Xv-9Rp" id="28F-AJ-KJd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BF5-sq-Qo9" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -513,7 +512,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="eLY-2x-A2x" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="Qw1-bp-rmF">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Qw1-bp-rmF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -616,7 +615,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="9RF-7C-mDN" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="Txa-ws-fil">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Txa-ws-fil">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
