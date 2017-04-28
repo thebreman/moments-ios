@@ -46,7 +46,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     private lazy var nameFieldView: TextFieldView = {
         let view = TextFieldView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textField.translatesAutoresizingMaskIntoConstraints = false
         view.textField.textColor = UIColor.mitText
         view.textField.font = UIFont.systemFont(ofSize: 16.0)
         view.textField.placeholder = InterviewingSection.name.cellContentText
@@ -77,8 +76,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         let cameraMan = CameraMan()
         return cameraMan
     }()
-    
-    //private var justLoaded = true
     
     override func viewDidLoad()
     {
@@ -112,6 +109,13 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.tableView.endEditing(true)
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
+    
+    /**
+     * The next sections are textFieldDelegate and keyboardMover,
+     * So... the var below: currentEditingSection is either name or role and when the respective section
+     * begins editing, we will update this var, so that anytime the keyboard changes, we will scroll the appropriate
+     * section to visible, we also scroll the appropriate section to visible anytime one of them begins editing...
+     */
     
     private var currentEditingSection = InterviewingSection.name
     
@@ -187,7 +191,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         //setup ActiveLinkCells:
         self.tableView.register(UINib(nibName: String(describing: ActiveLinkCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK)
         
-        self.tableView.estimatedRowHeight = 200
+        self.tableView.estimatedRowHeight = 64
         self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     

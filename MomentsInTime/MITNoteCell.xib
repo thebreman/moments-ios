@@ -25,7 +25,7 @@
                                 <rect key="frame" x="12" y="12" width="327" height="95.5"/>
                                 <string key="text">This is a note about an interesting question that someone might want to ask when they are interviewing someone. There will be stock notes and user-created notes. Just a few more words!</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3IV-4j-vz4" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">

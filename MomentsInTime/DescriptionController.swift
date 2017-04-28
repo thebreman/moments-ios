@@ -8,6 +8,7 @@
 
 import UIKit
 import UITextView_Placeholder
+import PureLayout
 
 private let COPY_TEXT_PLACEHOLDER_TITLE_FIELD = "Enter title"
 private let COPY_TEXT_PLACEHOLDER_DESCRIPTION_FIELD = "Enter description"
@@ -37,16 +38,38 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
 {
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var tableViewBottomConstraint: NSLayoutConstraint!
+    
+    private lazy var titleFieldView: TextFieldView = {
+        let view = TextFieldView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textField.translatesAutoresizingMaskIntoConstraints = false
+        view.textField.textColor = UIColor.mitText
+        view.textField.font = UIFont.systemFont(ofSize: 16.0)
+        view.textField.placeholder = DescriptionSection.title.placeholderText
+        view.textField.tintColor = UIColor.mitActionblue
+        view.textField.delegate = self
+        return view
+    }()
+    
+    private lazy var descriptionFieldView: TextViewView = {
+        let view = TextViewView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.textView.textColor = UIColor.gray
+        view.textView.font = UIFont.systemFont(ofSize: 16.0)
+        view.textView.placeholder = DescriptionSection.description.placeholderText
+        view.textView.tintColor = UIColor.mitActionblue
+        view.textView.delegate = self
+        NSLayoutConstraint.autoSetPriority(999, forConstraints: {
+            view.textView.autoSetDimension(.height, toSize: 160.0)
+        })
+        return view
+    }()
     
     private enum Identifiers
     {
-        static let IDENTIFIER_CELL_TEXT_FIELD = "textFieldCell"
-        static let IDENTIFIER_CELL_TEXT_VIEW = "textViewCell"
+        static let IDENTIFIER_CELL_CONTAINER = "containerCell"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
     }
-    
-    private var justLoaded = true
     
     override func viewDidLoad()
     {
@@ -55,6 +78,7 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         self.saveButton.isEnabled = false
         self.setupTableView()
         self.listenForKeyboardNotifications(shouldListen: true)
+        self.titleFieldView.textField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -171,11 +195,8 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         self.tableView.sectionFooterHeight = 16
         
-        //setup TextFieldCells:
-        self.tableView.register(UINib(nibName: String(describing: TextFieldCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_FIELD)
-        
-        //setup TextViewCells:
-        self.tableView.register(UINib(nibName: String(describing: TextViewCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_VIEW)
+        //setup ContainerCells:
+        self.tableView.register(ContainerTableViewCell.self, forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_CONTAINER)
         
         self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -212,10 +233,10 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         switch indexPath.section {
             
         case DescriptionSection.title.rawValue:
-            return self.textFieldCell(forSection: section, withTableView: tableView)
+            return self.containerCell(forView: self.titleFieldView, withTableView: tableView)
             
         case DescriptionSection.description.rawValue:
-            return self.textViewCell(forSection: section, withTableView: tableView)
+            return self.containerCell(forView: self.descriptionFieldView, withTableView: tableView)
             
         default:
             assert(false, "indexPath section is unknown")
@@ -225,34 +246,14 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     
     //MARK: Utilities
     
-    private func textFieldCell(forSection section: DescriptionSection, withTableView tableView: UITableView) -> TextFieldCell
+    private func containerCell(forView view: UIView, withTableView tableView: UITableView) -> ContainerTableViewCell
     {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_FIELD) as? TextFieldCell {
-            
-            cell.textField.placeholder = section.placeholderText
-            cell.textField.delegate = self
-            
-            if self.justLoaded {
-                cell.textField.becomeFirstResponder()
-                self.justLoaded = false
-            }
-            
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_CONTAINER) as? ContainerTableViewCell {
+            cell.containedView = view
             return cell
         }
         
         assert(false, "dequeued cell was of unknown type")
-        return TextFieldCell()
-    }
-    
-    private func textViewCell(forSection section: DescriptionSection, withTableView tableView: UITableView) -> TextViewCell
-    {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_TEXT_VIEW) as? TextViewCell {
-            cell.textView.delegate = self
-            cell.textView.placeholder = section.placeholderText
-            return cell
-        }
-        
-        assert(false, "dequeued cell was of unknown type")
-        return TextViewCell()
+        return ContainerTableViewCell()
     }
 }
