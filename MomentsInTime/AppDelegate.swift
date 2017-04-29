@@ -30,6 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //Facebook, Track App Installs and App Opens:
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
+        UIView.appearance().tintColor = UIColor.mitActionblue
+        
         return true
     }
     

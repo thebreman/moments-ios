@@ -67,7 +67,7 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     
     private enum Identifiers
     {
-        static let IDENTIFIER_CELL_CONTAINER = "containerCell"
+        static let IDENTIFIER_CELL_MIT_CONTAINER = "mitContainerCell"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
     }
     
@@ -196,7 +196,7 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         self.tableView.sectionFooterHeight = 16
         
         //setup ContainerCells:
-        self.tableView.register(ContainerTableViewCell.self, forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_CONTAINER)
+        self.tableView.register(MITContainerTableViewCell.self, forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_MIT_CONTAINER)
         
         self.tableView.estimatedRowHeight = 200
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -225,11 +225,6 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        guard let section = DescriptionSection(rawValue: indexPath.section) else {
-            assert(false, "DescriptionSection invalid")
-            return UITableViewCell()
-        }
-        
         switch indexPath.section {
             
         case DescriptionSection.title.rawValue:
@@ -246,14 +241,14 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     
     //MARK: Utilities
     
-    private func containerCell(forView view: UIView, withTableView tableView: UITableView) -> ContainerTableViewCell
+    private func containerCell(forView view: UIView, withTableView tableView: UITableView) -> MITContainerTableViewCell
     {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_CONTAINER) as? ContainerTableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_MIT_CONTAINER) as? MITContainerTableViewCell {
             cell.containedView = view
             return cell
         }
         
         assert(false, "dequeued cell was of unknown type")
-        return ContainerTableViewCell()
+        return MITContainerTableViewCell()
     }
 }

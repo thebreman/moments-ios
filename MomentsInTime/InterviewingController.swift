@@ -11,7 +11,7 @@ import PureLayout
 
 private let COPY_TEXT_PLACEHOLDER_NAME_FIELD = "Enter name"
 private let COPY_TEXT_PLACEHOLDER_ROLE_FIELD = "Enter role"
-private let COPY_TITLE_BUTTON_SELECT_PICTURE = "Select from camera roll"
+private let COPY_TITLE_BUTTON_SELECT_PICTURE = "Select photo (optional)"
 
 private let MIN_CHARACTERS_NAME = 10
 private let MAX_CHARACTERS = 100
@@ -19,29 +19,39 @@ private let MAX_CHARACTERS = 100
 //find out if this is weird and whether or not it should be in InterviewingController, or even in its own file?
 enum InterviewingSection: Int
 {
-    case name = 0
-    case role = 1
-    case picture = 2
+    case picture = 0
+    case name = 1
+    case role = 2
     
     static var titles: [String] {
-        return ["Name", "Role", "Picture (optional)"]
+        return ["Picture (optional)", "Name", "Role"]
     }
     
     //for name and role return textField placeholder text
     //for picture return activeLabel text
     var cellContentText: String {
         switch self {
+        case .picture: return COPY_TITLE_BUTTON_SELECT_PICTURE
         case .name: return COPY_TEXT_PLACEHOLDER_NAME_FIELD
         case .role: return COPY_TEXT_PLACEHOLDER_ROLE_FIELD
-        case .picture: return COPY_TITLE_BUTTON_SELECT_PICTURE
         }
     }
 }
 
-class InterviewingController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UITextFieldDelegate, KeyboardMover
+class InterviewingController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, KeyboardMover
 {
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
+    
+    private lazy var profileImageView: ProfileImageView = {
+        let view = ProfileImageView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.actionFont = UIFont.systemFont(ofSize: 16.0)
+        view.actionButton.setTitleColor(.mitActionblue, for: .normal)
+        view.actionButton.addTarget(self, action: #selector(handleProfileImage), for: .touchUpInside)
+        view.actionButton.setTitle(InterviewingSection.picture.cellContentText, for: .normal)
+        return view
+    }()
     
     private lazy var nameFieldView: TextFieldView = {
         let view = TextFieldView()
@@ -69,6 +79,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     {
         static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLink"
         static let IDENTIFIER_CELL_CONTAINER = "containerCell"
+        static let IDENTIFIER_CELL_MIT_CONTAINER = "mitContainerCell"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
     }
     
@@ -84,7 +95,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.saveButton.isEnabled = false
         self.setupTableView()
         self.listenForKeyboardNotifications(shouldListen: true)
-        self.nameFieldView.textField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -108,6 +118,11 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     {
         self.tableView.endEditing(true)
         self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc private func handleProfileImage(_ sender: BouncingButton)
+    {
+        self.openPhotoPicker(fromView: sender)
     }
     
     /**
@@ -177,19 +192,17 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     {
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.tableView.contentInset.top = 12
+        self.tableView.contentInset.top = 8
         
         //setup sectionHeaderViews:
         self.tableView.register(UINib(nibName: String(describing: MITSectionHeaderView.self), bundle: nil), forHeaderFooterViewReuseIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER)
         self.tableView.estimatedSectionHeaderHeight = 64
-        self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
+        //self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         self.tableView.sectionFooterHeight = 16
         
         //setup ContainerCells:
         self.tableView.register(ContainerTableViewCell.self, forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_CONTAINER)
-        
-        //setup ActiveLinkCells:
-        self.tableView.register(UINib(nibName: String(describing: ActiveLinkCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK)
+        self.tableView.register(MITContainerTableViewCell.self, forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_MIT_CONTAINER)
         
         self.tableView.estimatedRowHeight = 64
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -200,8 +213,22 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         return InterviewingSection.titles.count
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        if section == InterviewingSection.picture.rawValue {
+            return 0
+        }
+        
+        return UITableViewAutomaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
     {
+        //no section header for picture section:
+        if section == InterviewingSection.picture.rawValue {
+            return UIView(frame: .zero)
+        }
+        
         if let sectionHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER) as? MITSectionHeaderView {
             sectionHeaderView.title = InterviewingSection.titles[section]
             return sectionHeaderView
@@ -218,34 +245,21 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        guard let section = InterviewingSection(rawValue: indexPath.section) else {
-            assert(false, "InterviewingSection invalid")
-            return UITableViewCell()
-        }
-        
         switch indexPath.section {
-        
-        case InterviewingSection.name.rawValue:
-            return self.containerCell(forView: self.nameFieldView, withTableView: tableView)
-            
-        case InterviewingSection.role.rawValue:
-            return self.containerCell(forView: self.roleFieldView, withTableView: tableView)
             
         case InterviewingSection.picture.rawValue:
-            return self.activeLinkCell(forSection: section, withTableView: tableView)
+            return self.containerCell(forView: self.profileImageView, withTableView: tableView)
+        
+        case InterviewingSection.name.rawValue:
+            return self.mitContainerCell(forView: self.nameFieldView, withTableView: tableView)
+            
+        case InterviewingSection.role.rawValue:
+            return self.mitContainerCell(forView: self.roleFieldView, withTableView: tableView)
             
         default:
             assert(false, "indexPath section is unknown")
             return UITableViewCell()
         }
-    }
-    
-    //MARK: ActiveLinkCellDelegate
-    
-    func activeLinkCell(_ activeLinkCell: ActiveLinkCell, handleSelection selection: String)
-    {
-        guard selection == COPY_TITLE_BUTTON_SELECT_PICTURE else { return }
-        self.openPhotoPicker(fromView: activeLinkCell.activeLabel)
     }
     
     //MARK: Utilities
@@ -261,17 +275,15 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         return ContainerTableViewCell()
     }
     
-    private func activeLinkCell(forSection section: InterviewingSection, withTableView tableView: UITableView) -> ActiveLinkCell
+    private func mitContainerCell(forView view: UIView, withTableView tableView: UITableView) -> MITContainerTableViewCell
     {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
-            cell.activeLabel.text = section.cellContentText
-            cell.activeLinks = [section.cellContentText]
-            cell.delegate = self
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_MIT_CONTAINER) as? MITContainerTableViewCell {
+            cell.containedView = view
             return cell
         }
         
         assert(false, "dequeued cell was of unknown type")
-        return ActiveLinkCell()
+        return MITContainerTableViewCell()
     }
     
     private func openPhotoPicker(fromView sender: UIView)
@@ -286,7 +298,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.cameraMan.getPhotoFromLibrary(withPresenter: self) { image in
             
             if let interviewSubjectImage = image {
-                print("success we got the image for the interview subject")
+                self.profileImageView.imageView.image = interviewSubjectImage
             }
         }
     }
