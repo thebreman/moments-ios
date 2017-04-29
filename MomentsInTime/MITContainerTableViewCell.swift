@@ -11,6 +11,24 @@ import PureLayout
 
 class MITContainerTableViewCell: ContainerTableViewCell
 {
+    dynamic var upperSeparatorColor: UIColor? {
+        get {
+            return self.upperSeparatorView.backgroundColor
+        }
+        set {
+            self.upperSeparatorView.backgroundColor = newValue
+        }
+    }
+    
+    dynamic var lowerSeparatorColor: UIColor? {
+        get {
+            return self.lowerSeparatorView.backgroundColor
+        }
+        set {
+            self.lowerSeparatorView.backgroundColor = newValue
+        }
+    }
+    
     private lazy var upperSeparatorView: UIView = {
         let view = UIView()
         view.backgroundColor = .lightGray

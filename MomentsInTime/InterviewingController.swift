@@ -78,7 +78,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     private enum Identifiers
     {
         static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLink"
-        static let IDENTIFIER_CELL_CONTAINER = "containerCell"
         static let IDENTIFIER_CELL_MIT_CONTAINER = "mitContainerCell"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
     }
@@ -201,7 +200,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.tableView.sectionFooterHeight = 16
         
         //setup ContainerCells:
-        self.tableView.register(ContainerTableViewCell.self, forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_CONTAINER)
         self.tableView.register(MITContainerTableViewCell.self, forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_MIT_CONTAINER)
         
         self.tableView.estimatedRowHeight = 64
@@ -248,7 +246,11 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         switch indexPath.section {
             
         case InterviewingSection.picture.rawValue:
-            return self.containerCell(forView: self.profileImageView, withTableView: tableView)
+            let cell = self.mitContainerCell(forView: self.profileImageView, withTableView: tableView)
+            cell.lowerSeparatorColor = .clear
+            cell.upperSeparatorColor = .clear
+            cell.backgroundColor = .clear
+            return cell
         
         case InterviewingSection.name.rawValue:
             return self.mitContainerCell(forView: self.nameFieldView, withTableView: tableView)
@@ -263,17 +265,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     }
     
     //MARK: Utilities
-    
-    private func containerCell(forView view: UIView, withTableView tableView: UITableView) -> ContainerTableViewCell
-    {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_CONTAINER) as? ContainerTableViewCell {
-            cell.containedView = view
-            return cell
-        }
-        
-        assert(false, "dequeued cell was of unknown type")
-        return ContainerTableViewCell()
-    }
     
     private func mitContainerCell(forView view: UIView, withTableView tableView: UITableView) -> MITContainerTableViewCell
     {

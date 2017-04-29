@@ -13,11 +13,11 @@ private let WIDTH_IMAGE_VIEW: CGFloat = 80
 
 class ProfileImageView: UIView
 {
-    var imageView: UIImageView = {
-        let view = UIImageView()
+    var imageView: MITCircleImageView = {
+        let view = MITCircleImageView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFill
-        view.image = #imageLiteral(resourceName: "switch_account")
+        view.image = #imageLiteral(resourceName: "interviewee_placeholder")
         view.clipsToBounds = true
         return view
     }()
@@ -78,7 +78,7 @@ class ProfileImageView: UIView
         self.actionButton.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor).isActive = true
         
         self.containerView.addContraints(withFormat: "H:|->=0-[v0]->=0-|", views: self.actionButton)
-        self.containerView.addContraints(withFormat: "V:|-12-[v0]-4-[v1]-12-|", views: self.imageView, self.actionButton)
+        self.containerView.addContraints(withFormat: "V:|-12-[v0]-4-[v1]-4-|", views: self.imageView, self.actionButton)
         self.containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         self.containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         self.addContraints(withFormat: "V:|[v0]|", views: self.containerView)
