@@ -23,7 +23,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private enum Identifiers
     {
         static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
-        static let IDENTIFIER_CELL_INTERVIEWING_SUBJECT = "interviewingSubjectCell"
+        static let IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE = "imageTitleSubtitleCell"
         static let IDENTIFIER_CELL_NOTE = "noteCell"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
         
@@ -84,7 +84,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.tableView.register(UINib(nibName: String(describing: ActiveLinkCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK)
         
         //setup InterviewingSubjectCells:
-        self.tableView.register(UINib(nibName: String(describing: InterviewingSubjectCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_INTERVIEWING_SUBJECT)
+        self.tableView.register(UINib(nibName: String(describing: ImageTitleSubtitleCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE)
         
         //setup NoteCells:
         self.tableView.register(UINib(nibName: String(describing: MITNoteCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_NOTE)
@@ -323,15 +323,17 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: nil)
     }
     
-    private func interviewingSubjectCell(forSubject subject: Subject, withTableView tableView: UITableView) -> InterviewingSubjectCell
+    private func interviewingSubjectCell(forSubject subject: Subject, withTableView tableView: UITableView) -> ImageTitleSubtitleCell
     {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_INTERVIEWING_SUBJECT) as? InterviewingSubjectCell {
-            cell.subject = subject
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE) as? ImageTitleSubtitleCell {
+            cell.titleText = subject.name
+            cell.subtitleText = subject.role
+            cell.imageURL = subject.profileImageURL
             return cell
         }
         
         assert(false, "dequeued cell was of unknown type")
-        return InterviewingSubjectCell()
+        return ImageTitleSubtitleCell()
     }
     
     private func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell

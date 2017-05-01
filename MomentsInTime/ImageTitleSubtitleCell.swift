@@ -1,8 +1,8 @@
 //
-//  InterviewingSubjectCell.swift
+//  ImageTitleSubtitleCell.swift
 //  MomentsInTime
 //
-//  Created by Andrew Ferrarone on 4/30/17.
+//  Created by Andrew Ferrarone on 5/1/17.
 //  Copyright © 2017 Tikkun Olam. All rights reserved.
 //
 
@@ -12,19 +12,43 @@ private let SPACING_NAME_ROLE: CGFloat = 2.0
 private let SPACING_LEADING_IMAGE: CGFloat = 12.0
 private let WIDTH_IMAGE: CGFloat = 64.0
 
-class InterviewingSubjectCell: BouncingTableViewCell
+class ImageTitleSubtitleCell: BouncingTableViewCell
 {
     @IBOutlet weak var containerView: UIView!
-    @IBOutlet weak var profileImageView: MITCircleImageView!
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var roleLabel: UILabel!
-    @IBOutlet weak var roleLabelTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var roundImageView: MITCircleImageView!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var subtitleLabel: UILabel!
+    @IBOutlet weak var subtitleLabelTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var imageViewLeadingConstraint: NSLayoutConstraint!
     
-    var subject: Subject? {
+    var roundImage: UIImage? {
         didSet {
+            self.roundImageView.image = self.roundImage
+            self.updateUI()
+        }
+    }
+    
+    var imageURL: String? {
+        didSet {
+            if let imageURLString = self.imageURL {
+                self.roundImageView.loadImageFromDisk(withUrlString: imageURLString)
+                self.updateUI()
+            }
+        }
+    }
+    
+    var titleText: String? {
+        didSet {
+            self.titleLabel.text = self.titleText
+            self.updateUI()
+        }
+    }
+    
+    var subtitleText: String? {
+        didSet {
+            self.subtitleLabel.text = self.subtitleText
             self.updateUI()
         }
     }
@@ -46,8 +70,7 @@ class InterviewingSubjectCell: BouncingTableViewCell
     
     private func configureProfileImage()
     {
-        if let imageURLString = self.subject?.profileImageURL {
-            self.profileImageView.loadImageFromDisk(withUrlString: imageURLString)
+        if self.roundImageView.image != nil {
             self.imageViewWidthConstraint.constant = WIDTH_IMAGE
             self.imageViewHeightConstraint.constant = WIDTH_IMAGE
             self.imageViewLeadingConstraint.constant = SPACING_LEADING_IMAGE
@@ -63,17 +86,14 @@ class InterviewingSubjectCell: BouncingTableViewCell
     
     private func configureLabels()
     {
-        self.nameLabel.text = self.subject?.name
-        
-        if let role = self.subject?.role {
-            self.roleLabelTopConstraint.constant = SPACING_NAME_ROLE
-            self.roleLabel.text = role
+        if let subText = self.subtitleLabel.text, subText.characters.count > 0 {
+            self.subtitleLabelTopConstraint.constant = SPACING_NAME_ROLE
         }
         else {
             
             //collapse the space constraint b/w name and role:
-            self.roleLabelTopConstraint.constant = 0.0
-            self.roleLabel.text = nil
+            self.subtitleLabelTopConstraint.constant = 0.0
+            self.subtitleLabel.text = nil
         }
     }
 }
