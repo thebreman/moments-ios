@@ -13,14 +13,13 @@ private let WIDTH_IMAGE_VIEW: CGFloat = 80
 
 class ProfileImageView: UIView
 {
-    var imageView: MITCircleImageView = {
-        let view = MITCircleImageView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.contentMode = .scaleAspectFill
-        view.image = #imageLiteral(resourceName: "interviewee_placeholder")
-        view.clipsToBounds = true
-        return view
-    }()
+    var profileImage: UIImage? {
+        didSet {
+            if let newImage = self.profileImage {
+                self.imageView.image = newImage
+            }
+        }
+    }
     
     var actionButton: BouncingButton = {
         let button = BouncingButton()
@@ -43,6 +42,15 @@ class ProfileImageView: UIView
     {
         self.actionButton.setTitleColor(color, for: state)
     }
+    
+    private var imageView: MITCircleImageView = {
+        let view = MITCircleImageView(frame: .zero)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFill
+        view.image = #imageLiteral(resourceName: "interviewee_placeholder")
+        view.clipsToBounds = true
+        return view
+    }()
     
     private let containerView: UIView = {
         let view = UIView(frame: .zero)

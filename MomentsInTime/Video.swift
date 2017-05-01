@@ -46,7 +46,7 @@ class Video: NSObject
                 completion(newURLString, nil)
                 return
             }
-            
+                        
             let error = NSError(domain: "Video", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't fetch valid playbackURL"])
             completion(nil, error)
         }

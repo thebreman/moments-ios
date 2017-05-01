@@ -39,6 +39,8 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
+    var completion: DescriptionCompletion?
+    
     private lazy var titleFieldView: TextFieldView = {
         let view = TextFieldView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -91,17 +93,28 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     
     @IBAction func handleSave(_ sender: BouncingButton)
     {
-        print("save Title and Description")
+        let videoName = self.titleFieldView.textField.text
+        var videoDescription: String?
         
-        //persist title and description then:
+        if let description = self.descriptionFieldView.textView.text {
+            if description.characters.count > 0 {
+                videoDescription = description
+            }
+        }
+        
         self.tableView.endEditing(true)
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+        self.presentingViewController?.dismiss(animated: true) {
+            self.completion?(videoName, videoDescription)
+        }
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
         self.tableView.endEditing(true)
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true) {
+            self.completion?(nil, nil)
+        }
     }
     
     /**

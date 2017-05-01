@@ -11,6 +11,10 @@ import MobileCoreServices
 import AVFoundation
 import Photos
 
+typealias InterviewingCompletion = (Subject?) -> Void
+typealias DescriptionCompletion = (_ name: String?, _ description: String?) -> Void
+typealias NoteCompletion = (String?) -> Void
+
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
     @IBOutlet weak var submitButton: BouncingButton!
@@ -25,10 +29,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         enum Segues
         {
             static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
-            static let ENTER_ITERVIEW_DESCRIPTION = "newMomentToDescription"
+            static let ENTER_INTERVIEW_DESCRIPTION = "newMomentToDescription"
             static let ENTER_NEW_NOTE = "newMomentToNote"
         }
     }
+    
+    private lazy var newMoment = Moment()
+    private lazy var newMomentVideo = Video()
     
     private var cameraMan: CameraMan = {
         let cameraMan = CameraMan()
@@ -155,10 +162,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             self.handleInterviewDescription()
             
         case COPY_LINK_START_FILMING:
-            self.openVideoCamera()
+            self.handleVideoCamera()
             
         case COPY_LINK_UPLOAD_VIDEO:
-            self.openPhotos(fromView: activeLinkCell.detailDisclosureButton)
+            self.handlePhotos(fromView: activeLinkCell.detailDisclosureButton)
             
         case COPY_CREATE_NOTE:
             self.handleNoteCreation()
@@ -176,9 +183,49 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         picker.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
+    //MARK: Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        guard let id = segue.identifier else { return }
+        
+        switch id {
+            
+        case Identifiers.Segues.ENTER_INTERVIEW_SUBJECT:
+            
+            if let interviewingController = segue.destination.contentViewController as? InterviewingController {
+                interviewingController.completion = { interviewSubject in
+                    self.newMoment.subject = interviewSubject
+                    //updateUI / check for submit button
+                }
+            }
+            
+        case Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION:
+            
+            if let descriptionController = segue.destination.contentViewController as? DescriptionController {
+                descriptionController.completion = { (videoTitle, videoDescription) in
+                    self.newMomentVideo.name = videoTitle
+                    self.newMomentVideo.videoDescription = videoDescription
+                    print(self.newMomentVideo.name ?? "no video name")
+                    print(self.newMomentVideo.videoDescription ?? "no video description")
+                    //updateUI / check for submit button
+                }
+            }
+            
+        case Identifiers.Segues.ENTER_NEW_NOTE:
+            
+            if let createNoteController = segue.destination.contentViewController as? NewNoteController {
+                //
+            }
+            
+        default:
+            break
+        }
+    }
+    
     //MARK: Utilities:
     
-    private func openVideoCamera()
+    private func handleVideoCamera()
     {
         self.cameraMan.getVideoFromCamera(withPresenter: self) { url in
             
@@ -191,7 +238,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    private func openPhotos(fromView sender: UIView)
+    private func handlePhotos(fromView sender: UIView)
     {
         //must configure popover for iPad support,
         //iphone will adapt to fullscreen modal automatically:
@@ -209,31 +256,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 print("No we did not get the video url from the picker")
             }
         }
-    }
-    
-    private func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell
-    {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
-            cell.activeLabel.text = setting.text
-            cell.activeLinks = setting.activeLinks
-            cell.detailDisclosureButton.isHidden = (setting == .video ? false : true)
-            cell.delegate = self
-            return cell
-        }
-        
-        assert(false, "dequeued cell was of unknown type")
-        return ActiveLinkCell()
-    }
-    
-    private func noteCell(forNote note: Note, withTableView tableView: UITableView) -> MITNoteCell
-    {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_NOTE) as? MITNoteCell {
-            cell.noteTextLabel.text = note.text
-            return cell
-        }
-        
-        assert(false, "dequeued cell was of unknown type")
-        return MITNoteCell()
     }
     
     private func handleInterviewSubject(fromView sender: UIView)
@@ -259,6 +281,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.present(controller, animated: true, completion: nil)
     }
     
+    //need a callback with a Person object
+    
     private func handleFacebookInterviewSelection()
     {
         print("Pick from Facebook")
@@ -271,11 +295,36 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleInterviewDescription()
     {
-        self.performSegue(withIdentifier: Identifiers.Segues.ENTER_ITERVIEW_DESCRIPTION, sender: nil)
+        self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION, sender: nil)
     }
     
     private func handleNoteCreation()
     {
         self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: nil)
+    }
+    
+    private func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
+            cell.activeLabel.text = setting.text
+            cell.activeLinks = setting.activeLinks
+            cell.detailDisclosureButton.isHidden = (setting == .video ? false : true)
+            cell.delegate = self
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return ActiveLinkCell()
+    }
+    
+    private func noteCell(forNote note: Note, withTableView tableView: UITableView) -> MITNoteCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_NOTE) as? MITNoteCell {
+            cell.noteTextLabel.text = note.text
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return MITNoteCell()
     }
 }

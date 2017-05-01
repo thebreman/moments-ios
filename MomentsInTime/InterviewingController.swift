@@ -43,6 +43,8 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
+    var completion: InterviewingCompletion?
+    
     private lazy var profileImageView: ProfileImageView = {
         let view = ProfileImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -61,6 +63,8 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         view.textField.placeholder = InterviewingSection.name.cellContentText
         view.textField.tintColor = UIColor.mitActionblue
         view.textField.delegate = self
+        view.textField.autocapitalizationType = UITextAutocapitalizationType.words
+        view.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         return view
     }()
     
@@ -94,6 +98,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.saveButton.isEnabled = false
         self.setupTableView()
         self.listenForKeyboardNotifications(shouldListen: true)
+        self.nameFieldView.textField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -106,17 +111,33 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func handleSave(_ sender: BouncingButton)
     {
-        print("save Interviewing info")
+        guard let subjectName = self.nameFieldView.textField.text else { return }
         
-        //persist name, role, and photo then:
+        //write photo to disk, then pass along, name, role, and imageURL:
+        let interviewSubject = Subject()
+        interviewSubject.name = subjectName
+        
+        if let role = self.roleFieldView.textField.text {
+            interviewSubject.role = role.characters.count > 0 ? role : nil
+        }
+        
+        if let profileImage = self.profileImageView.profileImage, let profileImageURL = self.persistImage(profileImage) {
+            interviewSubject.profileImageURL = profileImageURL.absoluteString
+        }
+        
         self.tableView.endEditing(true)
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+        self.presentingViewController?.dismiss(animated: true) {
+            self.completion?(interviewSubject)
+        }
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
         self.tableView.endEditing(true)
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true) {
+            self.completion?(nil)
+        }
     }
     
     @objc private func handleProfileImage(_ sender: BouncingButton)
@@ -155,8 +176,15 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         
         guard let count = newText?.characters.count else { return true }
         
-        self.saveButton.isEnabled = count >= MIN_CHARACTERS_NAME && textField == self.nameFieldView.textField
         return count <= MAX_CHARACTERS
+    }
+    
+    @objc private func textFieldDidChange(_ textField: UITextField)
+    {
+        //update saveButton:
+        if let nameFieldCount = self.nameFieldView.textField.text?.characters.count {
+            self.saveButton.isEnabled = nameFieldCount >= MIN_CHARACTERS_NAME
+        }
     }
     
     //MARK: KeyboardMover
@@ -289,8 +317,32 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.cameraMan.getPhotoFromLibrary(withPresenter: self) { image in
             
             if let interviewSubjectImage = image {
-                self.profileImageView.imageView.image = interviewSubjectImage
+                self.profileImageView.profileImage = interviewSubjectImage
             }
         }
+    }
+    
+    private func persistImage(_ image: UIImage) -> URL?
+    {
+        guard let imageData = UIImageJPEGRepresentation(image, 0.2) else {
+            return nil
+        }
+        
+        let imageName = UUID().uuidString
+        let fileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
+        
+        try? imageData.write(to: fileName)
+        
+        return fileName
+    }
+}
+
+extension FileManager
+{
+    class func getDocumentsDirectory() -> URL
+    {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        return documentsDirectory
     }
 }
