@@ -45,6 +45,14 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         return cameraMan
     }()
     
+    private var allNotes: [Note] {
+        var notes = NewMomentSetting.defaultNotes
+        if let momentNotes = self.newMomentNotes {
+            notes = momentNotes + notes
+        }
+        return notes
+    }
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -67,13 +75,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: Navigation
     
-    private func reloadRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
-    {
-        tableView.beginUpdates()
-        tableView.reloadRows(at: paths, with: .automatic)
-        tableView.endUpdates()
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         guard let id = segue.identifier else { return }
@@ -84,6 +85,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let interviewingController = segue.destination.contentViewController as? InterviewingController {
                 interviewingController.completion = { interviewSubject in
+                    
+                    guard interviewSubject != nil else { return }
+                    
                     self.newMoment.subject = interviewSubject
                     self.updateUI()
                     
@@ -97,6 +101,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let descriptionController = segue.destination.contentViewController as? DescriptionController {
                 descriptionController.completion = { (videoTitle, videoDescription) in
+                    
+                    guard videoTitle != nil && videoDescription != nil else { return }
+                    
                     self.newMomentVideo.name = videoTitle
                     self.newMomentVideo.videoDescription = videoDescription
                     self.updateUI()
@@ -118,7 +125,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                         self.newMomentNotes = [Note]()
                     }
                     
-                    self.newMomentNotes?.append(newNote)
+                    self.newMomentNotes?.insert(newNote, at: 0)
+                    
+                    //animate newNote cell in:
+                    let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
+                    self.tableView.beginUpdates()
+                    self.tableView.insertRows(at: [newPath], with: .automatic)
+                    self.tableView.endUpdates()
                 }
             }
             
@@ -174,7 +187,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         //Notes section must have all the notes + the top Add a new note activeLinkCell:
         if section == NewMomentSetting.notes.rawValue {
-            return NewMomentSetting.defaultNotes.count + 1
+            return self.allNotes.count + 1
         }
         
         //just 1 activeLinkCell for all other sections:
@@ -219,7 +232,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             //the rest of the cells are MITNoteCells:
             //but since cell at row 0 is not a note cell (activeLinkCell) we need to subtract 1 from the index:
-            let note = NewMomentSetting.defaultNotes[indexPath.row - 1]
+            let note = self.allNotes[indexPath.row - 1]
             return self.noteCell(forNote: note, withTableView: tableView)
             
         default:
@@ -379,6 +392,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         assert(false, "dequeued cell was of unknown type")
         return MITNoteCell()
+    }
+    
+    private func reloadRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
+    {
+        tableView.beginUpdates()
+        tableView.reloadRows(at: paths, with: .automatic)
+        tableView.endUpdates()
     }
     
     private func updateUI()
