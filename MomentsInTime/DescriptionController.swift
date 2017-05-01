@@ -14,6 +14,7 @@ private let COPY_TEXT_PLACEHOLDER_TITLE_FIELD = "Enter title"
 private let COPY_TEXT_PLACEHOLDER_DESCRIPTION_FIELD = "Enter description"
 
 private let MAX_CHARACTERS_DESCRIPTION = 300
+private let MIN_CHARACTERS_DESCRIPTION = 20
 private let MAX_CHARACTERS_TITLE = 100
 private let MIN_CHARACTERS_TITLE = 10
 
@@ -50,8 +51,14 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         view.textField.placeholder = DescriptionSection.title.placeholderText
         view.textField.tintColor = UIColor.mitActionblue
         view.textField.delegate = self
+        view.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         return view
     }()
+    
+    @objc private func textFieldDidChange(_ textField: UITextField)
+    {
+        self.updateUI()
+    }
     
     private lazy var descriptionFieldView: TextViewView = {
         let view = TextViewView()
@@ -145,6 +152,11 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         return totalPotentialCharacters <= MAX_CHARACTERS_DESCRIPTION
     }
     
+    func textViewDidChange(_ textView: UITextView)
+    {
+        self.updateUI()
+    }
+    
     //MARK: UITextFieldDelegate
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool
@@ -165,7 +177,6 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         
         guard let count = newText?.characters.count else { return true }
         
-        self.saveButton.isEnabled = count >= MIN_CHARACTERS_TITLE
         return count <= MAX_CHARACTERS_TITLE
     }
     
@@ -263,5 +274,18 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         
         assert(false, "dequeued cell was of unknown type")
         return MITContainerTableViewCell()
+    }
+    
+    private func updateUI()
+    {
+        var readyToSave = false
+        
+        if let titleText = self.titleFieldView.textField.text, let descriptionText = self.descriptionFieldView.textView.text {
+            if titleText.characters.count >= MIN_CHARACTERS_TITLE && descriptionText.characters.count >= MIN_CHARACTERS_DESCRIPTION {
+                readyToSave = true
+            }
+        }
+        
+        self.saveButton.isEnabled = readyToSave
     }
 }

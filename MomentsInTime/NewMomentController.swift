@@ -176,14 +176,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    //MARK: UIImagePickerControllerDelegate
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
-    {
-        print("user just selected a video")
-        picker.presentingViewController?.dismiss(animated: true, completion: nil)
-    }
-    
     //MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
@@ -197,8 +189,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             if let interviewingController = segue.destination.contentViewController as? InterviewingController {
                 interviewingController.completion = { interviewSubject in
                     self.newMoment.subject = interviewSubject
-                    
-                    //updateUI / check for submit button
+                    self.updateUI()
                 }
             }
             
@@ -208,8 +199,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 descriptionController.completion = { (videoTitle, videoDescription) in
                     self.newMomentVideo.name = videoTitle
                     self.newMomentVideo.videoDescription = videoDescription
-                    
-                    //updateUI / check for submit button
+                    self.updateUI()
                 }
             }
             
@@ -241,9 +231,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let videoURL = url {
                 print("YES we have the video url from the camera!!!! \(videoURL)")
-            }
-            else {
-                print("No we did not get the video url from the camera")
+                self.newMomentVideo.localURL = videoURL.absoluteString
+                self.updateUI()
             }
         }
     }
@@ -261,9 +250,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let videoURL = url {
                 print("YES we have the video url from the picker!!!! \(videoURL)")
-            }
-            else {
-                print("No we did not get the video url from the picker")
+                self.newMomentVideo.localURL = videoURL.absoluteString
+                self.updateUI()
             }
         }
     }
@@ -291,11 +279,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.present(controller, animated: true, completion: nil)
     }
     
-    //need a callback with a Person object
-    
     private func handleFacebookInterviewSelection()
     {
         print("Pick from Facebook")
+        //make sure to use InterviewingCompletion to get the Subject
     }
     
     private func handleManualInterviewSelection()
@@ -336,5 +323,14 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         assert(false, "dequeued cell was of unknown type")
         return MITNoteCell()
+    }
+    
+    private func updateUI()
+    {
+        let readyToSubmit = self.newMoment.subject?.name != nil
+            && self.newMomentVideo.name != nil
+            && self.newMomentVideo.videoDescription != nil
+            && self.newMomentVideo.localURL != nil
+        self.submitButton.isEnabled = readyToSubmit
     }
 }
