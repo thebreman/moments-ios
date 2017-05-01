@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MobileCoreServices
 import AVFoundation
 import Photos
 
@@ -24,6 +23,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
         static let IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE = "imageTitleSubtitleCell"
+        static let IDENTIFIER_CELL_VIDEO_PREVIEW = "videoPreviewCell"
         static let IDENTIFIER_CELL_NOTE = "noteCell"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
         
@@ -409,5 +409,24 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             && self.newMomentVideo.localURL != nil
         
         self.submitButton.isEnabled = readyToSubmit
+    }
+    
+    /**
+     * We won't have a thumbnail image until the upload to Vimeo is complete and processed.
+     * So we can use this method to get the first frame and use it as a preview instead:
+     */
+    fileprivate func thumbnailImage(forFileUrl url: URL) -> UIImage?
+    {
+        //generate a thumbnail image for the video:
+        let asset = AVAsset(url: url)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        imageGenerator.appliesPreferredTrackTransform = true //so that the image is not rotated in portrait
+        
+        //get 1st frame:
+        if let thumbnailCGImage = try? imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil) {
+            return UIImage(cgImage: thumbnailCGImage)
+        }
+        
+        return nil
     }
 }
