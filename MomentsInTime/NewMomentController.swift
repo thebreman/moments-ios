@@ -62,8 +62,69 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
-        //end editing/ resign first responders then dismiss
         self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: Navigation
+    
+    private func reloadRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
+    {
+        tableView.beginUpdates()
+        tableView.reloadRows(at: paths, with: .automatic)
+        tableView.endUpdates()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        guard let id = segue.identifier else { return }
+        
+        switch id {
+            
+        case Identifiers.Segues.ENTER_INTERVIEW_SUBJECT:
+            
+            if let interviewingController = segue.destination.contentViewController as? InterviewingController {
+                interviewingController.completion = { interviewSubject in
+                    self.newMoment.subject = interviewSubject
+                    self.updateUI()
+                    
+                    //animate interviewingSubject cell in:
+                    let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
+                    self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+                }
+            }
+            
+        case Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION:
+            
+            if let descriptionController = segue.destination.contentViewController as? DescriptionController {
+                descriptionController.completion = { (videoTitle, videoDescription) in
+                    self.newMomentVideo.name = videoTitle
+                    self.newMomentVideo.videoDescription = videoDescription
+                    self.updateUI()
+                    
+                    //animate TitleDescription cell in:
+                    let newPath = IndexPath(row: 0, section: NewMomentSetting.description.rawValue)
+                    self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+                }
+            }
+            
+        case Identifiers.Segues.ENTER_NEW_NOTE:
+            
+            if let newNoteController = segue.destination.contentViewController as? NewNoteController {
+                newNoteController.completion = { note in
+                    
+                    guard let newNote = note else { return }
+                    
+                    if self.newMomentNotes == nil {
+                        self.newMomentNotes = [Note]()
+                    }
+                    
+                    self.newMomentNotes?.append(newNote)
+                }
+            }
+            
+        default:
+            break
+        }
     }
     
 //MARK: tableView
@@ -139,6 +200,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             return self.activeLinkCell(forSetting: setting, withTableView: tableView)
             
         case NewMomentSetting.description.rawValue:
+            
+            if let videoName = self.newMomentVideo.name, let videoDescription = self.newMomentVideo.videoDescription {
+                return self.descriptionCell(forName: videoName, description: videoDescription, withTableView: tableView)
+            }
+            
             return self.activeLinkCell(forSetting: setting, withTableView: tableView)
             
         case NewMomentSetting.video.rawValue:
@@ -182,64 +248,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
         case COPY_CREATE_NOTE:
             self.handleNoteCreation()
-            
-        default:
-            break
-        }
-    }
-    
-    //MARK: Navigation
-    
-    private func reloadRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
-    {
-        tableView.beginUpdates()
-        tableView.reloadRows(at: paths, with: .automatic)
-        tableView.endUpdates()
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-    {
-        guard let id = segue.identifier else { return }
-        
-        switch id {
-            
-        case Identifiers.Segues.ENTER_INTERVIEW_SUBJECT:
-            
-            if let interviewingController = segue.destination.contentViewController as? InterviewingController {
-                interviewingController.completion = { interviewSubject in
-                    self.newMoment.subject = interviewSubject
-                    self.updateUI()
-                    
-                    //animate interviewingSubject cell in:
-                    let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
-                    self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
-                }
-            }
-            
-        case Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION:
-            
-            if let descriptionController = segue.destination.contentViewController as? DescriptionController {
-                descriptionController.completion = { (videoTitle, videoDescription) in
-                    self.newMomentVideo.name = videoTitle
-                    self.newMomentVideo.videoDescription = videoDescription
-                    self.updateUI()
-                }
-            }
-            
-        case Identifiers.Segues.ENTER_NEW_NOTE:
-            
-            if let newNoteController = segue.destination.contentViewController as? NewNoteController {
-                newNoteController.completion = { note in
-                    
-                    guard let newNote = note else { return }
-                    
-                    if self.newMomentNotes == nil {
-                        self.newMomentNotes = [Note]()
-                    }
-                    
-                    self.newMomentNotes?.append(newNote)
-                }
-            }
             
         default:
             break
@@ -329,6 +337,18 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             cell.titleText = subject.name
             cell.subtitleText = subject.role
             cell.imageURL = subject.profileImageURL
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return ImageTitleSubtitleCell()
+    }
+    
+    private func descriptionCell(forName name: String, description: String, withTableView tableView: UITableView) -> ImageTitleSubtitleCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE) as? ImageTitleSubtitleCell {
+            cell.titleText = name
+            cell.subtitleText = description
             return cell
         }
         

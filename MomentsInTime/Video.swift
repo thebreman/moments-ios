@@ -11,7 +11,7 @@ import Foundation
 class Video: NSObject
 {
     var uri: String!
-    var name: String!
+    var name: String?
     var videoDescription: String?
     var videoLinkURL: String!
     var thumbnailImageURL: String!
