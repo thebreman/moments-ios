@@ -129,9 +129,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                     //animate newNote cell in:
                     let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
-                    self.tableView.beginUpdates()
-                    self.tableView.insertRows(at: [newPath], with: .automatic)
-                    self.tableView.endUpdates()
+                    self.insertRows(forIndexPaths: [newPath], withTableView: self.tableView)
                 }
             }
             
@@ -157,8 +155,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         //setup ActiveLinkCells:
         self.tableView.register(UINib(nibName: String(describing: ActiveLinkCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK)
         
-        //setup InterviewingSubjectCells:
+        //setup ImageTitleSubtitleCells:
         self.tableView.register(UINib(nibName: String(describing: ImageTitleSubtitleCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE)
+        
+        //setup VideoPreviewCells:
+        self.tableView.register(UINib(nibName: String(describing: VideoPreviewCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_VIDEO_PREVIEW)
         
         //setup NoteCells:
         self.tableView.register(UINib(nibName: String(describing: MITNoteCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_NOTE)
@@ -221,6 +222,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             return self.activeLinkCell(forSetting: setting, withTableView: tableView)
             
         case NewMomentSetting.video.rawValue:
+            
+            if self.newMomentVideo.localURL != nil {
+                return self.videoPreviewCell(forVideo: self.newMomentVideo, withTableView: tableView)
+            }
+            
             return self.activeLinkCell(forSetting: setting, withTableView: tableView)
             
         case NewMomentSetting.notes.rawValue:
@@ -276,6 +282,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             if let videoURL = url {
                 print("YES we have the video url from the camera!!!! \(videoURL)")
                 self.newMomentVideo.localURL = videoURL.absoluteString
+                self.updateVideoRow()
                 self.updateUI()
             }
         }
@@ -295,6 +302,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             if let videoURL = url {
                 print("YES we have the video url from the picker!!!! \(videoURL)")
                 self.newMomentVideo.localURL = videoURL.absoluteString
+                self.updateVideoRow()
                 self.updateUI()
             }
         }
@@ -369,6 +377,21 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         return ImageTitleSubtitleCell()
     }
     
+    private func videoPreviewCell(forVideo video: Video, withTableView tableView: UITableView) -> VideoPreviewCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_VIDEO_PREVIEW) as? VideoPreviewCell {
+            
+            if let imageURLString = video.localURL, let imageURL = URL(string: imageURLString) {
+                cell.videoImage = self.thumbnailImage(forFileUrl: imageURL)
+            }
+            
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return VideoPreviewCell()
+    }
+    
     private func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell
     {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
@@ -399,6 +422,19 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         tableView.beginUpdates()
         tableView.reloadRows(at: paths, with: .automatic)
         tableView.endUpdates()
+    }
+    
+    private func insertRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
+    {
+        self.tableView.beginUpdates()
+        self.tableView.insertRows(at: paths, with: .automatic)
+        self.tableView.endUpdates()
+    }
+    
+    private func updateVideoRow()
+    {
+        let newPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+        self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
     }
     
     private func updateUI()

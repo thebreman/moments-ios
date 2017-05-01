@@ -16,7 +16,7 @@ class ProfileImageView: UIView
     var profileImage: UIImage? {
         didSet {
             if let newImage = self.profileImage {
-                self.imageView.image = newImage
+                self.imageView.setImageAnimated(newImage)
             }
         }
     }

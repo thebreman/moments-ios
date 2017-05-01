@@ -165,24 +165,25 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
     {
-        if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
-            print("got edited image")
-            self.imageCompletionHandler?(editedImage)
+        picker.presentingViewController?.dismiss(animated: true) {
+            
+            if let editedImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+                print("got edited image")
+                self.imageCompletionHandler?(editedImage)
+            }
+            else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                print("got original image")
+                self.imageCompletionHandler?(originalImage)
+            }
+            else if let editedVideoURL = info[UIImagePickerControllerMediaURL] as? URL {
+                print("got video file url")
+                self.videoCompletionHandler?(editedVideoURL)
+            }
+            else if let originalVideoURL = info[UIImagePickerControllerReferenceURL] as? URL {
+                print("got original video file assets url")
+                self.videoCompletionHandler?(originalVideoURL)
+            }
         }
-        else if let originalImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            print("got original image")
-            self.imageCompletionHandler?(originalImage)
-        }
-        else if let editedVideoURL = info[UIImagePickerControllerMediaURL] as? URL {
-            print("got video file url")
-            self.videoCompletionHandler?(editedVideoURL)
-        }
-        else if let originalVideoURL = info[UIImagePickerControllerReferenceURL] as? URL {
-            print("got original video file assets url")
-            self.videoCompletionHandler?(originalVideoURL)
-        }
-        
-        picker.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     //MARK: Utilities:
