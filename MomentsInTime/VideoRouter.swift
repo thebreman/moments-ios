@@ -38,8 +38,8 @@ enum VideoRouter: URLRequestConvertible
         switch self {
         case .all(let pagePath): return pagePath
         case .create: return "/me/videos"
-        case .read(let video): return video.uri
-        case .update(let video): return video.uri
+        case .read(let video): return video.uri ?? ""
+        case .update(let video): return video.uri ?? ""
         case .destroy: return ""
         }
     }

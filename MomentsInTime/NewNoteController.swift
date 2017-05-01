@@ -25,8 +25,14 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
         self.saveButton.isEnabled = false
         self.listenForKeyboardNotifications(shouldListen: true)
         self.textView.contentInset.bottom = 8.0
-        self.textView.becomeFirstResponder()
         self.textView.delegate = self
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        self.textView.becomeFirstResponder()
+
     }
     
     override func viewWillDisappear(_ animated: Bool)

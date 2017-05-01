@@ -87,6 +87,11 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         self.saveButton.isEnabled = false
         self.setupTableView()
         self.listenForKeyboardNotifications(shouldListen: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
         self.titleFieldView.textField.becomeFirstResponder()
     }
     

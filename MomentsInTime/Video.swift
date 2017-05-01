@@ -10,12 +10,12 @@ import Foundation
 
 class Video: NSObject
 {
-    var uri: String!
+    var uri: String?
     var name: String?
     var videoDescription: String?
-    var videoLinkURL: String!
-    var thumbnailImageURL: String!
-    var status: String!
+    var videoLinkURL: String?
+    var thumbnailImageURL: String?
+    var status: String?
     
     //file path for videos that are being uploaded:
     var localURL: String?

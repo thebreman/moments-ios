@@ -59,6 +59,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.submitButton.isEnabled = false
         self.setupTableView()
+        
+        //>
     }
     
 //MARK: Actions

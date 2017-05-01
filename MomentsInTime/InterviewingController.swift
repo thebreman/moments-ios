@@ -98,6 +98,11 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.saveButton.isEnabled = false
         self.setupTableView()
         self.listenForKeyboardNotifications(shouldListen: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(true)
         self.nameFieldView.textField.becomeFirstResponder()
     }
     

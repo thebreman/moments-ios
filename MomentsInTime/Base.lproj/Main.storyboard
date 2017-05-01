@@ -113,13 +113,17 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="500" id="7he-J7-BIg"/>
+                                </constraints>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="TYd-KS-ATk" firstAttribute="top" secondItem="sdL-8j-G2y" secondAttribute="bottom" id="2Tj-Js-o4q"/>
-                            <constraint firstItem="TYd-KS-ATk" firstAttribute="leading" secondItem="Dnc-cO-o1K" secondAttribute="leading" id="D0i-YN-2W9"/>
-                            <constraint firstAttribute="trailing" secondItem="TYd-KS-ATk" secondAttribute="trailing" id="YfS-kp-EyV"/>
+                            <constraint firstItem="TYd-KS-ATk" firstAttribute="centerX" secondItem="Dnc-cO-o1K" secondAttribute="centerX" id="7ge-jt-B1o"/>
+                            <constraint firstItem="TYd-KS-ATk" firstAttribute="leading" secondItem="Dnc-cO-o1K" secondAttribute="leading" priority="750" id="D0i-YN-2W9"/>
+                            <constraint firstAttribute="trailing" secondItem="TYd-KS-ATk" secondAttribute="trailing" priority="750" id="YfS-kp-EyV"/>
                             <constraint firstItem="o8Z-rn-88W" firstAttribute="top" secondItem="TYd-KS-ATk" secondAttribute="bottom" id="Zm0-UB-HSd"/>
                         </constraints>
                     </view>
@@ -443,16 +447,6 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="UEi-Nx-Mws">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="7Cz-4w-mxO" customClass="ContainerTableViewCell" customModule="MomentsInTime" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7Cz-4w-mxO" id="yhZ-oO-Saf">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -649,6 +643,6 @@
         <image name="PlusButton" width="18" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ibu-DI-7Ln"/>
+        <segue reference="o7j-gd-ln6"/>
     </inferredMetricsTieBreakers>
 </document>

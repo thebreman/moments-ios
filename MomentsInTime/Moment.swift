@@ -12,7 +12,7 @@ class Moment: NSObject
 {
     var subject: Subject?
     var video: Video?
-    var notes: [Note]?
+    var notes = [Note]()
     
     var isValid: Bool {
         return false
