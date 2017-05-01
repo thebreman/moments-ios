@@ -22,8 +22,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private enum Identifiers
     {
-        static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLink"
-        static let IDENTIFIER_CELL_NOTE = "note"
+        static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
+        static let IDENTIFIER_CELL_INTERVIEWING_SUBJECT = "interviewingSubjectCell"
+        static let IDENTIFIER_CELL_NOTE = "noteCell"
         static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
         
         enum Segues
@@ -82,6 +83,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         //setup ActiveLinkCells:
         self.tableView.register(UINib(nibName: String(describing: ActiveLinkCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK)
         
+        //setup InterviewingSubjectCells:
+        self.tableView.register(UINib(nibName: String(describing: InterviewingSubjectCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_INTERVIEWING_SUBJECT)
+        
         //setup NoteCells:
         self.tableView.register(UINib(nibName: String(describing: MITNoteCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_NOTE)
         
@@ -126,11 +130,19 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         switch indexPath.section {
             
-        case NewMomentSetting.interviewing.rawValue, NewMomentSetting.description.rawValue, NewMomentSetting.video.rawValue:
+        case NewMomentSetting.interviewing.rawValue:
             
-            //all activeLinkCells:
+            if let interviewingSubject = self.newMoment.subject {
+                return self.interviewingSubjectCell(forSubject: interviewingSubject, withTableView: tableView)
+            }
+            
             return self.activeLinkCell(forSetting: setting, withTableView: tableView)
-
+            
+        case NewMomentSetting.description.rawValue:
+            return self.activeLinkCell(forSetting: setting, withTableView: tableView)
+            
+        case NewMomentSetting.video.rawValue:
+            return self.activeLinkCell(forSetting: setting, withTableView: tableView)
             
         case NewMomentSetting.notes.rawValue:
             
@@ -178,6 +190,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: Navigation
     
+    private func reloadRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
+    {
+        tableView.beginUpdates()
+        tableView.reloadRows(at: paths, with: .automatic)
+        tableView.endUpdates()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         guard let id = segue.identifier else { return }
@@ -190,6 +209,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 interviewingController.completion = { interviewSubject in
                     self.newMoment.subject = interviewSubject
                     self.updateUI()
+                    
+                    //animate interviewingSubject cell in:
+                    let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
+                    self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
                 }
             }
             
@@ -300,6 +323,17 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: nil)
     }
     
+    private func interviewingSubjectCell(forSubject subject: Subject, withTableView tableView: UITableView) -> InterviewingSubjectCell
+    {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_INTERVIEWING_SUBJECT) as? InterviewingSubjectCell {
+            cell.subject = subject
+            return cell
+        }
+        
+        assert(false, "dequeued cell was of unknown type")
+        return InterviewingSubjectCell()
+    }
+    
     private func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell
     {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
@@ -331,6 +365,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             && self.newMomentVideo.name != nil
             && self.newMomentVideo.videoDescription != nil
             && self.newMomentVideo.localURL != nil
+        
         self.submitButton.isEnabled = readyToSubmit
     }
 }

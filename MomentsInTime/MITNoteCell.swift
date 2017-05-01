@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MITNoteCell: UITableViewCell
+class MITNoteCell: BouncingTableViewCell
 {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var noteTextLabel: UILabel!
@@ -19,6 +19,9 @@ class MITNoteCell: UITableViewCell
         
         self.drawShadow()
         self.containerView.layer.masksToBounds = true
+        
+        self.selectionStyle = .none
+        self.isSelectable = false
     }
     
     //MARK: Actions
@@ -26,13 +29,5 @@ class MITNoteCell: UITableViewCell
     @IBAction func handleOptions(_ sender: BouncingButton)
     {
         print("handle note options")
-    }
-    
-    //MARK: Utilities:
-    
-    override func setHighlighted(_ highlighted: Bool, animated: Bool)
-    {
-        super.setHighlighted(highlighted, animated: animated)
-        highlighted ? self.touchDown() : self.touchUp()
     }
 }

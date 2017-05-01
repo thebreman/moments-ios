@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="activeLink" rowHeight="69" id="xPk-3G-YZH" customClass="ActiveLinkCell" customModule="MomentsInTime" customModuleProvider="target">
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="activeLinkCell" rowHeight="69" id="xPk-3G-YZH" customClass="ActiveLinkCell" customModule="MomentsInTime" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="429" height="69"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xPk-3G-YZH" id="Yjc-aW-qsE">
