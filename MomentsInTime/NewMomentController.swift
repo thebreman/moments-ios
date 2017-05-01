@@ -13,7 +13,7 @@ import Photos
 
 typealias InterviewingCompletion = (Subject?) -> Void
 typealias DescriptionCompletion = (_ name: String?, _ description: String?) -> Void
-typealias NoteCompletion = (String?) -> Void
+typealias NoteCompletion = (Note?) -> Void
 
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
@@ -36,6 +36,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private lazy var newMoment = Moment()
     private lazy var newMomentVideo = Video()
+    private var newMomentNotes: [Note]?
     
     private var cameraMan: CameraMan = {
         let cameraMan = CameraMan()
@@ -196,6 +197,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             if let interviewingController = segue.destination.contentViewController as? InterviewingController {
                 interviewingController.completion = { interviewSubject in
                     self.newMoment.subject = interviewSubject
+                    
                     //updateUI / check for submit button
                 }
             }
@@ -206,16 +208,24 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 descriptionController.completion = { (videoTitle, videoDescription) in
                     self.newMomentVideo.name = videoTitle
                     self.newMomentVideo.videoDescription = videoDescription
-                    print(self.newMomentVideo.name ?? "no video name")
-                    print(self.newMomentVideo.videoDescription ?? "no video description")
+                    
                     //updateUI / check for submit button
                 }
             }
             
         case Identifiers.Segues.ENTER_NEW_NOTE:
             
-            if let createNoteController = segue.destination.contentViewController as? NewNoteController {
-                //
+            if let newNoteController = segue.destination.contentViewController as? NewNoteController {
+                newNoteController.completion = { note in
+                    
+                    guard let newNote = note else { return }
+                    
+                    if self.newMomentNotes == nil {
+                        self.newMomentNotes = [Note]()
+                    }
+                    
+                    self.newMomentNotes?.append(newNote)
+                }
             }
             
         default:

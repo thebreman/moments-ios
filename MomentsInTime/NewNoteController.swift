@@ -16,6 +16,8 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewBottomConstraint: NSLayoutConstraint!
     
+    var completion: NoteCompletion?
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -37,17 +39,27 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
     
     @IBAction func handleSave(_ sender: BouncingButton)
     {
-        print("save new note")
+        var note: Note?
         
-        //persist the new note then:
+        if let noteText = self.textView.text {
+            if noteText.characters.count > 0 {
+                note = Note(withText: noteText)
+            }
+        }
+        
         self.textView.endEditing(true)
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        
+        self.presentingViewController?.dismiss(animated: true) {
+            self.completion?(note)
+        }
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
         self.textView.endEditing(true)
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true) {
+            self.completion?(nil)
+        }
     }
     
     //MARK: UITextViewDelegate
