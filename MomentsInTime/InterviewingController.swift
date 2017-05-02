@@ -43,6 +43,14 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
+    var interviewSubject = Subject() {
+        didSet {
+            self.profileImageView.profileImageURL = self.interviewSubject.profileImageURL
+            self.nameFieldView.textField.text = self.interviewSubject.name
+            self.roleFieldView.textField.text = self.interviewSubject.role
+        }
+    }
+    
     var completion: InterviewingCompletion?
     
     private lazy var profileImageView: ProfileImageView = {

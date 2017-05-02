@@ -32,7 +32,6 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
     {
         super.viewDidAppear(animated)
         self.textView.becomeFirstResponder()
-
     }
     
     override func viewWillDisappear(_ animated: Bool)

@@ -16,7 +16,7 @@
 		6809BF1A1EB7564000A9E942 /* ImageTitleSubtitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6809BF191EB7564000A9E942 /* ImageTitleSubtitleCell.xib */; };
 		6809BF1C1EB7566300A9E942 /* ImageTitleSubtitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809BF1B1EB7566300A9E942 /* ImageTitleSubtitleCell.swift */; };
 		6809C1921EB5CACB0015C69A /* Moment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809C1911EB5CACB0015C69A /* Moment.swift */; };
-		6809C1941EB5E14F0015C69A /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809C1931EB5E14F0015C69A /* Person.swift */; };
+		6809C1941EB5E14F0015C69A /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809C1931EB5E14F0015C69A /* Subject.swift */; };
 		680BE07B1E8E204000A5D339 /* VideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680BE07A1E8E204000A5D339 /* VideoCell.xib */; };
 		680BE07D1E8E20A200A5D339 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE07C1E8E20A200A5D339 /* VideoCell.swift */; };
 		680BE07F1E8E2C9500A5D339 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE07E1E8E2C9500A5D339 /* Views.swift */; };
@@ -101,7 +101,7 @@
 		6809BF191EB7564000A9E942 /* ImageTitleSubtitleCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImageTitleSubtitleCell.xib; sourceTree = "<group>"; };
 		6809BF1B1EB7566300A9E942 /* ImageTitleSubtitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTitleSubtitleCell.swift; sourceTree = "<group>"; };
 		6809C1911EB5CACB0015C69A /* Moment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Moment.swift; sourceTree = "<group>"; };
-		6809C1931EB5E14F0015C69A /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		6809C1931EB5E14F0015C69A /* Subject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
 		680BE07A1E8E204000A5D339 /* VideoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VideoCell.xib; sourceTree = "<group>"; };
 		680BE07C1E8E20A200A5D339 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
 		680BE07E1E8E2C9500A5D339 /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
@@ -200,7 +200,7 @@
 				688E5D0C1EA74A2C00BF258F /* Note.swift */,
 				688E5D0A1EA7152A00BF258F /* NewMomentSetting.swift */,
 				6809C1911EB5CACB0015C69A /* Moment.swift */,
-				6809C1931EB5E14F0015C69A /* Person.swift */,
+				6809C1931EB5E14F0015C69A /* Subject.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -669,7 +669,7 @@
 				6809BF181EB70E0200A9E942 /* BouncingTableViewCell.swift in Sources */,
 				6810B19C1EB43FAF00B9EE7D /* MITContainerTableViewCell.swift in Sources */,
 				D332E6471E80BE6C00778462 /* AppDelegate.swift in Sources */,
-				6809C1941EB5E14F0015C69A /* Person.swift in Sources */,
+				6809C1941EB5E14F0015C69A /* Subject.swift in Sources */,
 				680CEB991E9F670E009ED223 /* VimeoConnector.swift in Sources */,
 				6811A1E61E826E9C006362E8 /* CommunityController.swift in Sources */,
 				680922831EB51DB200CD1F6D /* MITCircleImageView.swift in Sources */,

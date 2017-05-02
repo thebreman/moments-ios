@@ -1,5 +1,5 @@
 //
-//  Person.swift
+//  Subject.swift
 //  MomentsInTime
 //
 //  Created by Andrew Ferrarone on 4/30/17.
@@ -10,7 +10,11 @@ import Foundation
 
 class Subject: NSObject
 {
-    var name: String!
+    var name: String?
     var role: String?
     var profileImageURL: String?
+    
+    var isValid: Bool {
+        return self.name != nil
+    }
 }

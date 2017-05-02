@@ -35,23 +35,19 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-    private lazy var newMoment = Moment()
-    private lazy var newMomentVideo = Video()
-    private var newMomentNotes: [Note]?
+    private lazy var moment: Moment = {
+        let newMoment = Moment()
+        newMoment.subject = Subject()
+        newMoment.video = Video()
+        newMoment.notes = NewMomentSetting.defaultNotes
+        return newMoment
+    }()
     
     private var cameraMan: CameraMan = {
         let cameraMan = CameraMan()
         cameraMan.maxVideoDurationMinutes = 20
         return cameraMan
     }()
-    
-    private var allNotes: [Note] {
-        var notes = NewMomentSetting.defaultNotes
-        if let momentNotes = self.newMomentNotes {
-            notes = momentNotes + notes
-        }
-        return notes
-    }
     
     override func viewDidLoad()
     {
@@ -86,11 +82,18 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         case Identifiers.Segues.ENTER_INTERVIEW_SUBJECT:
             
             if let interviewingController = segue.destination.contentViewController as? InterviewingController {
+                
+                //pass along data if we have any:
+                if let subject = self.moment.subject, subject.isValid {
+                    interviewingController.interviewSubject = subject
+                }
+                
+                //set completionHandler:
                 interviewingController.completion = { interviewSubject in
                     
                     guard interviewSubject != nil else { return }
                     
-                    self.newMoment.subject = interviewSubject
+                    self.moment.subject = interviewSubject
                     self.updateUI()
                     
                     //animate interviewingSubject cell in:
@@ -102,12 +105,15 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         case Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION:
             
             if let descriptionController = segue.destination.contentViewController as? DescriptionController {
+                
+                //
+                
                 descriptionController.completion = { (videoTitle, videoDescription) in
                     
                     guard videoTitle != nil && videoDescription != nil else { return }
                     
-                    self.newMomentVideo.name = videoTitle
-                    self.newMomentVideo.videoDescription = videoDescription
+                    self.moment.video?.name = videoTitle
+                    self.moment.video?.videoDescription = videoDescription
                     self.updateUI()
                     
                     //animate TitleDescription cell in:
@@ -119,15 +125,14 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         case Identifiers.Segues.ENTER_NEW_NOTE:
             
             if let newNoteController = segue.destination.contentViewController as? NewNoteController {
+                
+                //
+                
                 newNoteController.completion = { note in
                     
                     guard let newNote = note else { return }
                     
-                    if self.newMomentNotes == nil {
-                        self.newMomentNotes = [Note]()
-                    }
-                    
-                    self.newMomentNotes?.insert(newNote, at: 0)
+                    self.moment.notes.insert(newNote, at: 0)
                     
                     //animate newNote cell in:
                     let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
@@ -190,7 +195,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         //Notes section must have all the notes + the top Add a new note activeLinkCell:
         if section == NewMomentSetting.notes.rawValue {
-            return self.allNotes.count + 1
+            return self.moment.notes.count + 1
         }
         
         //just 1 activeLinkCell for all other sections:
@@ -209,7 +214,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
         case NewMomentSetting.interviewing.rawValue:
             
-            if let interviewingSubject = self.newMoment.subject {
+            if let interviewingSubject = self.moment.subject, interviewingSubject.isValid {
                 return self.interviewingSubjectCell(forSubject: interviewingSubject, withTableView: tableView)
             }
             
@@ -217,7 +222,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
         case NewMomentSetting.description.rawValue:
             
-            if let videoName = self.newMomentVideo.name, let videoDescription = self.newMomentVideo.videoDescription {
+            if let videoName = self.moment.video?.name, let videoDescription = self.moment.video?.videoDescription {
                 return self.descriptionCell(forName: videoName, description: videoDescription, withTableView: tableView)
             }
             
@@ -225,8 +230,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
         case NewMomentSetting.video.rawValue:
             
-            if self.newMomentVideo.localURL != nil {
-                return self.videoPreviewCell(forVideo: self.newMomentVideo, withTableView: tableView)
+            if let video = self.moment.video, video.localURL != nil {
+                return self.videoPreviewCell(forVideo: video, withTableView: tableView)
             }
             
             return self.activeLinkCell(forSetting: setting, withTableView: tableView)
@@ -240,12 +245,29 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             //the rest of the cells are MITNoteCells:
             //but since cell at row 0 is not a note cell (activeLinkCell) we need to subtract 1 from the index:
-            let note = self.allNotes[indexPath.row - 1]
+            let note = self.moment.notes[indexPath.row - 1]
             return self.noteCell(forNote: note, withTableView: tableView)
             
         default:
             assert(false, "indexPath section is unknown")
             return UITableViewCell()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        //only navigate if cell is not activeLink and not video:
+        if tableView.cellForRow(at: indexPath) is ActiveLinkCell { return }
+        
+        switch indexPath.section {
+        case NewMomentSetting.interviewing.rawValue:
+            self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_SUBJECT, sender: nil)
+        case NewMomentSetting.description.rawValue:
+            self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION, sender: nil)
+        case NewMomentSetting.notes.rawValue:
+            self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: nil)
+        default:
+            return
         }
     }
     
@@ -283,9 +305,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let videoURL = url {
                 print("YES we have the video url from the camera!!!! \(videoURL)")
-                self.newMomentVideo.localURL = videoURL.absoluteString
-                self.updateVideoRow()
-                self.updateUI()
+                self.updateWithVideoURL(videoURL)
             }
         }
     }
@@ -303,9 +323,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let videoURL = url {
                 print("YES we have the video url from the picker!!!! \(videoURL)")
-                self.newMomentVideo.localURL = videoURL.absoluteString
-                self.updateVideoRow()
-                self.updateUI()
+                self.updateWithVideoURL(videoURL)
             }
         }
     }
@@ -433,6 +451,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.tableView.endUpdates()
     }
     
+    private func updateWithVideoURL(_ url: URL)
+    {
+        self.moment.video?.localURL = url.absoluteString
+        self.updateVideoRow()
+        self.updateUI()
+    }
+    
     private func updateVideoRow()
     {
         let newPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
@@ -441,10 +466,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func updateUI()
     {
-        let readyToSubmit = self.newMoment.subject?.name != nil
-            && self.newMomentVideo.name != nil
-            && self.newMomentVideo.videoDescription != nil
-            && self.newMomentVideo.localURL != nil
+        let readyToSubmit = self.moment.subject?.name != nil
+            && self.moment.video?.name != nil
+            && self.moment.video?.videoDescription != nil
+            && self.moment.video?.localURL != nil
         
         self.submitButton.isEnabled = readyToSubmit
     }
