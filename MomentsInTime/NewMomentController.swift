@@ -10,6 +10,9 @@ import UIKit
 import AVFoundation
 import Photos
 
+private let COPY_TITLE_VIDEO_QUESTION_ALERT = "Camera shy? Don't worry."
+private let COPY_MESSAGE_VIDEO_QUESTION_ALERT = "You don't have to get it first try. When you film a video, we'll save it to your camera roll so you can edit with your favorite tools. Upload a new video at any time before submitting."
+
 typealias InterviewingCompletion = (Subject) -> Void
 typealias DescriptionCompletion = (_ name: String, _ description: String) -> Void
 typealias NoteCompletion = (Note) -> Void
@@ -302,7 +305,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, detailDisclosureButtonTapped sender: UIButton)
     {
-        print("inform user about the video button")
+        if self.tableView.cellForRow(at: IndexPath(row: 0, section: NewMomentSetting.video.rawValue)) == activeLinkCell {
+            UIAlertController.explain(withPresenter: self, title: COPY_TITLE_VIDEO_QUESTION_ALERT, message: COPY_MESSAGE_VIDEO_QUESTION_ALERT)
+        }
     }
     
     //MARK: Utilities:
