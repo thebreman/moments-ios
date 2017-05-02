@@ -508,7 +508,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func reloadRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
     {
         tableView.beginUpdates()
-        tableView.reloadRows(at: paths, with: .automatic)
+        tableView.reloadRows(at: paths, with: .middle)
         tableView.endUpdates()
     }
     
@@ -523,7 +523,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func insertRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
     {
         self.tableView.beginUpdates()
-        self.tableView.insertRows(at: paths, with: .automatic)
+        self.tableView.insertRows(at: paths, with: .middle)
         self.tableView.endUpdates()
     }
     
