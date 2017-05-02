@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import Photos
 
-typealias InterviewingCompletion = (Subject?) -> Void
+typealias InterviewingCompletion = (Subject) -> Void
 typealias DescriptionCompletion = (_ name: String?, _ description: String?) -> Void
 typealias NoteCompletion = (Note?) -> Void
 
@@ -90,15 +90,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 //set completionHandler:
                 interviewingController.completion = { interviewSubject in
-                    
-                    guard interviewSubject != nil else { return }
-                    
-                    self.moment.subject = interviewSubject
-                    self.updateUI()
-                    
-                    //animate interviewingSubject cell in:
-                    let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
-                    self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+                    self.handleInterviewingSubjectCompletion(withSubject: interviewSubject)
                 }
             }
             
@@ -106,7 +98,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let descriptionController = segue.destination.contentViewController as? DescriptionController {
                 
-                //
+                //pass along data if we have any:
                 
                 descriptionController.completion = { (videoTitle, videoDescription) in
                     
@@ -299,6 +291,39 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: Utilities:
     
+    private func handleInterviewingSubjectCompletion(withSubject subject: Subject)
+    {
+        var isUpdating = false
+        
+        //if we are updating:
+        if let currentSubject = self.moment.subject, currentSubject.isValid {
+            isUpdating = true
+        }
+        
+        self.moment.subject = subject
+        self.updateUI()
+        
+        //animate interviewingSubject cell in:
+        let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
+        
+        if isUpdating {
+            self.updateRows(forIndexPaths: [newPath], withTableView: self.tableView)
+        }
+        else {
+            self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+        }
+    }
+    
+    private func handleDescriptionCompletion()
+    {
+        //
+    }
+    
+    private func handleNoteCompletion()
+    {
+        //
+    }
+    
     private func handleVideoCamera()
     {
         self.cameraMan.getVideoFromCamera(withPresenter: self) { url in
@@ -441,6 +466,14 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         tableView.beginUpdates()
         tableView.reloadRows(at: paths, with: .automatic)
+        tableView.endUpdates()
+    }
+    
+    private func updateRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
+    {
+        tableView.beginUpdates()
+        tableView.deleteRows(at: paths, with: .automatic)
+        tableView.insertRows(at: paths, with: .automatic)
         tableView.endUpdates()
     }
     

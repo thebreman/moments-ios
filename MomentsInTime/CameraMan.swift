@@ -216,7 +216,9 @@ extension PHPhotoLibrary
         switch PHPhotoLibrary.authorizationStatus() {
         
         case .authorized:
-            authorizedHandler()
+            DispatchQueue.main.async {
+                authorizedHandler()
+            }
         
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization { authorizationStatus in
@@ -227,11 +229,15 @@ extension PHPhotoLibrary
                     return
                 }
                 
-                authorizedHandler()
+                DispatchQueue.main.async {
+                    authorizedHandler()
+                }
             }
             
         default:
-            notAuthorizedHandler()
+            DispatchQueue.main.async {
+                notAuthorizedHandler()
+            }
         }
     }
 }
@@ -268,7 +274,9 @@ extension AVCaptureDevice
             }
         
         default:
-            notAuthorizedHandler()
+            DispatchQueue.main.async {
+                notAuthorizedHandler()
+            }
         }
     }
     
@@ -282,7 +290,9 @@ extension AVCaptureDevice
         switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
             
         case .authorized:
-            authorizedHandler()
+            DispatchQueue.main.async {
+                authorizedHandler()
+            }
             
         case .notDetermined:
             AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo) { granted in
@@ -292,11 +302,16 @@ extension AVCaptureDevice
                     //do nothing first time denied:
                     return
                 }
-                authorizedHandler()
+                
+                DispatchQueue.main.async {
+                    authorizedHandler()
+                }
             }
             
         default:
-            notAuthorizedHandler()
+            DispatchQueue.main.async {
+                notAuthorizedHandler()
+            }
         }
     }
     

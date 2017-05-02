@@ -111,6 +111,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(true)
+        self.updateSaveButton()
         self.nameFieldView.textField.becomeFirstResponder()
     }
     
@@ -126,31 +127,23 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     {
         guard let subjectName = self.nameFieldView.textField.text else { return }
         
-        //write photo to disk, then pass along, name, role, and imageURL:
-        let interviewSubject = Subject()
-        interviewSubject.name = subjectName
+        self.interviewSubject.name = subjectName
         
         if let role = self.roleFieldView.textField.text {
-            interviewSubject.role = role.characters.count > 0 ? role : nil
-        }
-        
-        if let profileImage = self.profileImageView.profileImage, let profileImageURL = self.persistImage(profileImage) {
-            interviewSubject.profileImageURL = profileImageURL.absoluteString
+            self.interviewSubject.role = role.characters.count > 0 ? role : nil
         }
         
         self.tableView.endEditing(true)
         
         self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(interviewSubject)
+            self.completion?(self.interviewSubject)
         }
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
         self.tableView.endEditing(true)
-        self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(nil)
-        }
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     @objc private func handleProfileImage(_ sender: BouncingButton)
@@ -194,7 +187,11 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     @objc private func textFieldDidChange(_ textField: UITextField)
     {
-        //update saveButton:
+        self.updateSaveButton()
+    }
+    
+    private func updateSaveButton()
+    {
         if let nameFieldCount = self.nameFieldView.textField.text?.characters.count {
             self.saveButton.isEnabled = nameFieldCount >= MIN_CHARACTERS_NAME
         }
@@ -331,31 +328,32 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
             
             if let interviewSubjectImage = image {
                 self.profileImageView.profileImage = interviewSubjectImage
+                self.interviewSubject.profileImageURL = self.persistImage(interviewSubjectImage)?.absoluteString
             }
         }
     }
     
     private func persistImage(_ image: UIImage) -> URL?
     {
+        var imageFileName: URL
+        
+        //if we have previously saved an image we want to overwrite it:
+        if let urlString = self.interviewSubject.profileImageURL, let imageFile = URL(string: urlString) {
+            imageFileName = imageFile
+        }
+        else {
+            
+            //otherwise create a url:
+            let imageName = UUID().uuidString
+            imageFileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
+        }
+        
         guard let imageData = UIImageJPEGRepresentation(image, 0.2) else {
             return nil
         }
         
-        let imageName = UUID().uuidString
-        let fileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
+        try? imageData.write(to: imageFileName)
         
-        try? imageData.write(to: fileName)
-        
-        return fileName
-    }
-}
-
-extension FileManager
-{
-    class func getDocumentsDirectory() -> URL
-    {
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentsDirectory = paths[0]
-        return documentsDirectory
+        return imageFileName
     }
 }

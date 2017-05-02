@@ -64,6 +64,7 @@
 		68EC740C1EB2DA330048DAD2 /* KeyboardMover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC740B1EB2DA330048DAD2 /* KeyboardMover.swift */; };
 		68EC740E1EB2EB900048DAD2 /* ScrollViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EC740D1EB2EB900048DAD2 /* ScrollViews.swift */; };
 		68FD97B51EB7DD140070C3B4 /* ImageViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FD97B41EB7DD140070C3B4 /* ImageViews.swift */; };
+		68FD97B71EB82C3C0070C3B4 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FD97B61EB82C3C0070C3B4 /* FileManager.swift */; };
 		7CB5F5B1B5E790D27F010AAB /* Pods_MomentsInTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */; };
 		D332E6471E80BE6C00778462 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D332E6461E80BE6C00778462 /* AppDelegate.swift */; };
 		D332E64C1E80BE6C00778462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D332E64A1E80BE6C00778462 /* Main.storyboard */; };
@@ -149,6 +150,7 @@
 		68EC740B1EB2DA330048DAD2 /* KeyboardMover.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardMover.swift; sourceTree = "<group>"; };
 		68EC740D1EB2EB900048DAD2 /* ScrollViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollViews.swift; sourceTree = "<group>"; };
 		68FD97B41EB7DD140070C3B4 /* ImageViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViews.swift; sourceTree = "<group>"; };
+		68FD97B61EB82C3C0070C3B4 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MomentsInTime.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D332E6431E80BE6C00778462 /* MomentsInTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomentsInTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D332E6461E80BE6C00778462 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				688E5D0E1EA883BA00BF258F /* Alerts.swift */,
 				68EC740D1EB2EB900048DAD2 /* ScrollViews.swift */,
 				68FD97B41EB7DD140070C3B4 /* ImageViews.swift */,
+				68FD97B61EB82C3C0070C3B4 /* FileManager.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68FD97B71EB82C3C0070C3B4 /* FileManager.swift in Sources */,
 				680BE08A1E8E2E9B00A5D339 /* VideoRouter.swift in Sources */,
 				68EB8FF51E825A3C00C1B320 /* MITTabBar.swift in Sources */,
 				688133C31EAF26AC00696D58 /* FacebookConnector.swift in Sources */,
