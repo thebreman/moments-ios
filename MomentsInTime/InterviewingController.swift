@@ -43,13 +43,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
-    var interviewSubject = Subject() {
-        didSet {
-            self.profileImageView.profileImageURL = self.interviewSubject.profileImageURL
-            self.nameFieldView.textField.text = self.interviewSubject.name
-            self.roleFieldView.textField.text = self.interviewSubject.role
-        }
-    }
+    var interviewSubject = Subject()
     
     var completion: InterviewingCompletion?
     
@@ -106,6 +100,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.saveButton.isEnabled = false
         self.setupTableView()
         self.listenForKeyboardNotifications(shouldListen: true)
+        self.updateSubject()
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -355,5 +350,12 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         try? imageData.write(to: imageFileName)
         
         return imageFileName
+    }
+    
+    private func updateSubject()
+    {
+        self.profileImageView.profileImageURL = self.interviewSubject.profileImageURL
+        self.nameFieldView.textField.text = self.interviewSubject.name
+        self.roleFieldView.textField.text = self.interviewSubject.role
     }
 }

@@ -40,17 +40,8 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
-    var videoTitle = String() {
-        didSet {
-            self.titleFieldView.textField.text = self.videoTitle
-        }
-    }
-    
-    var videoDescription = String() {
-        didSet {
-            self.descriptionFieldView.textView.text = self.videoDescription
-        }
-    }
+    var videoTitle = String()
+    var videoDescription = String()
     
     var completion: DescriptionCompletion?
     
@@ -99,6 +90,7 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         self.saveButton.isEnabled = false
         self.setupTableView()
         self.listenForKeyboardNotifications(shouldListen: true)
+        self.updateLabels()
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -299,5 +291,11 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         }
         
         self.saveButton.isEnabled = readyToSave
+    }
+    
+    private func updateLabels()
+    {
+        self.titleFieldView.textField.text = self.videoTitle
+        self.descriptionFieldView.textView.text = self.videoDescription
     }
 }

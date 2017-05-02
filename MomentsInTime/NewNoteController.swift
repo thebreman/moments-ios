@@ -16,6 +16,8 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewBottomConstraint: NSLayoutConstraint!
     
+    var note = Note() 
+    
     var completion: NoteCompletion?
     
     override func viewDidLoad()
@@ -26,11 +28,13 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
         self.listenForKeyboardNotifications(shouldListen: true)
         self.textView.contentInset.bottom = 8.0
         self.textView.delegate = self
+        self.updateNote()
     }
     
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
+        self.saveButton.isEnabled = !self.textView.text.isEmpty
         self.textView.becomeFirstResponder()
     }
     
@@ -44,27 +48,23 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
     
     @IBAction func handleSave(_ sender: BouncingButton)
     {
-        var note: Note?
-        
         if let noteText = self.textView.text {
             if noteText.characters.count > 0 {
-                note = Note(withText: noteText)
+                self.note.text = noteText
             }
         }
         
         self.textView.endEditing(true)
         
         self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(note)
+            self.completion?(self.note)
         }
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
         self.textView.endEditing(true)
-        self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(nil)
-        }
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     //MARK: UITextViewDelegate
@@ -76,7 +76,7 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
         return totalPotentialCharacters <= MAX_CHARACTERS_NOTE
     }
     
-    //MARK; KeyboardMover
+    //MARK: KeyboardMover
     
     func keyboardMoved(notification: Notification)
     {
@@ -87,5 +87,12 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
             self.textViewBottomConstraint.constant = keyboardHeight
             self.view.layoutIfNeeded()
         }
+    }
+    
+    //MARK: Utilities
+    
+    private func updateNote()
+    {
+        self.textView.text = self.note.text
     }
 }

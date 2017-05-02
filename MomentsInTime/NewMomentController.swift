@@ -12,7 +12,7 @@ import Photos
 
 typealias InterviewingCompletion = (Subject) -> Void
 typealias DescriptionCompletion = (_ name: String, _ description: String) -> Void
-typealias NoteCompletion = (Note?) -> Void
+typealias NoteCompletion = (Note) -> Void
 
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
@@ -39,7 +39,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         let newMoment = Moment()
         newMoment.subject = Subject()
         newMoment.video = Video()
-        newMoment.notes = NewMomentSetting.defaultNotes
+        newMoment.notes = [Note]()
+        newMoment.notes += NewMomentSetting.defaultNotes
         return newMoment
     }()
     
@@ -55,8 +56,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.submitButton.isEnabled = false
         self.setupTableView()
-        
-        //>
     }
     
 //MARK: Actions
@@ -93,19 +92,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 //set completionHandler:
                 interviewingController.completion = { interviewSubject in
-                    
-                    self.moment.subject = interviewSubject
-                    self.updateUI()
-                    
-                    //animate interviewingSubject cell in:
-                    let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
-                    
-                    if isUpdating {
-                        self.updateRows(forIndexPaths: [newPath], withTableView: self.tableView)
-                    }
-                    else {
-                        self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
-                    }
+                    self.handleInterviewingSubjectCompletion(withSubject: interviewSubject, isUpdating: isUpdating)
                 }
             }
             
@@ -124,38 +111,25 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 //set completionHandler:
                 descriptionController.completion = { (videoTitle, videoDescription) in
-                    
-                    self.moment.video?.name = videoTitle
-                    self.moment.video?.videoDescription = videoDescription
-                    self.updateUI()
-                    
-                    //animate TitleDescription cell in:
-                    let newPath = IndexPath(row: 0, section: NewMomentSetting.description.rawValue)
-                    
-                    if isUpdating {
-                        self.updateRows(forIndexPaths: [newPath], withTableView: self.tableView)
-                    }
-                    else {
-                        self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
-                    }
+                    self.handleDescriptionCompletion(withVideoTitle: videoTitle, videoDescription: videoDescription, isUpdating: isUpdating)
                 }
             }
             
         case Identifiers.Segues.ENTER_NEW_NOTE:
             
-            if let newNoteController = segue.destination.contentViewController as? NewNoteController {
+            if let noteController = segue.destination.contentViewController as? NewNoteController {
                 
-                //
+                var isUpdating = false
                 
-                newNoteController.completion = { note in
-                    
-                    guard let newNote = note else { return }
-                    
-                    self.moment.notes.insert(newNote, at: 0)
-                    
-                    //animate newNote cell in:
-                    let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
-                    self.insertRows(forIndexPaths: [newPath], withTableView: self.tableView)
+                //pass along data if we have any:
+                if let noteToUpdate = sender as? Note {
+                    noteController.note = noteToUpdate
+                    isUpdating = true
+                }
+                
+                //set completionHandler:
+                noteController.completion = { note in
+                    self.handleNoteCompletion(withNote: note, isUpdating: isUpdating)
                 }
             }
             
@@ -273,18 +247,28 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    //set this in didSelectRow...
+    //make sure to nil it out after you use it in the prepareForSegue:
+    private var lastSelectedPath: IndexPath?
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
         //only navigate if cell is not activeLink and not video:
         if tableView.cellForRow(at: indexPath) is ActiveLinkCell { return }
         
+        self.lastSelectedPath = indexPath
+        
         switch indexPath.section {
         case NewMomentSetting.interviewing.rawValue:
             self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_SUBJECT, sender: nil)
+        
         case NewMomentSetting.description.rawValue:
             self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION, sender: nil)
+        
         case NewMomentSetting.notes.rawValue:
-            self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: nil)
+            let note = self.moment.notes[indexPath.row - 1]
+            self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: note)
+        
         default:
             return
         }
@@ -318,19 +302,57 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     //MARK: Utilities:
     
-    private func handleInterviewingSubjectCompletion(withSubject subject: Subject)
+    private func handleInterviewingSubjectCompletion(withSubject subject: Subject, isUpdating: Bool)
     {
-        //
+        self.moment.subject = subject
+        self.updateUI()
+        
+        //animate interviewingSubject cell in:
+        let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
+        
+        if isUpdating {
+            self.updateRows(forIndexPaths: [newPath], withTableView: self.tableView)
+        }
+        else {
+            self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+        }
     }
     
-    private func handleDescriptionCompletion()
+    private func handleDescriptionCompletion(withVideoTitle videoTitle: String, videoDescription: String, isUpdating: Bool)
     {
-        //
+        self.moment.video?.name = videoTitle
+        self.moment.video?.videoDescription = videoDescription
+        self.updateUI()
+        
+        //animate TitleDescription cell in:
+        let newPath = IndexPath(row: 0, section: NewMomentSetting.description.rawValue)
+        
+        if isUpdating {
+            self.updateRows(forIndexPaths: [newPath], withTableView: self.tableView)
+        }
+        else {
+            self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+        }
     }
     
-    private func handleNoteCompletion()
+    private func handleNoteCompletion(withNote note: Note, isUpdating: Bool)
     {
-        //
+        if isUpdating {
+            if let path = self.lastSelectedPath {
+                self.moment.notes[path.row - 1] = note
+                
+                //animate the update:
+                self.updateRows(forIndexPaths: [path], withTableView: self.tableView)
+                self.lastSelectedPath = nil
+            }
+        }
+        else {
+            self.moment.notes.insert(note, at: 0)
+            
+            //animate newNote cell in:
+            let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
+            self.insertRows(forIndexPaths: [newPath], withTableView: self.tableView)
+        }
     }
     
     private func handleVideoCamera()
@@ -483,8 +505,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func updateRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
     {
         tableView.beginUpdates()
-        tableView.deleteRows(at: paths, with: .automatic)
-        tableView.insertRows(at: paths, with: .automatic)
+        tableView.deleteRows(at: paths, with: .right)
+        tableView.insertRows(at: paths, with: .left)
         tableView.endUpdates()
     }
     
