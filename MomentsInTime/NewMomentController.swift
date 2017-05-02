@@ -11,7 +11,7 @@ import AVFoundation
 import Photos
 
 typealias InterviewingCompletion = (Subject) -> Void
-typealias DescriptionCompletion = (_ name: String?, _ description: String?) -> Void
+typealias DescriptionCompletion = (_ name: String, _ description: String) -> Void
 typealias NoteCompletion = (Note?) -> Void
 
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate
@@ -83,14 +83,29 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let interviewingController = segue.destination.contentViewController as? InterviewingController {
                 
+                var isUpdating = false
+                
                 //pass along data if we have any:
                 if let subject = self.moment.subject, subject.isValid {
                     interviewingController.interviewSubject = subject
+                    isUpdating = true
                 }
                 
                 //set completionHandler:
                 interviewingController.completion = { interviewSubject in
-                    self.handleInterviewingSubjectCompletion(withSubject: interviewSubject)
+                    
+                    self.moment.subject = interviewSubject
+                    self.updateUI()
+                    
+                    //animate interviewingSubject cell in:
+                    let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
+                    
+                    if isUpdating {
+                        self.updateRows(forIndexPaths: [newPath], withTableView: self.tableView)
+                    }
+                    else {
+                        self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+                    }
                 }
             }
             
@@ -98,11 +113,17 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let descriptionController = segue.destination.contentViewController as? DescriptionController {
                 
-                //pass along data if we have any:
+                var isUpdating = false
                 
+                //pass along data if we have any:
+                if let videoTitle = self.moment.video?.name, let videoDescription = self.moment.video?.videoDescription {
+                    descriptionController.videoTitle = videoTitle
+                    descriptionController.videoDescription = videoDescription
+                    isUpdating = true
+                }
+                
+                //set completionHandler:
                 descriptionController.completion = { (videoTitle, videoDescription) in
-                    
-                    guard videoTitle != nil && videoDescription != nil else { return }
                     
                     self.moment.video?.name = videoTitle
                     self.moment.video?.videoDescription = videoDescription
@@ -110,7 +131,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                     
                     //animate TitleDescription cell in:
                     let newPath = IndexPath(row: 0, section: NewMomentSetting.description.rawValue)
-                    self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+                    
+                    if isUpdating {
+                        self.updateRows(forIndexPaths: [newPath], withTableView: self.tableView)
+                    }
+                    else {
+                        self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+                    }
                 }
             }
             
@@ -293,25 +320,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleInterviewingSubjectCompletion(withSubject subject: Subject)
     {
-        var isUpdating = false
-        
-        //if we are updating:
-        if let currentSubject = self.moment.subject, currentSubject.isValid {
-            isUpdating = true
-        }
-        
-        self.moment.subject = subject
-        self.updateUI()
-        
-        //animate interviewingSubject cell in:
-        let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
-        
-        if isUpdating {
-            self.updateRows(forIndexPaths: [newPath], withTableView: self.tableView)
-        }
-        else {
-            self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
-        }
+        //
     }
     
     private func handleDescriptionCompletion()
@@ -415,6 +424,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE) as? ImageTitleSubtitleCell {
             cell.titleText = name
             cell.subtitleText = description
+            cell.imageURL = nil
+            cell.roundImage = nil
             return cell
         }
         

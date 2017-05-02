@@ -40,6 +40,18 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
+    var videoTitle = String() {
+        didSet {
+            self.titleFieldView.textField.text = self.videoTitle
+        }
+    }
+    
+    var videoDescription = String() {
+        didSet {
+            self.descriptionFieldView.textView.text = self.videoDescription
+        }
+    }
+    
     var completion: DescriptionCompletion?
     
     private lazy var titleFieldView: TextFieldView = {
@@ -92,6 +104,7 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
+        self.updateUI()
         self.titleFieldView.textField.becomeFirstResponder()
     }
     
@@ -105,28 +118,22 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     
     @IBAction func handleSave(_ sender: BouncingButton)
     {
-        let videoName = self.titleFieldView.textField.text
-        var videoDescription: String?
+        guard let videoName = self.titleFieldView.textField.text else { return }
         
-        if let description = self.descriptionFieldView.textView.text {
-            if description.characters.count > 0 {
-                videoDescription = description
-            }
-        }
+        self.videoTitle = videoName
+        self.videoDescription = self.descriptionFieldView.textView.text
         
         self.tableView.endEditing(true)
         
         self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(videoName, videoDescription)
+            self.completion?(self.videoTitle, self.videoDescription)
         }
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
         self.tableView.endEditing(true)
-        self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(nil, nil)
-        }
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     /**
