@@ -32,6 +32,9 @@
                             <constraint firstAttribute="height" constant="22" id="BP9-yp-giF"/>
                         </constraints>
                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <action selector="handleDetailDisclosureTap:" destination="xPk-3G-YZH" eventType="touchUpInside" id="RTt-US-8g5"/>
+                        </connections>
                     </button>
                 </subviews>
                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

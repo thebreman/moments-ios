@@ -300,6 +300,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    func activeLinkCell(_ activeLinkCell: ActiveLinkCell, detailDisclosureButtonTapped sender: UIButton)
+    {
+        print("inform user about the video button")
+    }
+    
     //MARK: Utilities:
     
     private func handleInterviewingSubjectCompletion(withSubject subject: Subject, isUpdating: Bool)
