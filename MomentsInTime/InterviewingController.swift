@@ -94,6 +94,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     }()
     
     private var justLoaded = true
+    private var imageDidChange = false
     
     override func viewDidLoad()
     {
@@ -133,16 +134,22 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func handleSave(_ sender: BouncingButton)
     {
+        //must have name to save, save button shouldn't even be enabled without one:
         guard let subjectName = self.nameFieldView.textField.text else { return }
         
         self.interviewSubject.name = subjectName
         
+        //save role if we have one:
         if let role = self.roleFieldView.textField.text {
             self.interviewSubject.role = role.characters.count > 0 ? role : nil
         }
         
-        self.tableView.endEditing(true)
+        //only rewrite/save image if we have one and if it is new:
+        if let newImage = self.profileImageView.profileImage, self.imageDidChange {
+            self.interviewSubject.profileImageURL = self.persistImage(newImage)?.absoluteString
+        }
         
+        self.tableView.endEditing(true)
         self.presentingViewController?.dismiss(animated: true) {
             self.completion?(self.interviewSubject)
         }
@@ -212,8 +219,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.view.layoutIfNeeded() //update pending layout changes then animate:
         
         UIView.animateWithKeyboardNotification(notification: notification) { (keyboardHeight, keyboardWindowY) in
-            
-            print("\nkeyboard\n")
             
             //first adjust scrollView content:
             self.tableView.contentInset.bottom = keyboardHeight
@@ -338,7 +343,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
             
             if let interviewSubjectImage = image {
                 self.profileImageView.profileImage = interviewSubjectImage
-                self.interviewSubject.profileImageURL = self.persistImage(interviewSubjectImage)?.absoluteString
+                self.imageDidChange = true
             }
         }
     }
@@ -363,7 +368,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         }
         
         try? imageData.write(to: imageFileName)
-        
         return imageFileName
     }
     
