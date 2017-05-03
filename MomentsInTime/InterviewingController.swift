@@ -93,21 +93,34 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         return cameraMan
     }()
     
+    private var justLoaded = true
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
         self.saveButton.isEnabled = false
         self.setupTableView()
-        self.listenForKeyboardNotifications(shouldListen: true)
         self.updateSubject()
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        self.listenForKeyboardNotifications(shouldListen: true)
     }
     
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(true)
         self.updateSaveButton()
-        self.nameFieldView.textField.becomeFirstResponder()
+        
+        //need to wait until viewDidAppeat to do this so all outlete/layout is done and for the proper animated effect
+        //but we dont want to do this after the image picker dismisses (especially in landscape) so use the flas justLoaded:
+        if self.justLoaded {
+            self.nameFieldView.textField.becomeFirstResponder()
+            self.justLoaded = false
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool)
@@ -199,6 +212,8 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.view.layoutIfNeeded() //update pending layout changes then animate:
         
         UIView.animateWithKeyboardNotification(notification: notification) { (keyboardHeight, keyboardWindowY) in
+            
+            print("\nkeyboard\n")
             
             //first adjust scrollView content:
             self.tableView.contentInset.bottom = keyboardHeight
