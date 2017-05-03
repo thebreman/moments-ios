@@ -352,13 +352,10 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     {
         //if we have previously saved an image we want to remove it:
         if let urlString = self.interviewSubject.profileImageURL, let imageFile = URL(string: urlString) {
-            print("removing old image")
             try? FileManager.default.removeItem(at: imageFile)
         }
     
-        //create a url for new image:
-        print("writing new image to disk")
-        
+        //create a url for new image:        
         let imageName = UUID().uuidString
         let imageFileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
         

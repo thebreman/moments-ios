@@ -505,13 +505,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         return MITNoteCell()
     }
     
-    private func updateWithVideoURL(_ url: URL)
-    {
-        self.moment.video?.localURL = url.absoluteString
-        self.updateVideoRow()
-        self.updateUI()
-    }
-    
     private func updateVideoRow()
     {
         let newPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
@@ -530,20 +523,42 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     /**
      * We won't have a thumbnail image until the upload to Vimeo is complete and processed.
-     * So we can use this method to get the first frame and use it as a preview instead:
+     * So we can use thumbnailImageforFileURL: to get the first frame and use it as a preview instead:
+     * We also don't want to call this everytime the respective tableViewCell gets dequeued, so
+     * hold onto it in memory with videoThumnailCachedImage: (but be sure to nil this out if uses changes the video)
      */
+    
+    private func updateWithVideoURL(_ url: URL)
+    {
+        //nil out the old cached thumbnail image since we have a new video:
+        self.videoThumbnailCachedImage = nil
+        
+        self.moment.video?.localURL = url.absoluteString
+        self.updateVideoRow()
+        self.updateUI()
+    }
+    
+    private var videoThumbnailCachedImage: UIImage?
+    
     fileprivate func thumbnailImage(forFileUrl url: URL) -> UIImage?
     {
+        //check for the cached image first:
+        if let cachedImage = self.videoThumbnailCachedImage {
+            return cachedImage
+        }
+        
         print("\nLoading image from AVAssetImageGenerator\n")
         
-        //generate a thumbnail image for the video:
+        //otherwise generate a thumbnail image for the video:
         let asset = AVAsset(url: url)
         let imageGenerator = AVAssetImageGenerator(asset: asset)
         imageGenerator.appliesPreferredTrackTransform = true //so that the image is not rotated in portrait
         
         //get 1st frame:
         if let thumbnailCGImage = try? imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil) {
-            return UIImage(cgImage: thumbnailCGImage)
+            let newImage = UIImage(cgImage: thumbnailCGImage)
+            self.videoThumbnailCachedImage = newImage
+            return newImage
         }
         
         return nil

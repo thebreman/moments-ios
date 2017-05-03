@@ -51,9 +51,7 @@ class MITCircleImageView: UIImageView
     //MARK: Private
     
     private func loadImageFromDisk(withUrlString urlString: String) -> UIImage?
-    {
-        print("\nLoading image from disk\n")
-        
+    {        
         if let imageURL = URL(string: urlString),
             let imageData = try? Data.init(contentsOf: imageURL, options: []) {
             return UIImage(data: imageData)

@@ -13,7 +13,7 @@ extension UITableView
     func refreshRows(forIndexPaths paths: [IndexPath])
     {
         self.beginUpdates()
-        self.reloadRows(at: paths, with: .middle)
+        self.reloadRows(at: paths, with: .fade)
         self.endUpdates()
     }
     
