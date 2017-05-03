@@ -31,6 +31,7 @@ PODS:
   - SDWebImage (4.0.0):
     - SDWebImage/Core (= 4.0.0)
   - SDWebImage/Core (4.0.0)
+  - UITextView+Placeholder (1.2.0)
 
 DEPENDENCIES:
   - ActiveLabel
@@ -41,6 +42,7 @@ DEPENDENCIES:
   - FacebookShare
   - PureLayout
   - SDWebImage
+  - UITextView+Placeholder
 
 SPEC CHECKSUMS:
   ActiveLabel: 68625f22775f51c31bb691ca8de20f1e5a3bc825
@@ -55,7 +57,8 @@ SPEC CHECKSUMS:
   FBSDKShareKit: 21ab3c8d173f4fa20c47c1061f3a9fac5950b5fa
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
+  UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
 
-PODFILE CHECKSUM: b6f485a15a5c05382239ba780a0778351681512b
+PODFILE CHECKSUM: e47b9a324653d22ed69a72bc5b8515b84057a9cc
 
 COCOAPODS: 1.2.1

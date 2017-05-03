@@ -210,17 +210,17 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
             
         case SECTION_VIDEO_FEED:
             
-            if let video = self.videosAndAccessoryViews[indexPath.row] as? Video {
+            if let video = self.videosAndAccessoryViews[indexPath.row] as? Video, let uri = video.uri {
                 
                 var height = CGFloat(0)
                 
-                if let cachedHeight = videoCellHeightCache.object(forKey: video.uri as NSString) as? CGFloat {
+                if let cachedHeight = videoCellHeightCache.object(forKey: uri as NSString) as? CGFloat {
                     height = cachedHeight
                 }
                 else {
                     let fittedSize = VideoCell.sizeForVideo(video, width: collectionView.bounds.width)
                     height = fittedSize.height
-                    videoCellHeightCache.setObject(height as NSNumber, forKey: video.uri as NSString)
+                    videoCellHeightCache.setObject(height as NSNumber, forKey: uri as NSString)
                 }
 
                 return CGSize(width: self.collectionView.bounds.width, height: height)

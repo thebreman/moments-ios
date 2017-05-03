@@ -10,12 +10,12 @@ import Foundation
 
 class Video: NSObject
 {
-    var uri: String!
-    var name: String!
+    var uri: String?
+    var name: String?
     var videoDescription: String?
-    var videoLinkURL: String!
-    var thumbnailImageURL: String!
-    var status: String!
+    var videoLinkURL: String?
+    var thumbnailImageURL: String?
+    var status: String?
     
     //file path for videos that are being uploaded:
     var localURL: String?
@@ -46,7 +46,7 @@ class Video: NSObject
                 completion(newURLString, nil)
                 return
             }
-            
+                        
             let error = NSError(domain: "Video", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't fetch valid playbackURL"])
             completion(nil, error)
         }

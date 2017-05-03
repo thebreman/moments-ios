@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="imageTitleSubtitleCell" rowHeight="104" id="wuw-W1-XXu" userLabel="ImageTitleSubtitleCell" customClass="ImageTitleSubtitleCell" customModule="MomentsInTime" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="436" height="104"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wuw-W1-XXu" id="Iqk-Wc-cAJ">
+                <rect key="frame" x="0.0" y="0.0" width="436" height="103.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hdp-eJ-F8e">
+                        <rect key="frame" x="12" y="6" width="412" height="91.5"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UAQ-vY-6qZ" customClass="MITCircleImageView" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="12" y="12" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="WAW-T2-Jxu"/>
+                                    <constraint firstAttribute="width" constant="64" id="lXV-Ge-JSl"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="900" verticalCompressionResistancePriority="1000" text="Chief Do-Gooder at Tikkun Olam, Atlanta Georgia" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tbe-pl-8Uu">
+                                <rect key="frame" x="88" y="34" width="312" height="33.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Justin Jay Milrad" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ek3-kN-ZZl">
+                                <rect key="frame" x="88" y="12" width="312" height="20"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="UAQ-vY-6qZ" firstAttribute="leading" secondItem="Hdp-eJ-F8e" secondAttribute="leading" constant="12" id="3mk-5E-HUm"/>
+                            <constraint firstItem="UAQ-vY-6qZ" firstAttribute="top" secondItem="Hdp-eJ-F8e" secondAttribute="top" constant="12" id="6RH-dR-ze3"/>
+                            <constraint firstItem="Tbe-pl-8Uu" firstAttribute="top" secondItem="Ek3-kN-ZZl" secondAttribute="bottom" constant="2" id="9ZQ-Xm-y11"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="UAQ-vY-6qZ" secondAttribute="bottom" constant="12" id="A79-Vu-ZDX"/>
+                            <constraint firstAttribute="trailing" secondItem="Ek3-kN-ZZl" secondAttribute="trailing" constant="12" id="NlN-Vz-eUP"/>
+                            <constraint firstItem="Tbe-pl-8Uu" firstAttribute="leading" secondItem="UAQ-vY-6qZ" secondAttribute="trailing" constant="12" id="OtJ-RE-420"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Tbe-pl-8Uu" secondAttribute="bottom" constant="12" id="Vpf-zu-AlH"/>
+                            <constraint firstItem="Ek3-kN-ZZl" firstAttribute="top" secondItem="Hdp-eJ-F8e" secondAttribute="top" constant="12" id="hzE-nP-ia4"/>
+                            <constraint firstItem="Ek3-kN-ZZl" firstAttribute="leading" secondItem="UAQ-vY-6qZ" secondAttribute="trailing" constant="12" id="kMl-7U-MTr"/>
+                            <constraint firstItem="Tbe-pl-8Uu" firstAttribute="trailing" secondItem="Ek3-kN-ZZl" secondAttribute="trailing" id="tTh-Fg-DwT"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                <integer key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="Hdp-eJ-F8e" secondAttribute="bottom" constant="6" id="BiV-H7-7XJ"/>
+                    <constraint firstAttribute="trailing" secondItem="Hdp-eJ-F8e" secondAttribute="trailing" constant="12" id="BtJ-pD-hHC"/>
+                    <constraint firstItem="Hdp-eJ-F8e" firstAttribute="top" secondItem="Iqk-Wc-cAJ" secondAttribute="top" constant="6" id="GPb-Bp-M5U"/>
+                    <constraint firstItem="Hdp-eJ-F8e" firstAttribute="leading" secondItem="Iqk-Wc-cAJ" secondAttribute="leading" constant="12" id="cdl-EY-EhK"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <connections>
+                <outlet property="containerView" destination="Hdp-eJ-F8e" id="Jrf-Wa-cVq"/>
+                <outlet property="imageViewHeightConstraint" destination="WAW-T2-Jxu" id="dLF-Ub-AKC"/>
+                <outlet property="imageViewLeadingConstraint" destination="3mk-5E-HUm" id="keP-ts-KBx"/>
+                <outlet property="imageViewWidthConstraint" destination="lXV-Ge-JSl" id="8VV-f8-faM"/>
+                <outlet property="roundImageView" destination="UAQ-vY-6qZ" id="NpW-qd-rUx"/>
+                <outlet property="subtitleLabel" destination="Tbe-pl-8Uu" id="zsr-g6-Qmu"/>
+                <outlet property="subtitleLabelTopConstraint" destination="9ZQ-Xm-y11" id="YZc-9c-9XW"/>
+                <outlet property="titleLabel" destination="Ek3-kN-ZZl" id="hz4-0l-9yC"/>
+            </connections>
+            <point key="canvasLocation" x="-84" y="-96"/>
+        </tableViewCell>
+    </objects>
+</document>

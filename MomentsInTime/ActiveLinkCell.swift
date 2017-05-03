@@ -12,6 +12,7 @@ import ActiveLabel
 protocol ActiveLinkCellDelegate: class
 {
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, handleSelection selection: String)
+    func activeLinkCell(_ activeLinkCell: ActiveLinkCell, detailDisclosureButtonTapped sender: UIButton)
 }
 
 class ActiveLinkCell: UITableViewCell
@@ -46,6 +47,13 @@ class ActiveLinkCell: UITableViewCell
                 }
             }
         }
+    }
+    
+    //MARK: Actions
+    
+    @IBAction func handleDetailDisclosureTap(_ sender: BouncingButton)
+    {
+        self.delegate?.activeLinkCell(self, detailDisclosureButtonTapped: sender)
     }
 }
 

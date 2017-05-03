@@ -10,4 +10,5 @@ pod 'FacebookLogin'
 pod 'FacebookShare'
 pod 'DZNEmptyDataSet'
 pod 'ActiveLabel'
+pod 'UITextView+Placeholder'
 end
