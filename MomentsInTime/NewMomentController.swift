@@ -321,10 +321,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
         
         if isUpdating {
-            self.updateRows(forIndexPaths: [newPath], withTableView: self.tableView)
+            self.tableView.updateRows(forIndexPaths: [newPath])
         }
         else {
-            self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+            self.tableView.refreshRows(forIndexPaths: [newPath])
         }
     }
     
@@ -338,10 +338,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         let newPath = IndexPath(row: 0, section: NewMomentSetting.description.rawValue)
         
         if isUpdating {
-            self.updateRows(forIndexPaths: [newPath], withTableView: self.tableView)
+            self.tableView.updateRows(forIndexPaths: [newPath])
         }
         else {
-            self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+            self.tableView.refreshRows(forIndexPaths: [newPath])
         }
     }
     
@@ -352,7 +352,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 self.moment.notes[path.row - 1] = note
                 
                 //animate the update:
-                self.updateRows(forIndexPaths: [path], withTableView: self.tableView)
+                self.tableView.updateRows(forIndexPaths: [path])
                 self.lastSelectedPath = nil
             }
         }
@@ -361,7 +361,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             //animate newNote cell in:
             let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
-            self.insertRows(forIndexPaths: [newPath], withTableView: self.tableView)
+            self.tableView.insertNewRows(forIndexPaths: [newPath])
         }
     }
     
@@ -505,28 +505,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         return MITNoteCell()
     }
     
-    private func reloadRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
-    {
-        tableView.beginUpdates()
-        tableView.reloadRows(at: paths, with: .middle)
-        tableView.endUpdates()
-    }
-    
-    private func updateRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
-    {
-        tableView.beginUpdates()
-        tableView.deleteRows(at: paths, with: .right)
-        tableView.insertRows(at: paths, with: .left)
-        tableView.endUpdates()
-    }
-    
-    private func insertRows(forIndexPaths paths: [IndexPath], withTableView tableView: UITableView)
-    {
-        self.tableView.beginUpdates()
-        self.tableView.insertRows(at: paths, with: .middle)
-        self.tableView.endUpdates()
-    }
-    
     private func updateWithVideoURL(_ url: URL)
     {
         self.moment.video?.localURL = url.absoluteString
@@ -537,7 +515,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func updateVideoRow()
     {
         let newPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
-        self.reloadRows(forIndexPaths: [newPath], withTableView: self.tableView)
+        self.tableView.refreshRows(forIndexPaths: [newPath])
     }
     
     private func updateUI()
