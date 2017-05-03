@@ -33,7 +33,7 @@ class ImageTitleSubtitleCell: BouncingTableViewCell
     var imageURL: String? {
         didSet {
             if let imageURLString = self.imageURL {
-                self.roundImageView.loadImageFromDisk(withUrlString: imageURLString)
+                self.roundImageView.loadLocalImage(withUrl: imageURLString)
                 self.updateUI()
             }
         }

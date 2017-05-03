@@ -350,18 +350,17 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     private func persistImage(_ image: UIImage) -> URL?
     {
-        var imageFileName: URL
-        
-        //if we have previously saved an image we want to overwrite it:
+        //if we have previously saved an image we want to remove it:
         if let urlString = self.interviewSubject.profileImageURL, let imageFile = URL(string: urlString) {
-            imageFileName = imageFile
+            print("removing old image")
+            try? FileManager.default.removeItem(at: imageFile)
         }
-        else {
-            
-            //otherwise create a url:
-            let imageName = UUID().uuidString
-            imageFileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
-        }
+    
+        //create a url for new image:
+        print("writing new image to disk")
+        
+        let imageName = UUID().uuidString
+        let imageFileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
         
         guard let imageData = UIImageJPEGRepresentation(image, 0.2) else {
             return nil

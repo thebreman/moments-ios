@@ -24,7 +24,7 @@ class ProfileImageView: UIView
     var profileImageURL: String? {
         didSet {
             if let urlString = self.profileImageURL {
-                self.imageView.loadImageFromDisk(withUrlString: urlString)
+                self.imageView.loadLocalImage(withUrl: urlString)
             }
         }
     }

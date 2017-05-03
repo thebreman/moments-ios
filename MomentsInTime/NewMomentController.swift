@@ -534,6 +534,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
      */
     fileprivate func thumbnailImage(forFileUrl url: URL) -> UIImage?
     {
+        print("\nLoading image from AVAssetImageGenerator\n")
+        
         //generate a thumbnail image for the video:
         let asset = AVAsset(url: url)
         let imageGenerator = AVAssetImageGenerator(asset: asset)
