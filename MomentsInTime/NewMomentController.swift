@@ -33,7 +33,7 @@ private enum Identifiers
     }
 }
 
-class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate
+class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate, VideoPreviewCellDelegate
 {
     @IBOutlet weak var submitButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
@@ -347,6 +347,40 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    //MARK: VideoPreviewCellDelegate
+    
+    func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handlePlay video: Video)
+    {
+        print("play video: \(video.localURL)")
+    }
+    
+    func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handleOptions sender: BouncingButton)
+    {
+        guard let video = videoPreviewCell.video else { return }
+        
+        let controller = UIAlertController(title: "Video", message: nil, preferredStyle: .actionSheet)
+        controller.popoverPresentationController?.sourceView = sender
+        controller.popoverPresentationController?.sourceRect = sender.bounds
+        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+            self.deleteVideo(video)
+        }
+        controller.addAction(deleteAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    private func deleteVideo(_ video: Video)
+    {
+        video.localURL = nil
+        let pathToDelete = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+        self.tableView.refreshRows(forIndexPaths: [pathToDelete])
+    }
+    
     //MARK: Utilities:
     
     private func handleInterviewingSubjectCompletion(withSubject subject: Subject, isUpdating: Bool)
@@ -517,7 +551,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func videoPreviewCell(forVideo video: Video, withTableView tableView: UITableView) -> VideoPreviewCell
     {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_VIDEO_PREVIEW) as? VideoPreviewCell {
-            cell.videoImage = self.thumbnailImage(forVideo: video)
+            cell.video = video
+            cell.delegate = self
             return cell
         }
         
@@ -613,10 +648,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     fileprivate func thumbnailImage(forVideo video: Video) -> UIImage?
     {
-        if let thumbnailImage = self.moment.video?.localThumbnailImage {
-            return thumbnailImage
-        }
-        
         guard let urlString = video.localURL, let assetURL = URL(string: urlString) else {
             return nil
         }

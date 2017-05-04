@@ -8,17 +8,24 @@
 
 import UIKit
 
+protocol VideoPreviewCellDelegate: class
+{
+    func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handlePlay video: Video)
+    func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handleOptions sender: BouncingButton)
+}
+
 class VideoPreviewCell: BouncingTableViewCell
 {
-    
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var videoImageView: UIImageView!
     
-    var videoImage: UIImage? {
+    var video: Video? {
         didSet {
-            self.videoImageView.image = self.videoImage
+            self.videoImageView.image = self.video?.localThumbnailImage
         }
     }
+    
+    weak var delegate: VideoPreviewCellDelegate?
     
     override func awakeFromNib()
     {
@@ -33,11 +40,13 @@ class VideoPreviewCell: BouncingTableViewCell
     
     @IBAction func handlePlay(_ sender: BouncingButton)
     {
-        print("handle play")
+        if let videoToPlay = self.video {
+            self.delegate?.videoPreviewCell(self, handlePlay: videoToPlay)
+        }
     }
 
-    @IBAction func handleShare(_ sender: BouncingButton)
+    @IBAction func handleOptions(_ sender: BouncingButton)
     {
-        print("handle share")
+        self.delegate?.videoPreviewCell(self, handleOptions: sender)
     }
 }
