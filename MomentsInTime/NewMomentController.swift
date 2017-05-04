@@ -33,12 +33,10 @@ private enum Identifiers
     }
 }
 
-class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate
+class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate
 {
     @IBOutlet weak var submitButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
-    
-
     
     private lazy var moment: Moment = {
         let newMoment = Moment()
@@ -376,13 +374,24 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleVideoCamera()
     {
-        self.cameraMan.getVideoFromCamera(withPresenter: self) { url in
+        
+        //we need to check Photos permission before user starts filming so that we can persist the video to their photo library:
+        PHPhotoLibrary.verifyAuthorization(authorizedHandler: { 
             
-            if let videoURL = url {
-                print("YES we have the video url from the camera!!!! \(videoURL)")
-                self.updateWithVideoURL(videoURL)
+            self.cameraMan.getVideoFromCamera(withPresenter: self) { url in
+                
+                if let videoURL = url {
+                    print("YES we have the video url from the camera!!!! \(videoURL)")
+                    self.updateWithVideoURL(videoURL)
+                    
+                    //persist the url to user's Photos:
+                    self.cameraMan.saveVideoURLToPhotos(videoURL, withPresenter: self)
+                }
             }
-        }
+            
+        }, notAuthorizedHandler: {
+            UIAlertController.alertUser(withPresenter: self, title: CameraMan.alertTitle, message: CameraMan.deniedLibraryMessage, okButton: true, settingsButton: true)
+        })
     }
     
     private func handlePhotos(fromView sender: UIView)
@@ -555,7 +564,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
         try? imageData.write(to: imageFileName)
-        
         return imageFileName
     }
     
@@ -575,8 +583,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         if let thumbnailImage = self.moment.video?.localThumbnailImage {
             return thumbnailImage
         }
-        
-        print("\nLoading image from AVAssetImageGenerator\n")
         
         guard let urlString = video.localURL, let assetURL = URL(string: urlString) else {
             return nil
