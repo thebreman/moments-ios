@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import AVKit
 import Photos
 
 private let COPY_TITLE_VIDEO_QUESTION_ALERT = "Camera shy? Don't worry."
@@ -30,6 +31,7 @@ private enum Identifiers
         static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
         static let ENTER_INTERVIEW_DESCRIPTION = "newMomentToDescription"
         static let ENTER_NEW_NOTE = "newMomentToNote"
+        static let PLAY_VIDEO = "newMomentToPlayer"
     }
 }
 
@@ -137,6 +139,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 noteController.completion = { note in
                     self.handleNoteCompletion(withNote: note, isUpdating: isUpdating)
                 }
+            }
+            
+        case Identifiers.Segues.PLAY_VIDEO:
+            
+            if let playerController = segue.destination as? AVPlayerViewController, let videoURL = sender as? URL {
+                playerController.player = AVPlayer(url: videoURL)
+                playerController.player?.play()
             }
             
         default:
@@ -342,8 +351,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             let pathToDelete = IndexPath(row: indexToDelete + 1, section: NewMomentSetting.notes.rawValue)
             self.tableView.removeRows(forIndexPaths: [pathToDelete])
-            
-            print("notes count: \(self.moment.notes.count)")
         }
     }
     
@@ -351,7 +358,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handlePlay video: Video)
     {
-        print("play video: \(video.localURL)")
+        guard let urlString = video.localURL else { return }
+        
+        if let url = URL(string: urlString) {
+            self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: url)
+        }
     }
     
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handleOptions sender: BouncingButton)

@@ -87,7 +87,7 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
      */
     func saveVideoURLToPhotos(_ url: URL, withPresenter presenter: UIViewController)
     {
-        //setup backgrouond task to ensure that there is enough time to move the file:
+        //setup background task to ensure that there is enough time to move the file:
         if UIDevice.current.isMultitaskingSupported {
             self.backgroundID = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         }
@@ -96,7 +96,7 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
             PHPhotoLibrary.shared().performChanges({
                 
                 let options = PHAssetResourceCreationOptions()
-                options.shouldMoveFile = true
+                options.shouldMoveFile = false
                 
                 let creationRequest = PHAssetCreationRequest.forAsset()
                 creationRequest.addResource(with: .video, fileURL: url, options: options)
