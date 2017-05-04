@@ -31,4 +31,11 @@ extension UITableView
         self.insertRows(at: paths, with: .middle)
         self.endUpdates()
     }
+    
+    func removeRows(forIndexPaths paths: [IndexPath])
+    {
+        self.beginUpdates()
+        self.deleteRows(at: paths, with: .fade)
+        self.endUpdates()
+    }
 }

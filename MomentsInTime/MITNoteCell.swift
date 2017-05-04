@@ -8,10 +8,23 @@
 
 import UIKit
 
+protocol MITNoteCellDelegate: class
+{
+    func noteCell(_ noteCell: MITNoteCell, handleOptions sender: BouncingButton)
+}
+
 class MITNoteCell: BouncingTableViewCell
 {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var noteTextLabel: UILabel!
+    
+    weak var delegate: MITNoteCellDelegate?
+    
+    var note: Note? {
+        didSet {
+            self.noteTextLabel.text = note?.text
+        }
+    }
     
     override func awakeFromNib()
     {
@@ -28,6 +41,6 @@ class MITNoteCell: BouncingTableViewCell
     
     @IBAction func handleOptions(_ sender: BouncingButton)
     {
-        print("handle note options")
+        self.delegate?.noteCell(self, handleOptions: sender)
     }
 }

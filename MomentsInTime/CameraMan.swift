@@ -117,7 +117,6 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
             })
             
         }, notAuthorizedHandler: {
-            
             UIAlertController.alertUser(withPresenter: presenter, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
     }
@@ -146,7 +145,6 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
             self.showImagePicker(forSourceType: sourceType, mediaTypes: [mediaType], withPresenter: presenter)
             
         }, notAuthorizedHandler: {
-            
             UIAlertController.alertUser(withPresenter: presenter, title: COPY_TITLE_ALERT, message: COPY_DENIED_VIDEO_CAMERA_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
     }
@@ -176,7 +174,6 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
             self.showImagePicker(forSourceType: .photoLibrary, mediaTypes: [mediaType], withPresenter: presenter)
             
         }, notAuthorizedHandler: {
-            
             UIAlertController.alertUser(withPresenter: presenter, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
     }
@@ -205,7 +202,6 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
             self.showImagePicker(forSourceType: sourceType, mediaTypes: [mediaType], withPresenter: presenter)
             
         }, notAuthorizedHandler: {
-            
             UIAlertController.alertUser(withPresenter: presenter, title: COPY_TITLE_ALERT, message: COPY_DENIED_CAMERA_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
     }
@@ -235,7 +231,6 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
             self.showImagePicker(forSourceType: .photoLibrary, mediaTypes: [mediaType], withPresenter: presenter)
             
         }, notAuthorizedHandler: {
-            
             UIAlertController.alertUser(withPresenter: presenter, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
     }

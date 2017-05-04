@@ -33,7 +33,7 @@ private enum Identifiers
     }
 }
 
-class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate
+class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate
 {
     @IBOutlet weak var submitButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
@@ -313,6 +313,40 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
+    //MARK: MITNoteCellDelegate
+    
+    func noteCell(_ noteCell: MITNoteCell, handleOptions sender: BouncingButton)
+    {
+        guard let note = noteCell.note else { return }
+        
+        let controller = UIAlertController(title: "Note", message: nil, preferredStyle: .actionSheet)
+        controller.popoverPresentationController?.sourceView = sender
+        controller.popoverPresentationController?.sourceRect = sender.bounds
+        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+            self.deleteNote(note)
+        }
+        controller.addAction(deleteAction)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    private func deleteNote(_ note: Note)
+    {
+        if self.moment.notes.contains(note), let indexToDelete = self.moment.notes.index(of: note) {
+            self.moment.notes.remove(at: indexToDelete)
+            
+            let pathToDelete = IndexPath(row: indexToDelete + 1, section: NewMomentSetting.notes.rawValue)
+            self.tableView.removeRows(forIndexPaths: [pathToDelete])
+            
+            print("notes count: \(self.moment.notes.count)")
+        }
+    }
+    
     //MARK: Utilities:
     
     private func handleInterviewingSubjectCompletion(withSubject subject: Subject, isUpdating: Bool)
@@ -381,7 +415,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             self.cameraMan.getVideoFromCamera(withPresenter: self) { url in
                 
                 if let videoURL = url {
-                    print("YES we have the video url from the camera!!!! \(videoURL)")
                     self.updateWithVideoURL(videoURL)
                     
                     //persist the url to user's Photos:
@@ -406,7 +439,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.cameraMan.getVideoFromLibrary(withPresenter: self) { url in
             
             if let videoURL = url {
-                print("YES we have the video url from the picker!!!! \(videoURL)")
                 self.updateWithVideoURL(videoURL)
             }
         }
@@ -510,7 +542,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func noteCell(forNote note: Note, withTableView tableView: UITableView) -> MITNoteCell
     {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_NOTE) as? MITNoteCell {
-            cell.noteTextLabel.text = note.text
+            cell.note = note
+            cell.delegate = self
             return cell
         }
         
