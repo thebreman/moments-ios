@@ -14,7 +14,9 @@ import MobileCoreServices
 private let COPY_TITLE_ALERT = "Oh No!"
 private let COPY_DENIED_VIDEO_CAMERA_ACCESS_MESSAGE = "We need permission to use the Camera and the Microphone, please change privacy settings."
 private let COPY_DENIED_CAMERA_ACCESS_MESSAGE = "We need permission to use the Camera, please change privacy settings."
+
 private let COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE = "We need permission to access your Photos, please change privacy settings."
+
 private let COPY_VIDEO_CAMERA_UNAVAILABLE_MESSAGE = "It looks like the Video Camera is unavailable. You can upload a video from your Photo Library instead."
 private let COPY_CAMERA_UNAVAILABLE_MESSAGE = "It looks like the Camera is unavailable. You can upload a video from your Photo Library instead"
 private let COPY_VIDEO_MEDIA_TYPE_UNAVAILABLE_PHOTO_LIBRARY_MESSAGE = "There are no available videos in your Photo Library."
@@ -44,11 +46,41 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
     private var imageCompletionHandler: ImageCompletion?
     
     /**
+     * saves video url to users Photos Library:
+     */
+    func saveVideoURLToPhotos(_ url: URL, withPresenter presenter: UIViewController)
+    {
+        PHPhotoLibrary.verifyAuthorization(authorizedHandler: {
+            PHPhotoLibrary.shared().performChanges({
+                
+                let options = PHAssetResourceCreationOptions()
+                options.shouldMoveFile = true
+                
+                let creationRequest = PHAssetCreationRequest.forAsset()
+                creationRequest.addResource(with: .video, fileURL: url, options: options)
+                
+            }, completionHandler: { (success, error) in
+                
+                if !success {
+                    //
+                }
+                
+            })
+            
+        }, notAuthorizedHandler: {
+            
+            UIAlertController.alertUser(withPresenter: presenter, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: true, settingsButton: true)
+        })
+    }
+    
+    /**
      * opens the camera for recording a video.
      * This method opens camera full screen modally from presenter and passes video file url in the completion:
      */
     func getVideoFromCamera(withPresenter presenter: UIViewController, completion: @escaping VideoURLCompletion)
     {
+        self.videoCompletionHandler = completion
+        
         let sourceType = UIImagePickerControllerSourceType.camera
         let mediaType = kUTTypeMovie as String
         
@@ -68,8 +100,6 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
             
             UIAlertController.alertUser(withPresenter: presenter, title: COPY_TITLE_ALERT, message: COPY_DENIED_VIDEO_CAMERA_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
-        
-        self.videoCompletionHandler = completion
     }
     
     /**
@@ -80,6 +110,8 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
      */
     func getVideoFromLibrary(withPresenter presenter: UIViewController, completion: @escaping VideoURLCompletion)
     {
+        self.videoCompletionHandler = completion
+
         let sourceType = UIImagePickerControllerSourceType.photoLibrary
         let mediaType = kUTTypeMovie as String
         
@@ -98,8 +130,6 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
             
             UIAlertController.alertUser(withPresenter: presenter, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
-        
-        self.videoCompletionHandler = completion
     }
     
     /**
@@ -108,6 +138,8 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
      */
     func getPhotoFromCamera(withPresenter presenter: UIViewController, completion: @escaping ImageCompletion)
     {
+        self.imageCompletionHandler = completion
+
         let sourceType = UIImagePickerControllerSourceType.photoLibrary
         let mediaType = kUTTypeImage as String
         
@@ -127,8 +159,6 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
             
             UIAlertController.alertUser(withPresenter: presenter, title: COPY_TITLE_ALERT, message: COPY_DENIED_CAMERA_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
-        
-        self.imageCompletionHandler = completion
     }
     
     /**
@@ -139,6 +169,8 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
      */
     func getPhotoFromLibrary(withPresenter presenter: UIViewController, completion: @escaping ImageCompletion)
     {
+        self.imageCompletionHandler = completion
+
         let sourceType = UIImagePickerControllerSourceType.photoLibrary
         let mediaType = kUTTypeImage as String
         
@@ -157,8 +189,6 @@ class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControll
             
             UIAlertController.alertUser(withPresenter: presenter, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
-        
-        self.imageCompletionHandler = completion
     }
     
     //MARK: UIImagePickerControllerDelegate

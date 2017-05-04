@@ -21,14 +21,6 @@ class ProfileImageView: UIView
         }
     }
     
-    var profileImageURL: String? {
-        didSet {
-            if let urlString = self.profileImageURL {
-                self.imageView.loadLocalImage(withUrl: urlString)
-            }
-        }
-    }
-    
     var actionButton: BouncingButton = {
         let button = BouncingButton()
         button.translatesAutoresizingMaskIntoConstraints = false

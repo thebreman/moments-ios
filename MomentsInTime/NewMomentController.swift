@@ -17,26 +17,28 @@ typealias InterviewingCompletion = (Subject) -> Void
 typealias DescriptionCompletion = (_ name: String, _ description: String) -> Void
 typealias NoteCompletion = (Note) -> Void
 
+private enum Identifiers
+{
+    static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
+    static let IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE = "imageTitleSubtitleCell"
+    static let IDENTIFIER_CELL_VIDEO_PREVIEW = "videoPreviewCell"
+    static let IDENTIFIER_CELL_NOTE = "noteCell"
+    static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
+    
+    enum Segues
+    {
+        static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
+        static let ENTER_INTERVIEW_DESCRIPTION = "newMomentToDescription"
+        static let ENTER_NEW_NOTE = "newMomentToNote"
+    }
+}
+
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
     @IBOutlet weak var submitButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
-    private enum Identifiers
-    {
-        static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
-        static let IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE = "imageTitleSubtitleCell"
-        static let IDENTIFIER_CELL_VIDEO_PREVIEW = "videoPreviewCell"
-        static let IDENTIFIER_CELL_NOTE = "noteCell"
-        static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
-        
-        enum Segues
-        {
-            static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
-            static let ENTER_INTERVIEW_DESCRIPTION = "newMomentToDescription"
-            static let ENTER_NEW_NOTE = "newMomentToNote"
-        }
-    }
+
     
     private lazy var moment: Moment = {
         let newMoment = Moment()
@@ -59,6 +61,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.submitButton.isEnabled = false
         self.setupTableView()
+        
+        //make sure moment is fully loaded...
     }
     
 //MARK: Actions
@@ -73,7 +77,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-    //MARK: Navigation
+
+//MARK: Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
@@ -141,7 +146,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
     
-//MARK: tableView
+//MARK: UITableViewDelegate
     
     private func setupTableView()
     {
@@ -314,6 +319,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleInterviewingSubjectCompletion(withSubject subject: Subject, isUpdating: Bool)
     {
+        if let newProfileImage = subject.profileImage {
+            subject.profileImageURL = self.persistImage(newProfileImage)?.absoluteString
+        }
+        
         self.moment.subject = subject
         self.updateUI()
         
@@ -443,7 +452,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE) as? ImageTitleSubtitleCell {
             cell.titleText = subject.name
             cell.subtitleText = subject.role
-            cell.imageURL = subject.profileImageURL
+            cell.roundImage = subject.profileImage
             return cell
         }
         
@@ -456,7 +465,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE) as? ImageTitleSubtitleCell {
             cell.titleText = name
             cell.subtitleText = description
-            cell.imageURL = nil
             cell.roundImage = nil
             return cell
         }
@@ -468,11 +476,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func videoPreviewCell(forVideo video: Video, withTableView tableView: UITableView) -> VideoPreviewCell
     {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_VIDEO_PREVIEW) as? VideoPreviewCell {
-            
-            if let imageURLString = video.localURL, let imageURL = URL(string: imageURLString) {
-                cell.videoImage = self.thumbnailImage(forFileUrl: imageURL)
-            }
-            
+            cell.videoImage = self.thumbnailImage(forVideo: video)
             return cell
         }
         
@@ -521,43 +525,71 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.submitButton.isEnabled = readyToSubmit
     }
     
-    /**
-     * We won't have a thumbnail image until the upload to Vimeo is complete and processed.
-     * So we can use thumbnailImageforFileURL: to get the first frame and use it as a preview instead:
-     * We also don't want to call this everytime the respective tableViewCell gets dequeued, so
-     * hold onto it in memory with videoThumnailCachedImage: (but be sure to nil this out if uses changes the video)
-     */
+    private func loadImageFromDisk(withUrlString urlString: String) -> UIImage?
+    {
+        if let imageURL = URL(string: urlString),
+            let imageData = try? Data.init(contentsOf: imageURL, options: []) {
+            return UIImage(data: imageData)
+        }
+        
+        return nil
+    }
+    
+    private func persistImage(_ image: UIImage) -> URL?
+    {
+        var imageFileName: URL
+        
+        //if we have previously saved an image we want to overwrite it:
+        if let urlString = self.moment.subject?.profileImageURL, let imageFile = URL(string: urlString) {
+            imageFileName = imageFile
+        }
+        else {
+            
+            //otherwise create a url:
+            let imageName = UUID().uuidString
+            imageFileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
+        }
+        
+        guard let imageData = UIImageJPEGRepresentation(image, 0.2) else {
+            return nil
+        }
+        
+        try? imageData.write(to: imageFileName)
+        
+        return imageFileName
+    }
     
     private func updateWithVideoURL(_ url: URL)
     {
-        //nil out the old cached thumbnail image since we have a new video:
-        self.videoThumbnailCachedImage = nil
+        guard let video = self.moment.video else { return }
         
-        self.moment.video?.localURL = url.absoluteString
+        video.localURL = url.absoluteString
+        video.localThumbnailImage = self.thumbnailImage(forVideo: video)
+        
         self.updateVideoRow()
         self.updateUI()
     }
     
-    private var videoThumbnailCachedImage: UIImage?
-    
-    fileprivate func thumbnailImage(forFileUrl url: URL) -> UIImage?
+    fileprivate func thumbnailImage(forVideo video: Video) -> UIImage?
     {
-        //check for the cached image first:
-        if let cachedImage = self.videoThumbnailCachedImage {
-            return cachedImage
+        if let thumbnailImage = self.moment.video?.localThumbnailImage {
+            return thumbnailImage
         }
         
         print("\nLoading image from AVAssetImageGenerator\n")
         
+        guard let urlString = video.localURL, let assetURL = URL(string: urlString) else {
+            return nil
+        }
+        
         //otherwise generate a thumbnail image for the video:
-        let asset = AVAsset(url: url)
+        let asset = AVAsset(url: assetURL)
         let imageGenerator = AVAssetImageGenerator(asset: asset)
         imageGenerator.appliesPreferredTrackTransform = true //so that the image is not rotated in portrait
         
         //get 1st frame:
         if let thumbnailCGImage = try? imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil) {
             let newImage = UIImage(cgImage: thumbnailCGImage)
-            self.videoThumbnailCachedImage = newImage
             return newImage
         }
         

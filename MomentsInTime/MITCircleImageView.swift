@@ -8,8 +8,6 @@
 
 import UIKit
 
-fileprivate let imageCache = NSCache<NSString, AnyObject>()
-
 class MITCircleImageView: UIImageView
 {
     override init(frame: CGRect)
@@ -28,36 +26,6 @@ class MITCircleImageView: UIImageView
     {
         super.layoutSubviews()
         self.layer.cornerRadius = self.bounds.size.width * 0.5
-    }
-    
-    //MARK: Public
-    
-    func loadLocalImage(withUrl urlString: String)
-    {
-        //check cache for image:
-        if let imageFromCache = imageCache.object(forKey: urlString as NSString) as? UIImage {
-            self.image = imageFromCache
-        }
-        else {
-            
-            //if no image, fetch from disk and cache:
-            if let fetchedImage = loadImageFromDisk(withUrlString: urlString) {
-                self.image = fetchedImage
-                imageCache.setObject(fetchedImage, forKey: urlString as NSString)
-            }
-        }
-    }
-    
-    //MARK: Private
-    
-    private func loadImageFromDisk(withUrlString urlString: String) -> UIImage?
-    {        
-        if let imageURL = URL(string: urlString),
-            let imageData = try? Data.init(contentsOf: imageURL, options: []) {
-            return UIImage(data: imageData)
-        }
-        
-        return nil
     }
     
     private func setup()

@@ -7,12 +7,15 @@
 //
 
 import Foundation
+import UIKit
 
 class Subject: NSObject
 {
     var name: String?
     var role: String?
     var profileImageURL: String?
+    
+    var profileImage: UIImage?
     
     var isValid: Bool {
         return self.name != nil

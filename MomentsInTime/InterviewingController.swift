@@ -94,7 +94,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     }()
     
     private var justLoaded = true
-    private var imageDidChange = false
     
     override func viewDidLoad()
     {
@@ -144,10 +143,8 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
             self.interviewSubject.role = role.characters.count > 0 ? role : nil
         }
         
-        //only rewrite/save image if we have one and if it is new:
-        if let newImage = self.profileImageView.profileImage, self.imageDidChange {
-            self.interviewSubject.profileImageURL = self.persistImage(newImage)?.absoluteString
-        }
+        // add the image to the model:
+        self.interviewSubject.profileImage = self.profileImageView.profileImage
         
         self.tableView.endEditing(true)
         self.presentingViewController?.dismiss(animated: true) {
@@ -343,33 +340,13 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
             
             if let interviewSubjectImage = image {
                 self.profileImageView.profileImage = interviewSubjectImage
-                self.imageDidChange = true
             }
         }
     }
     
-    private func persistImage(_ image: UIImage) -> URL?
-    {
-        //if we have previously saved an image we want to remove it:
-        if let urlString = self.interviewSubject.profileImageURL, let imageFile = URL(string: urlString) {
-            try? FileManager.default.removeItem(at: imageFile)
-        }
-    
-        //create a url for new image:        
-        let imageName = UUID().uuidString
-        let imageFileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
-        
-        guard let imageData = UIImageJPEGRepresentation(image, 0.2) else {
-            return nil
-        }
-        
-        try? imageData.write(to: imageFileName)
-        return imageFileName
-    }
-    
     private func updateSubject()
     {
-        self.profileImageView.profileImageURL = self.interviewSubject.profileImageURL
+        self.profileImageView.profileImage = self.interviewSubject.profileImage
         self.nameFieldView.textField.text = self.interviewSubject.name
         self.roleFieldView.textField.text = self.interviewSubject.role
     }

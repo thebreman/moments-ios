@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Video: NSObject
 {
@@ -19,6 +20,7 @@ class Video: NSObject
     
     //file path for videos that are being uploaded:
     var localURL: String?
+    var localThumbnailImage: UIImage?
     
     //optional url to pass to PlayerViewController (must be fetched upon request):
     private(set) var playbackURL: String?
@@ -90,7 +92,7 @@ extension Video: VideoRouterCompliant
         }
         
         if let description = self.videoDescription {
-            params["description"] = description
+            params["description"] = self.videoDescription
         }
         
         return params
