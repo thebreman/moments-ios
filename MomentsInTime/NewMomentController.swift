@@ -453,7 +453,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleVideoCamera()
     {
-        
         //we need to check Photos permission before user starts filming so that we can persist the video to their photo library:
         PHPhotoLibrary.verifyAuthorization(authorizedHandler: { 
             
