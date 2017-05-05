@@ -133,16 +133,20 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func handleSave(_ sender: BouncingButton)
     {
+        //must have name to save, save button shouldn't even be enabled without one:
         guard let subjectName = self.nameFieldView.textField.text else { return }
         
         self.interviewSubject.name = subjectName
         
+        //save role if we have one:
         if let role = self.roleFieldView.textField.text {
             self.interviewSubject.role = role.characters.count > 0 ? role : nil
         }
         
-        self.tableView.endEditing(true)
+        // add the image to the model:
+        self.interviewSubject.profileImage = self.profileImageView.profileImage
         
+        self.tableView.endEditing(true)
         self.presentingViewController?.dismiss(animated: true) {
             self.completion?(self.interviewSubject)
         }
@@ -212,8 +216,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.view.layoutIfNeeded() //update pending layout changes then animate:
         
         UIView.animateWithKeyboardNotification(notification: notification) { (keyboardHeight, keyboardWindowY) in
-            
-            print("\nkeyboard\n")
             
             //first adjust scrollView content:
             self.tableView.contentInset.bottom = keyboardHeight
@@ -338,38 +340,13 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
             
             if let interviewSubjectImage = image {
                 self.profileImageView.profileImage = interviewSubjectImage
-                self.interviewSubject.profileImageURL = self.persistImage(interviewSubjectImage)?.absoluteString
             }
         }
     }
     
-    private func persistImage(_ image: UIImage) -> URL?
-    {
-        var imageFileName: URL
-        
-        //if we have previously saved an image we want to overwrite it:
-        if let urlString = self.interviewSubject.profileImageURL, let imageFile = URL(string: urlString) {
-            imageFileName = imageFile
-        }
-        else {
-            
-            //otherwise create a url:
-            let imageName = UUID().uuidString
-            imageFileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
-        }
-        
-        guard let imageData = UIImageJPEGRepresentation(image, 0.2) else {
-            return nil
-        }
-        
-        try? imageData.write(to: imageFileName)
-        
-        return imageFileName
-    }
-    
     private func updateSubject()
     {
-        self.profileImageView.profileImageURL = self.interviewSubject.profileImageURL
+        self.profileImageView.profileImage = self.interviewSubject.profileImage
         self.nameFieldView.textField.text = self.interviewSubject.name
         self.roleFieldView.textField.text = self.interviewSubject.role
     }

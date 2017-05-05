@@ -31,7 +31,7 @@
                                 <rect key="frame" x="301" y="188" width="38" height="18.5"/>
                                 <state key="normal" image="Options"/>
                                 <connections>
-                                    <action selector="handleShare:" destination="w9B-W4-4uQ" eventType="touchUpInside" id="Jax-JL-eT9"/>
+                                    <action selector="handleOptions:" destination="w9B-W4-4uQ" eventType="touchUpInside" id="ivf-p0-LnV"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TgM-uz-OzJ" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">

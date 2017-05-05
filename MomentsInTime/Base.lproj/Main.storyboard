@@ -172,6 +172,7 @@
                         <segue destination="tMY-Ml-CZK" kind="presentation" identifier="newMomentToInterviewing" id="8pJ-IV-bfk"/>
                         <segue destination="eLY-2x-A2x" kind="presentation" identifier="newMomentToDescription" id="sBM-Up-TOI"/>
                         <segue destination="9RF-7C-mDN" kind="presentation" identifier="newMomentToNote" id="NOG-fl-7Zg"/>
+                        <segue destination="e3s-4x-RTz" kind="presentation" identifier="newMomentToPlayer" id="Lb7-be-TB6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="di5-tN-qqt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -380,7 +381,7 @@
                 <avPlayerViewController hidesBottomBarWhenPushed="YES" videoGravity="AVLayerVideoGravityResizeAspect" id="e3s-4x-RTz" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jMW-wF-Usa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2886" y="396"/>
+            <point key="canvasLocation" x="3292" y="350"/>
         </scene>
         <!--My Moments-->
         <scene sceneID="Ikm-1t-fJW">
@@ -643,6 +644,6 @@
         <image name="PlusButton" width="18" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="o7j-gd-ln6"/>
+        <segue reference="Lb7-be-TB6"/>
     </inferredMetricsTieBreakers>
 </document>

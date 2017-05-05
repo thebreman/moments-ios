@@ -10,14 +10,6 @@ import UIKit
 
 class MITCircleImageView: UIImageView
 {
-    func loadImageFromDisk(withUrlString urlString: String)
-    {
-        if let imageURL = URL(string: urlString),
-            let imageData = try? Data.init(contentsOf: imageURL, options: []) {
-            self.image = UIImage(data: imageData)
-        }
-    }
-    
     override init(frame: CGRect)
     {
         super.init(frame: frame)
