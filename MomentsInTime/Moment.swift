@@ -20,8 +20,35 @@ class Moment: Object
         return false
     }
     
+    // @Ignore
+    var exists = false
+    
     override static func primaryKey() -> String?
     {
         return "momentID"
+    }
+    
+    
+    override static func ignoredProperties() -> [String]
+    {
+        return ["exists"]
+    }
+    
+    func create()
+    {
+        // add a new thing to realm
+        if !self.exists
+        {
+            //add moment to realm:
+            if let realm = try? Realm() {
+                
+                try? realm.write {
+                    realm.add(self)
+                }
+            }
+            
+            self.exists = true
+        }
+
     }
 }

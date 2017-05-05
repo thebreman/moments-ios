@@ -14,6 +14,8 @@ import RealmSwift
 
 private let COPY_TITLE_VIDEO_QUESTION_ALERT = "Camera shy? Don't worry."
 private let COPY_MESSAGE_VIDEO_QUESTION_ALERT = "You don't have to get it first try. When you film a video, we'll save it to your camera roll so you can edit with your favorite tools. Upload a new video at any time before submitting."
+private let COPY_TITLE_SAVE_CHANGES = "Save Changes?"
+private let COPY_MESSAGE_SAVE_CHANGES = "Would you like to save this moment? You can always come back and edit it later."
 
 typealias InterviewingCompletion = (Subject) -> Void
 typealias DescriptionCompletion = (_ name: String, _ description: String) -> Void
@@ -76,16 +78,49 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBAction func handleSubmit(_ sender: BouncingButton)
     {
         print("handle Submit: \(self.moment)")
-        
-        if let realm = try? Realm() {
-            if realm.isEmpty {
-                print("\nrealm is empty")
-            }
-        }
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
+        let controller = UIAlertController(title: COPY_TITLE_SAVE_CHANGES, message: COPY_MESSAGE_SAVE_CHANGES, preferredStyle: .alert)
+        controller.popoverPresentationController?.sourceView = sender
+        controller.popoverPresentationController?.sourceRect = sender.bounds
+        controller.popoverPresentationController?.permittedArrowDirections = [.up]
+        
+        let persistAction = UIAlertAction(title: "Save changes", style: .default) { action in
+            self.persistMoment()
+        }
+        controller.addAction(persistAction)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+            self.deleteMoment()
+        }
+        controller.addAction(deleteAction)
+        
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    private func persistMoment()
+    {
+        self.moment.create()
+        
+        self.presentingViewController?.dismiss(animated: true, completion: {
+            if let realm = try? Realm() {
+                if realm.isEmpty {
+                    print("realm is empty")
+                }
+                else {
+                    print("realm is NOT empty")
+                }
+            }
+        })
+    }
+    
+    private func deleteMoment()
+    {
+        print("delete moment")
+        
+        //can probably do nothing here:
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
@@ -360,7 +395,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         if self.moment.notes.contains(note), let indexToDelete = self.moment.notes.index(of: note) {
             
-            self.writeToRealm {
+            Object.writeToRealm {
                 self.moment.notes.remove(objectAtIndex: indexToDelete)
                 let pathToDelete = IndexPath(row: indexToDelete + 1, section: NewMomentSetting.notes.rawValue)
                 self.tableView.removeRows(forIndexPaths: [pathToDelete])
@@ -410,7 +445,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleInterviewingSubjectCompletion(withSubject subject: Subject, isUpdating: Bool)
     {
-        self.writeToRealm {
+        Object.writeToRealm {
             if let newProfileImage = subject.profileImage {
                 subject.profileImageURL = self.persistImage(newProfileImage)?.absoluteString
             }
@@ -433,7 +468,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleDescriptionCompletion(withVideoTitle videoTitle: String, videoDescription: String, isUpdating: Bool)
     {
-        self.writeToRealm {
+        Object.writeToRealm {
             self.moment.video?.name = videoTitle
             self.moment.video?.videoDescription = videoDescription
             
@@ -453,7 +488,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleNoteCompletion(withNote note: Note, isUpdating: Bool)
     {
-        self.writeToRealm {
+        Object.writeToRealm {
             if isUpdating {
                 if let path = self.lastSelectedPath {
                     self.moment.notes[path.row - 1] = note
@@ -466,16 +501,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
                 self.tableView.insertNewRows(forIndexPaths: [newPath])
             }
-        }
-    }
-    
-    //modify objects and perform any UI updates in handler:
-    private func writeToRealm(withHandler handler: () -> Void)
-    {
-        if let realm = try? Realm() {
-            realm.beginWrite()
-            handler()
-            try? realm.commitWrite()
         }
     }
     
