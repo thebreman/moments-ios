@@ -9,9 +9,6 @@
 import UIKit
 import RealmSwift
 
-private let IDENTIFIER_SEGUE_NEW_MOMENT = "NewMoment"
-private let IDENTIFIER_SEGUE_PLAYER = "myMomentsToPlayer"
-
 class MyMomentsController: UIViewController, MITVideoCollectionViewAdapterVideoDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
@@ -36,30 +33,26 @@ class MyMomentsController: UIViewController, MITVideoCollectionViewAdapterVideoD
                                                     videos: self.momentList.momentVideos,
                                                     emptyStateView: self.emptyStateView,
                                                     bannerView: nil)
+        adapter.videoDelegate = self
         return adapter
     }()
-
     
+    private enum Identifiers
+    {
+        static let IDENTIFIER_SEGUE_NEW_MOMENT = "NewMoment"
+        static let IDENTIFIER_SEGUE_PLAYER = "myMomentsToPlayer"
+    }
+
     override func viewDidLoad()
     {
         super.viewDidLoad()
         self.setupCollectionView()
-        
-        self.adapter.videoDelegate = self
-        
-        if let realm = try? Realm() {
-            if realm.isEmpty {
-                print("Realm is Empty")
-            }
-            else {
-                print("Realm is NOT empty")
-            }
-        }
     }
     
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
+        self.adapter.videos = self.momentList.momentVideos
         
         //need this in case we rotate, switch tabs, then rotate back...
         //when we come back to this screen, the layout will be where we left it
@@ -81,19 +74,25 @@ class MyMomentsController: UIViewController, MITVideoCollectionViewAdapterVideoD
     
     @objc private func handleNewMoment()
     {
-        self.performSegue(withIdentifier: IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
+        self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
     }
     
     //MARK: MITVideoCollectionViewAdapterVideoDelegate
     
     func adapter(adapter: MITVideoCollectionViewAdapter, handleShareForVideo video: Video)
     {
-        //
+        print("handle share")
     }
     
     func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
     {
-        //
+        //fetch URL, could be from Vimeo, could be local...
+        //then segue to the player
+    }
+    
+    func didSelectCell(forVideo video: Video)
+    {
+        //should push NewMomentController onto the NavStack here...?
     }
     
     //MARK: CollectionView

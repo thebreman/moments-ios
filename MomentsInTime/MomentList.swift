@@ -11,7 +11,9 @@ import RealmSwift
 
 class MomentList: NSObject
 {
-    var moments: Results<Moment>?
+    var moments = [Moment]()
+    
+    private(set) var savedMoments : Results<Moment>?
     
     var momentVideos: [Video] {
         
@@ -25,16 +27,27 @@ class MomentList: NSObject
     override init()
     {
         super.init()
-        self.moments = self.getMoments()
+        self.savedMoments = self.getMoments()
     }
     
     private func getMoments() -> Results<Moment>?
     {
         if let realm = try? Realm() {
-            self.moments = realm.objects(Moment.self)
-            return self.moments?.sorted(by: [SortDescriptor(keyPath: "createdAt", ascending: false)])
+            self.savedMoments = realm.objects(Moment.self)
+            return self.savedMoments?.sorted(by: [SortDescriptor(keyPath: "createdAt", ascending: false)])
+            self.moments = self.savedMoments.
         }
         
         return nil
+    }
+    
+    func addMoment()
+    {
+        
+    }
+    
+    func removeMoments()
+    {
+        
     }
 }

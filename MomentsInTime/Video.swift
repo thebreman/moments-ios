@@ -14,6 +14,7 @@ class Video: Object
 {
     //these will be persisted with Realm for user's MyMoments 
     //everything else will come from Vimeo JSON objects
+    dynamic var videoID = UUID().uuidString
     dynamic var uri: String? = nil
     dynamic var name: String? = nil
     dynamic var videoDescription: String? = nil
@@ -80,7 +81,7 @@ class Video: Object
     
     override static func primaryKey() -> String?
     {
-        return "uri"
+        return "videoID"
     }
     
     override static func ignoredProperties() -> [String]

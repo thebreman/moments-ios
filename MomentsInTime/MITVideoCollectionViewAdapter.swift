@@ -24,10 +24,11 @@ protocol MITVideoCollectionViewAdapterDelegate: class
 }
 
 //delegate to pass which video needs to be played after user taps playButton:
-protocol MITVideoCollectionViewAdapterVideoDelegate: class
+@objc protocol MITVideoCollectionViewAdapterVideoDelegate: class
 {
     func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
     func adapter(adapter:  MITVideoCollectionViewAdapter, handleShareForVideo video: Video)
+    @objc optional func didSelectCell(forVideo video: Video)
 }
 
 //delegate for fetch/ infinite scroll provides view to be displayed while fetching and handles fetching more content:
@@ -210,17 +211,17 @@ class MITVideoCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyDa
             
         case SECTION_VIDEO_FEED:
             
-            if let video = self.videosAndAccessoryViews[indexPath.row] as? Video, let uri = video.uri {
+            if let video = self.videosAndAccessoryViews[indexPath.row] as? Video {
                 
                 var height = CGFloat(0)
                 
-                if let cachedHeight = videoCellHeightCache.object(forKey: uri as NSString) as? CGFloat {
+                if let cachedHeight = videoCellHeightCache.object(forKey: video.videoID as NSString) as? CGFloat {
                     height = cachedHeight
                 }
                 else {
                     let fittedSize = VideoCell.sizeForVideo(video, width: collectionView.bounds.width)
                     height = fittedSize.height
-                    videoCellHeightCache.setObject(height as NSNumber, forKey: uri as NSString)
+                    videoCellHeightCache.setObject(height as NSNumber, forKey: video.videoID as NSString)
                 }
 
                 return CGSize(width: self.collectionView.bounds.width, height: height)

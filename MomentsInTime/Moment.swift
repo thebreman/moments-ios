@@ -50,6 +50,5 @@ class Moment: Object
             
             self.exists = true
         }
-
     }
 }
