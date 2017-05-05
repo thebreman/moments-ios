@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import RealmSwift
 
 private let IDENTIFIER_SEGUE_NEW_MOMENT = "NewMoment"
 private let IDENTIFIER_SEGUE_PLAYER = "myMomentsToPlayer"
 
-class MyMomentsController: UIViewController
+class MyMomentsController: UIViewController, MITVideoCollectionViewAdapterVideoDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
-    lazy var videoList = VideoList()
+    lazy var momentList = MomentList()
     
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -32,7 +33,7 @@ class MyMomentsController: UIViewController
     
     private lazy var adapter: MITVideoCollectionViewAdapter = {
         let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
-                                                    videos: self.videoList.videos,
+                                                    videos: self.momentList.momentVideos,
                                                     emptyStateView: self.emptyStateView,
                                                     bannerView: nil)
         return adapter
@@ -44,9 +45,16 @@ class MyMomentsController: UIViewController
         super.viewDidLoad()
         self.setupCollectionView()
         
-        //fetch videos here
-        //for now just pass something so that adapter gets instantiated and returns the empty state view:
-        self.adapter.videos = self.videoList.videos        
+        self.adapter.videoDelegate = self
+        
+        if let realm = try? Realm() {
+            if realm.isEmpty {
+                print("Realm is Empty")
+            }
+            else {
+                print("Realm is NOT empty")
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -74,6 +82,18 @@ class MyMomentsController: UIViewController
     @objc private func handleNewMoment()
     {
         self.performSegue(withIdentifier: IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
+    }
+    
+    //MARK: MITVideoCollectionViewAdapterVideoDelegate
+    
+    func adapter(adapter: MITVideoCollectionViewAdapter, handleShareForVideo video: Video)
+    {
+        //
+    }
+    
+    func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
+    {
+        //
     }
     
     //MARK: CollectionView

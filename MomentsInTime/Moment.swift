@@ -14,6 +14,7 @@ class Moment: Object
     dynamic var momentID = UUID().uuidString
     dynamic var subject: Subject?
     dynamic var video: Video?
+    dynamic var createdAt = Date()
     let notes = List<Note>()
     
     var isValid: Bool {

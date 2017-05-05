@@ -42,6 +42,7 @@
 		680FC6761EBC07A900FED470 /* InterviewingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680FC6751EBC07A900FED470 /* InterviewingSection.swift */; };
 		680FC6781EBC07C600FED470 /* DescriptionSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680FC6771EBC07C600FED470 /* DescriptionSection.swift */; };
 		680FC67A1EBC519E00FED470 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680FC6791EBC519E00FED470 /* Object.swift */; };
+		680FC67C1EBC5D3C00FED470 /* MomentList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680FC67B1EBC5D3C00FED470 /* MomentList.swift */; };
 		6810B19A1EB424CB00B9EE7D /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6810B1991EB424CB00B9EE7D /* ProfileImageView.swift */; };
 		6810B19C1EB43FAF00B9EE7D /* MITContainerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6810B19B1EB43FAF00B9EE7D /* MITContainerTableViewCell.swift */; };
 		6811A1E61E826E9C006362E8 /* CommunityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811A1E51E826E9C006362E8 /* CommunityController.swift */; };
@@ -132,6 +133,7 @@
 		680FC6751EBC07A900FED470 /* InterviewingSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterviewingSection.swift; sourceTree = "<group>"; };
 		680FC6771EBC07C600FED470 /* DescriptionSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DescriptionSection.swift; sourceTree = "<group>"; };
 		680FC6791EBC519E00FED470 /* Object.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
+		680FC67B1EBC5D3C00FED470 /* MomentList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentList.swift; sourceTree = "<group>"; };
 		6810B1991EB424CB00B9EE7D /* ProfileImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		6810B19B1EB43FAF00B9EE7D /* MITContainerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITContainerTableViewCell.swift; sourceTree = "<group>"; };
 		6811A1E51E826E9C006362E8 /* CommunityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityController.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				6809C1931EB5E14F0015C69A /* Subject.swift */,
 				688E5D0C1EA74A2C00BF258F /* Note.swift */,
 				680BE0901E8E4A4B00A5D339 /* VideoList.swift */,
+				680FC67B1EBC5D3C00FED470 /* MomentList.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -655,6 +658,7 @@
 				680CA52F1EA5FD3A006A735E /* MITNoteCell.swift in Sources */,
 				688E998F1EB07D2E00AEF2F7 /* DescriptionController.swift in Sources */,
 				688E5D0B1EA7152A00BF258F /* NewMomentSetting.swift in Sources */,
+				680FC67C1EBC5D3C00FED470 /* MomentList.swift in Sources */,
 				6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */,
 				680BE07D1E8E20A200A5D339 /* VideoCell.swift in Sources */,
 				6809C1921EB5CACB0015C69A /* Moment.swift in Sources */,

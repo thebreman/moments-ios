@@ -31,10 +31,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         newMoment.subject = Subject()
         newMoment.video = Video()
         
-        if let realm = try? Realm() {
-            try? realm.write {
-                newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
-            }
+        Object.writeToRealm {
+            newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
         }
         
         return newMoment
