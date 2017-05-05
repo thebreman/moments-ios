@@ -8,18 +8,20 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
-class Video: NSObject
+class Video: Object
 {
-    var uri: String?
-    var name: String?
-    var videoDescription: String?
+    //these will be persisted with Realm for user's MyMoments 
+    //everything else will come from Vimeo JSON objects
+    dynamic var uri: String? = nil
+    dynamic var name: String? = nil
+    dynamic var videoDescription: String? = nil
+    dynamic var localURL: String? = nil //file path for videos that are being uploaded:
+    
     var videoLinkURL: String?
     var thumbnailImageURL: String?
     var status: String?
-    
-    //file path for videos that are being uploaded:
-    var localURL: String?
     var localThumbnailImage: UIImage?
     
     //optional url to pass to PlayerViewController (must be fetched upon request):
@@ -74,6 +76,16 @@ class Video: NSObject
         
         //only validate videos that are valid and available
         return valid && available
+    }
+    
+    override static func primaryKey() -> String?
+    {
+        return "uri"
+    }
+    
+    override static func ignoredProperties() -> [String]
+    {
+        return ["videoLinkURL", "thumbnailImageURL", "status", "localThumbnailImage", "playbackURL"]
     }
 }
 

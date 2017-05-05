@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 import AVKit
 import Photos
+import RealmSwift
 
 private let COPY_TITLE_VIDEO_QUESTION_ALERT = "Camera shy? Don't worry."
 private let COPY_MESSAGE_VIDEO_QUESTION_ALERT = "You don't have to get it first try. When you film a video, we'll save it to your camera roll so you can edit with your favorite tools. Upload a new video at any time before submitting."
@@ -17,23 +18,6 @@ private let COPY_MESSAGE_VIDEO_QUESTION_ALERT = "You don't have to get it first 
 typealias InterviewingCompletion = (Subject) -> Void
 typealias DescriptionCompletion = (_ name: String, _ description: String) -> Void
 typealias NoteCompletion = (Note) -> Void
-
-private enum Identifiers
-{
-    static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
-    static let IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE = "imageTitleSubtitleCell"
-    static let IDENTIFIER_CELL_VIDEO_PREVIEW = "videoPreviewCell"
-    static let IDENTIFIER_CELL_NOTE = "noteCell"
-    static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
-    
-    enum Segues
-    {
-        static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
-        static let ENTER_INTERVIEW_DESCRIPTION = "newMomentToDescription"
-        static let ENTER_NEW_NOTE = "newMomentToNote"
-        static let PLAY_VIDEO = "newMomentToPlayer"
-    }
-}
 
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate, VideoPreviewCellDelegate
 {
@@ -44,8 +28,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         let newMoment = Moment()
         newMoment.subject = Subject()
         newMoment.video = Video()
-        newMoment.notes = [Note]()
-        newMoment.notes += NewMomentSetting.defaultNotes
+        
+        if let realm = try? Realm() {
+            try? realm.write {
+                newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
+            }
+        }
+        
         return newMoment
     }()
     
@@ -54,6 +43,23 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         cameraMan.maxVideoDurationMinutes = 20
         return cameraMan
     }()
+    
+    private enum Identifiers
+    {
+        static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
+        static let IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE = "imageTitleSubtitleCell"
+        static let IDENTIFIER_CELL_VIDEO_PREVIEW = "videoPreviewCell"
+        static let IDENTIFIER_CELL_NOTE = "noteCell"
+        static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
+        
+        enum Segues
+        {
+            static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
+            static let ENTER_INTERVIEW_DESCRIPTION = "newMomentToDescription"
+            static let ENTER_NEW_NOTE = "newMomentToNote"
+            static let PLAY_VIDEO = "newMomentToPlayer"
+        }
+    }
     
     override func viewDidLoad()
     {
@@ -69,7 +75,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBAction func handleSubmit(_ sender: BouncingButton)
     {
-        print("handle Submit")
+        print("handle Submit: \(self.moment)")
+        
+        if let realm = try? Realm() {
+            if realm.isEmpty {
+                print("\nrealm is empty")
+            }
+        }
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
@@ -347,10 +359,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func deleteNote(_ note: Note)
     {
         if self.moment.notes.contains(note), let indexToDelete = self.moment.notes.index(of: note) {
-            self.moment.notes.remove(at: indexToDelete)
             
-            let pathToDelete = IndexPath(row: indexToDelete + 1, section: NewMomentSetting.notes.rawValue)
-            self.tableView.removeRows(forIndexPaths: [pathToDelete])
+            self.writeToRealm {
+                self.moment.notes.remove(objectAtIndex: indexToDelete)
+                let pathToDelete = IndexPath(row: indexToDelete + 1, section: NewMomentSetting.notes.rawValue)
+                self.tableView.removeRows(forIndexPaths: [pathToDelete])
+            }
         }
     }
     
@@ -396,58 +410,72 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleInterviewingSubjectCompletion(withSubject subject: Subject, isUpdating: Bool)
     {
-        if let newProfileImage = subject.profileImage {
-            subject.profileImageURL = self.persistImage(newProfileImage)?.absoluteString
+        self.writeToRealm {
+            if let newProfileImage = subject.profileImage {
+                subject.profileImageURL = self.persistImage(newProfileImage)?.absoluteString
+            }
+            
+            self.moment.subject = subject
+            
+            //animate interviewingSubject cell in:
+            let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
+            
+            if isUpdating {
+                self.tableView.updateRows(forIndexPaths: [newPath])
+            }
+            else {
+                self.tableView.refreshRows(forIndexPaths: [newPath])
+            }
         }
         
-        self.moment.subject = subject
         self.updateUI()
-        
-        //animate interviewingSubject cell in:
-        let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
-        
-        if isUpdating {
-            self.tableView.updateRows(forIndexPaths: [newPath])
-        }
-        else {
-            self.tableView.refreshRows(forIndexPaths: [newPath])
-        }
     }
     
     private func handleDescriptionCompletion(withVideoTitle videoTitle: String, videoDescription: String, isUpdating: Bool)
     {
-        self.moment.video?.name = videoTitle
-        self.moment.video?.videoDescription = videoDescription
+        self.writeToRealm {
+            self.moment.video?.name = videoTitle
+            self.moment.video?.videoDescription = videoDescription
+            
+            //animate TitleDescription cell in:
+            let newPath = IndexPath(row: 0, section: NewMomentSetting.description.rawValue)
+            
+            if isUpdating {
+                self.tableView.updateRows(forIndexPaths: [newPath])
+            }
+            else {
+                self.tableView.refreshRows(forIndexPaths: [newPath])
+            }
+        }
+        
         self.updateUI()
-        
-        //animate TitleDescription cell in:
-        let newPath = IndexPath(row: 0, section: NewMomentSetting.description.rawValue)
-        
-        if isUpdating {
-            self.tableView.updateRows(forIndexPaths: [newPath])
-        }
-        else {
-            self.tableView.refreshRows(forIndexPaths: [newPath])
-        }
     }
     
     private func handleNoteCompletion(withNote note: Note, isUpdating: Bool)
     {
-        if isUpdating {
-            if let path = self.lastSelectedPath {
-                self.moment.notes[path.row - 1] = note
-                
-                //animate the update:
-                self.tableView.updateRows(forIndexPaths: [path])
-                self.lastSelectedPath = nil
+        self.writeToRealm {
+            if isUpdating {
+                if let path = self.lastSelectedPath {
+                    self.moment.notes[path.row - 1] = note
+                    self.tableView.updateRows(forIndexPaths: [path])
+                    self.lastSelectedPath = nil
+                }
+            }
+            else {
+                self.moment.notes.insert(note, at: 0)
+                let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
+                self.tableView.insertNewRows(forIndexPaths: [newPath])
             }
         }
-        else {
-            self.moment.notes.insert(note, at: 0)
-            
-            //animate newNote cell in:
-            let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
-            self.tableView.insertNewRows(forIndexPaths: [newPath])
+    }
+    
+    //modify objects and perform any UI updates in handler:
+    private func writeToRealm(withHandler handler: () -> Void)
+    {
+        if let realm = try? Realm() {
+            realm.beginWrite()
+            handler()
+            try? realm.commitWrite()
         }
     }
     

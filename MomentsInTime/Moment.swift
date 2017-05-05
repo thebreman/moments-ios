@@ -7,19 +7,21 @@
 //
 
 import Foundation
+import RealmSwift
 
-class Moment: NSObject
+class Moment: Object
 {
-    var subject: Subject?
-    var video: Video?
-    var notes = [Note]()
+    dynamic var momentID = UUID().uuidString
+    dynamic var subject: Subject?
+    dynamic var video: Video?
+    let notes = List<Note>()
     
     var isValid: Bool {
         return false
     }
     
-    func validate() //?
+    override static func primaryKey() -> String?
     {
-        //TODO
+        return "momentID"
     }
 }

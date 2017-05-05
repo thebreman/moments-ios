@@ -8,16 +8,28 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
-class Subject: NSObject
+class Subject: Object
 {
-    var name: String?
-    var role: String?
-    var profileImageURL: String?
+    dynamic var subjectID = UUID().uuidString
+    dynamic var name: String? = nil
+    dynamic var role: String? = nil
+    dynamic var profileImageURL: String? = nil
     
     var profileImage: UIImage?
     
     var isValid: Bool {
         return self.name != nil
+    }
+    
+    override static func primaryKey() -> String?
+    {
+        return "subjectID"
+    }
+    
+    override static func ignoredProperties() -> [String]
+    {
+        return ["profileImage"]
     }
 }
