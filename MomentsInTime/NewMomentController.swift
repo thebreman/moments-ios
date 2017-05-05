@@ -495,7 +495,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             
         }, notAuthorizedHandler: {
-            UIAlertController.alertUser(withPresenter: self, title: CameraMan.alertTitle, message: CameraMan.deniedLibraryMessage, okButton: true, settingsButton: true)
+            UIAlertController.alertUser(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
     }
     

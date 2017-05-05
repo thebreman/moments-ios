@@ -11,15 +11,15 @@ import Photos
 import AVFoundation
 import MobileCoreServices
 
-private let COPY_TITLE_ALERT = "Oh No!"
-private let COPY_DENIED_VIDEO_CAMERA_ACCESS_MESSAGE = "We need permission to use the Camera and the Microphone, please change privacy settings."
-private let COPY_DENIED_CAMERA_ACCESS_MESSAGE = "We need permission to use the Camera, please change privacy settings."
-private let COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE = "We need permission to access your Photos, please change privacy settings."
-private let COPY_VIDEO_CAMERA_UNAVAILABLE_MESSAGE = "It looks like the Video Camera is unavailable. You can upload a video from your Photo Library instead."
-private let COPY_CAMERA_UNAVAILABLE_MESSAGE = "It looks like the Camera is unavailable. You can upload a video from your Photo Library instead"
-private let COPY_VIDEO_MEDIA_TYPE_UNAVAILABLE_PHOTO_LIBRARY_MESSAGE = "There are no available videos in your Photo Library."
-private let COPY_IMAGE_MEDIA_TYPE_UNAVAILABLE_PHOTO_LIBRARY_MESSAGE = "There are no available images in your Photo Library."
-private let COPY_UNABLE_TO_SAVE_VIDEO_MESSAGE = "Something went wrong. Please try again"
+let COPY_TITLE_ALERT = "Oh No!"
+let COPY_DENIED_VIDEO_CAMERA_ACCESS_MESSAGE = "We need permission to use the Camera and the Microphone, please change privacy settings."
+let COPY_DENIED_CAMERA_ACCESS_MESSAGE = "We need permission to use the Camera, please change privacy settings."
+let COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE = "We need permission to access your Photos, please change privacy settings."
+let COPY_VIDEO_CAMERA_UNAVAILABLE_MESSAGE = "It looks like the Video Camera is unavailable. You can upload a video from your Photo Library instead."
+let COPY_CAMERA_UNAVAILABLE_MESSAGE = "It looks like the Camera is unavailable. You can upload a video from your Photo Library instead"
+let COPY_VIDEO_MEDIA_TYPE_UNAVAILABLE_PHOTO_LIBRARY_MESSAGE = "There are no available videos in your Photo Library."
+let COPY_IMAGE_MEDIA_TYPE_UNAVAILABLE_PHOTO_LIBRARY_MESSAGE = "There are no available images in your Photo Library."
+let COPY_UNABLE_TO_SAVE_VIDEO_MESSAGE = "Something went wrong. Please try again"
 
 private let DURATION_MAX_VIDEO_MINUTES = 20
 
@@ -28,42 +28,6 @@ typealias ImageCompletion = (UIImage?) -> Void
 
 class CameraMan: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate
 {
-    static var alertTitle: String {
-        return COPY_TITLE_ALERT
-    }
-    
-    static var deniedVideoCameraMessage: String {
-        return COPY_DENIED_VIDEO_CAMERA_ACCESS_MESSAGE
-    }
-    
-    static var deniedCameraMessage: String {
-        return COPY_DENIED_CAMERA_ACCESS_MESSAGE
-    }
-    
-    static var deniedLibraryMessage: String {
-        return COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE
-    }
-    
-    static var videoCameraUnavailableMessage: String {
-        return COPY_VIDEO_CAMERA_UNAVAILABLE_MESSAGE
-    }
-    
-    static var cameraUnavailableMessage: String {
-        return COPY_CAMERA_UNAVAILABLE_MESSAGE
-    }
-    
-    static var noVideosMessage: String {
-        return COPY_VIDEO_MEDIA_TYPE_UNAVAILABLE_PHOTO_LIBRARY_MESSAGE
-    }
-    
-    static var noPhotosMessage: String {
-        return COPY_IMAGE_MEDIA_TYPE_UNAVAILABLE_PHOTO_LIBRARY_MESSAGE
-    }
-    
-    static var unableToSaveVideoMessage: String {
-        return COPY_UNABLE_TO_SAVE_VIDEO_MESSAGE
-    }
-    
     let pickerController = UIImagePickerController()
     
     //public maxDuration var for client to express duration in minutes,
