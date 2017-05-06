@@ -134,14 +134,15 @@ class VideoCell: UICollectionViewCell
     {
         //for vimeo thumbnail image urls:
         if let imageURLString = self.video?.thumbnailImageURL {
-            print("YES!!!!!!")
             self.thumbnailImageView.loadImageFromCache(withUrlString: imageURLString)
         }
         else if let localImage = self.video?.localThumbnailImage {
             
             //for local images that have not been uploaded yet:
             self.thumbnailImageView.image = localImage
-            print("\nYes image")
+        }
+        else {
+            self.thumbnailImageView.image = nil
         }
     }
 }
