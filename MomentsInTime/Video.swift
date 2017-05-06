@@ -24,21 +24,21 @@ class Video: Object
     var thumbnailImageURL: String?
     var status: String?
     
-    private var privateLocalThumbnailImage: UIImage? {
+    private var privateLocalThumbnailImage: UIImage?
+    
+    var localThumbnailImage: UIImage? {
         get {
-            if self.localThumbnailImage == nil {
+            if self.privateLocalThumbnailImage == nil {
                 if let localURLString = self.localThumbnailImageURL {
-                    self.localThumbnailImage = Assistant.loadImageFromDisk(withUrlString: localURLString)
+                    self.privateLocalThumbnailImage = Assistant.loadImageFromDisk(withUrlString: localURLString)
                 }
             }
-            return self.localThumbnailImage
+            return self.privateLocalThumbnailImage
         }
         set {
-            self.localThumbnailImage = newValue
+            self.privateLocalThumbnailImage = newValue
         }
     }
-    
-    var localThumbnailImage: UIImage?
     
     //optional url to pass to PlayerViewController (must be fetched upon request):
     private(set) var playbackURL: String?

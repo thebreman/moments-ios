@@ -11,7 +11,7 @@ import RealmSwift
 
 class MomentList: NSObject
 {
-    var moments = [Moment]()
+    //var moments = [Moment]()
     
     private(set) var savedMoments : Results<Moment>?
     

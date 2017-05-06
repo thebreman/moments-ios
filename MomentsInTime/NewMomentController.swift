@@ -670,6 +670,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         video.localURL = url.absoluteString
         video.localThumbnailImage = self.thumbnailImage(forVideo: video)
         
+        if let videoPreviewImage = video.localThumbnailImage {
+            video.localThumbnailImageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atURLString: video.localThumbnailImageURL)?.absoluteString
+        }
+        
         self.updateVideoRow()
         self.updateUI()
     }
