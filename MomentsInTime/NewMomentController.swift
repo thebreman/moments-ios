@@ -31,7 +31,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         newMoment.subject = Subject()
         newMoment.video = Video()
         
-        Object.writeToRealm {
+        Moment.writeToRealm {
             newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
         }
         
@@ -393,7 +393,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         if self.moment.notes.contains(note), let indexToDelete = self.moment.notes.index(of: note) {
             
-            Object.writeToRealm {
+            Moment.writeToRealm {
                 self.moment.notes.remove(objectAtIndex: indexToDelete)
                 let pathToDelete = IndexPath(row: indexToDelete + 1, section: NewMomentSetting.notes.rawValue)
                 self.tableView.removeRows(forIndexPaths: [pathToDelete])
@@ -443,9 +443,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleInterviewingSubjectCompletion(withSubject subject: Subject, isUpdating: Bool)
     {
-        Object.writeToRealm {
+        Moment.writeToRealm {
             if let newProfileImage = subject.profileImage {
-                subject.profileImageURL = Assistant.persistImage(newProfileImage, compressionQuality: 0.2, atURLString: self.moment.subject?.profileImageURL)?.absoluteString
+                subject.profileImageURL = Assistant.persistImage(newProfileImage, compressionQuality: 0.2, atURLString: self.moment.subject?.profileImageURL)
             }
             
             self.moment.subject = subject
@@ -466,7 +466,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleDescriptionCompletion(withVideoTitle videoTitle: String, videoDescription: String, isUpdating: Bool)
     {
-        Object.writeToRealm {
+        Moment.writeToRealm {
             self.moment.video?.name = videoTitle
             self.moment.video?.videoDescription = videoDescription
             
@@ -486,7 +486,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleNoteCompletion(withNote note: Note, isUpdating: Bool)
     {
-        Object.writeToRealm {
+        Moment.writeToRealm {
             if isUpdating {
                 if let path = self.lastSelectedPath {
                     self.moment.notes[path.row - 1] = note
@@ -670,15 +670,17 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         video.localURL = url.absoluteString
         video.localThumbnailImage = self.thumbnailImage(forVideo: video)
         
-        if let videoPreviewImage = video.localThumbnailImage {
-            video.localThumbnailImageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atURLString: video.localThumbnailImageURL)?.absoluteString
+        if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atURLString: video.localThumbnailImageURL) {
+            Moment.writeToRealm {
+                video.localThumbnailImageURL = imageURL
+            }
         }
         
         self.updateVideoRow()
         self.updateUI()
     }
-    
-    fileprivate func thumbnailImage(forVideo video: Video) -> UIImage?
+
+    private func thumbnailImage(forVideo video: Video) -> UIImage?
     {
         guard let urlString = video.localURL, let assetURL = URL(string: urlString) else {
             return nil

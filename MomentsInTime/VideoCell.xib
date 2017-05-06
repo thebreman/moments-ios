@@ -113,10 +113,12 @@
             <size key="customSize" width="454" height="323"/>
             <connections>
                 <outlet property="containerView" destination="DAz-xY-OdE" id="a6X-gb-mcp"/>
+                <outlet property="subtitleBottomConstraint" destination="Uht-cl-jGz" id="gLC-sK-27m"/>
                 <outlet property="subtitleLabel" destination="6A7-Im-XA3" id="hpq-lY-Avt"/>
                 <outlet property="subtitleTopContraint" destination="w78-hO-7HO" id="iQM-je-lW0"/>
                 <outlet property="thumbnailImageView" destination="i4G-03-3dv" id="cxM-wc-I2e"/>
                 <outlet property="titleLabel" destination="fPw-KP-Sda" id="UKo-t2-Xa7"/>
+                <outlet property="titleTopConstraint" destination="sSN-lb-aZt" id="Gr3-Hj-1yJ"/>
             </connections>
             <point key="canvasLocation" x="117" y="132.5"/>
         </collectionViewCell>

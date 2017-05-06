@@ -10,6 +10,7 @@ import UIKit
 import PureLayout
 
 private let SPACING_TITLE_SUBTITLE: CGFloat = 2.0
+private let SPACING_LABEL_MARGIN: CGFloat = 8.0
 private let _sizingCell = Bundle.main.loadNibNamed(String(describing: VideoCell.self), owner: nil, options: nil)?.first
 private var _sizingWidth = NSLayoutConstraint()
 
@@ -24,8 +25,10 @@ class VideoCell: UICollectionViewCell
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var thumbnailImageView: CachedImageView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var subtitleTopContraint: NSLayoutConstraint!
+    @IBOutlet weak var subtitleBottomConstraint: NSLayoutConstraint!
     
     weak var delegate: VideoCellDelegate?
     
@@ -98,8 +101,23 @@ class VideoCell: UICollectionViewCell
     
     private func configureLabels()
     {
-        self.titleLabel.text = self.video?.name
+        // we could have only a title, no description
+        // or neither, but we will never have a description and no title
+        // so collapse the constraints accordingly:
+        if let title = self.video?.name {
+            self.titleTopConstraint.constant = SPACING_LABEL_MARGIN
+            self.subtitleBottomConstraint.constant = SPACING_LABEL_MARGIN
+            self.titleLabel.text = title
+        }
+        else {
+            
+            //collapse the title top constraint AND subtitle bottom:
+            self.titleTopConstraint.constant = 0.0
+            self.subtitleBottomConstraint.constant = 0.0
+            self.titleLabel.text = nil
+        }
         
+        //if we dont have a description, then just collapse the middle space b/c we might have a title:
         if let description = self.video?.videoDescription {
             self.subtitleTopContraint.constant = SPACING_TITLE_SUBTITLE
             self.subtitleLabel.text = description
@@ -116,12 +134,14 @@ class VideoCell: UICollectionViewCell
     {
         //for vimeo thumbnail image urls:
         if let imageURLString = self.video?.thumbnailImageURL {
+            print("YES!!!!!!")
             self.thumbnailImageView.loadImageFromCache(withUrlString: imageURLString)
         }
         else if let localImage = self.video?.localThumbnailImage {
             
             //for local images that have not been uploaded yet:
             self.thumbnailImageView.image = localImage
+            print("\nYes image")
         }
     }
 }

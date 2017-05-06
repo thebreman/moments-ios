@@ -1,9 +1,9 @@
 //
 //  UploadRouter.swift
-//  VideoWonderland
+//  MomentsInTime
 //
-//  Created by Andrew Ferrarone on 3/28/17.
-//  Copyright © 2017 Andrew Ferrarone. All rights reserved.
+//  Created by Andrew Ferrarone on 5/5/17.
+//  Copyright © 2017 Tikkun Olam. All rights reserved.
 //
 
 import Alamofire

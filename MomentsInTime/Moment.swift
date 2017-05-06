@@ -52,3 +52,16 @@ class Moment: Object
         }
     }
 }
+
+extension Moment
+{
+    //modify objects and perform any UI updates in handler:
+    class func writeToRealm(withHandler handler: () -> Void)
+    {
+        if let realm = try? Realm() {
+            realm.beginWrite()
+            handler()
+            try? realm.commitWrite()
+        }
+    }
+}

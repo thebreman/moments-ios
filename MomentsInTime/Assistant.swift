@@ -10,36 +10,49 @@ import UIKit
 
 class Assistant
 {
-    class func loadImageFromDisk(withUrlString urlString: String) -> UIImage?
+    class func loadImageFromDisk(withRelativeUrlString urlString: String) -> UIImage?
     {
-        if let imageURL = URL(string: urlString),
-            let imageData = try? Data.init(contentsOf: imageURL, options: []) {
+        let imageURL = FileManager.getDocumentsDirectory().appendingPathComponent(urlString)
+        
+        do {
+            let imageData = try Data.init(contentsOf: imageURL, options: [])
             return UIImage(data: imageData)
+        }
+        catch let error {
+            print("unable to load image from disk: \(error)")
         }
         
         return nil
     }
     
-    class func persistImage(_ image: UIImage, compressionQuality: CGFloat, atURLString urlString: String?) -> URL?
+    class func persistImage(_ image: UIImage, compressionQuality: CGFloat, atURLString urlString: String?) -> String?
     {
-        var imageFileName: URL
+        var relativeImageFileName: String
         
         //if we have previously saved an image we want to overwrite it:
-        if let uRLString = urlString, let imageFile = URL(string: uRLString) {
-            imageFileName = imageFile
+        //first get documents directory(this could change so we need to get it every time and only store the relative path)
+        if let uRLString = urlString {
+            relativeImageFileName = uRLString
         }
         else {
             
             //otherwise create a url:
             let imageName = UUID().uuidString
-            imageFileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
+            relativeImageFileName = "\(imageName).jpeg"
         }
         
         guard let imageData = UIImageJPEGRepresentation(image, compressionQuality) else {
             return nil
         }
         
-        try? imageData.write(to: imageFileName)
-        return imageFileName
+        do {
+            try imageData.write(to: FileManager.getDocumentsDirectory().appendingPathComponent(relativeImageFileName))
+            return relativeImageFileName
+        }
+        catch let error {
+            print("\n unable to write image to disk: \(error)")
+        }
+        
+        return nil
     }
 }

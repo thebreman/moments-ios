@@ -1,9 +1,9 @@
 //
 //  Video.swift
-//  APFAVCamera
+//  MomentsInTime
 //
-//  Created by Andrew Ferrarone on 3/15/17.
-//  Copyright © 2017 Andrew Ferrarone. All rights reserved.
+//  Created by Andrew Ferrarone on 4/13/17.
+//  Copyright © 2017 Tikkun Olam. All rights reserved.
 //
 
 import Foundation
@@ -30,7 +30,8 @@ class Video: Object
         get {
             if self.privateLocalThumbnailImage == nil {
                 if let localURLString = self.localThumbnailImageURL {
-                    self.privateLocalThumbnailImage = Assistant.loadImageFromDisk(withUrlString: localURLString)
+                    self.privateLocalThumbnailImage = Assistant.loadImageFromDisk(withRelativeUrlString: localURLString)
+                    return self.privateLocalThumbnailImage
                 }
             }
             return self.privateLocalThumbnailImage
