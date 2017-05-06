@@ -19,23 +19,9 @@ class MomentList: NSObject
     private static let firstPagePath: String = "/me/videos"
     private(set) var nextPagePath: String?
     
-    //use this in a a getter for localMoments:
-    private(set) var savedMoments : Results<Moment>?
-    var momentVideos: [Video] {
-        
-        if let myMoments = self.savedMoments {
-            return myMoments.flatMap { $0.video }
-        }
-        
-        return [Video]()
-    }
-    
-    ////////////////////////**********************************/////////////////////////////////********
-    
     override init()
     {
         super.init()
-        //self.savedMoments = self.getLocalMoments()
     }
     
     init(moments: [Moment], nextPagePath: String?)
@@ -47,6 +33,15 @@ class MomentList: NSObject
     
     var hasNextPage: Bool {
         return self.nextPagePath != nil
+    }
+    
+    func getLocalMoments() -> [Moment]
+    {
+        if let savedMoments = self.getSavedMoments() {
+            self.moments = savedMoments.flatMap { $0 }
+        }
+        
+        return self.moments
     }
     
     func fetchCommunityMoments(completion: MomentListCompletion?)
@@ -93,11 +88,11 @@ class MomentList: NSObject
     
     //MARK: Utilities
     
-    private func getLocalMoments() -> Results<Moment>?
+    private func getSavedMoments() -> Results<Moment>?
     {
         if let realm = try? Realm() {
-            self.savedMoments = realm.objects(Moment.self)
-            return self.savedMoments?.sorted(by: [SortDescriptor(keyPath: "createdAt", ascending: false)])
+            let savedMoments = realm.objects(Moment.self)
+            return savedMoments.sorted(by: [SortDescriptor(keyPath: "createdAt", ascending: false)])
         }
         
         return nil
@@ -105,11 +100,11 @@ class MomentList: NSObject
     
     func addMoment()
     {
-        
+        //TODO if necessary
     }
     
     func removeMoments()
     {
-        
+        //TODO if necessary
     }
 }
