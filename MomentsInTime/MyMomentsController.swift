@@ -9,7 +9,7 @@
 import UIKit
 import RealmSwift
 
-class MyMomentsController: UIViewController, MITVideoCollectionViewAdapterVideoDelegate
+class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -28,12 +28,12 @@ class MyMomentsController: UIViewController, MITVideoCollectionViewAdapterVideoD
         return view
     }()
     
-    private lazy var adapter: MITVideoCollectionViewAdapter = {
-        let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
-                                                    videos: self.momentList.momentVideos,
+    private lazy var adapter: MITMomentCollectionViewAdapter = {
+        let adapter = MITMomentCollectionViewAdapter(withCollectionView: self.collectionView,
+                                                    moments: self.momentList.moments,
                                                     emptyStateView: self.emptyStateView,
                                                     bannerView: nil)
-        adapter.videoDelegate = self
+        adapter.momentDelegate = self
         return adapter
     }()
     
@@ -52,7 +52,7 @@ class MyMomentsController: UIViewController, MITVideoCollectionViewAdapterVideoD
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
-        self.adapter.videos = self.momentList.momentVideos
+        self.adapter.moments = self.momentList.moments
         
         //need this in case we rotate, switch tabs, then rotate back...
         //when we come back to this screen, the layout will be where we left it
@@ -70,6 +70,25 @@ class MyMomentsController: UIViewController, MITVideoCollectionViewAdapterVideoD
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        guard let id = segue.identifier else { return }
+        
+        switch id {
+        case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
+            if let newMomentController = segue.destination.contentViewController as? NewMomentController,
+                let selectedVideo = sender as? Video {
+                //
+            }
+            
+        case Identifiers.IDENTIFIER_SEGUE_PLAYER:
+            break
+            
+        default:
+            break
+        }
+    }
+    
     //MARK: Actions
     
     @objc private func handleNewMoment()
@@ -77,22 +96,22 @@ class MyMomentsController: UIViewController, MITVideoCollectionViewAdapterVideoD
         self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
     }
     
-    //MARK: MITVideoCollectionViewAdapterVideoDelegate
+    //MARK: MITMomentCollectionViewAdapterMomentDelegate
     
-    func adapter(adapter: MITVideoCollectionViewAdapter, handleShareForVideo video: Video)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
     {
         print("handle share")
     }
     
-    func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
     {
         //fetch URL, could be from Vimeo, could be local...
         //then segue to the player
     }
     
-    func didSelectCell(forVideo video: Video)
+    func didSelectCell(forMoment moment: Moment)
     {
-        //should push NewMomentController onto the NavStack here...?
+        self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: moment)
     }
     
     //MARK: CollectionView

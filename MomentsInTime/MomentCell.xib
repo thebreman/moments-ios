@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="videoCell" id="Wnt-g4-gte" customClass="VideoCell" customModule="MomentsInTime" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MomentCell" id="Wnt-g4-gte" userLabel="MomentCell" customClass="MomentCell" customModule="MomentsInTime" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="454" height="323"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -54,21 +54,21 @@
                                     <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="handleShare:" destination="Wnt-g4-gte" eventType="touchUpInside" id="ke2-mL-gmx"/>
+                                    <action selector="handlePlay:" destination="Wnt-g4-gte" eventType="touchUpInside" id="Teg-kC-KPH"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y66-Vl-xRy" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="380" y="280" width="38" height="22"/>
                                 <state key="normal" image="Options"/>
                                 <connections>
-                                    <action selector="handleOptions:" destination="Wnt-g4-gte" eventType="touchUpInside" id="PI8-gW-kly"/>
+                                    <action selector="handleOptions:" destination="Wnt-g4-gte" eventType="touchUpInside" id="OAi-Md-sk0"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UKm-Zv-5eP" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="203" y="78" width="24" height="25"/>
                                 <state key="normal" image="PlayButton"/>
                                 <connections>
-                                    <action selector="handlePlay:" destination="Wnt-g4-gte" eventType="touchUpInside" id="NfU-lo-srU"/>
+                                    <action selector="handlePlay:" destination="Wnt-g4-gte" eventType="touchUpInside" id="a6m-re-YCT"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -112,13 +112,13 @@
             </constraints>
             <size key="customSize" width="454" height="323"/>
             <connections>
-                <outlet property="containerView" destination="DAz-xY-OdE" id="a6X-gb-mcp"/>
-                <outlet property="subtitleBottomConstraint" destination="Uht-cl-jGz" id="gLC-sK-27m"/>
-                <outlet property="subtitleLabel" destination="6A7-Im-XA3" id="hpq-lY-Avt"/>
-                <outlet property="subtitleTopContraint" destination="w78-hO-7HO" id="iQM-je-lW0"/>
-                <outlet property="thumbnailImageView" destination="i4G-03-3dv" id="cxM-wc-I2e"/>
-                <outlet property="titleLabel" destination="fPw-KP-Sda" id="UKo-t2-Xa7"/>
-                <outlet property="titleTopConstraint" destination="sSN-lb-aZt" id="Gr3-Hj-1yJ"/>
+                <outlet property="containerView" destination="DAz-xY-OdE" id="LPK-99-YdA"/>
+                <outlet property="subtitleBottomConstraint" destination="Uht-cl-jGz" id="BVN-hA-vIZ"/>
+                <outlet property="subtitleLabel" destination="6A7-Im-XA3" id="PJk-G3-fuE"/>
+                <outlet property="subtitleTopContraint" destination="w78-hO-7HO" id="f26-Sv-SrE"/>
+                <outlet property="thumbnailImageView" destination="i4G-03-3dv" id="ZeB-0G-46E"/>
+                <outlet property="titleLabel" destination="fPw-KP-Sda" id="yfj-4q-Hkr"/>
+                <outlet property="titleTopConstraint" destination="sSN-lb-aZt" id="zBU-vR-FTf"/>
             </connections>
             <point key="canvasLocation" x="117" y="132.5"/>
         </collectionViewCell>

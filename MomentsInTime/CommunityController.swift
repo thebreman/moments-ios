@@ -19,12 +19,12 @@ private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
 private let COPY_MESSAGE_INVITE_INTERVIEW = "Hello, I would like to interview you on the Moments In Time app!"
 
-class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelegate, MITVideoCollectionViewAdapterVideoDelegate, MITVideoCollectionViewAdapterInfiniteScrollDelegate
+class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
-    lazy var videoList = VideoList()
+    lazy var momentList = MomentList()
     
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -38,14 +38,14 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         return view
     }()
     
-    private lazy var adapter: MITVideoCollectionViewAdapter = {
-        let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
-                                                   videos: self.videoList.videos,
+    private lazy var adapter: MITMomentCollectionViewAdapter = {
+        let adapter = MITMomentCollectionViewAdapter(withCollectionView: self.collectionView,
+                                                   moments: self.momentList.moments,
                                                    emptyStateView: self.emptyStateView,
                                                    bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
         adapter.accessoryViewdelegate = self
-        adapter.videoDelegate = self
+        adapter.momentDelegate = self
         adapter.infiniteScrollDelegate = self
         adapter.allowsInfiniteScrolling = true
         return adapter
@@ -57,7 +57,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         
         self.spinner.startAnimating()
         self.setupCollectionView()
-        self.fetchCommunityVideos()
+        self.fetchCommunityMoments()
         
         self.checkForUser {
             print("We have a user!")
@@ -156,14 +156,14 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         self.present(controller, animated: true, completion: nil)
     }
     
-    //MARK: MITVideoCollectionViewAdapterDelegate
+    //MARK: MITMomentCollectionViewAdapterDelegate
     
-    func accessoryViewFrequency(forAdaptor adapter: MITVideoCollectionViewAdapter) -> Int
+    func accessoryViewFrequency(forAdaptor adapter: MITMomentCollectionViewAdapter) -> Int
     {
         return 7
     }
     
-    func accessoryView(for adapter: MITVideoCollectionViewAdapter) -> UIView
+    func accessoryView(for adapter: MITMomentCollectionViewAdapter) -> UIView
     {
         let textActionView = MITTextActionView.mitAskToInterviewView()
         textActionView.actionButton.addTarget(self, action: #selector(handleAskToInterview), for: .touchUpInside)
@@ -176,10 +176,12 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         return containerView
     }
     
-    //MARK: MITVideoCollectionViewAdapterVideoDelegate
+    //MARK: MITMomentCollectionViewAdapterMomentDelegate
     
-    func adapter(adapter: MITVideoCollectionViewAdapter, handlePlayForVideo video: Video)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
     {
+        guard let video = moment.video else { return }
+        
         video.fetchPlaybackURL { (urlString, error) in
             
             guard error == nil else {
@@ -192,7 +194,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         }
     }
     
-    func adapter(adapter: MITVideoCollectionViewAdapter, handleShareForVideo video: Video)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
     {
         print("HANDLE SHARE")
         
@@ -221,21 +223,21 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
         }
     }
     
-    //MARK: MITVideoCollectionViewAdapterInfiniteScrollDelegate
+    //MARK: MITMomentCollectionViewAdapterInfiniteScrollDelegate
     
-    func fetchNewVideos(for adapter: MITVideoCollectionViewAdapter, completion: @escaping () -> Void)
+    func fetchNewMoments(for adapter: MITMomentCollectionViewAdapter, completion: @escaping () -> Void)
     {
-        self.videoList.fetchNextCommunityVideos { (_, videos, error) in
+        self.momentList.fetchNextCommunityMoments { (_, moments, error) in
             
             if let error = error {
                 print(error)
             }
             
-            if let newVideos = videos {
-                self.adapter.videos += newVideos
+            if let newMoments = moments {
+                self.adapter.moments += newMoments
             }
             
-            self.adapter.allowsInfiniteScrolling = self.videoList.hasNextPage
+            self.adapter.allowsInfiniteScrolling = self.momentList.hasNextPage
             completion()
         }
     }
@@ -244,12 +246,12 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
     
     @objc private func refresh()
     {
-        self.fetchCommunityVideos()
+        self.fetchCommunityMoments()
     }
     
-    private func fetchCommunityVideos()
+    private func fetchCommunityMoments()
     {
-        self.videoList.fetchCommunityVideos { list, error in
+        self.momentList.fetchCommunityMoments { list, error in
             
             self.refreshControl.endRefreshing()
             
@@ -258,7 +260,7 @@ class CommunityController: UIViewController, MITVideoCollectionViewAdapterDelega
             }
             
             self.spinner.stopAnimating()
-            self.adapter.videos = self.videoList.videos
+            self.adapter.moments = self.momentList.moments
             self.adapter.allowsInfiniteScrolling = true
         }
     }

@@ -101,17 +101,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func persistMoment()
     {
         self.moment.create()
-        
-        self.presentingViewController?.dismiss(animated: true, completion: {
-            if let realm = try? Realm() {
-                if realm.isEmpty {
-                    print("realm is empty")
-                }
-                else {
-                    print("realm is NOT empty")
-                }
-            }
-        })
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
     private func deleteMoment()
@@ -283,7 +273,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
         case NewMomentSetting.video.rawValue:
             
-            if let video = self.moment.video, video.localURL != nil {
+            if let video = self.moment.video, video.isLocal {
                 return self.videoPreviewCell(forVideo: video, withTableView: tableView)
             }
             

@@ -41,6 +41,10 @@ class Video: Object
         }
     }
     
+    var isLocal: Bool {
+        return self.localURL != nil
+    }
+    
     //optional url to pass to PlayerViewController (must be fetched upon request):
     private(set) var playbackURL: String?
     
