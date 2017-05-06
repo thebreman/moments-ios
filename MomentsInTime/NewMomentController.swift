@@ -445,7 +445,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         Object.writeToRealm {
             if let newProfileImage = subject.profileImage {
-                subject.profileImageURL = self.persistImage(newProfileImage)?.absoluteString
+                subject.profileImageURL = Assistant.persistImage(newProfileImage, compressionQuality: 0.2, atURLString: self.moment.subject?.profileImageURL)?.absoluteString
             }
             
             self.moment.subject = subject
@@ -661,39 +661,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             && self.moment.video?.localURL != nil
         
         self.submitButton.isEnabled = readyToSubmit
-    }
-    
-    private func loadImageFromDisk(withUrlString urlString: String) -> UIImage?
-    {
-        if let imageURL = URL(string: urlString),
-            let imageData = try? Data.init(contentsOf: imageURL, options: []) {
-            return UIImage(data: imageData)
-        }
-        
-        return nil
-    }
-    
-    private func persistImage(_ image: UIImage) -> URL?
-    {
-        var imageFileName: URL
-        
-        //if we have previously saved an image we want to overwrite it:
-        if let urlString = self.moment.subject?.profileImageURL, let imageFile = URL(string: urlString) {
-            imageFileName = imageFile
-        }
-        else {
-            
-            //otherwise create a url:
-            let imageName = UUID().uuidString
-            imageFileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
-        }
-        
-        guard let imageData = UIImageJPEGRepresentation(image, 0.2) else {
-            return nil
-        }
-        
-        try? imageData.write(to: imageFileName)
-        return imageFileName
     }
     
     private func updateWithVideoURL(_ url: URL)

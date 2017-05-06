@@ -19,11 +19,25 @@ class Video: Object
     dynamic var name: String? = nil
     dynamic var videoDescription: String? = nil
     dynamic var localURL: String? = nil //file path for videos that are being uploaded:
+    dynamic var localThumbnailImageURL: String? = nil
     
-    var videoLinkURL: String?
     var thumbnailImageURL: String?
     var status: String?
-    var localThumbnailImage: UIImage?
+    
+    var localThumbnailImage: UIImage? {
+        get {
+            if self.localThumbnailImage == nil {
+                if let localURLString = self.localThumbnailImageURL {
+                    self.localThumbnailImage = Assistant.loadImageFromDisk(withUrlString: localURLString)
+                    return self.localThumbnailImage
+                }
+            }
+            return self.localThumbnailImage
+        }
+        set {
+            self.localThumbnailImage = newValue
+        }
+    }
     
     //optional url to pass to PlayerViewController (must be fetched upon request):
     private(set) var playbackURL: String?
@@ -65,7 +79,6 @@ class Video: Object
     {
         let valid = (self.uri != nil
             && self.name != nil
-            && self.videoLinkURL != nil
             && self.thumbnailImageURL != nil
         )
         
@@ -86,7 +99,7 @@ class Video: Object
     
     override static func ignoredProperties() -> [String]
     {
-        return ["videoLinkURL", "thumbnailImageURL", "status", "localThumbnailImage", "playbackURL"]
+        return ["thumbnailImageURL", "status", "localThumbnailImage", "playbackURL"]
     }
 }
 
@@ -105,7 +118,7 @@ extension Video: VideoRouterCompliant
         }
         
         if let description = self.videoDescription {
-            params["description"] = self.videoDescription
+            params["description"] = description
         }
         
         return params
@@ -118,7 +131,6 @@ extension Video: VideoRouterCompliant
         let uri = params["uri"] as? String
         let name = params["name"] as? String
         let videoDescription = params["description"] as? String
-        let videoLinkURL = params["link"] as? String
         let videoStatus = params["status"] as? String
         
         //grab pictures object for video thumbnailImageURL:
@@ -131,7 +143,6 @@ extension Video: VideoRouterCompliant
         video.uri = uri
         video.name = name
         video.videoDescription = videoDescription
-        video.videoLinkURL = videoLinkURL
         video.thumbnailImageURL = thumbnailImageURL
         video.status = videoStatus
         

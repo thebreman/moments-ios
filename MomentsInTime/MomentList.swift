@@ -17,7 +17,7 @@ class MomentList: NSObject
     
     var momentVideos: [Video] {
         
-        if let myMoments = self.moments {
+        if let myMoments = self.savedMoments {
             return myMoments.flatMap { $0.video }
         }
         
@@ -35,7 +35,6 @@ class MomentList: NSObject
         if let realm = try? Realm() {
             self.savedMoments = realm.objects(Moment.self)
             return self.savedMoments?.sorted(by: [SortDescriptor(keyPath: "createdAt", ascending: false)])
-            self.moments = self.savedMoments.
         }
         
         return nil

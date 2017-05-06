@@ -26,14 +26,21 @@ class VideoCell: UICollectionViewCell
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var subtitleTopContraint: NSLayoutConstraint!
-
+    
+    weak var delegate: VideoCellDelegate?
+    
     var video: Video? {
         didSet {
             self.updateUI()
         }
     }
     
-    weak var delegate: VideoCellDelegate?
+    override func awakeFromNib()
+    {
+        super.awakeFromNib()
+        self.drawShadow()
+        self.containerView.layer.masksToBounds = true
+    }
     
     class func sizeForVideo(_ video: Video, width: CGFloat) -> CGSize
     {
@@ -58,13 +65,6 @@ class VideoCell: UICollectionViewCell
         }
         
         return .zero
-    }
-    
-    override func awakeFromNib()
-    {
-        super.awakeFromNib()
-        self.drawShadow()
-        self.containerView.layer.masksToBounds = true
     }
 
     // MARK: Actions
@@ -114,8 +114,14 @@ class VideoCell: UICollectionViewCell
     
     private func configureThumbnailImage()
     {
+        //for vimeo thumbnail image urls:
         if let imageURLString = self.video?.thumbnailImageURL {
             self.thumbnailImageView.loadImageFromCache(withUrlString: imageURLString)
+        }
+        else if let localImage = self.video?.localThumbnailImage {
+            
+            //for local images that have not been uploaded yet:
+            self.thumbnailImageView.image = localImage
         }
     }
 }
