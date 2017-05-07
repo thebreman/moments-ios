@@ -27,6 +27,7 @@ class Moment: Object
     dynamic var createdAt = Date()
     dynamic var existsInRealm = false
     dynamic var _momentStatus = MomentStatus.new.rawValue
+    
     let notes = List<Note>()
     
     var momentStatus: MomentStatus {
@@ -72,6 +73,34 @@ class Moment: Object
                 try? realm.write {
                     realm.add(self)
                     self.existsInRealm = true
+                }
+            }
+        }
+    }
+    
+    func deleteLocally()
+    {
+        if self.existsInRealm {
+            
+            print("deleting moment in realm")
+            self.subject?.deleteLocally()
+            self.video?.deleteLocally()
+            
+            //delete moment from realm:
+            if let realm = try? Realm() {
+                
+                try? realm.write {
+                    
+                    if let subject = self.subject {
+                        realm.delete(subject)
+                    }
+                    
+                    if let video = self.video {
+                        realm.delete(video)
+                    }
+                    
+                    realm.delete(notes)
+                    realm.delete(self)
                 }
             }
         }

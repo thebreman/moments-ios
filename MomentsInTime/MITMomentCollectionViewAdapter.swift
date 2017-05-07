@@ -9,6 +9,7 @@
 import UIKit
 import DZNEmptyDataSet
 import PureLayout
+import RealmSwift
 
 private let SECTION_BANNER_TOP = 0
 private let SECTION_MOMENT_FEED = 1
@@ -26,9 +27,9 @@ protocol MITMomentCollectionViewAdapterDelegate: class
 //delegate to pass which moment needs to be played after user taps playButton:
 @objc protocol MITMomentCollectionViewAdapterMomentDelegate: class
 {
-    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
-    func adapter(adapter:  MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
-    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
+    func adapter(adapter:  MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
     @objc optional func didSelectMoment(_ moment: Moment)
 }
 
@@ -63,11 +64,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         }
     }
     
-    var moments = [Moment]() {
-        didSet {
-            //self.refreshData(shouldReload: true)
-        }
-    }
+    var moments = [Moment]()
     
     private enum Identifiers
     {
@@ -128,14 +125,15 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         
         if let indexToRemove = self.moments.index(of: moment) {
             self.moments.remove(at: indexToRemove)
+            self.populateData()
             
             let pathToRemove = IndexPath(item: indexToRemove, section: SECTION_MOMENT_FEED)
             
             self.collectionView.performBatchUpdates({
                 self.collectionView.deleteItems(at: [pathToRemove])
-            }) { _ in
                 self.collectionView.reloadEmptyDataSet()
-            }
+
+            }, completion: nil)
         }
     }
     
@@ -309,19 +307,19 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     
     //MARK: MomentCellDelegate
     
-    func momentCell(_ momentCell: MomentCell, playButtonWasTappedForMoment moment: Moment)
+    func momentCell(_ momentCell: MomentCell, playButtonWasTappedForMoment moment: Moment, sender: UIButton)
     {
-        self.momentDelegate?.adapter(adapter: self, handlePlayForMoment: moment)
+        self.momentDelegate?.adapter(adapter: self, handlePlayForMoment: moment, sender: sender)
     }
     
-    func momentCell(_ momentCell: MomentCell, shareButtonWasTappedForMoment moment: Moment)
+    func momentCell(_ momentCell: MomentCell, shareButtonWasTappedForMoment moment: Moment, sender: UIButton)
     {
-        self.momentDelegate?.adapter(adapter: self, handleShareForMoment: moment)
+        self.momentDelegate?.adapter(adapter: self, handleShareForMoment: moment, sender: sender)
     }
     
-    func momentCell(_ momentCell: MomentCell, handleOptionsForMoment moment: Moment)
+    func momentCell(_ momentCell: MomentCell, handleOptionsForMoment moment: Moment, sender: UIButton)
     {
-        self.momentDelegate?.adapter(adapter: self, handleOptionsForMoment: moment)
+        self.momentDelegate?.adapter(adapter: self, handleOptionsForMoment: moment, sender: sender)
     }
     
     //MARK: Utilities

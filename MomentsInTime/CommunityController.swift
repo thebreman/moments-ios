@@ -178,7 +178,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     //MARK: MITMomentCollectionViewAdapterMomentDelegate
     
-    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
     {
         guard let video = moment.video else { return }
         
@@ -194,7 +194,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         }
     }
     
-    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
     {
         print("HANDLE SHARE")
         
@@ -223,7 +223,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         }
     }
     
-    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
     {
         print("handle options")
     }

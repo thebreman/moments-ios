@@ -16,9 +16,9 @@ private var _sizingWidth = NSLayoutConstraint()
 
 protocol MomentCellDelegate: class
 {
-    func momentCell(_ momentCell: MomentCell, playButtonWasTappedForMoment moment: Moment)
-    func momentCell(_ momentCell: MomentCell, shareButtonWasTappedForMoment moment: Moment)
-    func momentCell(_ momentCell: MomentCell, handleOptionsForMoment moment: Moment)
+    func momentCell(_ momentCell: MomentCell, playButtonWasTappedForMoment moment: Moment, sender: UIButton)
+    func momentCell(_ momentCell: MomentCell, shareButtonWasTappedForMoment moment: Moment, sender: UIButton)
+    func momentCell(_ momentCell: MomentCell, handleOptionsForMoment moment: Moment, sender: UIButton)
 }
 
 class MomentCell: BouncingCollectionViewCell
@@ -77,21 +77,21 @@ class MomentCell: BouncingCollectionViewCell
     @IBAction func handlePlay(_ sender: UIButton)
     {
         if let moment = self.moment {
-            self.delegate?.momentCell(self, playButtonWasTappedForMoment: moment)
+            self.delegate?.momentCell(self, playButtonWasTappedForMoment:moment, sender: sender)
         }
     }
     
     @IBAction func handleShare(_ sender: UIButton)
     {
         if let moment = self.moment {
-            self.delegate?.momentCell(self, shareButtonWasTappedForMoment: moment)
+            self.delegate?.momentCell(self, shareButtonWasTappedForMoment: moment, sender: sender)
         }
     }
     
     @IBAction func handleOptions(_ sender: UIButton)
     {
         if let moment = self.moment {
-            self.delegate?.momentCell(self, handleOptionsForMoment: moment)
+            self.delegate?.momentCell(self, handleOptionsForMoment: moment, sender: sender)
         }
     }
     

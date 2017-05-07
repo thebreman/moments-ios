@@ -46,9 +46,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         let newMoment = Moment()
         newMoment.subject = Subject()
         newMoment.video = Video()
-        Moment.writeToRealm {
-            newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
-        }
+        newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
         return newMoment
     }()
     
@@ -129,9 +127,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func deleteMoment()
     {
-        print("delete moment")
-        
-        //can probably do nothing here:
+        print("delete moment")        
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     

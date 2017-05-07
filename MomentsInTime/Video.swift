@@ -77,6 +77,19 @@ class Video: Object
         }
     }
     
+    func deleteLocally()
+    {
+        if let localImageURLString = self.localThumbnailImageURL {
+            print("Deleting video local thumbnail image")
+            Assistant.removeImageFromDisk(atRelativeURLString: localImageURLString)
+        }
+        
+        if let localVideoURLString = self.localURL {
+            print("Deleting video local video")
+            Assistant.removeVideoFromDisk(atRelativeURLString: localVideoURLString)
+        }
+    }
+    
     /**
      * Video must have the following properties to be valid,
      * ok if there is no description:

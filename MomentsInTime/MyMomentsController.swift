@@ -110,24 +110,37 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     @IBAction func handleCreateMoment(_ sender: BouncingButton)
     {
         self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
+        
+        //for debugging:
+        if let realm = try? Realm() {
+            if realm.isEmpty {
+                print("\nrealm is empty")
+            }
+            else {
+                print("\nrealm is NOT empty")
+            }
+        }
     }
     
     //MARK: MITMomentCollectionViewAdapterMomentDelegate
     
-    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
     {
         print("handle share")
     }
     
-    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
     {
         //fetch URL, could be from Vimeo, could be local...
         //then segue to the player
     }
     
-    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
     {
-        //
+        UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: "Moment") { action in
+            self.adapter.removeMoment(moment)
+            moment.deleteLocally()
+        }
     }
     
     func didSelectMoment(_ moment: Moment)

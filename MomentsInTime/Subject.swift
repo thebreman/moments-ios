@@ -38,6 +38,14 @@ class Subject: Object
         return self.name != nil
     }
     
+    func deleteLocally()
+    {
+        if let localImageURLString = self.profileImageURL {
+            print("deleting profileImage")
+            Assistant.removeImageFromDisk(atRelativeURLString: localImageURLString)
+        }
+    }
+    
     override static func primaryKey() -> String?
     {
         return "subjectID"
