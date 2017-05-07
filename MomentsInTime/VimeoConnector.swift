@@ -36,7 +36,7 @@ class VimeoConnector: NSObject
      * page is path to get videos from Vimeo API, in the response we update our static pagePath w/ the next page,
      * so that the next call can use this var to fetch the next page:
      */
-    func getVideosForCommunity(forPagePath pagePath: String, completion: @escaping VideoListCompletion)
+    func getMomentsForCommunity(forPagePath pagePath: String, completion: @escaping MomentListCompletion)
     {
         self.request(router: VideoRouter.all(pagePath)) { (response, error) in
             
@@ -49,21 +49,21 @@ class VimeoConnector: NSObject
                 let paging = result["paging"] as? [String: Any],
                 let data = result["data"] as? [[String: Any]] {
                 
-                let videos = self.videos(fromData: data)
+                let moments = self.moments(fromData: data)
                 let nextPagePath = self.nextPagePath(fromPaging: paging)
                 
-                if videos.count == 0 {
+                if moments.count == 0 {
                     print("No videos made it through - something probably went wrong.")
                 }
                 
-                let videoList = VideoList(videos: videos, nextPagePath: nextPagePath)
+                let momentList = MomentList(moments: moments, nextPagePath: nextPagePath)
                 
-                completion(videoList, nil)
+                completion(momentList, nil)
                 return
             }
             
             //catch all parsing errors:
-            let error = NSError(domain: "VimeoConnector.getVideosForCommunity:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
+            let error = NSError(domain: "VimeoConnector.getMomentsForCommunity:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
             completion(nil, error)
         }
     }
@@ -71,9 +71,9 @@ class VimeoConnector: NSObject
     /**
      * Wrapper for getVideosForCommunity:forPage:completion:, using VimeoConnector.initialPagePath as the first path to fetch:
      */
-    func getCommunityVideos(forPagePath pagePath: String, completion: @escaping VideoListCompletion)
+    func getCommunityMoments(forPagePath pagePath: String, completion: @escaping MomentListCompletion)
     {
-        self.getVideosForCommunity(forPagePath: pagePath, completion: completion)
+        self.getMomentsForCommunity(forPagePath: pagePath, completion: completion)
     }
     
     /**
@@ -285,17 +285,19 @@ class VimeoConnector: NSObject
  */
 extension VimeoConnector
 {
-    fileprivate func videos(fromData data: [[String: Any]]) -> [Video]
+    fileprivate func moments(fromData data: [[String: Any]]) -> [Moment]
     {
-        var videos = [Video]()
+        var moments = [Moment]()
         
         for videoObject in data {
             if let video = Video.from(parameters: videoObject) {
-                videos.append(video)
+                let newMoment = Moment()
+                newMoment.video = video
+                moments.append(newMoment)
             }
         }
         
-        return videos
+        return moments
     }
     
     fileprivate func nextPagePath(fromPaging paging: [String: Any]) -> String?

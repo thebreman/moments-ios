@@ -7,19 +7,15 @@
 //
 
 import Foundation
+import RealmSwift
 
-class Note: NSObject
+class Note: Object
 {
-    var text: String?
+    dynamic var text: String? = nil
     
-    init(withText text: String)
+    convenience init(withText text: String)
     {
-        super.init()
+        self.init()
         self.text = text
-    }
-    
-    override init()
-    {
-        self.text = nil
     }
 }

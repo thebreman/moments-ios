@@ -7,16 +7,14 @@
 //
 
 import UIKit
+import RealmSwift
 
-private let IDENTIFIER_SEGUE_NEW_MOMENT = "NewMoment"
-private let IDENTIFIER_SEGUE_PLAYER = "myMomentsToPlayer"
-
-class MyMomentsController: UIViewController
+class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
-    lazy var videoList = VideoList()
+    lazy var momentList = MomentList()
     
     private lazy var refreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
@@ -30,28 +28,31 @@ class MyMomentsController: UIViewController
         return view
     }()
     
-    private lazy var adapter: MITVideoCollectionViewAdapter = {
-        let adapter = MITVideoCollectionViewAdapter(withCollectionView: self.collectionView,
-                                                    videos: self.videoList.videos,
+    private lazy var adapter: MITMomentCollectionViewAdapter = {
+        let adapter = MITMomentCollectionViewAdapter(withCollectionView: self.collectionView,
+                                                    moments: self.momentList.moments,
                                                     emptyStateView: self.emptyStateView,
                                                     bannerView: nil)
+        adapter.momentDelegate = self
         return adapter
     }()
-
     
+    private enum Identifiers
+    {
+        static let IDENTIFIER_SEGUE_NEW_MOMENT = "NewMoment"
+        static let IDENTIFIER_SEGUE_PLAYER = "myMomentsToPlayer"
+    }
+
     override func viewDidLoad()
     {
         super.viewDidLoad()
         self.setupCollectionView()
-        
-        //fetch videos here
-        //for now just pass something so that adapter gets instantiated and returns the empty state view:
-        self.adapter.videos = self.videoList.videos        
     }
     
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
+        self.adapter.moments = self.momentList.getLocalMoments()
         
         //need this in case we rotate, switch tabs, then rotate back...
         //when we come back to this screen, the layout will be where we left it
@@ -69,11 +70,48 @@ class MyMomentsController: UIViewController
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        guard let id = segue.identifier else { return }
+        
+        switch id {
+        case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
+            if let newMomentController = segue.destination.contentViewController as? NewMomentController,
+                let selectedVideo = sender as? Video {
+                //
+            }
+            
+        case Identifiers.IDENTIFIER_SEGUE_PLAYER:
+            break
+            
+        default:
+            break
+        }
+    }
+    
     //MARK: Actions
     
     @objc private func handleNewMoment()
     {
-        self.performSegue(withIdentifier: IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
+        self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
+    }
+    
+    //MARK: MITMomentCollectionViewAdapterMomentDelegate
+    
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
+    {
+        print("handle share")
+    }
+    
+    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
+    {
+        //fetch URL, could be from Vimeo, could be local...
+        //then segue to the player
+    }
+    
+    func didSelectCell(forMoment moment: Moment)
+    {
+        self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: moment)
     }
     
     //MARK: CollectionView
@@ -93,10 +131,7 @@ class MyMomentsController: UIViewController
     
     @objc private func refresh()
     {
-        print("refreshing")
-        
-        wait(seconds: 2) {
-            self.refreshControl.endRefreshing()
-        }
+        self.adapter.moments = self.momentList.getLocalMoments()
+        self.refreshControl.endRefreshing()
     }
 }

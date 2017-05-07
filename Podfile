@@ -11,4 +11,5 @@ pod 'FacebookShare'
 pod 'DZNEmptyDataSet'
 pod 'ActiveLabel'
 pod 'UITextView+Placeholder'
+pod 'RealmSwift'
 end

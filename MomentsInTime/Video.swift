@@ -1,26 +1,49 @@
 //
 //  Video.swift
-//  APFAVCamera
+//  MomentsInTime
 //
-//  Created by Andrew Ferrarone on 3/15/17.
-//  Copyright © 2017 Andrew Ferrarone. All rights reserved.
+//  Created by Andrew Ferrarone on 4/13/17.
+//  Copyright © 2017 Tikkun Olam. All rights reserved.
 //
 
 import Foundation
 import UIKit
+import RealmSwift
 
-class Video: NSObject
+class Video: Object
 {
-    var uri: String?
-    var name: String?
-    var videoDescription: String?
-    var videoLinkURL: String?
+    //these will be persisted with Realm for user's MyMoments 
+    //everything else will come from Vimeo JSON objects
+    dynamic var videoID = UUID().uuidString
+    dynamic var uri: String? = nil
+    dynamic var name: String? = nil
+    dynamic var videoDescription: String? = nil
+    dynamic var localURL: String? = nil //file path for videos that are being uploaded:
+    dynamic var localThumbnailImageURL: String? = nil
+    
     var thumbnailImageURL: String?
     var status: String?
     
-    //file path for videos that are being uploaded:
-    var localURL: String?
-    var localThumbnailImage: UIImage?
+    private var privateLocalThumbnailImage: UIImage?
+    
+    var localThumbnailImage: UIImage? {
+        get {
+            if self.privateLocalThumbnailImage == nil {
+                if let localURLString = self.localThumbnailImageURL {
+                    self.privateLocalThumbnailImage = Assistant.loadImageFromDisk(withRelativeUrlString: localURLString)
+                    return self.privateLocalThumbnailImage
+                }
+            }
+            return self.privateLocalThumbnailImage
+        }
+        set {
+            self.privateLocalThumbnailImage = newValue
+        }
+    }
+    
+    var isLocal: Bool {
+        return self.localURL != nil
+    }
     
     //optional url to pass to PlayerViewController (must be fetched upon request):
     private(set) var playbackURL: String?
@@ -62,7 +85,6 @@ class Video: NSObject
     {
         let valid = (self.uri != nil
             && self.name != nil
-            && self.videoLinkURL != nil
             && self.thumbnailImageURL != nil
         )
         
@@ -74,6 +96,16 @@ class Video: NSObject
         
         //only validate videos that are valid and available
         return valid && available
+    }
+    
+    override static func primaryKey() -> String?
+    {
+        return "videoID"
+    }
+    
+    override static func ignoredProperties() -> [String]
+    {
+        return ["thumbnailImageURL", "status", "localThumbnailImage", "playbackURL"]
     }
 }
 
@@ -92,7 +124,7 @@ extension Video: VideoRouterCompliant
         }
         
         if let description = self.videoDescription {
-            params["description"] = self.videoDescription
+            params["description"] = description
         }
         
         return params
@@ -105,7 +137,6 @@ extension Video: VideoRouterCompliant
         let uri = params["uri"] as? String
         let name = params["name"] as? String
         let videoDescription = params["description"] as? String
-        let videoLinkURL = params["link"] as? String
         let videoStatus = params["status"] as? String
         
         //grab pictures object for video thumbnailImageURL:
@@ -118,7 +149,6 @@ extension Video: VideoRouterCompliant
         video.uri = uri
         video.name = name
         video.videoDescription = videoDescription
-        video.videoLinkURL = videoLinkURL
         video.thumbnailImageURL = thumbnailImageURL
         video.status = videoStatus
         

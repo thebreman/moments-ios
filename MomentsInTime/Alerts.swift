@@ -1,9 +1,9 @@
 //
 //  Alerts.swift
-//  GoChat
+//  MomentsInTime
 //
-//  Created by Andrew Ferrarone on 12/17/16.
-//  Copyright © 2016 Andrew Ferrarone. All rights reserved.
+//  Created by Andrew Ferrarone on 5/5/17.
+//  Copyright © 2017 Tikkun Olam. All rights reserved.
 //
 
 import UIKit

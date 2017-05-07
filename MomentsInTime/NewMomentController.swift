@@ -10,30 +10,16 @@ import UIKit
 import AVFoundation
 import AVKit
 import Photos
+import RealmSwift
 
 private let COPY_TITLE_VIDEO_QUESTION_ALERT = "Camera shy? Don't worry."
 private let COPY_MESSAGE_VIDEO_QUESTION_ALERT = "You don't have to get it first try. When you film a video, we'll save it to your camera roll so you can edit with your favorite tools. Upload a new video at any time before submitting."
+private let COPY_TITLE_SAVE_CHANGES = "Save Changes?"
+private let COPY_MESSAGE_SAVE_CHANGES = "Would you like to save this moment? You can always come back and edit it later."
 
 typealias InterviewingCompletion = (Subject) -> Void
 typealias DescriptionCompletion = (_ name: String, _ description: String) -> Void
 typealias NoteCompletion = (Note) -> Void
-
-private enum Identifiers
-{
-    static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
-    static let IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE = "imageTitleSubtitleCell"
-    static let IDENTIFIER_CELL_VIDEO_PREVIEW = "videoPreviewCell"
-    static let IDENTIFIER_CELL_NOTE = "noteCell"
-    static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
-    
-    enum Segues
-    {
-        static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
-        static let ENTER_INTERVIEW_DESCRIPTION = "newMomentToDescription"
-        static let ENTER_NEW_NOTE = "newMomentToNote"
-        static let PLAY_VIDEO = "newMomentToPlayer"
-    }
-}
 
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate, VideoPreviewCellDelegate
 {
@@ -44,8 +30,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         let newMoment = Moment()
         newMoment.subject = Subject()
         newMoment.video = Video()
-        newMoment.notes = [Note]()
-        newMoment.notes += NewMomentSetting.defaultNotes
+        
+        Moment.writeToRealm {
+            newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
+        }
+        
         return newMoment
     }()
     
@@ -54,6 +43,23 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         cameraMan.maxVideoDurationMinutes = 20
         return cameraMan
     }()
+    
+    private enum Identifiers
+    {
+        static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
+        static let IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE = "imageTitleSubtitleCell"
+        static let IDENTIFIER_CELL_VIDEO_PREVIEW = "videoPreviewCell"
+        static let IDENTIFIER_CELL_NOTE = "noteCell"
+        static let IDENTIFIER_VIEW_SECTION_HEADER = "sectionHeaderView"
+        
+        enum Segues
+        {
+            static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
+            static let ENTER_INTERVIEW_DESCRIPTION = "newMomentToDescription"
+            static let ENTER_NEW_NOTE = "newMomentToNote"
+            static let PLAY_VIDEO = "newMomentToPlayer"
+        }
+    }
     
     override func viewDidLoad()
     {
@@ -69,11 +75,40 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBAction func handleSubmit(_ sender: BouncingButton)
     {
-        print("handle Submit")
+        print("handle Submit: \(self.moment)")
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
+        let controller = UIAlertController(title: COPY_TITLE_SAVE_CHANGES, message: COPY_MESSAGE_SAVE_CHANGES, preferredStyle: .alert)
+        controller.popoverPresentationController?.sourceView = sender
+        controller.popoverPresentationController?.sourceRect = sender.bounds
+        controller.popoverPresentationController?.permittedArrowDirections = [.up]
+        
+        let persistAction = UIAlertAction(title: "Save changes", style: .default) { action in
+            self.persistMoment()
+        }
+        controller.addAction(persistAction)
+        
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+            self.deleteMoment()
+        }
+        controller.addAction(deleteAction)
+        
+        self.present(controller, animated: true, completion: nil)
+    }
+    
+    private func persistMoment()
+    {
+        self.moment.create()
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
+    }
+    
+    private func deleteMoment()
+    {
+        print("delete moment")
+        
+        //can probably do nothing here:
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
@@ -238,7 +273,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
         case NewMomentSetting.video.rawValue:
             
-            if let video = self.moment.video, video.localURL != nil {
+            if let video = self.moment.video, video.isLocal {
                 return self.videoPreviewCell(forVideo: video, withTableView: tableView)
             }
             
@@ -347,10 +382,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func deleteNote(_ note: Note)
     {
         if self.moment.notes.contains(note), let indexToDelete = self.moment.notes.index(of: note) {
-            self.moment.notes.remove(at: indexToDelete)
             
-            let pathToDelete = IndexPath(row: indexToDelete + 1, section: NewMomentSetting.notes.rawValue)
-            self.tableView.removeRows(forIndexPaths: [pathToDelete])
+            Moment.writeToRealm {
+                self.moment.notes.remove(objectAtIndex: indexToDelete)
+                let pathToDelete = IndexPath(row: indexToDelete + 1, section: NewMomentSetting.notes.rawValue)
+                self.tableView.removeRows(forIndexPaths: [pathToDelete])
+            }
         }
     }
     
@@ -396,58 +433,62 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleInterviewingSubjectCompletion(withSubject subject: Subject, isUpdating: Bool)
     {
-        if let newProfileImage = subject.profileImage {
-            subject.profileImageURL = self.persistImage(newProfileImage)?.absoluteString
+        Moment.writeToRealm {
+            if let newProfileImage = subject.profileImage {
+                subject.profileImageURL = Assistant.persistImage(newProfileImage, compressionQuality: 0.2, atURLString: self.moment.subject?.profileImageURL)
+            }
+            
+            self.moment.subject = subject
+            
+            //animate interviewingSubject cell in:
+            let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
+            
+            if isUpdating {
+                self.tableView.updateRows(forIndexPaths: [newPath])
+            }
+            else {
+                self.tableView.refreshRows(forIndexPaths: [newPath])
+            }
         }
         
-        self.moment.subject = subject
         self.updateUI()
-        
-        //animate interviewingSubject cell in:
-        let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
-        
-        if isUpdating {
-            self.tableView.updateRows(forIndexPaths: [newPath])
-        }
-        else {
-            self.tableView.refreshRows(forIndexPaths: [newPath])
-        }
     }
     
     private func handleDescriptionCompletion(withVideoTitle videoTitle: String, videoDescription: String, isUpdating: Bool)
     {
-        self.moment.video?.name = videoTitle
-        self.moment.video?.videoDescription = videoDescription
+        Moment.writeToRealm {
+            self.moment.video?.name = videoTitle
+            self.moment.video?.videoDescription = videoDescription
+            
+            //animate TitleDescription cell in:
+            let newPath = IndexPath(row: 0, section: NewMomentSetting.description.rawValue)
+            
+            if isUpdating {
+                self.tableView.updateRows(forIndexPaths: [newPath])
+            }
+            else {
+                self.tableView.refreshRows(forIndexPaths: [newPath])
+            }
+        }
+        
         self.updateUI()
-        
-        //animate TitleDescription cell in:
-        let newPath = IndexPath(row: 0, section: NewMomentSetting.description.rawValue)
-        
-        if isUpdating {
-            self.tableView.updateRows(forIndexPaths: [newPath])
-        }
-        else {
-            self.tableView.refreshRows(forIndexPaths: [newPath])
-        }
     }
     
     private func handleNoteCompletion(withNote note: Note, isUpdating: Bool)
     {
-        if isUpdating {
-            if let path = self.lastSelectedPath {
-                self.moment.notes[path.row - 1] = note
-                
-                //animate the update:
-                self.tableView.updateRows(forIndexPaths: [path])
-                self.lastSelectedPath = nil
+        Moment.writeToRealm {
+            if isUpdating {
+                if let path = self.lastSelectedPath {
+                    self.moment.notes[path.row - 1] = note
+                    self.tableView.updateRows(forIndexPaths: [path])
+                    self.lastSelectedPath = nil
+                }
             }
-        }
-        else {
-            self.moment.notes.insert(note, at: 0)
-            
-            //animate newNote cell in:
-            let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
-            self.tableView.insertNewRows(forIndexPaths: [newPath])
+            else {
+                self.moment.notes.insert(note, at: 0)
+                let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
+                self.tableView.insertNewRows(forIndexPaths: [newPath])
+            }
         }
     }
     
@@ -467,7 +508,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             
         }, notAuthorizedHandler: {
-            UIAlertController.alertUser(withPresenter: self, title: CameraMan.alertTitle, message: CameraMan.deniedLibraryMessage, okButton: true, settingsButton: true)
+            UIAlertController.alertUser(withPresenter: self, title: COPY_TITLE_ALERT, message: COPY_DENIED_PHOTO_LIBRARY_ACCESS_MESSAGE, okButton: true, settingsButton: true)
         })
     }
     
@@ -612,39 +653,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.submitButton.isEnabled = readyToSubmit
     }
     
-    private func loadImageFromDisk(withUrlString urlString: String) -> UIImage?
-    {
-        if let imageURL = URL(string: urlString),
-            let imageData = try? Data.init(contentsOf: imageURL, options: []) {
-            return UIImage(data: imageData)
-        }
-        
-        return nil
-    }
-    
-    private func persistImage(_ image: UIImage) -> URL?
-    {
-        var imageFileName: URL
-        
-        //if we have previously saved an image we want to overwrite it:
-        if let urlString = self.moment.subject?.profileImageURL, let imageFile = URL(string: urlString) {
-            imageFileName = imageFile
-        }
-        else {
-            
-            //otherwise create a url:
-            let imageName = UUID().uuidString
-            imageFileName = FileManager.getDocumentsDirectory().appendingPathComponent("\(imageName).jpeg")
-        }
-        
-        guard let imageData = UIImageJPEGRepresentation(image, 0.2) else {
-            return nil
-        }
-        
-        try? imageData.write(to: imageFileName)
-        return imageFileName
-    }
-    
     private func updateWithVideoURL(_ url: URL)
     {
         guard let video = self.moment.video else { return }
@@ -652,11 +660,17 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         video.localURL = url.absoluteString
         video.localThumbnailImage = self.thumbnailImage(forVideo: video)
         
+        if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atURLString: video.localThumbnailImageURL) {
+            Moment.writeToRealm {
+                video.localThumbnailImageURL = imageURL
+            }
+        }
+        
         self.updateVideoRow()
         self.updateUI()
     }
-    
-    fileprivate func thumbnailImage(forVideo video: Video) -> UIImage?
+
+    private func thumbnailImage(forVideo video: Video) -> UIImage?
     {
         guard let urlString = video.localURL, let assetURL = URL(string: urlString) else {
             return nil

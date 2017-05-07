@@ -7,19 +7,61 @@
 //
 
 import Foundation
+import RealmSwift
 
-class Moment: NSObject
+class Moment: Object
 {
-    var subject: Subject?
-    var video: Video?
-    var notes = [Note]()
+    dynamic var momentID = UUID().uuidString
+    dynamic var subject: Subject?
+    dynamic var video: Video?
+    dynamic var createdAt = Date()
+    let notes = List<Note>()
     
     var isValid: Bool {
         return false
     }
     
-    func validate() //?
+    // @Ignore
+    var exists = false
+    
+    override static func primaryKey() -> String?
     {
-        //TODO
+        return "momentID"
+    }
+    
+    
+    override static func ignoredProperties() -> [String]
+    {
+        return ["exists"]
+    }
+    
+    func create()
+    {
+        // add a new thing to realm
+        if !self.exists
+        {
+            //add moment to realm:
+            if let realm = try? Realm() {
+                
+                try? realm.write {
+                    realm.add(self)
+                }
+            }
+            
+            self.exists = true
+        }
+    }
+}
+
+extension Moment
+{
+    //modify objects and perform any UI updates in handler:
+    class func writeToRealm(withHandler handler: () -> Void)
+    {
+        if let realm = try? Realm() {
+            realm.beginWrite()
+            handler()
+            try? realm.commitWrite()
+        }
     }
 }

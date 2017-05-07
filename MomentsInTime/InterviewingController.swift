@@ -9,34 +9,8 @@
 import UIKit
 import PureLayout
 
-private let COPY_TEXT_PLACEHOLDER_NAME_FIELD = "Enter name"
-private let COPY_TEXT_PLACEHOLDER_ROLE_FIELD = "Enter role"
-private let COPY_TITLE_BUTTON_SELECT_PICTURE = "Select photo (optional)"
-
 private let MIN_CHARACTERS_NAME = 10
 private let MAX_CHARACTERS = 100
-
-//find out if this is weird and whether or not it should be in InterviewingController, or even in its own file?
-enum InterviewingSection: Int
-{
-    case picture = 0
-    case name = 1
-    case role = 2
-    
-    static var titles: [String] {
-        return ["Picture (optional)", "Name", "Role"]
-    }
-    
-    //for name and role return textField placeholder text
-    //for picture return activeLabel text
-    var cellContentText: String {
-        switch self {
-        case .picture: return COPY_TITLE_BUTTON_SELECT_PICTURE
-        case .name: return COPY_TEXT_PLACEHOLDER_NAME_FIELD
-        case .role: return COPY_TEXT_PLACEHOLDER_ROLE_FIELD
-        }
-    }
-}
 
 class InterviewingController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, KeyboardMover
 {

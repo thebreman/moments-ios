@@ -10,30 +10,10 @@ import UIKit
 import UITextView_Placeholder
 import PureLayout
 
-private let COPY_TEXT_PLACEHOLDER_TITLE_FIELD = "Enter title"
-private let COPY_TEXT_PLACEHOLDER_DESCRIPTION_FIELD = "Enter description"
-
 private let MAX_CHARACTERS_DESCRIPTION = 300
 private let MIN_CHARACTERS_DESCRIPTION = 20
 private let MAX_CHARACTERS_TITLE = 100
 private let MIN_CHARACTERS_TITLE = 10
-
-enum DescriptionSection: Int
-{
-    case title = 0
-    case description = 1
-    
-    static var titles: [String] {
-        return ["Title", "Description"]
-    }
-    
-    var placeholderText: String {
-        switch self {
-        case .title: return COPY_TEXT_PLACEHOLDER_TITLE_FIELD
-        case .description: return COPY_TEXT_PLACEHOLDER_DESCRIPTION_FIELD
-        }
-    }
-}
 
 class DescriptionController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, KeyboardMover
 {
