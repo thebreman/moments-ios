@@ -26,15 +26,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBOutlet weak var submitButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
-    private lazy var moment: Moment = {
+     var moment: Moment = {
         let newMoment = Moment()
         newMoment.subject = Subject()
         newMoment.video = Video()
-        
         Moment.writeToRealm {
             newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
         }
-        
         return newMoment
     }()
     

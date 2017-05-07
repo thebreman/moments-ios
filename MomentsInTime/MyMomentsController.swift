@@ -77,8 +77,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         switch id {
         case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
             if let newMomentController = segue.destination.contentViewController as? NewMomentController,
-                let selectedVideo = sender as? Video {
-                //
+                let selectedMoment = sender as? Moment {
+                newMomentController.moment = selectedMoment
             }
             
         case Identifiers.IDENTIFIER_SEGUE_PLAYER:
@@ -109,7 +109,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         //then segue to the player
     }
     
-    func didSelectCell(forMoment moment: Moment)
+    func didSelectMoment(_ moment: Moment)
     {
         self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: moment)
     }

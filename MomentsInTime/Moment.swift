@@ -15,14 +15,12 @@ class Moment: Object
     dynamic var subject: Subject?
     dynamic var video: Video?
     dynamic var createdAt = Date()
+    dynamic var existsInRealm = false
     let notes = List<Note>()
     
     var isValid: Bool {
         return false
     }
-    
-    // @Ignore
-    var exists = false
     
     override static func primaryKey() -> String?
     {
@@ -38,7 +36,7 @@ class Moment: Object
     func create()
     {
         // add a new thing to realm
-        if !self.exists
+        if !self.existsInRealm
         {
             //add moment to realm:
             if let realm = try? Realm() {
@@ -48,7 +46,7 @@ class Moment: Object
                 }
             }
             
-            self.exists = true
+            self.existsInRealm = true
         }
     }
 }

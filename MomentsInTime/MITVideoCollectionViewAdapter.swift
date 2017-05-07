@@ -28,7 +28,7 @@ protocol MITMomentCollectionViewAdapterDelegate: class
 {
     func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
     func adapter(adapter:  MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
-    @objc optional func didSelectCell(forMoment moment: Moment)
+    @objc optional func didSelectMoment(_ moment: Moment)
 }
 
 //delegate for fetch/ infinite scroll provides view to be displayed while fetching and handles fetching more content:
@@ -211,7 +211,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
             
         case SECTION_MOMENT_FEED:
             
-            if let moment = self.momentsAndAccessoryViews[indexPath.row] as? Moment {
+            if let moment = self.momentsAndAccessoryViews[indexPath.item] as? Moment {
                 
                 var height = CGFloat(0)
                 
@@ -226,7 +226,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
 
                 return CGSize(width: self.collectionView.bounds.width, height: height)
             }
-            else if let accessoryView = self.momentsAndAccessoryViews[indexPath.row] as? UIView {
+            else if let accessoryView = self.momentsAndAccessoryViews[indexPath.item] as? UIView {
                 return ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
             }
             
@@ -242,6 +242,15 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
             
             assert(false, "unknown section in collectionView!")
             return .zero
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        guard indexPath.section == SECTION_MOMENT_FEED else { return }
+        
+        if let selectedMoment = self.momentsAndAccessoryViews[indexPath.item] as? Moment {
+            self.momentDelegate?.didSelectMoment?(selectedMoment)
         }
     }
     
