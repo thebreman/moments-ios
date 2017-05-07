@@ -18,6 +18,7 @@ protocol MomentCellDelegate: class
 {
     func momentCell(_ momentCell: MomentCell, playButtonWasTappedForMoment moment: Moment)
     func momentCell(_ momentCell: MomentCell, shareButtonWasTappedForMoment moment: Moment)
+    func momentCell(_ momentCell: MomentCell, handleOptionsForMoment moment: Moment)
 }
 
 class MomentCell: BouncingCollectionViewCell
@@ -89,7 +90,9 @@ class MomentCell: BouncingCollectionViewCell
     
     @IBAction func handleOptions(_ sender: UIButton)
     {
-        print("handle Options")
+        if let moment = self.moment {
+            self.delegate?.momentCell(self, handleOptionsForMoment: moment)
+        }
     }
     
     // MARK: Utilities

@@ -28,6 +28,7 @@ protocol MITMomentCollectionViewAdapterDelegate: class
 {
     func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
     func adapter(adapter:  MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment)
     @objc optional func didSelectMoment(_ moment: Moment)
 }
 
@@ -48,7 +49,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     var allowsEmptyStateScrolling = false
     var allowsInfiniteScrolling = false
     
-    weak var accessoryViewdelegate: MITMomentCollectionViewAdapterDelegate? {
+    weak var accessoryViewDelegate: MITMomentCollectionViewAdapterDelegate? {
         didSet {
             self.collectionView.register(ContainerCell.self, forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
         }
@@ -118,6 +119,24 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
             self.collectionView.reloadEmptyDataSet()
             self.collectionView.insertItems(at: [newPath])
         }, completion: nil)
+    }
+    
+    func removeMoment(_ moment: Moment)
+    {
+        //not supporting this right now with accessory views:
+        guard self.accessoryViewDelegate == nil else { return }
+        
+        if let indexToRemove = self.moments.index(of: moment) {
+            self.moments.remove(at: indexToRemove)
+            
+            let pathToRemove = IndexPath(item: indexToRemove, section: SECTION_MOMENT_FEED)
+            
+            self.collectionView.performBatchUpdates({
+                self.collectionView.deleteItems(at: [pathToRemove])
+            }) { _ in
+                self.collectionView.reloadEmptyDataSet()
+            }
+        }
     }
     
     func refreshData(shouldReload: Bool)
@@ -300,6 +319,11 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         self.momentDelegate?.adapter(adapter: self, handleShareForMoment: moment)
     }
     
+    func momentCell(_ momentCell: MomentCell, handleOptionsForMoment moment: Moment)
+    {
+        self.momentDelegate?.adapter(adapter: self, handleOptionsForMoment: moment)
+    }
+    
     //MARK: Utilities
     
     private func populateData()
@@ -309,7 +333,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         
         //if we have a delegate, setup the array with the corresponding data and return it,
         //otherwise just copy self.moments:
-        guard let dataDelegate = self.accessoryViewdelegate else {
+        guard let dataDelegate = self.accessoryViewDelegate else {
             self.momentsAndAccessoryViews = self.moments
             return
         }

@@ -44,7 +44,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
                                                    emptyStateView: self.emptyStateView,
                                                    bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
-        adapter.accessoryViewdelegate = self
+        adapter.accessoryViewDelegate = self
         adapter.momentDelegate = self
         adapter.infiniteScrollDelegate = self
         adapter.allowsInfiniteScrolling = true
@@ -221,6 +221,11 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
                 print(error)
             }
         }
+    }
+    
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment)
+    {
+        print("handle options")
     }
     
     //MARK: MITMomentCollectionViewAdapterInfiniteScrollDelegate

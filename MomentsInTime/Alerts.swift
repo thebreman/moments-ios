@@ -10,11 +10,29 @@ import UIKit
 
 extension UIAlertController
 {
+    static func showDeleteSheet(withPresenter presenter: UIViewController, sender: UIView, title: String, deleteHandler: ((UIAlertAction) -> Void)? = nil)
+    {
+        let controller = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        controller.popoverPresentationController?.sourceView = sender
+        controller.popoverPresentationController?.sourceRect = sender.bounds
+        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+        
+        let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_DELETE, style: .destructive, handler: deleteHandler )
+        controller.addAction(deleteAction)
+        
+        let cancelAction = UIAlertAction(title: COPY_TITLE_BUTTON_CANCEL, style: .cancel, handler: nil)
+        controller.addAction(cancelAction)
+        
+        presenter.present(controller, animated: true, completion: nil)
+    }
+    
     static func explain(withPresenter presenter: UIViewController, title: String?, message: String?)
     {
         let controller = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
         let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
         controller.addAction(okAction)
+        
         presenter.present(controller, animated: true, completion: nil)
     }
     

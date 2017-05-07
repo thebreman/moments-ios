@@ -17,10 +17,11 @@ private let COPY_MESSAGE_VIDEO_QUESTION_ALERT = "You don't have to get it first 
 private let COPY_TITLE_SAVE_CHANGES = "Save Changes?"
 private let COPY_MESSAGE_SAVE_CHANGES = "Would you like to save this moment? You can always come back and edit it later."
 private let COPY_TITLE_BUTTON_SAVE_CHANGES = "Save changes"
-private let COPY_TITLE_BUTTON_DELETE = "Delete"
 
-private let COPY_TITLE_BUTTON_SUBMIT = "Submit"
-private let COPY_TITLE_BUTTON_CANCEL = "Cancel"
+let COPY_TITLE_BUTTON_DELETE = "Delete"
+let COPY_TITLE_BUTTON_SUBMIT = "Submit"
+let COPY_TITLE_BUTTON_CANCEL = "Cancel"
+
 private let COPY_TITLE_BUTTON_DONE = "Done"
 private let COPY_TITLE_BUTTON_TRY_AGAIN = "Try Again"
 
@@ -391,20 +392,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         guard let note = noteCell.note else { return }
         
-        let controller = UIAlertController(title: COPY_TITLE_NOTE_OPTIONS, message: nil, preferredStyle: .actionSheet)
-        controller.popoverPresentationController?.sourceView = sender
-        controller.popoverPresentationController?.sourceRect = sender.bounds
-        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        
-        let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_DELETE, style: .destructive) { action in
+        UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: COPY_TITLE_NOTE_OPTIONS) { action in
             self.deleteNote(note)
         }
-        controller.addAction(deleteAction)
-        
-        let cancelAction = UIAlertAction(title: COPY_TITLE_BUTTON_CANCEL, style: .cancel, handler: nil)
-        controller.addAction(cancelAction)
-        
-        self.present(controller, animated: true, completion: nil)
     }
     
     private func deleteNote(_ note: Note)
@@ -434,20 +424,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         guard let video = videoPreviewCell.video else { return }
         
-        let controller = UIAlertController(title: COPY_TITLE_VIDEO_OPTIONS, message: nil, preferredStyle: .actionSheet)
-        controller.popoverPresentationController?.sourceView = sender
-        controller.popoverPresentationController?.sourceRect = sender.bounds
-        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        
-        let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_DELETE, style: .destructive) { action in
+        UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: COPY_TITLE_VIDEO_OPTIONS) { action in
             self.deleteVideo(video)
         }
-        controller.addAction(deleteAction)
-        
-        let cancelAction = UIAlertAction(title: COPY_TITLE_BUTTON_CANCEL, style: .cancel, handler: nil)
-        controller.addAction(cancelAction)
-        
-        self.present(controller, animated: true, completion: nil)
     }
     
     private func deleteVideo(_ video: Video)

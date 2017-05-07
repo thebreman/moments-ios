@@ -125,6 +125,11 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         //then segue to the player
     }
     
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment)
+    {
+        //
+    }
+    
     func didSelectMoment(_ moment: Moment)
     {
         self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: moment)
