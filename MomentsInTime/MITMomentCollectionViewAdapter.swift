@@ -64,7 +64,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     
     var moments = [Moment]() {
         didSet {
-            self.refreshData()
+            //self.refreshData(shouldReload: true)
         }
     }
     
@@ -105,6 +105,29 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         
         self.collectionView.emptyDataSetDelegate = self
         self.collectionView.emptyDataSetSource = self
+    }
+    
+    func insertNewMoment(_ newMoment: Moment)
+    {
+        self.moments.insert(newMoment, at: 0)
+        self.populateData()
+        
+        let newPath = IndexPath(item: 0, section: SECTION_MOMENT_FEED)
+        
+        self.collectionView.performBatchUpdates({
+            self.collectionView.reloadEmptyDataSet()
+            self.collectionView.insertItems(at: [newPath])
+        }, completion: nil)
+    }
+    
+    func refreshData(shouldReload: Bool)
+    {
+        print("refreshing Data")
+        self.populateData()
+        
+        if shouldReload {
+            self.collectionView.reloadData()
+        }
     }
     
     //MARK: CollectionView
@@ -278,15 +301,6 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     }
     
     //MARK: Utilities
-    
-    //private func
-    
-    private func refreshData()
-    {
-        print("refreshing Data")
-        self.populateData()
-        self.collectionView.reloadData()
-    }
     
     private func populateData()
     {

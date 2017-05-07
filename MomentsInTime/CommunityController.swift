@@ -235,6 +235,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             
             if let newMoments = moments {
                 self.adapter.moments += newMoments
+                self.adapter.refreshData(shouldReload: true)
             }
             
             self.adapter.allowsInfiniteScrolling = self.momentList.hasNextPage
@@ -261,6 +262,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             
             self.spinner.stopAnimating()
             self.adapter.moments = self.momentList.moments
+            self.adapter.refreshData(shouldReload: true)
             self.adapter.allowsInfiniteScrolling = true
         }
     }

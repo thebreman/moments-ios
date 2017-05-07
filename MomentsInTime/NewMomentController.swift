@@ -51,6 +51,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         return newMoment
     }()
     
+    var completion: NewMomentCompletion?
+    
     private var cameraMan: CameraMan = {
         let cameraMan = CameraMan()
         cameraMan.maxVideoDurationMinutes = 20
@@ -119,7 +121,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         self.moment.create()
         self.moment.momentStatus = .local
-        self.presentingViewController?.dismiss(animated: true, completion: nil)
+        self.presentingViewController?.dismiss(animated: true) {
+            self.completion?(self.moment)
+        }
     }
     
     private func deleteMoment()

@@ -9,6 +9,8 @@
 import UIKit
 import RealmSwift
 
+typealias NewMomentCompletion = (Moment) -> Void
+
 class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
@@ -47,12 +49,13 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         super.viewDidLoad()
         self.setupCollectionView()
+        self.refresh()
     }
     
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
-        self.adapter.moments = self.momentList.getLocalMoments()
+        //self.adapter.moments = self.momentList.getLocalMoments()
         
         //need this in case we rotate, switch tabs, then rotate back...
         //when we come back to this screen, the layout will be where we left it
@@ -76,12 +79,20 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         
         switch id {
         case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
-            if let newMomentController = segue.destination.contentViewController as? NewMomentController,
-                let selectedMoment = sender as? Moment {
-                newMomentController.moment = selectedMoment
+            if let newMomentController = segue.destination.contentViewController as? NewMomentController {
+                
+                newMomentController.completion = { moment in
+                    self.handleNewMomentCompletion(withMoment: moment)
+                }
+                
+                //pass along moment if we have one:
+                if let selectedMoment = sender as? Moment {
+                    newMomentController.moment = selectedMoment
+                }
             }
             
         case Identifiers.IDENTIFIER_SEGUE_PLAYER:
+            //create a player with the url and pass it to destination
             break
             
         default:
@@ -92,6 +103,11 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     //MARK: Actions
     
     @objc private func handleNewMoment()
+    {
+        self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
+    }
+    
+    @IBAction func handleCreateMoment(_ sender: BouncingButton)
     {
         self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
     }
@@ -128,11 +144,17 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         self.collectionView.contentInset.top = 12
     }
     
-    //MARK: Refresh
+    //MARK: Utilities
+    
+    private func handleNewMomentCompletion(withMoment moment: Moment)
+    {
+        self.adapter.insertNewMoment(moment)
+    }
     
     @objc private func refresh()
     {
         self.adapter.moments = self.momentList.getLocalMoments()
+        self.adapter.refreshData(shouldReload: true)
         self.refreshControl.endRefreshing()
     }
 }

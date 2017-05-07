@@ -61,7 +61,7 @@
                                     <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="hLJ-EC-isI" kind="presentation" identifier="NewMoment" id="fpE-Mv-Qnc"/>
+                                    <action selector="handleCreateMoment:" destination="Vch-ur-fOA" eventType="touchUpInside" id="49W-ji-Tnp"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -70,6 +70,7 @@
                         <outlet property="collectionView" destination="HFt-ze-xZN" id="OTK-jw-bap"/>
                         <outlet property="spinner" destination="SRf-yi-611" id="fRz-yw-ShW"/>
                         <segue destination="e3s-4x-RTz" kind="presentation" identifier="myMomentsToPlayer" modalPresentationStyle="fullScreen" id="ibu-DI-7Ln"/>
+                        <segue destination="hLJ-EC-isI" kind="presentation" identifier="NewMoment" id="9IS-QR-A0U"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gc6-67-h1v" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -645,6 +646,6 @@
         <image name="PlusButton" width="18" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Lb7-be-TB6"/>
+        <segue reference="ibu-DI-7Ln"/>
     </inferredMetricsTieBreakers>
 </document>
