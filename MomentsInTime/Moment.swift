@@ -9,6 +9,15 @@
 import Foundation
 import RealmSwift
 
+enum MomentStatus: Int
+{
+    case new
+    case uploading
+    case uploadFailed
+    case processing
+    case live
+}
+
 class Moment: Object
 {
     dynamic var momentID = UUID().uuidString
@@ -16,10 +25,18 @@ class Moment: Object
     dynamic var video: Video?
     dynamic var createdAt = Date()
     dynamic var existsInRealm = false
+    dynamic var privateMomentStatus = MomentStatus.new.rawValue
     let notes = List<Note>()
     
-    var isValid: Bool {
-        return false
+    var momentStatus: MomentStatus? {
+        get {
+            return MomentStatus(rawValue: privateMomentStatus)
+        }
+        set {
+            Moment.writeToRealm {
+                self.privateMomentStatus = newValue?.rawValue
+            }
+        }
     }
     
     override static func primaryKey() -> String?
@@ -27,10 +44,9 @@ class Moment: Object
         return "momentID"
     }
     
-    
     override static func ignoredProperties() -> [String]
     {
-        return ["exists"]
+        return ["exists", "momentStatus"]
     }
     
     func create()

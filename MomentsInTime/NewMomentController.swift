@@ -17,6 +17,11 @@ private let COPY_MESSAGE_VIDEO_QUESTION_ALERT = "You don't have to get it first 
 private let COPY_TITLE_SAVE_CHANGES = "Save Changes?"
 private let COPY_MESSAGE_SAVE_CHANGES = "Would you like to save this moment? You can always come back and edit it later."
 
+private let TITLE_BUTTON_SUBMIT = "Submit"
+private let TITLE_BUTTON_CANCEL = "Cancel"
+private let TITLE_BUTTON_DONE = "Done"
+private let TITLE_BUTTON_TRY_AGAIN = "Try Again"
+
 typealias InterviewingCompletion = (Subject) -> Void
 typealias DescriptionCompletion = (_ name: String, _ description: String) -> Void
 typealias NoteCompletion = (Note) -> Void
@@ -24,6 +29,7 @@ typealias NoteCompletion = (Note) -> Void
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate, VideoPreviewCellDelegate
 {
     @IBOutlet weak var submitButton: BouncingButton!
+    @IBOutlet weak var cancelButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
      var moment: Moment = {
@@ -63,11 +69,22 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         super.viewDidLoad()
         
-        self.submitButton.isEnabled = false
+        self.configureInitialButtonStates()
         self.setupTableView()
-        
-        //make sure moment is fully loaded...
     }
+    
+    private func configureInitialButtonStates()
+    {
+        guard let status = self.moment.momentStatus else { return }
+        
+        self.submitButton.isHidden = status == .uploading || status == .processing || status == .live
+        self.submitButton.isEnabled = status == .uploadFailed
+        self.submitButton.titleLabel?.text = status == .uploadFailed ? TITLE_BUTTON_TRY_AGAIN : TITLE_BUTTON_SUBMIT
+        
+        self.cancelButton.isHidden = false
+        self.cancelButton.titleLabel?.text = status == .new ? TITLE_BUTTON_CANCEL : TITLE_BUTTON_DONE
+    }
+    
     
 //MARK: Actions
     

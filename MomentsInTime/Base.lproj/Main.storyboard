@@ -167,6 +167,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="cancelButton" destination="fAU-z6-1by" id="MaD-0G-VKY"/>
                         <outlet property="submitButton" destination="bFu-MX-Ugj" id="Ksm-aP-c7B"/>
                         <outlet property="tableView" destination="TYd-KS-ATk" id="zWp-4g-Q6y"/>
                         <segue destination="tMY-Ml-CZK" kind="presentation" identifier="newMomentToInterviewing" id="8pJ-IV-bfk"/>
