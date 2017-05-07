@@ -449,9 +449,16 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func deleteVideo(_ video: Video)
     {
         Moment.writeToRealm {
+            
+            if let localRelativeImageURLString = video.localThumbnailImageURL {
+                Assistant.removeFileFromDisk(atRelativeURLString: localRelativeImageURLString)
+                video.localThumbnailImageURL = nil
+            }
+            
+            //remove url from disk
             video.localURL = nil
             video.localThumbnailImage = nil
-            //remove image from disk
+
             let pathToDelete = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
             self.tableView.refreshRows(forIndexPaths: [pathToDelete])
         }

@@ -55,4 +55,17 @@ class Assistant
         
         return nil
     }
+    
+    class func removeFileFromDisk(atRelativeURLString relativeURLString: String)
+    {
+        do {
+            let documents = FileManager.getDocumentsDirectory()
+            let pathToRemove = documents.appendingPathComponent(relativeURLString)
+            
+            try FileManager.default.removeItem(at: pathToRemove)
+        }
+        catch let error {
+            print("unable to remove file from disk: \(error)")
+        }
+    }
 }
