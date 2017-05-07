@@ -125,6 +125,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         }
         
         self.collectionView?.addSubview(self.refreshControl)
+        self.collectionView.contentInset.top = 12
     }
     
     //MARK: Refresh

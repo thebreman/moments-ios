@@ -12,6 +12,7 @@ import RealmSwift
 enum MomentStatus: Int
 {
     case new
+    case local
     case uploading
     case uploadFailed
     case processing
@@ -25,18 +26,29 @@ class Moment: Object
     dynamic var video: Video?
     dynamic var createdAt = Date()
     dynamic var existsInRealm = false
-    dynamic var privateMomentStatus = MomentStatus.new.rawValue
+    dynamic var _momentStatus = MomentStatus.new.rawValue
     let notes = List<Note>()
     
-    var momentStatus: MomentStatus? {
+    var momentStatus: MomentStatus {
         get {
-            return MomentStatus(rawValue: privateMomentStatus)
+            return MomentStatus(rawValue: self._momentStatus)!
         }
         set {
             Moment.writeToRealm {
-                self.privateMomentStatus = newValue?.rawValue
+                self._momentStatus = newValue.rawValue
             }
         }
+    }
+    
+    var isReadyToSubmit: Bool {
+        guard self.momentStatus != .uploading || self.momentStatus != .processing || self.momentStatus != .live else {
+            return false
+        }
+        let readyToSubmit = self.subject?.name != nil
+            && self.video?.name != nil
+            && self.video?.videoDescription != nil
+            && self.video?.localURL != nil
+        return readyToSubmit
     }
     
     override static func primaryKey() -> String?
@@ -46,23 +58,22 @@ class Moment: Object
     
     override static func ignoredProperties() -> [String]
     {
-        return ["exists", "momentStatus"]
+        return ["momentStatus"]
     }
     
+    // add a new moment to realm:
     func create()
     {
-        // add a new thing to realm
-        if !self.existsInRealm
-        {
+        if !self.existsInRealm {
+            
             //add moment to realm:
             if let realm = try? Realm() {
                 
                 try? realm.write {
                     realm.add(self)
+                    self.existsInRealm = true
                 }
             }
-            
-            self.existsInRealm = true
         }
     }
 }

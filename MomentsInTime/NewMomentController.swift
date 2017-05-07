@@ -16,15 +16,24 @@ private let COPY_TITLE_VIDEO_QUESTION_ALERT = "Camera shy? Don't worry."
 private let COPY_MESSAGE_VIDEO_QUESTION_ALERT = "You don't have to get it first try. When you film a video, we'll save it to your camera roll so you can edit with your favorite tools. Upload a new video at any time before submitting."
 private let COPY_TITLE_SAVE_CHANGES = "Save Changes?"
 private let COPY_MESSAGE_SAVE_CHANGES = "Would you like to save this moment? You can always come back and edit it later."
+private let COPY_TITLE_BUTTON_SAVE_CHANGES = "Save changes"
+private let COPY_TITLE_BUTTON_DELETE = "Delete"
 
-private let TITLE_BUTTON_SUBMIT = "Submit"
-private let TITLE_BUTTON_CANCEL = "Cancel"
-private let TITLE_BUTTON_DONE = "Done"
-private let TITLE_BUTTON_TRY_AGAIN = "Try Again"
+private let COPY_TITLE_BUTTON_SUBMIT = "Submit"
+private let COPY_TITLE_BUTTON_CANCEL = "Cancel"
+private let COPY_TITLE_BUTTON_DONE = "Done"
+private let COPY_TITLE_BUTTON_TRY_AGAIN = "Try Again"
 
-typealias InterviewingCompletion = (Subject) -> Void
-typealias DescriptionCompletion = (_ name: String, _ description: String) -> Void
-typealias NoteCompletion = (Note) -> Void
+private let COPY_TITLE_VIDEO_OPTIONS = "Video"
+private let COPY_TITLE_NOTE_OPTIONS = "Note"
+
+private let COPY_TITLE_INTERVIEWEE_OPTIONS = "Interviewee"
+private let COPY_BUTTON_TITLE_MANUAL_ENTRY = "Enter Manually"
+private let COPY_BUTTON_TITLE_FACEBOOK_ENTRY = "Select from Facebook"
+
+typealias InterviewingCompletion = (UIImage?, _ name: String?, _ role: String?) -> Void
+typealias DescriptionCompletion = (_ videoTitle: String, _ videoDescription: String) -> Void
+typealias NoteCompletion = (String?) -> Void
 
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate, VideoPreviewCellDelegate
 {
@@ -70,21 +79,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         super.viewDidLoad()
         
         self.configureInitialButtonStates()
+        self.updateUI()
         self.setupTableView()
     }
-    
-    private func configureInitialButtonStates()
-    {
-        guard let status = self.moment.momentStatus else { return }
-        
-        self.submitButton.isHidden = status == .uploading || status == .processing || status == .live
-        self.submitButton.isEnabled = status == .uploadFailed
-        self.submitButton.titleLabel?.text = status == .uploadFailed ? TITLE_BUTTON_TRY_AGAIN : TITLE_BUTTON_SUBMIT
-        
-        self.cancelButton.isHidden = false
-        self.cancelButton.titleLabel?.text = status == .new ? TITLE_BUTTON_CANCEL : TITLE_BUTTON_DONE
-    }
-    
     
 //MARK: Actions
     
@@ -95,27 +92,33 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
-        let controller = UIAlertController(title: COPY_TITLE_SAVE_CHANGES, message: COPY_MESSAGE_SAVE_CHANGES, preferredStyle: .alert)
-        controller.popoverPresentationController?.sourceView = sender
-        controller.popoverPresentationController?.sourceRect = sender.bounds
-        controller.popoverPresentationController?.permittedArrowDirections = [.up]
-        
-        let persistAction = UIAlertAction(title: "Save changes", style: .default) { action in
-            self.persistMoment()
+        if self.moment.momentStatus == .new {
+            let controller = UIAlertController(title: COPY_TITLE_SAVE_CHANGES, message: COPY_MESSAGE_SAVE_CHANGES, preferredStyle: .alert)
+            controller.popoverPresentationController?.sourceView = sender
+            controller.popoverPresentationController?.sourceRect = sender.bounds
+            controller.popoverPresentationController?.permittedArrowDirections = [.up]
+            
+            let persistAction = UIAlertAction(title: COPY_TITLE_BUTTON_SAVE_CHANGES, style: .default) { action in
+                self.persistMoment()
+            }
+            controller.addAction(persistAction)
+            
+            let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_DELETE, style: .destructive) { action in
+                self.deleteMoment()
+            }
+            controller.addAction(deleteAction)
+            
+            self.present(controller, animated: true, completion: nil)
         }
-        controller.addAction(persistAction)
-        
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in
-            self.deleteMoment()
+        else {
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
         }
-        controller.addAction(deleteAction)
-        
-        self.present(controller, animated: true, completion: nil)
     }
     
     private func persistMoment()
     {
         self.moment.create()
+        self.moment.momentStatus = .local
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
@@ -144,13 +147,15 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 //pass along data if we have any:
                 if let subject = self.moment.subject, subject.isValid {
-                    interviewingController.interviewSubject = subject
+                    interviewingController.profileImage = subject.profileImage
+                    interviewingController.name = subject.name
+                    interviewingController.role = subject.role
                     isUpdating = true
                 }
                 
                 //set completionHandler:
-                interviewingController.completion = { interviewSubject in
-                    self.handleInterviewingSubjectCompletion(withSubject: interviewSubject, isUpdating: isUpdating)
+                interviewingController.completion = { image, name, role in
+                    self.handleInterviewingSubjectCompletion(withImage: image, name: name, role: role, isUpdating: isUpdating)
                 }
             }
             
@@ -181,13 +186,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 //pass along data if we have any:
                 if let noteToUpdate = sender as? Note {
-                    noteController.note = noteToUpdate
+                    noteController.text = noteToUpdate.text
                     isUpdating = true
                 }
                 
                 //set completionHandler:
-                noteController.completion = { note in
-                    self.handleNoteCompletion(withNote: note, isUpdating: isUpdating)
+                noteController.completion = { noteText in
+                    self.handleNoteCompletion(withText: noteText, isUpdating: isUpdating)
                 }
             }
             
@@ -231,6 +236,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.tableView.estimatedRowHeight = 100
         self.tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    //In NewMomentSetting.notes, cell at row 0 is not a note cell (activeLinkCell) we need to subtract 1 from the index:
+    private func note(forIndexPath indexPath: IndexPath) -> Note
+    {
+        return self.moment.notes[indexPath.row - 1]
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
@@ -302,8 +313,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             
             //the rest of the cells are MITNoteCells:
-            //but since cell at row 0 is not a note cell (activeLinkCell) we need to subtract 1 from the index:
-            let note = self.moment.notes[indexPath.row - 1]
+            let note = self.note(forIndexPath: indexPath)
             return self.noteCell(forNote: note, withTableView: tableView)
             
         default:
@@ -331,7 +341,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION, sender: nil)
         
         case NewMomentSetting.notes.rawValue:
-            let note = self.moment.notes[indexPath.row - 1]
+            let note = self.note(forIndexPath: indexPath)
             self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: note)
         
         default:
@@ -344,7 +354,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, handleSelection selection: String)
     {
         switch selection {
-        
         case COPY_SELECT_INTERVIEW_SUBJECT:
             self.handleInterviewSubject(fromView: activeLinkCell.activeLabel)
             
@@ -378,17 +387,17 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         guard let note = noteCell.note else { return }
         
-        let controller = UIAlertController(title: "Note", message: nil, preferredStyle: .actionSheet)
+        let controller = UIAlertController(title: COPY_TITLE_NOTE_OPTIONS, message: nil, preferredStyle: .actionSheet)
         controller.popoverPresentationController?.sourceView = sender
         controller.popoverPresentationController?.sourceRect = sender.bounds
         controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
         
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+        let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_DELETE, style: .destructive) { action in
             self.deleteNote(note)
         }
         controller.addAction(deleteAction)
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: COPY_TITLE_BUTTON_CANCEL, style: .cancel, handler: nil)
         controller.addAction(cancelAction)
         
         self.present(controller, animated: true, completion: nil)
@@ -421,17 +430,17 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         guard let video = videoPreviewCell.video else { return }
         
-        let controller = UIAlertController(title: "Video", message: nil, preferredStyle: .actionSheet)
+        let controller = UIAlertController(title: COPY_TITLE_VIDEO_OPTIONS, message: nil, preferredStyle: .actionSheet)
         controller.popoverPresentationController?.sourceView = sender
         controller.popoverPresentationController?.sourceRect = sender.bounds
         controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
         
-        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+        let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_DELETE, style: .destructive) { action in
             self.deleteVideo(video)
         }
         controller.addAction(deleteAction)
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: COPY_TITLE_BUTTON_CANCEL, style: .cancel, handler: nil)
         controller.addAction(cancelAction)
         
         self.present(controller, animated: true, completion: nil)
@@ -439,21 +448,28 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func deleteVideo(_ video: Video)
     {
-        video.localURL = nil
-        let pathToDelete = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
-        self.tableView.refreshRows(forIndexPaths: [pathToDelete])
+        Moment.writeToRealm {
+            video.localURL = nil
+            video.localThumbnailImage = nil
+            //remove image from disk
+            let pathToDelete = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+            self.tableView.refreshRows(forIndexPaths: [pathToDelete])
+        }
     }
     
     //MARK: Utilities:
     
-    private func handleInterviewingSubjectCompletion(withSubject subject: Subject, isUpdating: Bool)
+    private func handleInterviewingSubjectCompletion(withImage image: UIImage?, name: String?, role: String?, isUpdating: Bool)
     {
         Moment.writeToRealm {
-            if let newProfileImage = subject.profileImage {
-                subject.profileImageURL = Assistant.persistImage(newProfileImage, compressionQuality: 0.2, atURLString: self.moment.subject?.profileImageURL)
+            if let newProfileImage = image {
+                self.moment.subject?.profileImage = newProfileImage
+                self.moment.subject?.profileImageURL = Assistant.persistImage(newProfileImage, compressionQuality: 0.2, atURLString: self.moment.subject?.profileImageURL)
+                print("\nJust persisted and compressed profile image")
             }
             
-            self.moment.subject = subject
+            self.moment.subject?.name = name
+            self.moment.subject?.role = role
             
             //animate interviewingSubject cell in:
             let newPath = IndexPath(row: 0, section: NewMomentSetting.interviewing.rawValue)
@@ -489,20 +505,23 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.updateUI()
     }
     
-    private func handleNoteCompletion(withNote note: Note, isUpdating: Bool)
+    private func handleNoteCompletion(withText noteText: String?, isUpdating: Bool)
     {
         Moment.writeToRealm {
             if isUpdating {
                 if let path = self.lastSelectedPath {
-                    self.moment.notes[path.row - 1] = note
+                    self.note(forIndexPath: path).text = noteText
                     self.tableView.updateRows(forIndexPaths: [path])
                     self.lastSelectedPath = nil
                 }
             }
             else {
-                self.moment.notes.insert(note, at: 0)
-                let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
-                self.tableView.insertNewRows(forIndexPaths: [newPath])
+                if let newNoteText = noteText {
+                    let newNote = Note(withText: newNoteText)
+                    self.moment.notes.insert(newNote, at: 0)
+                    let newPath = IndexPath(row: 1, section: NewMomentSetting.notes.rawValue)
+                    self.tableView.insertNewRows(forIndexPaths: [newPath])
+                }
             }
         }
     }
@@ -537,7 +556,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.cameraMan.pickerController.popoverPresentationController?.permittedArrowDirections = [.left]
         
         self.cameraMan.getVideoFromLibrary(withPresenter: self) { url in
-            
             if let videoURL = url {
                 self.updateWithVideoURL(videoURL)
             }
@@ -546,22 +564,22 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleInterviewSubject(fromView sender: UIView)
     {
-        let controller = UIAlertController(title: "Interviewee", message: nil, preferredStyle: .actionSheet)
+        let controller = UIAlertController(title: COPY_TITLE_INTERVIEWEE_OPTIONS, message: nil, preferredStyle: .actionSheet)
         controller.popoverPresentationController?.sourceView = sender
         controller.popoverPresentationController?.sourceRect = sender.bounds
         controller.popoverPresentationController?.permittedArrowDirections = [.up]
         
-        let facebookAction = UIAlertAction(title: "Pick from Facebook", style: .default) { action in
+        let facebookAction = UIAlertAction(title: COPY_BUTTON_TITLE_FACEBOOK_ENTRY, style: .default) { action in
             self.handleFacebookInterviewSelection()
         }
         controller.addAction(facebookAction)
         
-        let manualAction = UIAlertAction(title: "Enter Manually", style: .default) { action in
+        let manualAction = UIAlertAction(title: COPY_BUTTON_TITLE_MANUAL_ENTRY, style: .default) { action in
             self.handleManualInterviewSelection()
         }
         controller.addAction(manualAction)
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: COPY_TITLE_BUTTON_CANCEL, style: .cancel, handler: nil)
         controller.addAction(cancelAction)
         
         self.present(controller, animated: true, completion: nil)
@@ -569,7 +587,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleFacebookInterviewSelection()
     {
-        print("Pick from Facebook")
+        print("Select from Facebook")
         //make sure to use InterviewingCompletion to get the Subject
     }
     
@@ -658,25 +676,34 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.tableView.refreshRows(forIndexPaths: [newPath])
     }
     
+    private func configureInitialButtonStates()
+    {
+        let status = self.moment.momentStatus
+        
+        let submitButtonTitle = status == .uploadFailed ? COPY_TITLE_BUTTON_TRY_AGAIN : COPY_TITLE_BUTTON_SUBMIT
+        self.submitButton.setTitle(submitButtonTitle, for: .normal)
+        self.submitButton.isHidden = status == .uploading || status == .processing || status == .live
+        self.submitButton.isEnabled = status == .uploadFailed
+        
+        let cancelButtonTitle = status == .new ? COPY_TITLE_BUTTON_CANCEL : COPY_TITLE_BUTTON_DONE
+        self.cancelButton.setTitle(cancelButtonTitle, for: .normal)
+        self.cancelButton.isHidden = false
+    }
+    
     private func updateUI()
     {
-        let readyToSubmit = self.moment.subject?.name != nil
-            && self.moment.video?.name != nil
-            && self.moment.video?.videoDescription != nil
-            && self.moment.video?.localURL != nil
-        
-        self.submitButton.isEnabled = readyToSubmit
+        self.submitButton.isEnabled = self.moment.isReadyToSubmit
     }
     
     private func updateWithVideoURL(_ url: URL)
     {
         guard let video = self.moment.video else { return }
         
-        video.localURL = url.absoluteString
-        video.localThumbnailImage = self.thumbnailImage(forVideo: video)
-        
-        if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atURLString: video.localThumbnailImageURL) {
-            Moment.writeToRealm {
+        Moment.writeToRealm {
+            video.localURL = url.absoluteString
+            video.localThumbnailImage = self.thumbnailImage(forVideo: video)
+            
+            if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atURLString: video.localThumbnailImageURL) {
                 video.localThumbnailImageURL = imageURL
             }
         }

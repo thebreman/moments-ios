@@ -24,20 +24,20 @@ class Video: Object
     var thumbnailImageURL: String?
     var status: String?
     
-    private var privateLocalThumbnailImage: UIImage?
+    private var _localThumbnailImage: UIImage?
     
     var localThumbnailImage: UIImage? {
         get {
-            if self.privateLocalThumbnailImage == nil {
+            if self._localThumbnailImage == nil {
                 if let localURLString = self.localThumbnailImageURL {
-                    self.privateLocalThumbnailImage = Assistant.loadImageFromDisk(withRelativeUrlString: localURLString)
-                    return self.privateLocalThumbnailImage
+                    self._localThumbnailImage = Assistant.loadImageFromDisk(withRelativeUrlString: localURLString)
+                    return self._localThumbnailImage
                 }
             }
-            return self.privateLocalThumbnailImage
+            return self._localThumbnailImage
         }
         set {
-            self.privateLocalThumbnailImage = newValue
+            self._localThumbnailImage = newValue
         }
     }
     
@@ -105,7 +105,7 @@ class Video: Object
     
     override static func ignoredProperties() -> [String]
     {
-        return ["thumbnailImageURL", "status", "localThumbnailImage", "playbackURL"]
+        return ["thumbnailImageURL", "status", "localThumbnailImage", "_localThumbnailImage", "playbackURL"]
     }
 }
 

@@ -17,15 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
-        //Configure Audio Session to have playback behavior (this is expected for media playback app):
-        let audioSession = AVAudioSession.sharedInstance()
-        
-        do {
-            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
-        }
-        catch let error {
-            print("Setting category to AVAudioSessionCategoryPlayback failed: \(error).")
-        }
+        self.configureAudioSession()
         
         //Facebook, Track App Installs and App Opens:
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -62,6 +54,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         //Facebook, Track App Installs and App Opens:
         AppEventsLogger.activate()
+    }
+    
+    //MARK: Utilities
+    
+    //Configure Audio Session to have playback behavior (this is expected for media playback app):
+    private func configureAudioSession()
+    {
+        let audioSession = AVAudioSession.sharedInstance()
+        
+        do {
+            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
+        }
+        catch let error {
+            print("Setting category to AVAudioSessionCategoryPlayback failed: \(error).")
+        }
     }
 }
 

@@ -16,7 +16,7 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var textViewBottomConstraint: NSLayoutConstraint!
     
-    var note = Note() 
+    var text: String?
     
     var completion: NoteCompletion?
     
@@ -50,14 +50,14 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
     {
         if let noteText = self.textView.text {
             if noteText.characters.count > 0 {
-                self.note.text = noteText
+                self.text = noteText
             }
         }
         
         self.textView.endEditing(true)
         
         self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(self.note)
+            self.completion?(self.text)
         }
     }
     
@@ -83,7 +83,6 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
         self.view.layoutIfNeeded() //update pending layout changes then animate:
         
         UIView.animateWithKeyboardNotification(notification: notification) { (keyboardHeight, keyboardWindowY) in
-
             self.textViewBottomConstraint.constant = keyboardHeight
             self.view.layoutIfNeeded()
         }
@@ -93,6 +92,6 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
     
     private func updateNote()
     {
-        self.textView.text = self.note.text
+        self.textView.text = self.text
     }
 }
