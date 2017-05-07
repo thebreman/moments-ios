@@ -450,15 +450,19 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         Moment.writeToRealm {
             
+            //delete local thumbnailImage:
             if let localRelativeImageURLString = video.localThumbnailImageURL {
                 Assistant.removeFileFromDisk(atRelativeURLString: localRelativeImageURLString)
                 video.localThumbnailImageURL = nil
+                video.localThumbnailImage = nil
             }
             
-            //remove url from disk
-            video.localURL = nil
-            video.localThumbnailImage = nil
-
+            //delete local video:
+            if let localRelativeVideoURLString = video.localURL {
+                Assistant.removeFileFromDisk(atRelativeURLString: localRelativeVideoURLString)
+                video.localURL = nil
+            }
+            
             let pathToDelete = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
             self.tableView.refreshRows(forIndexPaths: [pathToDelete])
         }
@@ -471,7 +475,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         Moment.writeToRealm {
             if let newProfileImage = image {
                 self.moment.subject?.profileImage = newProfileImage
-                self.moment.subject?.profileImageURL = Assistant.persistImage(newProfileImage, compressionQuality: 0.2, atURLString: self.moment.subject?.profileImageURL)
+                self.moment.subject?.profileImageURL = Assistant.persistImage(newProfileImage, compressionQuality: 0.2, atRelativeURLString: self.moment.subject?.profileImageURL)
                 print("\nJust persisted and compressed profile image")
             }
             
@@ -702,15 +706,17 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.submitButton.isEnabled = self.moment.isReadyToSubmit
     }
     
+    private let assistant = Assistant()
+    
     private func updateWithVideoURL(_ url: URL)
     {
         guard let video = self.moment.video else { return }
         
         Moment.writeToRealm {
-            video.localURL = url.absoluteString
-            video.localThumbnailImage = self.thumbnailImage(forVideo: video)
+            video.localURL = self.assistant.persistVideo(withURL: url)
+            video.localThumbnailImage = self.thumbnailImage(forVideoURL: url)
             
-            if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atURLString: video.localThumbnailImageURL) {
+            if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
                 video.localThumbnailImageURL = imageURL
             }
         }
@@ -719,14 +725,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.updateUI()
     }
 
-    private func thumbnailImage(forVideo video: Video) -> UIImage?
+    private func thumbnailImage(forVideoURL url: URL) -> UIImage?
     {
-        guard let urlString = video.localURL, let assetURL = URL(string: urlString) else {
-            return nil
-        }
-        
-        //otherwise generate a thumbnail image for the video:
-        let asset = AVAsset(url: assetURL)
+        let asset = AVAsset(url: url)
         let imageGenerator = AVAssetImageGenerator(asset: asset)
         imageGenerator.appliesPreferredTrackTransform = true //so that the image is not rotated in portrait
         
