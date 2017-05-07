@@ -68,7 +68,6 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         }
     }
     
-    
     private enum Identifiers
     {
         static let IDENTIFIER_REUSE_MOMENT_CELL = "MomentCell"
@@ -280,10 +279,11 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     
     //MARK: Utilities
     
+    //private func
+    
     private func refreshData()
     {
         print("refreshing Data")
-        
         self.populateData()
         self.collectionView.reloadData()
     }

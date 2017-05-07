@@ -20,7 +20,7 @@ protocol MomentCellDelegate: class
     func momentCell(_ momentCell: MomentCell, shareButtonWasTappedForMoment moment: Moment)
 }
 
-class MomentCell: UICollectionViewCell
+class MomentCell: BouncingCollectionViewCell
 {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var thumbnailImageView: CachedImageView!
@@ -41,6 +41,7 @@ class MomentCell: UICollectionViewCell
     override func awakeFromNib()
     {
         super.awakeFromNib()
+        self.isSelectable = false
         self.drawShadow()
         self.containerView.layer.masksToBounds = true
         
