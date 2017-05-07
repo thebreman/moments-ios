@@ -10,16 +10,52 @@ import UIKit
 
 class Assistant
 {
+    class func removeImageFromDisk(atRelativeURLString relativeURLString: String)
+    {
+        if let images = FileManager.getImagesDirectory() {
+            
+            let pathToRemove = images.appendingPathComponent(relativeURLString)
+            
+            do {
+                try FileManager.default.removeItem(at: pathToRemove)
+            }
+            catch let error {
+                print("unable to remove image from disk: \(error)")
+            }
+        }
+    }
+    
+    class func removeVideoFromDisk(atRelativeURLString relativeURLString: String)
+    {
+        if let videos = FileManager.getVideosDirectory() {
+            
+            let pathToRemove = videos.appendingPathComponent(relativeURLString)
+            
+            do {
+                try FileManager.default.removeItem(at: pathToRemove)
+            }
+            catch let error {
+                print("unable to remove video from disk: \(error)")
+            }
+        }
+    }
+    
     class func loadImageFromDisk(withRelativeUrlString urlString: String) -> UIImage?
     {
-        let imageURL = FileManager.getDocumentsDirectory().appendingPathComponent(urlString)
-        
-        do {
-            let imageData = try Data.init(contentsOf: imageURL, options: [])
-            return UIImage(data: imageData)
+        if let images = FileManager.getImagesDirectory() {
+            
+            let imageURL = images.appendingPathComponent(urlString)
+            
+            do {
+                let imageData = try Data.init(contentsOf: imageURL, options: [])
+                return UIImage(data: imageData)
+            }
+            catch let error {
+                print("\nunable to load image from disk: \(error)")
+            }
         }
-        catch let error {
-            print("\nunable to load image from disk: \(error)")
+        else {
+            print("\nunable to get imageDirectory")
         }
         
         return nil
@@ -45,28 +81,21 @@ class Assistant
             return nil
         }
         
-        do {
-            try imageData.write(to: FileManager.getDocumentsDirectory().appendingPathComponent(relativeImageFileName), options: [.atomic])
-            return relativeImageFileName
+        if let imageDirectory = FileManager.getImagesDirectory() {
+            
+            do {
+                try imageData.write(to: imageDirectory.appendingPathComponent(relativeImageFileName), options: [.atomic])
+                return relativeImageFileName
+            }
+            catch let error {
+                print("\nunable to write image to disk: \(error)")
+            }
         }
-        catch let error {
-            print("\nunable to write image to disk: \(error)")
+        else {
+            print("\nunable to get imageDirectory")
         }
         
         return nil
-    }
-    
-    class func removeFileFromDisk(atRelativeURLString relativeURLString: String)
-    {
-        let documents = FileManager.getDocumentsDirectory()
-        let pathToRemove = documents.appendingPathComponent(relativeURLString)
-        
-        do {
-            try FileManager.default.removeItem(at: pathToRemove)
-        }
-        catch let error {
-            print("unable to remove file from disk: \(error)")
-        }
     }
     
     private var backgroundID: UIBackgroundTaskIdentifier? = nil
@@ -85,13 +114,19 @@ class Assistant
         
         let relativeVideoName = UUID().uuidString
         
-        do {
-            try videoData.write(to: FileManager.getDocumentsDirectory().appendingPathComponent(relativeVideoName), options: [.atomic])
-            self.endBackgroundTask()
-            return relativeVideoName
+        if let videoDirectory = FileManager.getVideosDirectory() {
+           
+            do {
+                try videoData.write(to: videoDirectory.appendingPathComponent(relativeVideoName), options: [.atomic])
+                self.endBackgroundTask()
+                return relativeVideoName
+            }
+            catch let error {
+                print("\nunable to write video to disk: \(error)")
+            }
         }
-        catch let error {
-            print("\nunable to write video to disk: \(error)")
+        else {
+            print("\nunable to get videoDirectory")
         }
         
         self.endBackgroundTask()

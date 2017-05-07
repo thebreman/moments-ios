@@ -452,14 +452,14 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             //delete local thumbnailImage:
             if let localRelativeImageURLString = video.localThumbnailImageURL {
-                Assistant.removeFileFromDisk(atRelativeURLString: localRelativeImageURLString)
+                Assistant.removeImageFromDisk(atRelativeURLString: localRelativeImageURLString)
                 video.localThumbnailImageURL = nil
                 video.localThumbnailImage = nil
             }
             
             //delete local video:
             if let localRelativeVideoURLString = video.localURL {
-                Assistant.removeFileFromDisk(atRelativeURLString: localRelativeVideoURLString)
+                Assistant.removeVideoFromDisk(atRelativeURLString: localRelativeVideoURLString)
                 video.localURL = nil
             }
             
