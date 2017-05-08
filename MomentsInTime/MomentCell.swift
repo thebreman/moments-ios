@@ -25,6 +25,7 @@ class MomentCell: BouncingCollectionViewCell
 {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var thumbnailImageView: CachedImageView!
+    @IBOutlet weak var playButton: BouncingButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -101,6 +102,7 @@ class MomentCell: BouncingCollectionViewCell
     {
         self.configureThumbnailImage()
         self.configureLabels()
+        self.togglePlayButton()
     }
     
     private func configureLabels()
@@ -136,6 +138,8 @@ class MomentCell: BouncingCollectionViewCell
     
     private func configureThumbnailImage()
     {
+        self.thumbnailImageView.contentMode = .scaleAspectFill
+        
         //for vimeo thumbnail image urls:
         if let imageURLString = self.moment?.video?.thumbnailImageURL {
             self.thumbnailImageView.loadImageFromCache(withUrlString: imageURLString)
@@ -146,7 +150,18 @@ class MomentCell: BouncingCollectionViewCell
             self.thumbnailImageView.image = localImage
         }
         else {
-            self.thumbnailImageView.image = nil
+            self.thumbnailImageView.image = #imageLiteral(resourceName: "interviewee_placeholder")
+            self.thumbnailImageView.contentMode = .scaleAspectFit
         }
+    }
+    
+    private func togglePlayButton()
+    {
+        if let video = self.moment?.video, video.isPlayable {
+            self.playButton.isHidden = false
+            return
+        }
+        
+        self.playButton.isHidden = true
     }
 }

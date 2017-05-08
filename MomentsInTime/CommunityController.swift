@@ -180,18 +180,12 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
     {
-        guard let video = moment.video else { return }
-        
-        video.fetchPlaybackURL { (urlString, error) in
-            
-            guard error == nil else {
-                return
-            }
-            
-            if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
-                self.performSegue(withIdentifier: IDENTIFIER_SEGUE_PLAYER, sender: videoURL)
-            }
-        }
+        self.playVideo(forMoment: moment)
+    }
+    
+    func didSelectMoment(_ moment: Moment)
+    {
+        self.playVideo(forMoment: moment)
     }
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
@@ -273,6 +267,22 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     }
     
     //MARK: Utilities
+    
+    private func playVideo(forMoment moment: Moment)
+    {
+        guard let video = moment.video else { return }
+        
+        video.fetchPlaybackURL { (urlString, error) in
+            
+            guard error == nil else {
+                return
+            }
+            
+            if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
+                self.performSegue(withIdentifier: IDENTIFIER_SEGUE_PLAYER, sender: videoURL)
+            }
+        }
+    }
     
     private func checkForUser(completion: @escaping () -> Void)
     {

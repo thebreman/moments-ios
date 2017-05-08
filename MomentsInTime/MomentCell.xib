@@ -21,7 +21,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DAz-xY-OdE">
                         <rect key="frame" x="12" y="6" width="430" height="311"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="i4G-03-3dv" customClass="CachedImageView" customModule="MomentsInTime" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" image="interviewee_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="i4G-03-3dv" customClass="CachedImageView" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="430" height="180"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="180" id="Ocd-9g-sYd"/>
@@ -113,6 +113,7 @@
             <size key="customSize" width="454" height="323"/>
             <connections>
                 <outlet property="containerView" destination="DAz-xY-OdE" id="LPK-99-YdA"/>
+                <outlet property="playButton" destination="UKm-Zv-5eP" id="tbd-6c-tjj"/>
                 <outlet property="subtitleBottomConstraint" destination="Uht-cl-jGz" id="BVN-hA-vIZ"/>
                 <outlet property="subtitleLabel" destination="6A7-Im-XA3" id="PJk-G3-fuE"/>
                 <outlet property="subtitleTopContraint" destination="w78-hO-7HO" id="f26-Sv-SrE"/>
@@ -126,5 +127,6 @@
     <resources>
         <image name="Options" width="38" height="9"/>
         <image name="PlayButton" width="24" height="25"/>
+        <image name="interviewee_placeholder" width="16" height="16"/>
     </resources>
 </document>

@@ -57,7 +57,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
-        //self.adapter.moments = self.momentList.getLocalMoments()
         
         //need this in case we rotate, switch tabs, then rotate back...
         //when we come back to this screen, the layout will be where we left it

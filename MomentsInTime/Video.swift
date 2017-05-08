@@ -41,6 +41,10 @@ class Video: Object
         }
     }
     
+    var isPlayable: Bool {
+        return self.localURL != nil || self.uri != nil
+    }
+    
     var isLocal: Bool {
         return self.localURL != nil
     }
