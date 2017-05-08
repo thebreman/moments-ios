@@ -112,7 +112,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             self.present(controller, animated: true, completion: nil)
         }
         else {
-            self.presentingViewController?.dismiss(animated: true, completion: nil)
+            self.presentingViewController?.dismiss(animated: true) {
+                self.completion?(self.moment, false)
+            }
         }
     }
     
@@ -121,13 +123,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.moment.create()
         self.moment.momentStatus = .local
         self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(self.moment)
+            self.completion?(self.moment, true)
         }
     }
     
     private func deleteMoment()
     {
-        print("delete moment")        
+        print("not saving moment")
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     

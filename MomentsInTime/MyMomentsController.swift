@@ -11,7 +11,7 @@ import RealmSwift
 import AVKit
 import AVFoundation
 
-typealias NewMomentCompletion = (Moment) -> Void
+typealias NewMomentCompletion = (Moment, _ justCreated: Bool) -> Void
 
 class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
 {
@@ -83,8 +83,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
             if let newMomentController = segue.destination.contentViewController as? NewMomentController {
                 
-                newMomentController.completion = { moment in
-                    self.handleNewMomentCompletion(withMoment: moment)
+                newMomentController.completion = { moment, justCreated in
+                    self.handleNewMomentCompletion(withMoment: moment, justCreated: justCreated)
                 }
                 
                 //pass along moment if we have one:
@@ -174,9 +174,14 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     //MARK: Utilities
     
-    private func handleNewMomentCompletion(withMoment moment: Moment)
+    private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool)
     {
-        self.adapter.insertNewMoment(moment)
+        if justCreated {
+            self.adapter.insertNewMoment(moment)
+        }
+        else {
+            self.adapter.refreshMoment(moment)
+        }
     }
     
     @objc private func refresh()

@@ -118,6 +118,19 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         }, completion: nil)
     }
     
+    func refreshMoment(_ moment: Moment)
+    {
+        //not supporting thir right now with accessory views:
+        if let indexToRefresh = self.moments.index(of: moment) {
+            
+            let pathToRefresh = IndexPath(item: indexToRefresh, section: SECTION_MOMENT_FEED)
+            
+            self.collectionView.performBatchUpdates({
+                self.collectionView.reloadItems(at: [pathToRefresh])
+            }, completion: nil)
+        }
+    }
+    
     func removeMoment(_ moment: Moment)
     {
         //not supporting this right now with accessory views:
