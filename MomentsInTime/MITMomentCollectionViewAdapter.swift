@@ -9,6 +9,7 @@
 import UIKit
 import DZNEmptyDataSet
 import PureLayout
+import RealmSwift
 
 private let SECTION_BANNER_TOP = 0
 private let SECTION_MOMENT_FEED = 1
@@ -26,9 +27,10 @@ protocol MITMomentCollectionViewAdapterDelegate: class
 //delegate to pass which moment needs to be played after user taps playButton:
 @objc protocol MITMomentCollectionViewAdapterMomentDelegate: class
 {
-    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
-    func adapter(adapter:  MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
-    @objc optional func didSelectCell(forMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
+    func adapter(adapter:  MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
+    @objc optional func didSelectMoment(_ moment: Moment)
 }
 
 //delegate for fetch/ infinite scroll provides view to be displayed while fetching and handles fetching more content:
@@ -48,7 +50,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     var allowsEmptyStateScrolling = false
     var allowsInfiniteScrolling = false
     
-    weak var accessoryViewdelegate: MITMomentCollectionViewAdapterDelegate? {
+    weak var accessoryViewDelegate: MITMomentCollectionViewAdapterDelegate? {
         didSet {
             self.collectionView.register(ContainerCell.self, forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
         }
@@ -62,12 +64,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         }
     }
     
-    var moments = [Moment]() {
-        didSet {
-            self.refreshData()
-        }
-    }
-    
+    var moments = [Moment]()
     
     private enum Identifiers
     {
@@ -106,6 +103,66 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         
         self.collectionView.emptyDataSetDelegate = self
         self.collectionView.emptyDataSetSource = self
+    }
+    
+    func insertNewMoment(_ newMoment: Moment)
+    {
+        self.moments.insert(newMoment, at: 0)
+        self.populateData()
+        
+        let newPath = IndexPath(item: 0, section: SECTION_MOMENT_FEED)
+        
+        self.collectionView.performBatchUpdates({
+            self.collectionView.reloadEmptyDataSet()
+            self.collectionView.insertItems(at: [newPath])
+        }, completion: nil)
+    }
+    
+    func refreshMoment(_ moment: Moment)
+    {
+        //not supporting thir right now with accessory views:
+        if let indexToRefresh = self.moments.index(of: moment) {
+            
+            //reset cache height if necessary:
+            if momentCellHeightCache.object(forKey: moment.momentID as NSString) != nil {
+                momentCellHeightCache.removeObject(forKey: moment.momentID as NSString)
+            }
+            
+            let pathToRefresh = IndexPath(item: indexToRefresh, section: SECTION_MOMENT_FEED)
+            
+            self.collectionView.performBatchUpdates({
+                self.collectionView.reloadItems(at: [pathToRefresh])
+            }, completion: nil)
+        }
+    }
+    
+    func removeMoment(_ moment: Moment)
+    {
+        //not supporting this right now with accessory views:
+        guard self.accessoryViewDelegate == nil else { return }
+        
+        if let indexToRemove = self.moments.index(of: moment) {
+            self.moments.remove(at: indexToRemove)
+            self.populateData()
+            
+            let pathToRemove = IndexPath(item: indexToRemove, section: SECTION_MOMENT_FEED)
+            
+            self.collectionView.performBatchUpdates({
+                self.collectionView.deleteItems(at: [pathToRemove])
+                self.collectionView.reloadEmptyDataSet()
+
+            }, completion: nil)
+        }
+    }
+    
+    func refreshData(shouldReload: Bool)
+    {
+        print("refreshing Data")
+        self.populateData()
+        
+        if shouldReload {
+            self.collectionView.reloadData()
+        }
     }
     
     //MARK: CollectionView
@@ -211,7 +268,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
             
         case SECTION_MOMENT_FEED:
             
-            if let moment = self.momentsAndAccessoryViews[indexPath.row] as? Moment {
+            if let moment = self.momentsAndAccessoryViews[indexPath.item] as? Moment {
                 
                 var height = CGFloat(0)
                 
@@ -226,7 +283,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
 
                 return CGSize(width: self.collectionView.bounds.width, height: height)
             }
-            else if let accessoryView = self.momentsAndAccessoryViews[indexPath.row] as? UIView {
+            else if let accessoryView = self.momentsAndAccessoryViews[indexPath.item] as? UIView {
                 return ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
             }
             
@@ -245,6 +302,15 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         }
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        guard indexPath.section == SECTION_MOMENT_FEED else { return }
+        
+        if let selectedMoment = self.momentsAndAccessoryViews[indexPath.item] as? Moment {
+            self.momentDelegate?.didSelectMoment?(selectedMoment)
+        }
+    }
+    
     //MARK: DZNEmptyDataSet
     
     func customView(forEmptyDataSet scrollView: UIScrollView!) -> UIView!
@@ -259,25 +325,22 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     
     //MARK: MomentCellDelegate
     
-    func momentCell(_ momentCell: MomentCell, playButtonWasTappedForMoment moment: Moment)
+    func momentCell(_ momentCell: MomentCell, playButtonWasTappedForMoment moment: Moment, sender: UIButton)
     {
-        self.momentDelegate?.adapter(adapter: self, handlePlayForMoment: moment)
+        self.momentDelegate?.adapter(adapter: self, handlePlayForMoment: moment, sender: sender)
     }
     
-    func momentCell(_ momentCell: MomentCell, shareButtonWasTappedForMoment moment: Moment)
+    func momentCell(_ momentCell: MomentCell, shareButtonWasTappedForMoment moment: Moment, sender: UIButton)
     {
-        self.momentDelegate?.adapter(adapter: self, handleShareForMoment: moment)
+        self.momentDelegate?.adapter(adapter: self, handleShareForMoment: moment, sender: sender)
+    }
+    
+    func momentCell(_ momentCell: MomentCell, handleOptionsForMoment moment: Moment, sender: UIButton)
+    {
+        self.momentDelegate?.adapter(adapter: self, handleOptionsForMoment: moment, sender: sender)
     }
     
     //MARK: Utilities
-    
-    private func refreshData()
-    {
-        print("refreshing Data")
-        
-        self.populateData()
-        self.collectionView.reloadData()
-    }
     
     private func populateData()
     {
@@ -286,7 +349,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         
         //if we have a delegate, setup the array with the corresponding data and return it,
         //otherwise just copy self.moments:
-        guard let dataDelegate = self.accessoryViewdelegate else {
+        guard let dataDelegate = self.accessoryViewDelegate else {
             self.momentsAndAccessoryViews = self.moments
             return
         }

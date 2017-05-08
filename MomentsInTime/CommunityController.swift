@@ -44,7 +44,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
                                                    emptyStateView: self.emptyStateView,
                                                    bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
-        adapter.accessoryViewdelegate = self
+        adapter.accessoryViewDelegate = self
         adapter.momentDelegate = self
         adapter.infiniteScrollDelegate = self
         adapter.allowsInfiniteScrolling = true
@@ -178,23 +178,17 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     //MARK: MITMomentCollectionViewAdapterMomentDelegate
     
-    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
     {
-        guard let video = moment.video else { return }
-        
-        video.fetchPlaybackURL { (urlString, error) in
-            
-            guard error == nil else {
-                return
-            }
-            
-            if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
-                self.performSegue(withIdentifier: IDENTIFIER_SEGUE_PLAYER, sender: videoURL)
-            }
-        }
+        self.playVideo(forMoment: moment)
     }
     
-    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
+    func didSelectMoment(_ moment: Moment)
+    {
+        self.playVideo(forMoment: moment)
+    }
+    
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
     {
         print("HANDLE SHARE")
         
@@ -223,6 +217,11 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         }
     }
     
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
+    {
+        print("handle options")
+    }
+    
     //MARK: MITMomentCollectionViewAdapterInfiniteScrollDelegate
     
     func fetchNewMoments(for adapter: MITMomentCollectionViewAdapter, completion: @escaping () -> Void)
@@ -235,6 +234,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             
             if let newMoments = moments {
                 self.adapter.moments += newMoments
+                self.adapter.refreshData(shouldReload: true)
             }
             
             self.adapter.allowsInfiniteScrolling = self.momentList.hasNextPage
@@ -261,11 +261,28 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             
             self.spinner.stopAnimating()
             self.adapter.moments = self.momentList.moments
+            self.adapter.refreshData(shouldReload: true)
             self.adapter.allowsInfiniteScrolling = true
         }
     }
     
     //MARK: Utilities
+    
+    private func playVideo(forMoment moment: Moment)
+    {
+        guard let video = moment.video else { return }
+        
+        video.fetchPlaybackURL { (urlString, error) in
+            
+            guard error == nil else {
+                return
+            }
+            
+            if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
+                self.performSegue(withIdentifier: IDENTIFIER_SEGUE_PLAYER, sender: videoURL)
+            }
+        }
+    }
     
     private func checkForUser(completion: @escaping () -> Void)
     {

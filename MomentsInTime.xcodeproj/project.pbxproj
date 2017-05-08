@@ -18,7 +18,7 @@
 		6809C1921EB5CACB0015C69A /* Moment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809C1911EB5CACB0015C69A /* Moment.swift */; };
 		6809C1941EB5E14F0015C69A /* Subject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6809C1931EB5E14F0015C69A /* Subject.swift */; };
 		680BE07B1E8E204000A5D339 /* MomentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680BE07A1E8E204000A5D339 /* MomentCell.xib */; };
-		680BE07D1E8E20A200A5D339 /* VideoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE07C1E8E20A200A5D339 /* VideoCell.swift */; };
+		680BE07D1E8E20A200A5D339 /* MomentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE07C1E8E20A200A5D339 /* MomentCell.swift */; };
 		680BE07F1E8E2C9500A5D339 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE07E1E8E2C9500A5D339 /* Views.swift */; };
 		680BE0811E8E2C9D00A5D339 /* ViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE0801E8E2C9D00A5D339 /* ViewControllers.swift */; };
 		680BE0841E8E2D7200A5D339 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE0831E8E2D7200A5D339 /* Video.swift */; };
@@ -26,7 +26,6 @@
 		680BE08B1E8E2E9B00A5D339 /* UploadRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE0881E8E2E9B00A5D339 /* UploadRouter.swift */; };
 		680BE08D1E8E2FE700A5D339 /* BouncingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE08C1E8E2FE700A5D339 /* BouncingButton.swift */; };
 		680BE08F1E8E301D00A5D339 /* CachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE08E1E8E301D00A5D339 /* CachedImageView.swift */; };
-		680BE0911E8E4A4B00A5D339 /* VideoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680BE0901E8E4A4B00A5D339 /* VideoList.swift */; };
 		680C20661EA5C9F400757608 /* ActiveLinkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 680C20651EA5C9F400757608 /* ActiveLinkCell.xib */; };
 		680C20681EA5CB0D00757608 /* ActiveLinkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680C20671EA5CB0D00757608 /* ActiveLinkCell.swift */; };
 		680C8A131EB32111004CDC5E /* ContainerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680C8A121EB32111004CDC5E /* ContainerTableViewCell.swift */; };
@@ -47,11 +46,12 @@
 		6811A1E61E826E9C006362E8 /* CommunityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811A1E51E826E9C006362E8 /* CommunityController.swift */; };
 		6811A1E81E826EB2006362E8 /* MyMomentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811A1E71E826EB2006362E8 /* MyMomentsController.swift */; };
 		6811AE1F1EAC763E004386E4 /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */; };
-		6825E1371EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1361EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift */; };
+		6825E1371EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */; };
 		6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1381EA20525003DEF20 /* ContainerCell.swift */; };
 		6825E13D1EA2119F003DEF20 /* MITEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */; };
 		6849EADF1EBD50E700B2E751 /* Assistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6849EADE1EBD50E700B2E751 /* Assistant.swift */; };
 		687145A81EA082C800773E1F /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687145A71EA082C800773E1F /* Delay.swift */; };
+		6876033D1EBEFF7100B04729 /* BouncingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876033C1EBEFF7100B04729 /* BouncingCollectionViewCell.swift */; };
 		68780FF31EAC76EE009DBF34 /* SpinnerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68780FF21EAC76EE009DBF34 /* SpinnerCell.xib */; };
 		688133BF1EAF22DF00696D58 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688133BE1EAF22DF00696D58 /* LoginController.swift */; };
 		688133C31EAF26AC00696D58 /* FacebookConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688133C21EAF26AC00696D58 /* FacebookConnector.swift */; };
@@ -109,7 +109,7 @@
 		6809C1911EB5CACB0015C69A /* Moment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Moment.swift; sourceTree = "<group>"; };
 		6809C1931EB5E14F0015C69A /* Subject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Subject.swift; sourceTree = "<group>"; };
 		680BE07A1E8E204000A5D339 /* MomentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MomentCell.xib; sourceTree = "<group>"; };
-		680BE07C1E8E20A200A5D339 /* VideoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCell.swift; sourceTree = "<group>"; };
+		680BE07C1E8E20A200A5D339 /* MomentCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MomentCell.swift; sourceTree = "<group>"; };
 		680BE07E1E8E2C9500A5D339 /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		680BE0801E8E2C9D00A5D339 /* ViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllers.swift; sourceTree = "<group>"; };
 		680BE0831E8E2D7200A5D339 /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
@@ -117,7 +117,6 @@
 		680BE0881E8E2E9B00A5D339 /* UploadRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadRouter.swift; sourceTree = "<group>"; };
 		680BE08C1E8E2FE700A5D339 /* BouncingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BouncingButton.swift; sourceTree = "<group>"; };
 		680BE08E1E8E301D00A5D339 /* CachedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedImageView.swift; sourceTree = "<group>"; };
-		680BE0901E8E4A4B00A5D339 /* VideoList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoList.swift; sourceTree = "<group>"; };
 		680C20651EA5C9F400757608 /* ActiveLinkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ActiveLinkCell.xib; sourceTree = "<group>"; };
 		680C20671EA5CB0D00757608 /* ActiveLinkCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveLinkCell.swift; sourceTree = "<group>"; };
 		680C8A121EB32111004CDC5E /* ContainerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerTableViewCell.swift; sourceTree = "<group>"; };
@@ -138,11 +137,12 @@
 		6811A1E51E826E9C006362E8 /* CommunityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityController.swift; sourceTree = "<group>"; };
 		6811A1E71E826EB2006362E8 /* MyMomentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMomentsController.swift; sourceTree = "<group>"; };
 		6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
-		6825E1361EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITVideoCollectionViewAdapter.swift; sourceTree = "<group>"; };
+		6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITMomentCollectionViewAdapter.swift; sourceTree = "<group>"; };
 		6825E1381EA20525003DEF20 /* ContainerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerCell.swift; sourceTree = "<group>"; };
 		6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITEmptyStateView.swift; sourceTree = "<group>"; };
 		6849EADE1EBD50E700B2E751 /* Assistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assistant.swift; sourceTree = "<group>"; };
 		687145A71EA082C800773E1F /* Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
+		6876033C1EBEFF7100B04729 /* BouncingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BouncingCollectionViewCell.swift; sourceTree = "<group>"; };
 		68780FF21EAC76EE009DBF34 /* SpinnerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpinnerCell.xib; sourceTree = "<group>"; };
 		688133BE1EAF22DF00696D58 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		688133C21EAF26AC00696D58 /* FacebookConnector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConnector.swift; sourceTree = "<group>"; };
@@ -211,7 +211,6 @@
 				680BE0831E8E2D7200A5D339 /* Video.swift */,
 				6809C1931EB5E14F0015C69A /* Subject.swift */,
 				688E5D0C1EA74A2C00BF258F /* Note.swift */,
-				680BE0901E8E4A4B00A5D339 /* VideoList.swift */,
 				680FC67B1EBC5D3C00FED470 /* MomentList.swift */,
 			);
 			name = Models;
@@ -233,12 +232,13 @@
 			isa = PBXGroup;
 			children = (
 				680BE07A1E8E204000A5D339 /* MomentCell.xib */,
-				680BE07C1E8E20A200A5D339 /* VideoCell.swift */,
+				680BE07C1E8E20A200A5D339 /* MomentCell.swift */,
 				6825E1381EA20525003DEF20 /* ContainerCell.swift */,
 				680C8A121EB32111004CDC5E /* ContainerTableViewCell.swift */,
 				68780FF21EAC76EE009DBF34 /* SpinnerCell.xib */,
 				6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */,
 				6809BF171EB70E0200A9E942 /* BouncingTableViewCell.swift */,
+				6876033C1EBEFF7100B04729 /* BouncingCollectionViewCell.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -379,7 +379,7 @@
 				68EB8FF41E825A3C00C1B320 /* MITTabBar.swift */,
 				68E580581EA37504002E8C6A /* TextActionView.swift */,
 				6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */,
-				6825E1361EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift */,
+				6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */,
 				680C20641EA5C4DE00757608 /* Cells */,
 			);
 			name = Components;
@@ -661,10 +661,11 @@
 				688E5D0B1EA7152A00BF258F /* NewMomentSetting.swift in Sources */,
 				680FC67C1EBC5D3C00FED470 /* MomentList.swift in Sources */,
 				6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */,
-				680BE07D1E8E20A200A5D339 /* VideoCell.swift in Sources */,
+				680BE07D1E8E20A200A5D339 /* MomentCell.swift in Sources */,
 				6809C1921EB5CACB0015C69A /* Moment.swift in Sources */,
 				680C8A151EB323E0004CDC5E /* TextFieldView.swift in Sources */,
-				6825E1371EA1F9B7003DEF20 /* MITVideoCollectionViewAdapter.swift in Sources */,
+				6825E1371EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift in Sources */,
+				6876033D1EBEFF7100B04729 /* BouncingCollectionViewCell.swift in Sources */,
 				6810B19A1EB424CB00B9EE7D /* ProfileImageView.swift in Sources */,
 				6804A0CE1EAAFEB90012193C /* CameraMan.swift in Sources */,
 				68EB8FF01E824E2800C1B320 /* Colors.swift in Sources */,
@@ -700,7 +701,6 @@
 				680C20681EA5CB0D00757608 /* ActiveLinkCell.swift in Sources */,
 				6811A1E81E826EB2006362E8 /* MyMomentsController.swift in Sources */,
 				68EC740E1EB2EB900048DAD2 /* ScrollViews.swift in Sources */,
-				680BE0911E8E4A4B00A5D339 /* VideoList.swift in Sources */,
 				688E5D0D1EA74A2C00BF258F /* Note.swift in Sources */,
 				68C0682A1EA0924B0037D4A3 /* NewMomentController.swift in Sources */,
 				687145A81EA082C800773E1F /* Delay.swift in Sources */,

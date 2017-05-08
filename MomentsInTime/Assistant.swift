@@ -10,22 +10,58 @@ import UIKit
 
 class Assistant
 {
+    class func removeImageFromDisk(atRelativeURLString relativeURLString: String)
+    {
+        if let images = FileManager.getImagesDirectory() {
+            
+            let pathToRemove = images.appendingPathComponent(relativeURLString)
+            
+            do {
+                try FileManager.default.removeItem(at: pathToRemove)
+            }
+            catch let error {
+                print("unable to remove image from disk: \(error)")
+            }
+        }
+    }
+    
+    class func removeVideoFromDisk(atRelativeURLString relativeURLString: String)
+    {
+        if let videos = FileManager.getVideosDirectory() {
+            
+            let pathToRemove = videos.appendingPathComponent(relativeURLString)
+            
+            do {
+                try FileManager.default.removeItem(at: pathToRemove)
+            }
+            catch let error {
+                print("unable to remove video from disk: \(error)")
+            }
+        }
+    }
+    
     class func loadImageFromDisk(withRelativeUrlString urlString: String) -> UIImage?
     {
-        let imageURL = FileManager.getDocumentsDirectory().appendingPathComponent(urlString)
-        
-        do {
-            let imageData = try Data.init(contentsOf: imageURL, options: [])
-            return UIImage(data: imageData)
+        if let images = FileManager.getImagesDirectory() {
+            
+            let imageURL = images.appendingPathComponent(urlString)
+            
+            do {
+                let imageData = try Data.init(contentsOf: imageURL, options: [])
+                return UIImage(data: imageData)
+            }
+            catch let error {
+                print("\nunable to load image from disk: \(error)")
+            }
         }
-        catch let error {
-            print("unable to load image from disk: \(error)")
+        else {
+            print("\nunable to get imageDirectory")
         }
         
         return nil
     }
     
-    class func persistImage(_ image: UIImage, compressionQuality: CGFloat, atURLString urlString: String?) -> String?
+    class func persistImage(_ image: UIImage, compressionQuality: CGFloat, atRelativeURLString urlString: String?) -> String?
     {
         var relativeImageFileName: String
         
@@ -45,14 +81,65 @@ class Assistant
             return nil
         }
         
-        do {
-            try imageData.write(to: FileManager.getDocumentsDirectory().appendingPathComponent(relativeImageFileName))
-            return relativeImageFileName
+        if let imageDirectory = FileManager.getImagesDirectory() {
+            
+            do {
+                try imageData.write(to: imageDirectory.appendingPathComponent(relativeImageFileName), options: [.atomic])
+                return relativeImageFileName
+            }
+            catch let error {
+                print("\nunable to write image to disk: \(error)")
+            }
         }
-        catch let error {
-            print("\n unable to write image to disk: \(error)")
+        else {
+            print("\nunable to get imageDirectory")
         }
         
         return nil
+    }
+    
+    private var backgroundID: UIBackgroundTaskIdentifier? = nil
+    
+    func copyVideo(withURL url: URL, completion: @escaping (String?) -> Void)
+    {
+        //setup background task to ensure that there is enough time to write the file:
+        if UIDevice.current.isMultitaskingSupported {
+            self.backgroundID = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
+        }
+        
+        //need .mp4 for AVPlayer to recognize the url:
+        let relativeVideoName = "\(UUID().uuidString).mp4"
+        
+        if let videoDirectory = FileManager.getVideosDirectory() {
+            
+            //copy file asynchronously:
+            DispatchQueue.global(qos: .userInitiated).async {
+                do {
+                    try FileManager.default.copyItem(at: url, to: videoDirectory.appendingPathComponent(relativeVideoName))
+                    
+                    DispatchQueue.main.async {
+                        self.endBackgroundTask()
+                        completion(relativeVideoName)
+                    }
+                }
+                catch let error {
+                    print("\nunable to copy video to disk: \(error)")
+                }
+            }
+        }
+        
+        self.endBackgroundTask()
+        completion(nil)
+    }
+    
+    private func endBackgroundTask()
+    {
+        //end the backgroundTask:
+        if let currentBackgroundID = self.backgroundID {
+            self.backgroundID = UIBackgroundTaskInvalid
+            if currentBackgroundID != UIBackgroundTaskInvalid {
+                UIApplication.shared.endBackgroundTask(currentBackgroundID)
+            }
+        }
     }
 }

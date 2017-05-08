@@ -17,10 +17,33 @@ class Subject: Object
     dynamic var role: String? = nil
     dynamic var profileImageURL: String? = nil
     
-    var profileImage: UIImage?
+    private var _profileImage: UIImage?
+    
+    var profileImage: UIImage? {
+        get {
+            if self._profileImage == nil {
+                if let localURLString = self.profileImageURL {
+                    self._profileImage = Assistant.loadImageFromDisk(withRelativeUrlString: localURLString)
+                    return self._profileImage
+                }
+            }
+            return self._profileImage
+        }
+        set {
+            self._profileImage = newValue
+        }
+    }
     
     var isValid: Bool {
         return self.name != nil
+    }
+    
+    func deleteLocally()
+    {
+        if let localImageURLString = self.profileImageURL {
+            print("deleting profileImage")
+            Assistant.removeImageFromDisk(atRelativeURLString: localImageURLString)
+        }
     }
     
     override static func primaryKey() -> String?
@@ -30,6 +53,6 @@ class Subject: Object
     
     override static func ignoredProperties() -> [String]
     {
-        return ["profileImage"]
+        return ["profileImage", "_profileImage"]
     }
 }

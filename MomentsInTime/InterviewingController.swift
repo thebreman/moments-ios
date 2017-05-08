@@ -17,7 +17,9 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
-    var interviewSubject = Subject()
+    var profileImage: UIImage?
+    var name: String?
+    var role: String?
     
     var completion: InterviewingCompletion?
     
@@ -68,6 +70,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     }()
     
     private var justLoaded = true
+    private var imageDidChange = false
     
     override func viewDidLoad()
     {
@@ -90,7 +93,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         self.updateSaveButton()
         
         //need to wait until viewDidAppeat to do this so all outlete/layout is done and for the proper animated effect
-        //but we dont want to do this after the image picker dismisses (especially in landscape) so use the flas justLoaded:
+        //but we dont want to do this after the image picker dismisses (especially in landscape) so use the flag justLoaded:
         if self.justLoaded {
             self.nameFieldView.textField.becomeFirstResponder()
             self.justLoaded = false
@@ -110,19 +113,19 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         //must have name to save, save button shouldn't even be enabled without one:
         guard let subjectName = self.nameFieldView.textField.text else { return }
         
-        self.interviewSubject.name = subjectName
+        self.name = subjectName
         
         //save role if we have one:
         if let role = self.roleFieldView.textField.text {
-            self.interviewSubject.role = role.characters.count > 0 ? role : nil
+            self.role = role.characters.count > 0 ? role : nil
         }
         
         // add the image to the model:
-        self.interviewSubject.profileImage = self.profileImageView.profileImage
+        self.profileImage = self.imageDidChange ? self.profileImageView.profileImage : nil
         
         self.tableView.endEditing(true)
         self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(self.interviewSubject)
+            self.completion?(self.profileImage, self.name, self.role)
         }
     }
     
@@ -314,14 +317,15 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
             
             if let interviewSubjectImage = image {
                 self.profileImageView.profileImage = interviewSubjectImage
+                self.imageDidChange = true
             }
         }
     }
     
     private func updateSubject()
     {
-        self.profileImageView.profileImage = self.interviewSubject.profileImage
-        self.nameFieldView.textField.text = self.interviewSubject.name
-        self.roleFieldView.textField.text = self.interviewSubject.role
+        self.profileImageView.profileImage = self.profileImage
+        self.nameFieldView.textField.text = self.name
+        self.roleFieldView.textField.text = self.role
     }
 }

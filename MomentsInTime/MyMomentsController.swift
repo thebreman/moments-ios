@@ -8,6 +8,10 @@
 
 import UIKit
 import RealmSwift
+import AVKit
+import AVFoundation
+
+typealias NewMomentCompletion = (Moment, _ justCreated: Bool) -> Void
 
 class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
 {
@@ -47,12 +51,12 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         super.viewDidLoad()
         self.setupCollectionView()
+        self.refresh()
     }
     
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
-        self.adapter.moments = self.momentList.getLocalMoments()
         
         //need this in case we rotate, switch tabs, then rotate back...
         //when we come back to this screen, the layout will be where we left it
@@ -76,13 +80,23 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         
         switch id {
         case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
-            if let newMomentController = segue.destination.contentViewController as? NewMomentController,
-                let selectedVideo = sender as? Video {
-                //
+            if let newMomentController = segue.destination.contentViewController as? NewMomentController {
+                
+                newMomentController.completion = { moment, justCreated in
+                    self.handleNewMomentCompletion(withMoment: moment, justCreated: justCreated)
+                }
+                
+                //pass along moment if we have one:
+                if let selectedMoment = sender as? Moment {
+                    newMomentController.moment = selectedMoment
+                }
             }
             
         case Identifiers.IDENTIFIER_SEGUE_PLAYER:
-            break
+            if let playerController = segue.destination.contentViewController as? AVPlayerViewController, let videoURL = sender as? URL {
+                playerController.player = AVPlayer(url: videoURL)
+                playerController.player?.play()
+            }
             
         default:
             break
@@ -96,20 +110,49 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
     }
     
+    @IBAction func handleCreateMoment(_ sender: BouncingButton)
+    {
+        self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
+        
+        //for debugging:
+        if let realm = try? Realm() {
+            if realm.isEmpty {
+                print("\nrealm is empty")
+            }
+            else {
+                print("\nrealm is NOT empty")
+            }
+        }
+    }
+    
     //MARK: MITMomentCollectionViewAdapterMomentDelegate
     
-    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
     {
         print("handle share")
     }
     
-    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
     {
-        //fetch URL, could be from Vimeo, could be local...
-        //then segue to the player
+        guard let video = moment.video else { return }
+        
+        //for now just grab the local url:
+        if video.isLocal {
+            if let localVideoURL = video.localPlaybackURL {
+                self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_PLAYER, sender: localVideoURL)
+            }
+        }
     }
     
-    func didSelectCell(forMoment moment: Moment)
+    func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
+    {
+        UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: "Moment") { action in
+            self.adapter.removeMoment(moment)
+            moment.deleteLocally()
+        }
+    }
+    
+    func didSelectMoment(_ moment: Moment)
     {
         self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: moment)
     }
@@ -125,13 +168,25 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         }
         
         self.collectionView?.addSubview(self.refreshControl)
+        self.collectionView.contentInset.top = 12
     }
     
-    //MARK: Refresh
+    //MARK: Utilities
+    
+    private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool)
+    {
+        if justCreated {
+            self.adapter.insertNewMoment(moment)
+        }
+        else {
+            self.adapter.refreshMoment(moment)
+        }
+    }
     
     @objc private func refresh()
     {
         self.adapter.moments = self.momentList.getLocalMoments()
+        self.adapter.refreshData(shouldReload: true)
         self.refreshControl.endRefreshing()
     }
 }

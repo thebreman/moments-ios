@@ -9,46 +9,100 @@
 import Foundation
 import RealmSwift
 
+enum MomentStatus: Int
+{
+    case new
+    case local
+    case uploading
+    case uploadFailed
+    case processing
+    case live
+}
+
 class Moment: Object
 {
     dynamic var momentID = UUID().uuidString
     dynamic var subject: Subject?
     dynamic var video: Video?
     dynamic var createdAt = Date()
+    dynamic var existsInRealm = false
+    dynamic var _momentStatus = MomentStatus.new.rawValue
+    
     let notes = List<Note>()
     
-    var isValid: Bool {
-        return false
+    var momentStatus: MomentStatus {
+        get {
+            return MomentStatus(rawValue: self._momentStatus)!
+        }
+        set {
+            Moment.writeToRealm {
+                self._momentStatus = newValue.rawValue
+            }
+        }
     }
     
-    // @Ignore
-    var exists = false
+    var isReadyToSubmit: Bool {
+        guard self.momentStatus != .uploading || self.momentStatus != .processing || self.momentStatus != .live else {
+            return false
+        }
+        let readyToSubmit = self.subject?.name != nil
+            && self.video?.name != nil
+            && self.video?.videoDescription != nil
+            && self.video?.localURL != nil
+        return readyToSubmit
+    }
     
     override static func primaryKey() -> String?
     {
         return "momentID"
     }
     
-    
     override static func ignoredProperties() -> [String]
     {
-        return ["exists"]
+        return ["momentStatus"]
     }
     
+    // add a new moment to realm:
     func create()
     {
-        // add a new thing to realm
-        if !self.exists
-        {
+        if !self.existsInRealm {
+            
             //add moment to realm:
             if let realm = try? Realm() {
                 
                 try? realm.write {
                     realm.add(self)
+                    self.existsInRealm = true
                 }
             }
+        }
+    }
+    
+    func deleteLocally()
+    {
+        if self.existsInRealm {
             
-            self.exists = true
+            print("deleting moment in realm")
+            self.subject?.deleteLocally()
+            self.video?.deleteLocally()
+            
+            //delete moment from realm:
+            if let realm = try? Realm() {
+                
+                try? realm.write {
+                    
+                    if let subject = self.subject {
+                        realm.delete(subject)
+                    }
+                    
+                    if let video = self.video {
+                        realm.delete(video)
+                    }
+                    
+                    realm.delete(notes)
+                    realm.delete(self)
+                }
+            }
         }
     }
 }

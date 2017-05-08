@@ -18,10 +18,17 @@ class VideoPreviewCell: BouncingTableViewCell
 {
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var videoImageView: UIImageView!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet weak var playButton: BouncingButton!
     
     var video: Video? {
         didSet {
             self.videoImageView.image = self.video?.localThumbnailImage
+            
+            if self.videoImageView.image != nil {
+                self.spinner.stopAnimating()
+                self.playButton.isHidden = false
+            }
         }
     }
     
@@ -34,6 +41,8 @@ class VideoPreviewCell: BouncingTableViewCell
         self.drawShadow()
         self.containerView.layer.masksToBounds = true
         self.isSelectable = false
+        self.playButton.isHidden = true
+        self.spinner.startAnimating()
     }
     
     //MARK: Actions

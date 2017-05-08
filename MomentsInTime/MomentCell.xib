@@ -21,20 +21,20 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DAz-xY-OdE">
                         <rect key="frame" x="12" y="6" width="430" height="311"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="i4G-03-3dv" customClass="CachedImageView" customModule="MomentsInTime" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" image="interviewee_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="i4G-03-3dv" customClass="CachedImageView" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="430" height="180"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="180" id="Ocd-9g-sYd"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Video Creator - Video Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPw-KP-Sda">
-                                <rect key="frame" x="12" y="188" width="406" height="19.5"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="999" verticalCompressionResistancePriority="1000" text="Video Creator - Video Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPw-KP-Sda">
+                                <rect key="frame" x="12" y="188" width="406" height="21.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                 <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="900" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6A7-Im-XA3">
-                                <rect key="frame" x="12" y="209.5" width="406" height="52.5"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6A7-Im-XA3">
+                                <rect key="frame" x="12" y="211.5" width="406" height="50.5"/>
                                 <string key="text">Description about the Video and who the person is interviewing and why their story is amazing! This can be however many lines that it takes</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -54,7 +54,7 @@
                                     <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="handlePlay:" destination="Wnt-g4-gte" eventType="touchUpInside" id="Teg-kC-KPH"/>
+                                    <action selector="handleShare:" destination="Wnt-g4-gte" eventType="touchUpInside" id="e4G-S0-uUN"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y66-Vl-xRy" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
@@ -113,6 +113,7 @@
             <size key="customSize" width="454" height="323"/>
             <connections>
                 <outlet property="containerView" destination="DAz-xY-OdE" id="LPK-99-YdA"/>
+                <outlet property="playButton" destination="UKm-Zv-5eP" id="tbd-6c-tjj"/>
                 <outlet property="subtitleBottomConstraint" destination="Uht-cl-jGz" id="BVN-hA-vIZ"/>
                 <outlet property="subtitleLabel" destination="6A7-Im-XA3" id="PJk-G3-fuE"/>
                 <outlet property="subtitleTopContraint" destination="w78-hO-7HO" id="f26-Sv-SrE"/>
@@ -126,5 +127,6 @@
     <resources>
         <image name="Options" width="38" height="9"/>
         <image name="PlayButton" width="24" height="25"/>
+        <image name="interviewee_placeholder" width="16" height="16"/>
     </resources>
 </document>

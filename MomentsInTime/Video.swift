@@ -24,25 +24,34 @@ class Video: Object
     var thumbnailImageURL: String?
     var status: String?
     
-    private var privateLocalThumbnailImage: UIImage?
+    private var _localThumbnailImage: UIImage?
     
     var localThumbnailImage: UIImage? {
         get {
-            if self.privateLocalThumbnailImage == nil {
+            if self._localThumbnailImage == nil {
                 if let localURLString = self.localThumbnailImageURL {
-                    self.privateLocalThumbnailImage = Assistant.loadImageFromDisk(withRelativeUrlString: localURLString)
-                    return self.privateLocalThumbnailImage
+                    self._localThumbnailImage = Assistant.loadImageFromDisk(withRelativeUrlString: localURLString)
+                    return self._localThumbnailImage
                 }
             }
-            return self.privateLocalThumbnailImage
+            return self._localThumbnailImage
         }
         set {
-            self.privateLocalThumbnailImage = newValue
+            self._localThumbnailImage = newValue
         }
+    }
+    
+    var isPlayable: Bool {
+        return self.localURL != nil || self.uri != nil
     }
     
     var isLocal: Bool {
         return self.localURL != nil
+    }
+    
+    var localPlaybackURL: URL? {
+        guard let localURLString = self.localURL, let videos = FileManager.getVideosDirectory() else { return nil }
+        return videos.appendingPathComponent(localURLString)        
     }
     
     //optional url to pass to PlayerViewController (must be fetched upon request):
@@ -77,6 +86,19 @@ class Video: Object
         }
     }
     
+    func deleteLocally()
+    {
+        if let localImageURLString = self.localThumbnailImageURL {
+            print("Deleting video local thumbnail image")
+            Assistant.removeImageFromDisk(atRelativeURLString: localImageURLString)
+        }
+        
+        if let localVideoURLString = self.localURL {
+            print("Deleting video local video")
+            Assistant.removeVideoFromDisk(atRelativeURLString: localVideoURLString)
+        }
+    }
+    
     /**
      * Video must have the following properties to be valid,
      * ok if there is no description:
@@ -105,7 +127,7 @@ class Video: Object
     
     override static func ignoredProperties() -> [String]
     {
-        return ["thumbnailImageURL", "status", "localThumbnailImage", "playbackURL"]
+        return ["thumbnailImageURL", "status", "localThumbnailImage", "_localThumbnailImage", "playbackURL"]
     }
 }
 
