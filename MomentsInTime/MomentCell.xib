@@ -54,7 +54,7 @@
                                     <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="handlePlay:" destination="Wnt-g4-gte" eventType="touchUpInside" id="Teg-kC-KPH"/>
+                                    <action selector="handleShare:" destination="Wnt-g4-gte" eventType="touchUpInside" id="e4G-S0-uUN"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y66-Vl-xRy" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
