@@ -123,6 +123,11 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         //not supporting thir right now with accessory views:
         if let indexToRefresh = self.moments.index(of: moment) {
             
+            //reset cache height if necessary:
+            if momentCellHeightCache.object(forKey: moment.momentID as NSString) != nil {
+                momentCellHeightCache.removeObject(forKey: moment.momentID as NSString)
+            }
+            
             let pathToRefresh = IndexPath(item: indexToRefresh, section: SECTION_MOMENT_FEED)
             
             self.collectionView.performBatchUpdates({
