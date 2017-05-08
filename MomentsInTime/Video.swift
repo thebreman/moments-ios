@@ -45,6 +45,11 @@ class Video: Object
         return self.localURL != nil
     }
     
+    var localPlaybackURL: URL? {
+        guard let localURLString = self.localURL, let videos = FileManager.getVideosDirectory() else { return nil }
+        return videos.appendingPathComponent(localURLString)        
+    }
+    
     //optional url to pass to PlayerViewController (must be fetched upon request):
     private(set) var playbackURL: String?
     

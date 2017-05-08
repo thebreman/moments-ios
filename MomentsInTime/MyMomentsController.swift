@@ -8,6 +8,8 @@
 
 import UIKit
 import RealmSwift
+import AVKit
+import AVFoundation
 
 typealias NewMomentCompletion = (Moment) -> Void
 
@@ -92,8 +94,10 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             }
             
         case Identifiers.IDENTIFIER_SEGUE_PLAYER:
-            //create a player with the url and pass it to destination
-            break
+            if let playerController = segue.destination.contentViewController as? AVPlayerViewController, let videoURL = sender as? URL {
+                playerController.player = AVPlayer(url: videoURL)
+                playerController.player?.play()
+            }
             
         default:
             break
@@ -131,8 +135,14 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
     {
-        //fetch URL, could be from Vimeo, could be local...
-        //then segue to the player
+        guard let video = moment.video else { return }
+        
+        //for now just grab the local url:
+        if video.isLocal {
+            if let localVideoURL = video.localPlaybackURL {
+                self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_PLAYER, sender: localVideoURL)
+            }
+        }
     }
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)

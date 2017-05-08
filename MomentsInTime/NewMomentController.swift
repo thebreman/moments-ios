@@ -409,11 +409,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handlePlay video: Video)
     {
-        guard let urlString = video.localURL else { return }
-        
-        if let url = URL(string: urlString) {
-            self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: url)
-        }
+        guard let url = video.localPlaybackURL else { return }
+        print(url)
+        self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: url)
     }
     
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handleOptions sender: BouncingButton)
@@ -692,7 +690,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         guard let video = self.moment.video else { return }
         
         Moment.writeToRealm {
-            video.localURL = self.assistant.persistVideo(withURL: url)
+            
+            self.assistant.copyVideo(withURL: url) { newURL in
+                video.localURL = newURL
+            }
+            
             video.localThumbnailImage = self.thumbnailImage(forVideoURL: url)
             
             if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {

@@ -100,37 +100,33 @@ class Assistant
     
     private var backgroundID: UIBackgroundTaskIdentifier? = nil
     
-    func persistVideo(withURL url: URL) -> String?
+    func copyVideo(withURL url: URL, completion: @escaping (String?) -> Void)
     {
         //setup background task to ensure that there is enough time to write the file:
         if UIDevice.current.isMultitaskingSupported {
             self.backgroundID = UIApplication.shared.beginBackgroundTask(expirationHandler: nil)
         }
         
-        guard let videoData = try? Data(contentsOf: url) else {
-            print("\nunable to get video Data to persist")
-            return nil
-        }
-        
-        let relativeVideoName = UUID().uuidString
+        //need .mp4 for AVPlayer to recognize the url:
+        let relativeVideoName = "\(UUID().uuidString).mp4"
         
         if let videoDirectory = FileManager.getVideosDirectory() {
-           
-            do {
-                try videoData.write(to: videoDirectory.appendingPathComponent(relativeVideoName), options: [.atomic])
-                self.endBackgroundTask()
-                return relativeVideoName
+            
+            //copy file asynchronously:
+            DispatchQueue.global(qos: .userInitiated).async {
+                do {
+                    try FileManager.default.copyItem(at: url, to: videoDirectory.appendingPathComponent(relativeVideoName))
+                    self.endBackgroundTask()
+                    completion(relativeVideoName)
+                }
+                catch let error {
+                    print("\nunable to copy video to disk: \(error)")
+                }
             }
-            catch let error {
-                print("\nunable to write video to disk: \(error)")
-            }
-        }
-        else {
-            print("\nunable to get videoDirectory")
         }
         
         self.endBackgroundTask()
-        return nil
+        completion(nil)
     }
     
     private func endBackgroundTask()

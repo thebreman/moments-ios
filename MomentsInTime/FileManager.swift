@@ -40,11 +40,12 @@ extension FileManager
     class func getVideosDirectory() -> URL?
     {
         let documentsDirectory = FileManager.getDocumentsDirectory()
-        let videosDirectory = documentsDirectory.appendingPathComponent("momentImages")
+        let videosDirectory = documentsDirectory.appendingPathComponent("momentVideos")
         
         if !FileManager.default.fileExists(atPath: videosDirectory.path) {
             
             do {
+                print("creating videos directory")
                 try FileManager.default.createDirectory(atPath: videosDirectory.path, withIntermediateDirectories: true, attributes: nil)
                 return videosDirectory
             }
