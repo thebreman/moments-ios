@@ -34,13 +34,17 @@
                                     <action selector="handleOptions:" destination="w9B-W4-4uQ" eventType="touchUpInside" id="ivf-p0-LnV"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TgM-uz-OzJ" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TgM-uz-OzJ" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="163" y="77.5" width="24" height="25"/>
                                 <state key="normal" image="PlayButton"/>
                                 <connections>
                                     <action selector="handlePlay:" destination="w9B-W4-4uQ" eventType="touchUpInside" id="FpN-yi-Yve"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="2da-HA-dQK">
+                                <rect key="frame" x="165" y="80" width="20" height="20"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -48,7 +52,9 @@
                             <constraint firstItem="sbP-WA-ifK" firstAttribute="top" secondItem="fj0-p0-n4a" secondAttribute="top" id="7to-oq-WIy"/>
                             <constraint firstAttribute="trailing" secondItem="YkX-KC-A8A" secondAttribute="trailing" constant="12" id="H3F-P4-Fo6"/>
                             <constraint firstItem="TgM-uz-OzJ" firstAttribute="centerY" secondItem="sbP-WA-ifK" secondAttribute="centerY" id="Lfq-vM-oub"/>
+                            <constraint firstItem="2da-HA-dQK" firstAttribute="centerY" secondItem="sbP-WA-ifK" secondAttribute="centerY" id="afR-jx-ql3"/>
                             <constraint firstItem="sbP-WA-ifK" firstAttribute="leading" secondItem="fj0-p0-n4a" secondAttribute="leading" id="bDs-a4-gDF"/>
+                            <constraint firstItem="2da-HA-dQK" firstAttribute="centerX" secondItem="sbP-WA-ifK" secondAttribute="centerX" id="bl4-sZ-ab1"/>
                             <constraint firstAttribute="bottom" secondItem="YkX-KC-A8A" secondAttribute="bottom" constant="8" id="cfL-bp-8AT"/>
                             <constraint firstItem="TgM-uz-OzJ" firstAttribute="centerX" secondItem="sbP-WA-ifK" secondAttribute="centerX" id="ftW-d7-MFR"/>
                             <constraint firstItem="YkX-KC-A8A" firstAttribute="top" secondItem="sbP-WA-ifK" secondAttribute="bottom" constant="8" id="tXy-3b-KPJ"/>
@@ -71,6 +77,8 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="containerView" destination="fj0-p0-n4a" id="jHD-YG-Jhw"/>
+                <outlet property="playButton" destination="TgM-uz-OzJ" id="SdK-8K-RUN"/>
+                <outlet property="spinner" destination="2da-HA-dQK" id="Rsv-VK-nEQ"/>
                 <outlet property="videoImageView" destination="sbP-WA-ifK" id="NOG-qG-q8I"/>
             </connections>
             <point key="canvasLocation" x="-122.5" y="24.5"/>

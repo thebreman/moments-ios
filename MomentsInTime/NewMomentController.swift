@@ -689,35 +689,47 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         guard let video = self.moment.video else { return }
         
-        Moment.writeToRealm {
-            
-            self.assistant.copyVideo(withURL: url) { newURL in
+        self.assistant.copyVideo(withURL: url) { newURL in
+            Moment.writeToRealm {
                 video.localURL = newURL
-            }
-            
-            video.localThumbnailImage = self.thumbnailImage(forVideoURL: url)
-            
-            if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
-                video.localThumbnailImageURL = imageURL
             }
         }
         
-        self.updateVideoRow()
+        //generate video preview thumbnail image asynchronously:
+        self.getThumbnailImage(forVideoURL: url) { thumbnailImage in
+            
+            video.localThumbnailImage = thumbnailImage
+            
+            if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
+                Moment.writeToRealm {
+                    video.localThumbnailImageURL = imageURL
+                    self.updateVideoRow()
+                    self.updateUI()
+                }
+            }
+        }
+        
         self.updateUI()
     }
 
-    private func thumbnailImage(forVideoURL url: URL) -> UIImage?
+    private func getThumbnailImage(forVideoURL url: URL, completion: @escaping (UIImage?) -> Void)
     {
         let asset = AVAsset(url: url)
         let imageGenerator = AVAssetImageGenerator(asset: asset)
         imageGenerator.appliesPreferredTrackTransform = true //so that the image is not rotated in portrait
         
         //get 1st frame:
-        if let thumbnailCGImage = try? imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil) {
-            let newImage = UIImage(cgImage: thumbnailCGImage)
-            return newImage
+        imageGenerator.generateCGImagesAsynchronously(forTimes: [CMTimeMake(1, 60) as NSValue]) { (requestedTime, image, actualTime, result, error) in
+            
+            DispatchQueue.main.async {
+                guard let responseImage = image else {
+                    completion(nil)
+                    return
+                }
+                
+                let newImage = UIImage(cgImage: responseImage)
+                completion(newImage)
+            }
         }
-        
-        return nil
     }
 }

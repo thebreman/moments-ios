@@ -116,8 +116,11 @@ class Assistant
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
                     try FileManager.default.copyItem(at: url, to: videoDirectory.appendingPathComponent(relativeVideoName))
-                    self.endBackgroundTask()
-                    completion(relativeVideoName)
+                    
+                    DispatchQueue.main.async {
+                        self.endBackgroundTask()
+                        completion(relativeVideoName)
+                    }
                 }
                 catch let error {
                     print("\nunable to copy video to disk: \(error)")
