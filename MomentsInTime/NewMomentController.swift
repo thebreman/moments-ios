@@ -46,7 +46,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         let newMoment = Moment()
         newMoment.subject = Subject()
         newMoment.video = Video()
-        newMoment.momentStatus = .new
         newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
         return newMoment
     }()
@@ -89,12 +88,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBAction func handleSubmit(_ sender: BouncingButton)
     {
-        if self.moment.momentStatus == .new {
-            self.persistMoment()
-        }
-        
         self.presentingViewController?.dismiss(animated: true) {
             self.completion?(self.moment, self.moment.momentStatus == .new, true)
+            
+            if self.moment.momentStatus == .new {
+                self.persistMoment()
+            }
         }
     }
     
@@ -108,7 +107,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             let persistAction = UIAlertAction(title: COPY_TITLE_BUTTON_SAVE_CHANGES, style: .default) { action in
                 self.persistMoment()
-                self.moment.momentStatus = .local
                 self.presentingViewController?.dismiss(animated: true) {
                     self.completion?(self.moment, true, false)
                 }

@@ -14,6 +14,18 @@ extension UIColor
         return UIColor(red: 118.0 / 255.0, green: 171.0 / 255.0, blue: 233.0 / 255.0, alpha: 1.0)
     }
     
+    class var mitOrange: UIColor {
+        return UIColor(red: 252.0 / 255.0, green: 198.0 / 255.0, blue: 112.0 / 255.0, alpha: 1.0)
+    }
+    
+    class var mitGreen: UIColor {
+        return UIColor(red: 85.0 / 255.0, green: 208.0 / 255.0, blue: 126.0 / 255.0, alpha: 1.0)
+    }
+    
+    class var mitRed: UIColor {
+        return UIColor(red: 217.0 / 255.0, green: 0.0 / 255.0, blue: 5.0 / 255.0, alpha: 1.0)
+    }
+    
     class var mitText: UIColor {
         return UIColor(white: 88.0 / 255.0, alpha: 1.0)
     }

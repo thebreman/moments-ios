@@ -32,7 +32,7 @@ class Moment: Object
     
     let notes = List<Note>()
     
-    var momentStatus: MomentStatus {
+    private(set) var momentStatus: MomentStatus {
         get {
             return MomentStatus(rawValue: self._momentStatus)!
         }
@@ -104,6 +104,7 @@ class Moment: Object
                 
                 try? realm.write {
                     realm.add(self)
+                    self.momentStatus = .local
                     self.existsInRealm = true
                 }
             }
