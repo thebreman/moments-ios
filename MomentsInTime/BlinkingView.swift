@@ -13,7 +13,7 @@ class BlinkingView: UIView
 {
     private lazy var circle: UIView! = {
         let view = UIView()
-        view.backgroundColor = UIColor.mitActionblue
+        view.backgroundColor = self.circleColor
         view.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
         view.center = CGPoint(x: self.bounds.midX, y: self.bounds.midY)
         view.layer.cornerRadius = view.frame.size.width / 2
@@ -47,6 +47,13 @@ class BlinkingView: UIView
     }
     
     //MARK: Public
+    
+    var circleColor: UIColor = UIColor.mitActionblue {
+        didSet {
+            self.circle.backgroundColor = self.circleColor
+            self.setNeedsDisplay()
+        }
+    }
     
     var circleGrowScale: CGFloat = 11
     var blinkingScale: CGFloat = 6

@@ -34,6 +34,7 @@ class MomentCell: BouncingCollectionViewCell
     @IBOutlet weak var subtitleTopContraint: NSLayoutConstraint!
     @IBOutlet weak var subtitleBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var uploadContainerView: UIView!
+    @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var uploadContainerHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var blinkingView: BlinkingView!
     
@@ -115,23 +116,24 @@ class MomentCell: BouncingCollectionViewCell
     
     private func configureUploadingContainer()
     {
-        guard let status = self.moment?.momentStatus else {
+        guard let status = self.moment?.momentStatus, status != .new else {
             self.uploadContainerHeightConstraint.constant = 0.0
+            self.blinkingView.stopBlinking()
             return
+        }
+
+        self.uploadContainerHeightConstraint.constant = HEIGHT_UPLOAD_VIEW
+
+        self.statusLabel.text = status.message
+        self.statusLabel.textColor = status == .uploadFailed ? UIColor.mitRed : UIColor.gray
+        
+        if let statusColor = status.color {
+            self.blinkingView.circleColor = statusColor
         }
         
         if status == .uploading {
-            self.uploadContainerHeightConstraint.constant = HEIGHT_UPLOAD_VIEW
             self.blinkingView.startBlinking()
         }
-        else {
-            
-            //hide the whole container and stop animating:
-            self.blinkingView.stopBlinking()
-            self.uploadContainerHeightConstraint.constant = 0.0
-        }
-        
-        print("upload container height: \(self.uploadContainerHeightConstraint.constant)")
     }
     
     private func configureLabels()

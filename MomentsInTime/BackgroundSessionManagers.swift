@@ -24,6 +24,7 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
     }()
     
     var systemCompletionHandler: (() -> Void)?
+    var moment: Moment?
 }
 
 class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
@@ -35,7 +36,7 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
     }()
     
     var systemCompletionHandler: (() -> Void)?
-
+    var moment: Moment?
     var completeURI: String?
 }
 
@@ -48,5 +49,6 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
     }()
     
     var systemCompletionHandler: (() -> Void)?
+    var moment: Moment?
 }
 

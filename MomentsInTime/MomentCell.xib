@@ -76,7 +76,7 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" verticalCompressionResistancePriority="1" translatesAutoresizingMaskIntoConstraints="NO" id="2CE-Tc-41h" customClass="BlinkingView" customModule="MomentsInTime" customModuleProvider="target">
                                         <rect key="frame" x="417" y="4" width="16" height="16"/>
-                                        <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="2ns-Eg-gD1"/>
                                             <constraint firstAttribute="width" constant="16" id="c0E-4l-PiA"/>
@@ -146,6 +146,7 @@
                 <outlet property="blinkingView" destination="2CE-Tc-41h" id="y60-1a-pkY"/>
                 <outlet property="containerView" destination="DAz-xY-OdE" id="LPK-99-YdA"/>
                 <outlet property="playButton" destination="UKm-Zv-5eP" id="tbd-6c-tjj"/>
+                <outlet property="statusLabel" destination="lVj-XG-esd" id="1nD-Io-dYL"/>
                 <outlet property="subtitleBottomConstraint" destination="Uht-cl-jGz" id="BVN-hA-vIZ"/>
                 <outlet property="subtitleLabel" destination="6A7-Im-XA3" id="PJk-G3-fuE"/>
                 <outlet property="subtitleTopContraint" destination="w78-hO-7HO" id="f26-Sv-SrE"/>

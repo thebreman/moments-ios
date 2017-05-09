@@ -88,12 +88,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBAction func handleSubmit(_ sender: BouncingButton)
     {
+        let justCreated = self.moment.momentStatus == .new
+        
         self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(self.moment, self.moment.momentStatus == .new, true)
-            
-            if self.moment.momentStatus == .new {
-                self.persistMoment()
-            }
+            self.persistMoment()
+            self.completion?(self.moment, justCreated, true)
         }
     }
     
