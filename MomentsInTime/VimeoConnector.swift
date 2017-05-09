@@ -21,13 +21,14 @@ private let VERSION_ACCEPT_HEADER_VALUE = "application/vnd.vimeo.*+json;version=
 typealias BooleanResponseClosure = (_ success: Bool, _ error: Error?) -> Void
 typealias UploadProgressClosure = (_ fractionCompleted: Double) -> Void
 typealias StringCompletionHandler = (String?, Error?) -> Void
+typealias UploadCompletion = (Video?, Error?) -> Void
 typealias VideoCompletion = ([Video]?, Error?) -> Void
 
 class VimeoConnector: NSObject
 {
     static let baseAPIEndpoint: String = HOST
     static let accessTokenKey: String = ACCESS_TOKEN_KEY
-    static let accessTokenValue: String = ACESS_TOKEN_VALUE_PRODUCTION
+    static let accessTokenValue: String = ACCESS_TOKEN_VALUE_STAGING
     static let versionAPIHeaderValue: String = VERSION_ACCEPT_HEADER_VALUE
     static let versionAPIHeaderKey: String = VERSION_ACCEPT_HEADER_KEY
     
@@ -104,9 +105,9 @@ class VimeoConnector: NSObject
     }
     
     /**
-     * Upon successful upload, the uri of the new video will be passed along in the completion handler:
+     * Upon successful upload, the new video will be populated with its new Vimeo URI and will be passed along in the completion handler:
      */
-    func create(video: Video, uploadProgress: @escaping UploadProgressClosure, completion: @escaping StringCompletionHandler)
+    func create(video: Video, uploadProgress: UploadProgressClosure?, completion: @escaping UploadCompletion)
     {
         self.request(router: VideoRouter.create) { (response, error) in
             
@@ -126,7 +127,7 @@ class VimeoConnector: NSObject
                 //now that we have generated an upload ticket, we can stream an upload to Vimeo with a PUT request to uploadLink:
                 self.upload(video: video, router: UploadRouter.create(ticketID: ticketID, uploadLink: uploadLink), uploadProgress: { fractionCompleted in
                     
-                    uploadProgress(fractionCompleted)
+                    uploadProgress?(fractionCompleted)
                     
                 }, uploadCompletion: completion) //pass along the completion
                 
@@ -146,10 +147,10 @@ class VimeoConnector: NSObject
      * We can only rely on the session delegate callbacks/ closures, and we can just pass along the upload completion handler
      * until the very end of the process, then call it...
      */
-    private func upload(video: Video, router: URLRequestConvertible, uploadProgress: @escaping UploadProgressClosure, uploadCompletion: @escaping StringCompletionHandler)
+    private func upload(video: Video, router: URLRequestConvertible, uploadProgress: UploadProgressClosure?, uploadCompletion: @escaping UploadCompletion)
     {
         //Create video file url:
-        guard let localURL = video.localURL, let uploadURL = URL(string: localURL) else {
+        guard let uploadURL = video.localPlaybackURL else {
             let error = NSError(domain: "VimeoConnector.upload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't create valid video file url"])
             uploadCompletion(nil, error)
             return
@@ -159,7 +160,8 @@ class VimeoConnector: NSObject
         BackgroundUploadSessionManager.shared.delegate.taskDidSendBodyData = { session, sessionTask, bytesSentSinceLastTime, totalBytesSentSoFar, totalBytesExpectedToSend in
             
             let progress: Double = Double(totalBytesSentSoFar) / Double(totalBytesExpectedToSend)
-            uploadProgress(progress)
+            print(progress)
+            uploadProgress?(progress)
         }
         
         BackgroundUploadSessionManager.shared.delegate.taskDidComplete = { session, task, error in
@@ -192,7 +194,7 @@ class VimeoConnector: NSObject
      * This works great b/c the response will be saved temporarily to disk, we can inspect/ grab the location header,
      * and add the video metadata, completing the upload flow...
      */
-    private func completeUpload(video: Video, router: URLRequestConvertible, uploadCompletion: @escaping StringCompletionHandler)
+    private func completeUpload(video: Video, router: URLRequestConvertible, uploadCompletion: @escaping UploadCompletion)
     {
         //configure delegate callbacks for the SessionManager:
         BackgroundUploadCompleteSessionManager.shared.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
@@ -203,18 +205,24 @@ class VimeoConnector: NSObject
                 return
             }
             
-            video.uri = locationURI
+            DispatchQueue.main.async {
+                Moment.writeToRealm {
+                    video.uri = locationURI
+                }
+            }
         }
         
         BackgroundUploadCompleteSessionManager.shared.delegate.taskDidComplete = { session, task, error in
-            
-            guard error == nil else {
-                print(error!)
-                uploadCompletion(nil, error)
-                return
+            DispatchQueue.main.async {
+                
+                guard error == nil else {
+                    print(error!)
+                    uploadCompletion(nil, error)
+                    return
+                }
+                
+                self.addMetadata(for: video, uploadCompletion: uploadCompletion)
             }
-            
-            self.addMetadata(for: video, uploadCompletion: uploadCompletion)
             
             //call system completion handler for this background task:
             BackgroundUploadCompleteSessionManager.shared.systemCompletionHandler?()
@@ -228,22 +236,19 @@ class VimeoConnector: NSObject
      * again we will use a download task for this request so we can remain background compatable.
      * we can inspect/ parse the JSON newly uploaded Video object response in downloadTaskDidFinishDownloadingToURL:
      */
-    private func addMetadata(for video: Video, uploadCompletion: @escaping StringCompletionHandler)
+    private func addMetadata(for video: Video, uploadCompletion: @escaping UploadCompletion)
     {
         //configure delegate callbacks for the SessionManager:
-        BackgroundUploadVideoMetadataSessionManager.shared.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
-            
-            print(task.response!)
-            //response will contain JSON data of the newly created video object
-            //it is probably still being processed by Vimeo, though so the thumbnail images will be null...
-        }
-        
         BackgroundUploadVideoMetadataSessionManager.shared.delegate.taskDidComplete = { session, task, error in
-            
-            guard error == nil else {
-                print(error!)
-                uploadCompletion(nil, error)
-                return
+            DispatchQueue.main.async {
+                
+                guard error == nil else {
+                    print(error!)
+                    uploadCompletion(nil, error)
+                    return
+                }
+                
+                uploadCompletion(video, nil)
             }
             
             //call system completion handler for this background task:

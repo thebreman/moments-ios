@@ -65,9 +65,13 @@ class BlinkingView: UIView
     
     private func setup()
     {
+        self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = .clear
         self.addSubview(self.circle)
-        self.circle.transform = (CGAffineTransform(scaleX: self.circleGrowScale, y: self.circleGrowScale))
-        self.translatesAutoresizingMaskIntoConstraints = false
+        
+        //animate circle to large size before blinking starts:
+        UIView.animate(withDuration: 0.5) { 
+            self.circle.transform = (CGAffineTransform(scaleX: self.circleGrowScale, y: self.circleGrowScale))
+        }
     }
 }

@@ -11,7 +11,10 @@ import RealmSwift
 import AVKit
 import AVFoundation
 
-typealias NewMomentCompletion = (Moment, _ justCreated: Bool) -> Void
+private let COPY_TITLE_UPLOAD_FAILED = "Oh No!"
+private let COPY_MESSAGE_UPLOAD_FAILED = "Something went wrong during the upload. Please try again and make sure the app is running and connected until the upload completes."
+
+typealias NewMomentCompletion = (Moment, _ justCreated: Bool, _ shouldUpload: Bool) -> Void
 
 class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
 {
@@ -82,8 +85,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
             if let newMomentController = segue.destination.contentViewController as? NewMomentController {
                 
-                newMomentController.completion = { moment, justCreated in
-                    self.handleNewMomentCompletion(withMoment: moment, justCreated: justCreated)
+                newMomentController.completion = { moment, justCreated, shouldSubmit in
+                    self.handleNewMomentCompletion(withMoment: moment, justCreated: justCreated, shouldSubmit: shouldSubmit)
                 }
                 
                 //pass along moment if we have one:
@@ -173,16 +176,33 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     //MARK: Utilities
     
-    private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool)
+    private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool, shouldSubmit: Bool)
     {
         if justCreated {
-            
-            //for testing:
-            moment.momentStatus = .uploading
-            
             self.adapter.insertNewMoment(moment)
         }
+        
+        if shouldSubmit {
+            self.handleSubmit(forMoment: moment)
+            self.adapter.refreshMoment(moment)
+        }
         else {
+            self.adapter.refreshMoment(moment)
+        }
+        
+    }
+    
+    private func handleSubmit(forMoment moment: Moment)
+    {
+        moment.upload { (_, error) in
+            
+            if error != nil {
+                
+                //inform the user that the upload failed,
+                //the moment's status is already set to .uploadFailed:
+                UIAlertController.explain(withPresenter: self, title: COPY_TITLE_UPLOAD_FAILED, message: COPY_MESSAGE_UPLOAD_FAILED)
+            }
+            
             self.adapter.refreshMoment(moment)
         }
     }

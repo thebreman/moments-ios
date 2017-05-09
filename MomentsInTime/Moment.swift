@@ -15,9 +15,11 @@ enum MomentStatus: Int
     case local
     case uploading
     case uploadFailed
-    case processing
+    case processing //? not sure how to handle this case...
     case live
 }
+
+typealias MomentCompletion = (Moment?, Error?) -> Void
 
 class Moment: Object
 {
@@ -63,19 +65,33 @@ class Moment: Object
     }
     
     //if successful, the newly created video URI will be passed along in completion:
-    func upload(completion: @escaping StringCompletionHandler)
+    func upload(completion: @escaping MomentCompletion)
     {
         if let video = self.video {
-            VimeoConnector().create(video: video, uploadProgress: { fractionCompleted in
-                
-                //update progress UI
-                
-            }, completion: { videoURI, error in
-                
-                //handle completion
-                
+            self.momentStatus = .uploading
+            
+            VimeoConnector().create(video: video, uploadProgress: nil, completion: { newVideo, error in
+                DispatchQueue.main.async {
+                    
+                    guard error == nil && video.uri != nil else {
+                        self.momentStatus = .uploadFailed
+                        self.handleFailedUpload(forVideo: video)
+                        completion(nil, error)
+                        return
+                    }
+                    
+                    self.momentStatus = .live
+                    completion(self, nil)
+                }
             })
         }
+    }
+    
+    func handleFailedUpload(forVideo video: Video)
+    {
+        //for now don't do anything, we already updated our momentStatus
+        //but maybe we could check if the uri is there but metadata is not
+        //then we could patch the metadata in or delete the video to be safe (maybe complete call failed)...
     }
     
     // add a new moment to realm:
