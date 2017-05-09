@@ -326,7 +326,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     //set this in didSelectRow...
-    //make sure to nil it out after you use it in the prepareForSegue:
+    //make sure to nil it out after you use it in prepareForSegue:
     private var lastSelectedPath: IndexPath?
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
@@ -412,7 +412,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handlePlay video: Video)
     {
         guard let url = video.localPlaybackURL else { return }
-        print(url)
         self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: url)
     }
     
@@ -702,7 +701,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             video.localThumbnailImage = thumbnailImage
             
-            if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
+            if let videoPreviewImage = video.localThumbnailImage,
+                let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
                 Moment.writeToRealm {
                     video.localThumbnailImageURL = imageURL
                     self.updateVideoRow()

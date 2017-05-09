@@ -14,7 +14,7 @@ private let ACESS_TOKEN_VALUE_PRODUCTION = "Bearer d63a52e30fff72f2fd868dfed35b3
 
 private let HOST = "https://api.vimeo.com"
 
-//provide this header to let Vimeo know which API version we are working with
+//provide this header to let Vimeo know which API version we are working with:
 private let VERSION_ACCEPT_HEADER_KEY = "Accept"
 private let VERSION_ACCEPT_HEADER_VALUE = "application/vnd.vimeo.*+json;version=3.2"
 
@@ -326,7 +326,6 @@ extension VimeoConnector
             }
         }
         
-        print("selected video height: \(maxHeight)")
         return urlString
     }
 }
