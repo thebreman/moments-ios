@@ -11,6 +11,8 @@ import PureLayout
 
 private let SPACING_TITLE_SUBTITLE: CGFloat = 2.0
 private let SPACING_LABEL_MARGIN: CGFloat = 8.0
+private let HEIGHT_UPLOAD_VIEW: CGFloat = 24.0
+
 private let _sizingCell = Bundle.main.loadNibNamed(String(describing: MomentCell.self), owner: nil, options: nil)?.first
 private var _sizingWidth = NSLayoutConstraint()
 
@@ -31,6 +33,9 @@ class MomentCell: BouncingCollectionViewCell
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var subtitleTopContraint: NSLayoutConstraint!
     @IBOutlet weak var subtitleBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var uploadContainerView: UIView!
+    @IBOutlet weak var uploadContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var blinkingView: BlinkingView!
     
     weak var delegate: MomentCellDelegate?
     
@@ -104,7 +109,24 @@ class MomentCell: BouncingCollectionViewCell
     {
         self.configureThumbnailImage()
         self.configureLabels()
+        self.configureUploadingContainer()
         self.togglePlayButton()
+    }
+    
+    private func configureUploadingContainer()
+    {
+        if let status = self.moment?.momentStatus, status == .uploading {
+            self.uploadContainerHeightConstraint.constant = HEIGHT_UPLOAD_VIEW
+            self.uploadContainerView.isHidden = false
+            self.blinkingView.startBlinking()
+        }
+        else {
+            
+            //hide the whole container and stop animating:
+            self.blinkingView.stopBlinking()
+            self.uploadContainerView.isHidden = true
+            self.uploadContainerHeightConstraint.constant = 0.0
+        }
     }
     
     private func configureLabels()

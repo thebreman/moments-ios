@@ -114,7 +114,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
         
-        //for debugging:
+        //for debugging (delete all the moments then tap create button and make sure realm is empty):
         if let realm = try? Realm() {
             if realm.isEmpty {
                 print("\nrealm is empty")

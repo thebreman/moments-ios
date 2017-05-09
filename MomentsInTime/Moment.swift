@@ -62,6 +62,22 @@ class Moment: Object
         return ["momentStatus"]
     }
     
+    //if successful, the newly created video URI will be passed along in completion:
+    func upload(completion: @escaping StringCompletionHandler)
+    {
+        if let video = self.video {
+            VimeoConnector().create(video: video, uploadProgress: { fractionCompleted in
+                
+                //update progress UI
+                
+            }, completion: { videoURI, error in
+                
+                //handle completion
+                
+            })
+        }
+    }
+    
     // add a new moment to realm:
     func create()
     {
