@@ -51,6 +51,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textField.textColor = UIColor.mitText
         view.textField.font = UIFont.systemFont(ofSize: 16.0)
+        view.textField.textColor = UIColor.gray
         view.textField.placeholder = InterviewingSection.role.cellContentText
         view.textField.tintColor = UIColor.mitActionblue
         view.textField.delegate = self

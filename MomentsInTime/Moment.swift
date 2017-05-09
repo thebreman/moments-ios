@@ -57,7 +57,7 @@ class Moment: Object
     
     let notes = List<Note>()
     
-    private(set) var momentStatus: MomentStatus {
+    var momentStatus: MomentStatus {
         get {
             return MomentStatus(rawValue: self._momentStatus)!
         }
@@ -142,6 +142,18 @@ class Moment: Object
                 }
             }
         }
+    }
+    
+    var needsMetaDataPatch: Bool {
+        
+        guard let video = self.video else { return false }
+        
+        //if we have a uri but no name return true:
+        if video.uri != nil {
+            return video.name == nil
+        }
+        
+        return false
     }
     
     func deleteLocally()

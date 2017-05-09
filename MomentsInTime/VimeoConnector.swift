@@ -249,7 +249,7 @@ class VimeoConnector: NSObject
      * again we will use a download task for this request so we can remain background compatable.
      * we can inspect/ parse the JSON newly uploaded Video object response in downloadTaskDidFinishDownloadingToURL:
      */
-    private func addMetadata(for moment: Moment, uploadCompletion: @escaping UploadCompletion)
+    func addMetadata(for moment: Moment, uploadCompletion: @escaping UploadCompletion)
     {
         self.uploadMetaDataManager.moment = moment
         

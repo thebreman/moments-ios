@@ -44,9 +44,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
      var moment: Moment = {
         let newMoment = Moment()
-        newMoment.subject = Subject()
-        newMoment.video = Video()
-        newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
+            newMoment.subject = Subject()
+            newMoment.video = Video()
+            newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
         return newMoment
     }()
     
@@ -90,8 +90,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         let justCreated = self.moment.momentStatus == .new
         
-        self.presentingViewController?.dismiss(animated: true) {
+        if justCreated {
             self.persistMoment()
+        }
+        
+        self.presentingViewController?.dismiss(animated: true) {
             self.completion?(self.moment, justCreated, true)
         }
     }
@@ -105,8 +108,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             controller.popoverPresentationController?.permittedArrowDirections = [.up]
             
             let persistAction = UIAlertAction(title: COPY_TITLE_BUTTON_SAVE_CHANGES, style: .default) { action in
-                self.persistMoment()
                 self.presentingViewController?.dismiss(animated: true) {
+                    self.persistMoment()
                     self.completion?(self.moment, true, false)
                 }
             }
@@ -128,7 +131,16 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func persistMoment()
     {
-        self.moment.create()
+        let momentToPersist = Moment()
+        momentToPersist.create() //add To Realm then add properties:
+        
+        Moment.writeToRealm {
+            momentToPersist.subject = self.moment.subject
+            momentToPersist.video = self.moment.video
+            momentToPersist.notes.append(objectsIn: self.moment.notes)
+        }
+
+        self.moment = momentToPersist
     }
     
     private func deleteMoment()

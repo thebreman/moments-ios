@@ -55,6 +55,9 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         super.viewDidLoad()
         self.setupCollectionView()
         self.refresh()
+        
+        //this is temporary:
+        //self.verifyMoments()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -66,6 +69,27 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         //even though viewWilTransition: gets called on all VCs in the tab bar controller,
         //when we come back on screen the collectinView width is no longer valid.
         self.collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    private var vimeoConnector = VimeoConnector()
+    
+    private func verifyMoments()
+    {
+        for moment in self.momentList.moments {
+            print(moment)
+            
+            if moment.momentStatus == .uploading {
+                self.vimeoConnector.addMetadata(for: moment) { (moment, error) in
+                    
+                    if let momentToRefresh = moment {
+                        Moment.writeToRealm {
+                            moment?.momentStatus = .live
+                            self.adapter.refreshMoment(momentToRefresh)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
