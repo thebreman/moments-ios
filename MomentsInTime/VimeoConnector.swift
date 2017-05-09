@@ -173,6 +173,8 @@ class VimeoConnector: NSObject
         
         self.uploadManager.delegate.taskDidComplete = { session, task, error in
             
+            self.uploadManager.moment = nil
+            
             guard error == nil else {
                 print(error!)
                 uploadCompletion(nil, error)
@@ -224,6 +226,8 @@ class VimeoConnector: NSObject
         self.uploadCompleteManager.delegate.taskDidComplete = { session, task, error in
             DispatchQueue.main.async {
                 
+                self.uploadCompleteManager.moment = nil
+                
                 guard error == nil else {
                     print(error!)
                     uploadCompletion(nil, error)
@@ -252,6 +256,8 @@ class VimeoConnector: NSObject
         //configure delegate callbacks for the SessionManager:
         self.uploadMetaDataManager.delegate.taskDidComplete = { session, task, error in
             DispatchQueue.main.async {
+                
+                self.uploadMetaDataManager.moment = nil
                 
                 guard error == nil else {
                     print(error!)
