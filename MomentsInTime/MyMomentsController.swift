@@ -176,6 +176,10 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool)
     {
         if justCreated {
+            
+            //for testing:
+            moment.momentStatus = .uploading
+            
             self.adapter.insertNewMoment(moment)
         }
         else {

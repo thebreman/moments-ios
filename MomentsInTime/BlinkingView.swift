@@ -48,8 +48,8 @@ class BlinkingView: UIView
     
     //MARK: Public
     
-    var circleGrowScale: CGFloat = 60
-    var blinkingScale: CGFloat = 40
+    var circleGrowScale: CGFloat = 11
+    var blinkingScale: CGFloat = 6
     
     func startBlinking()
     {
@@ -59,11 +59,6 @@ class BlinkingView: UIView
     func stopBlinking()
     {
         self.circle.layer.removeAllAnimations()
-        
-        //scale down button for the case when user taps while it is small
-        //otherwise it will move back to original size then animate away, resulting in a choppy look
-        
-        self.circle.transform = CGAffineTransform(scaleX: self.blinkingScale, y: self.blinkingScale)
     }
     
     //MARK: Utilities
@@ -72,7 +67,7 @@ class BlinkingView: UIView
     {
         self.backgroundColor = .clear
         self.addSubview(self.circle)
-        self.circle.autoCenterInSuperview()
         self.circle.transform = (CGAffineTransform(scaleX: self.circleGrowScale, y: self.circleGrowScale))
+        self.translatesAutoresizingMaskIntoConstraints = false
     }
 }

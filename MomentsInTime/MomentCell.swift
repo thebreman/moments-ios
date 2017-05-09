@@ -115,18 +115,23 @@ class MomentCell: BouncingCollectionViewCell
     
     private func configureUploadingContainer()
     {
-        if let status = self.moment?.momentStatus, status == .uploading {
+        guard let status = self.moment?.momentStatus else {
+            self.uploadContainerHeightConstraint.constant = 0.0
+            return
+        }
+        
+        if status == .uploading {
             self.uploadContainerHeightConstraint.constant = HEIGHT_UPLOAD_VIEW
-            self.uploadContainerView.isHidden = false
             self.blinkingView.startBlinking()
         }
         else {
             
             //hide the whole container and stop animating:
             self.blinkingView.stopBlinking()
-            self.uploadContainerView.isHidden = true
             self.uploadContainerHeightConstraint.constant = 0.0
         }
+        
+        print("upload container height: \(self.uploadContainerHeightConstraint.constant)")
     }
     
     private func configureLabels()
