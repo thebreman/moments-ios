@@ -49,7 +49,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     private lazy var roleFieldView: TextFieldView = {
         let view = TextFieldView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.textField.textColor = UIColor.mitText
+        view.textField.textColor = UIColor.gray
         view.textField.font = UIFont.systemFont(ofSize: 16.0)
         view.textField.placeholder = InterviewingSection.role.cellContentText
         view.textField.tintColor = UIColor.mitActionblue

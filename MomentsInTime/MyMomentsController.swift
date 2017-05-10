@@ -11,7 +11,11 @@ import RealmSwift
 import AVKit
 import AVFoundation
 
-typealias NewMomentCompletion = (Moment, _ justCreated: Bool) -> Void
+private let COPY_TITLE_MOMENT_DETAIL = "Moment"
+private let COPY_TITLE_UPLOAD_FAILED = "Oh No!"
+private let COPY_MESSAGE_UPLOAD_FAILED = "Something went wrong during the upload. Please try again and make sure the app is running and connected until the upload completes."
+
+typealias NewMomentCompletion = (Moment, _ justCreated: Bool, _ shouldUpload: Bool) -> Void
 
 class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
 {
@@ -52,6 +56,9 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         super.viewDidLoad()
         self.setupCollectionView()
         self.refresh()
+        
+        //this is temporary:
+        //self.verifyMoments()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -63,6 +70,27 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         //even though viewWilTransition: gets called on all VCs in the tab bar controller,
         //when we come back on screen the collectinView width is no longer valid.
         self.collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    private var vimeoConnector = VimeoConnector()
+    
+    private func verifyMoments()
+    {
+        for moment in self.momentList.moments {
+            print(moment)
+            
+            if moment.momentStatus == .uploading {
+                self.vimeoConnector.addMetadata(for: moment) { (moment, error) in
+                    
+                    if let momentToRefresh = moment {
+                        Moment.writeToRealm {
+                            moment?.momentStatus = .live
+                            self.adapter.refreshMoment(momentToRefresh)
+                        }
+                    }
+                }
+            }
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -82,13 +110,14 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
             if let newMomentController = segue.destination.contentViewController as? NewMomentController {
                 
-                newMomentController.completion = { moment, justCreated in
-                    self.handleNewMomentCompletion(withMoment: moment, justCreated: justCreated)
+                newMomentController.completion = { moment, justCreated, shouldSubmit in
+                    self.handleNewMomentCompletion(withMoment: moment, justCreated: justCreated, shouldSubmit: shouldSubmit)
                 }
                 
                 //pass along moment if we have one:
                 if let selectedMoment = sender as? Moment {
                     newMomentController.moment = selectedMoment
+                    newMomentController.title = COPY_TITLE_MOMENT_DETAIL
                 }
             }
             
@@ -114,7 +143,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
         
-        //for debugging:
+        //for debugging (delete all the moments then tap create button and make sure realm is empty):
         if let realm = try? Realm() {
             if realm.isEmpty {
                 print("\nrealm is empty")
@@ -173,13 +202,37 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     //MARK: Utilities
     
-    private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool)
+    private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool, shouldSubmit: Bool)
     {
         if justCreated {
             self.adapter.insertNewMoment(moment)
         }
+        
+        if shouldSubmit {
+            self.handleSubmit(forMoment: moment)
+            self.adapter.refreshMoment(moment)
+        }
         else {
             self.adapter.refreshMoment(moment)
+        }
+        
+    }
+    
+    private func handleSubmit(forMoment moment: Moment)
+    {
+        moment.upload { (_, error) in
+            
+            if error != nil {
+                
+                //inform the user that the upload failed,
+                //the moment's status is already set to .uploadFailed:
+                UIAlertController.explain(withPresenter: self, title: COPY_TITLE_UPLOAD_FAILED, message: COPY_MESSAGE_UPLOAD_FAILED)
+            }
+            
+            self.adapter.refreshMoment(moment)
+            
+            //TODO:
+            //send a local notification about uploaded video and processing time.
         }
     }
     

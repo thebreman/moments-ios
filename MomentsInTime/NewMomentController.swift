@@ -44,9 +44,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
      var moment: Moment = {
         let newMoment = Moment()
-        newMoment.subject = Subject()
-        newMoment.video = Video()
-        newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
+            newMoment.subject = Subject()
+            newMoment.video = Video()
+            newMoment.notes.append(objectsIn: NewMomentSetting.defaultNotes)
         return newMoment
     }()
     
@@ -88,7 +88,15 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     @IBAction func handleSubmit(_ sender: BouncingButton)
     {
-        print("handle Submit: \(self.moment)")
+        let justCreated = self.moment.momentStatus == .new
+        
+        if justCreated {
+            self.persistMoment()
+        }
+        
+        self.presentingViewController?.dismiss(animated: true) {
+            self.completion?(self.moment, justCreated, true)
+        }
     }
     
     @IBAction func handleCancel(_ sender: BouncingButton)
@@ -100,7 +108,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             controller.popoverPresentationController?.permittedArrowDirections = [.up]
             
             let persistAction = UIAlertAction(title: COPY_TITLE_BUTTON_SAVE_CHANGES, style: .default) { action in
-                self.persistMoment()
+                self.presentingViewController?.dismiss(animated: true) {
+                    self.persistMoment()
+                    self.completion?(self.moment, true, false)
+                }
             }
             controller.addAction(persistAction)
             
@@ -113,18 +124,23 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         else {
             self.presentingViewController?.dismiss(animated: true) {
-                self.completion?(self.moment, false)
+                self.completion?(self.moment, false, false)
             }
         }
     }
     
     private func persistMoment()
     {
-        self.moment.create()
-        self.moment.momentStatus = .local
-        self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(self.moment, true)
+        let momentToPersist = Moment()
+        momentToPersist.create() //add To Realm then add properties:
+        
+        Moment.writeToRealm {
+            momentToPersist.subject = self.moment.subject
+            momentToPersist.video = self.moment.video
+            momentToPersist.notes.append(objectsIn: self.moment.notes)
         }
+
+        self.moment = momentToPersist
     }
     
     private func deleteMoment()
@@ -326,7 +342,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     //set this in didSelectRow...
-    //make sure to nil it out after you use it in the prepareForSegue:
+    //make sure to nil it out after you use it in prepareForSegue:
     private var lastSelectedPath: IndexPath?
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
@@ -412,7 +428,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handlePlay video: Video)
     {
         guard let url = video.localPlaybackURL else { return }
-        print(url)
         self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: url)
     }
     
@@ -702,7 +717,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             video.localThumbnailImage = thumbnailImage
             
-            if let videoPreviewImage = video.localThumbnailImage, let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
+            if let videoPreviewImage = video.localThumbnailImage,
+                let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
                 Moment.writeToRealm {
                     video.localThumbnailImageURL = imageURL
                     self.updateVideoRow()

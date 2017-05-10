@@ -11,6 +11,8 @@ import PureLayout
 
 private let SPACING_TITLE_SUBTITLE: CGFloat = 2.0
 private let SPACING_LABEL_MARGIN: CGFloat = 8.0
+private let HEIGHT_UPLOAD_VIEW: CGFloat = 24.0
+
 private let _sizingCell = Bundle.main.loadNibNamed(String(describing: MomentCell.self), owner: nil, options: nil)?.first
 private var _sizingWidth = NSLayoutConstraint()
 
@@ -31,6 +33,10 @@ class MomentCell: BouncingCollectionViewCell
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var subtitleTopContraint: NSLayoutConstraint!
     @IBOutlet weak var subtitleBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var uploadContainerView: UIView!
+    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var uploadContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var blinkingView: BlinkingView!
     
     weak var delegate: MomentCellDelegate?
     
@@ -104,7 +110,30 @@ class MomentCell: BouncingCollectionViewCell
     {
         self.configureThumbnailImage()
         self.configureLabels()
+        self.configureUploadingContainer()
         self.togglePlayButton()
+    }
+    
+    private func configureUploadingContainer()
+    {
+        guard let status = self.moment?.momentStatus, status != .new else {
+            self.uploadContainerHeightConstraint.constant = 0.0
+            self.blinkingView.stopBlinking()
+            return
+        }
+
+        self.uploadContainerHeightConstraint.constant = HEIGHT_UPLOAD_VIEW
+
+        self.statusLabel.text = status.message
+        self.statusLabel.textColor = status == .uploadFailed ? UIColor.mitRed : UIColor.gray
+        
+        if let statusColor = status.color {
+            self.blinkingView.circleColor = statusColor
+        }
+        
+        if status == .uploading {
+            self.blinkingView.startBlinking()
+        }
     }
     
     private func configureLabels()

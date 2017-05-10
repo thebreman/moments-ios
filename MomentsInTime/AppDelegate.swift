@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import FacebookCore
+import Alamofire
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -69,6 +70,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         catch let error {
             print("Setting category to AVAudioSessionCategoryPlayback failed: \(error).")
         }
+    }
+    
+    func applicationWillTerminate(_ application: UIApplication)
+    {
+        print("\napp will terminate")
+        
+        //it is imperitive to stop any upload tasks,
+        //if the background session manager moment object is not nil, then we are uploading and need to fail:
+        BackgroundUploadSessionManager.shared.moment?.handleFailedUpload()
+        BackgroundUploadSessionManager.shared.session.invalidateAndCancel()
+        
+        BackgroundUploadCompleteSessionManager.shared.moment?.handleFailedUpload()
+        BackgroundUploadCompleteSessionManager.shared.session.invalidateAndCancel()
+        
+        BackgroundUploadVideoMetadataSessionManager.shared.moment?.handleFailedUpload()
+        BackgroundUploadVideoMetadataSessionManager.shared.session.invalidateAndCancel()
     }
 }
 

@@ -9,15 +9,42 @@
 import Foundation
 import RealmSwift
 
+private let COPY_STATUS_LOCAL = "In Progress"
+private let COPY_STATUS_UPLOADING = "Uploading..."
+private let COPY_STATUS_UPLOAD_FAILED = "Upload Failed! Tap to Retry"
+private let COPY_STATUS_LIVE = "Live"
+
 enum MomentStatus: Int
 {
     case new
     case local
     case uploading
     case uploadFailed
-    case processing
+    case processing //? not sure how to handle this case...
     case live
+    
+    var message: String? {
+        switch self {
+        case .local: return COPY_STATUS_LOCAL
+        case .uploading: return COPY_STATUS_UPLOADING
+        case .uploadFailed: return COPY_STATUS_UPLOAD_FAILED
+        case .live: return COPY_STATUS_LIVE
+        default: return nil
+        }
+    }
+    
+    var color: UIColor? {
+        switch self {
+        case .local: return UIColor.mitOrange
+        case .uploading: return UIColor.mitActionblue
+        case .uploadFailed: return UIColor.mitRed
+        case .live: return UIColor.mitGreen
+        default: return nil
+        }
+    }
 }
+
+typealias MomentCompletion = (Moment?, Error?) -> Void
 
 class Moment: Object
 {
@@ -35,9 +62,7 @@ class Moment: Object
             return MomentStatus(rawValue: self._momentStatus)!
         }
         set {
-            Moment.writeToRealm {
-                self._momentStatus = newValue.rawValue
-            }
+            self._momentStatus = newValue.rawValue
         }
     }
     
@@ -59,7 +84,46 @@ class Moment: Object
     
     override static func ignoredProperties() -> [String]
     {
-        return ["momentStatus"]
+        return ["momentStatus", "vimeoConnector"]
+    }
+    
+    private let vimeoConnector = VimeoConnector()
+    
+    //if successful, the newly created video URI will be passed along in completion:
+    func upload(completion: @escaping MomentCompletion)
+    {
+        //make sure we have a video
+        if let video = self.video {
+            Moment.writeToRealm {
+                self.momentStatus = .uploading
+            }
+            
+            self.vimeoConnector.create(moment: self, uploadProgress: nil, completion: { newVideo, error in
+                DispatchQueue.main.async {
+                    Moment.writeToRealm {
+                        
+                        guard error == nil && video.uri != nil else {
+                            self.momentStatus = .uploadFailed
+                            completion(nil, error)
+                            return
+                        }
+                        
+                        self.momentStatus = .live
+                        completion(self, nil)
+                    }
+                }
+            })
+        }
+    }
+    
+    func handleFailedUpload()
+    {
+        //for now just update status in case we get called from appDelegate.willTerminate()
+        //but maybe we could check if the uri is there but metadata is not
+        //then we could patch the metadata in or delete the video to be safe (maybe complete call failed)...
+        Moment.writeToRealm {
+            self.momentStatus = .uploadFailed
+        }
     }
     
     // add a new moment to realm:
@@ -72,10 +136,23 @@ class Moment: Object
                 
                 try? realm.write {
                     realm.add(self)
+                    self.momentStatus = .local
                     self.existsInRealm = true
                 }
             }
         }
+    }
+    
+    var needsMetaDataPatch: Bool {
+        
+        guard let video = self.video else { return false }
+        
+        //if we have a uri but no name return true:
+        if video.uri != nil {
+            return video.name == nil
+        }
+        
+        return false
     }
     
     func deleteLocally()
