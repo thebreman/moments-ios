@@ -10,7 +10,7 @@ import Foundation
 import RealmSwift
 
 private let COPY_STATUS_LOCAL = "In Progress"
-private let COPY_STATUS_UPLOADING = "Uploading"
+private let COPY_STATUS_UPLOADING = "Uploading..."
 private let COPY_STATUS_UPLOAD_FAILED = "Upload Failed! Tap to Retry"
 private let COPY_STATUS_LIVE = "Live"
 

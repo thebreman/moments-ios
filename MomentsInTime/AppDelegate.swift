@@ -76,7 +76,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         print("\napp will terminate")
         
-        //it is imperitive to stop any upload tasks:
+        //it is imperitive to stop any upload tasks,
+        //if the background session manager moment object is not nil, then we are uploading and need to fail:
         BackgroundUploadSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadSessionManager.shared.session.invalidateAndCancel()
         

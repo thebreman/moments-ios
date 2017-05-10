@@ -11,6 +11,7 @@ import RealmSwift
 import AVKit
 import AVFoundation
 
+private let COPY_TITLE_MOMENT_DETAIL = "Moment"
 private let COPY_TITLE_UPLOAD_FAILED = "Oh No!"
 private let COPY_MESSAGE_UPLOAD_FAILED = "Something went wrong during the upload. Please try again and make sure the app is running and connected until the upload completes."
 
@@ -116,6 +117,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                 //pass along moment if we have one:
                 if let selectedMoment = sender as? Moment {
                     newMomentController.moment = selectedMoment
+                    newMomentController.title = COPY_TITLE_MOMENT_DETAIL
                 }
             }
             
@@ -228,6 +230,9 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             }
             
             self.adapter.refreshMoment(moment)
+            
+            //TODO:
+            //send a local notification about uploaded video and processing time.
         }
     }
     
