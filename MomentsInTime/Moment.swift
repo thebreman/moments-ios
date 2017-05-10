@@ -104,7 +104,6 @@ class Moment: Object
                         
                         guard error == nil && video.uri != nil else {
                             self.momentStatus = .uploadFailed
-                            self.handleFailedUpload()
                             completion(nil, error)
                             return
                         }
