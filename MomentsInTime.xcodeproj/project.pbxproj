@@ -78,6 +78,8 @@
 		D332E6511E80BE6C00778462 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D332E64F1E80BE6C00778462 /* LaunchScreen.storyboard */; };
 		D332E65C1E80BE6C00778462 /* MomentsInTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D332E65B1E80BE6C00778462 /* MomentsInTimeTests.swift */; };
 		D332E6671E80BE6D00778462 /* MomentsInTimeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D332E6661E80BE6D00778462 /* MomentsInTimeUITests.swift */; };
+		D34A94191EC5310A008A77F1 /* default_topics.json in Resources */ = {isa = PBXBuildFile; fileRef = D34A94181EC5310A008A77F1 /* default_topics.json */; };
+		D34A941B1EC535FB008A77F1 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34A941A1EC535FB008A77F1 /* Topic.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -176,6 +178,8 @@
 		D332E6621E80BE6C00778462 /* MomentsInTimeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MomentsInTimeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D332E6661E80BE6D00778462 /* MomentsInTimeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MomentsInTimeUITests.swift; sourceTree = "<group>"; };
 		D332E6681E80BE6D00778462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D34A94181EC5310A008A77F1 /* default_topics.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_topics.json; sourceTree = "<group>"; };
+		D34A941A1EC535FB008A77F1 /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
 		FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MomentsInTime.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MomentsInTime/Pods-MomentsInTime.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -209,6 +213,11 @@
 		680BE0821E8E2D6100A5D339 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				680BE0831E8E2D7200A5D339 /* Video.swift */,
+				D34A941A1EC535FB008A77F1 /* Topic.swift */,
+				680BE0901E8E4A4B00A5D339 /* VideoList.swift */,
+				688E5D0C1EA74A2C00BF258F /* Note.swift */,
+				688E5D0A1EA7152A00BF258F /* NewMomentSetting.swift */,
 				6809C1911EB5CACB0015C69A /* Moment.swift */,
 				680BE0831E8E2D7200A5D339 /* Video.swift */,
 				6809C1931EB5E14F0015C69A /* Subject.swift */,
@@ -366,6 +375,7 @@
 		68EB8FF21E8259CB00C1B320 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D34A94181EC5310A008A77F1 /* default_topics.json */,
 				D332E6461E80BE6C00778462 /* AppDelegate.swift */,
 				D332E6521E80BE6C00778462 /* Info.plist */,
 			);
@@ -582,6 +592,7 @@
 				680929CC1EB7C90200542D1D /* VideoPreviewCell.xib in Resources */,
 				D332E64C1E80BE6C00778462 /* Main.storyboard in Resources */,
 				68780FF31EAC76EE009DBF34 /* SpinnerCell.xib in Resources */,
+				D34A94191EC5310A008A77F1 /* default_topics.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -709,6 +720,7 @@
 				68C0682A1EA0924B0037D4A3 /* NewMomentController.swift in Sources */,
 				687145A81EA082C800773E1F /* Delay.swift in Sources */,
 				680BE08D1E8E2FE700A5D339 /* BouncingButton.swift in Sources */,
+				D34A941B1EC535FB008A77F1 /* Topic.swift in Sources */,
 				680BE0841E8E2D7200A5D339 /* Video.swift in Sources */,
 				680C8A131EB32111004CDC5E /* ContainerTableViewCell.swift in Sources */,
 			);
