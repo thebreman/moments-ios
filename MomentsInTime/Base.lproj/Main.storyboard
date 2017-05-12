@@ -52,7 +52,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="My Moments" id="M2w-s3-x2y">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="Vkb-Lm-Muu">
+                        <barButtonItem key="rightBarButtonItem" id="Vkb-Lm-Muu">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="cy8-YQ-RKh" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="331" y="8" width="28" height="28"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -129,7 +129,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="New Moment" id="Q6x-tD-0m5">
-                        <barButtonItem key="leftBarButtonItem" width="1" style="plain" id="atg-Kc-Zay">
+                        <barButtonItem key="leftBarButtonItem" width="1" id="atg-Kc-Zay">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="fAU-z6-1by" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="16" y="-1" width="82" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -143,7 +143,7 @@
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="Bef-Ho-8jc">
+                        <barButtonItem key="rightBarButtonItem" id="Bef-Ho-8jc">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="bFu-MX-Ugj" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="276" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -208,7 +208,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Create a Topic" id="mCY-F3-CcA">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="BAb-il-25D">
+                        <barButtonItem key="leftBarButtonItem" id="BAb-il-25D">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zPu-rH-bon" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="16" y="-1" width="82" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -222,7 +222,7 @@
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="hiF-26-XhS">
+                        <barButtonItem key="rightBarButtonItem" id="hiF-26-XhS">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="KOz-BU-xch" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="276" y="5" width="83" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -283,7 +283,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Topic" id="72r-Xb-TMM">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="fOF-EP-7nv">
+                        <barButtonItem key="leftBarButtonItem" id="fOF-EP-7nv">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="ljM-HY-3Mq" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="16" y="-1" width="82" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -513,7 +513,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Interviewing" id="v0T-U2-QHq">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="mGg-2r-ZyE">
+                        <barButtonItem key="leftBarButtonItem" id="mGg-2r-ZyE">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="MMr-it-gEu" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="16" y="-1" width="82" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -528,7 +528,7 @@
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="pYn-pb-UWU">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="pYn-pb-UWU">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="Anw-7t-gNo" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="276" y="5" width="83" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -615,7 +615,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Note" id="v5o-CQ-JRy">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="2QB-qu-9dd">
+                        <barButtonItem key="leftBarButtonItem" id="2QB-qu-9dd">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="hfD-xo-ven" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="16" y="-1" width="82" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -630,7 +630,7 @@
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="aeB-cv-2Wh">
+                        <barButtonItem key="rightBarButtonItem" id="aeB-cv-2Wh">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="u9V-nI-C9z" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="276" y="5" width="83" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -718,7 +718,7 @@
         <image name="PlusButton" width="18" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Lb7-be-TB6"/>
         <segue reference="52o-6V-7hN"/>
+        <segue reference="o7j-gd-ln6"/>
     </inferredMetricsTieBreakers>
 </document>

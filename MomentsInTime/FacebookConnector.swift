@@ -30,7 +30,7 @@ struct MyTaggableFriendsRequest: GraphRequestProtocol
             
             //parse JSON:
             //the response ids are taggable ids that can be made in a post (place must be supplied as well)
-            print(rawResponse)
+            print(rawResponse ?? "")
         }
     }
 }

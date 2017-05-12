@@ -185,7 +185,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let topicController = segue.destination.contentViewController as? TopicController {
                 
-                var isUpdating = self.moment.topic != nil
+                let isUpdating = self.moment.topic != nil
                 
                 //set completionHandler:
                 topicController.completion = { (videoTitle, videoDescription, isCustom) in
