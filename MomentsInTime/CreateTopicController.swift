@@ -25,6 +25,8 @@ class CreateTopicController: UIViewController, UITableViewDelegate, UITableViewD
     
     var completion: TopicCompletion?
     
+    var shouldDismissTwice = false
+    
     private lazy var titleFieldView: TextFieldView = {
         let view = TextFieldView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -97,8 +99,15 @@ class CreateTopicController: UIViewController, UITableViewDelegate, UITableViewD
         
         self.tableView.endEditing(true)
         
-        self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
-            self.completion?(self.videoTitle, self.videoDescription)
+        if self.shouldDismissTwice {
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
+                self.completion?(self.videoTitle, self.videoDescription, true)
+            }
+        }
+        else {
+            self.presentingViewController?.dismiss(animated: true) {
+                self.completion?(self.videoTitle, self.videoDescription, true)
+            }
         }
     }
     

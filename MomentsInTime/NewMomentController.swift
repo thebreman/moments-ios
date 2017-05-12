@@ -33,7 +33,7 @@ private let COPY_BUTTON_TITLE_MANUAL_ENTRY = "Enter Manually"
 private let COPY_BUTTON_TITLE_FACEBOOK_ENTRY = "Select from Facebook"
 
 typealias InterviewingCompletion = (UIImage?, _ name: String?, _ role: String?) -> Void
-typealias TopicCompletion = (_ videoTitle: String, _ videoDescription: String) -> Void
+typealias TopicCompletion = (_ videoTitle: String, _ videoDescription: String, _ isCustom: Bool) -> Void
 typealias NoteCompletion = (String?) -> Void
 
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate, VideoPreviewCellDelegate
@@ -70,6 +70,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         {
             static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
             static let ENTER_INTERVIEW_TOPIC = "newMomentToTopic"
+            static let EDIT_INTERVIEW_TOPIC = "newMomentToCreateTopic"
             static let ENTER_NEW_NOTE = "newMomentToNote"
             static let PLAY_VIDEO = "newMomentToPlayer"
         }
@@ -102,10 +103,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
         if self.moment.momentStatus == .new {
+            
             let controller = UIAlertController(title: COPY_TITLE_SAVE_CHANGES, message: COPY_MESSAGE_SAVE_CHANGES, preferredStyle: .alert)
-            controller.popoverPresentationController?.sourceView = sender
-            controller.popoverPresentationController?.sourceRect = sender.bounds
-            controller.popoverPresentationController?.permittedArrowDirections = [.up]
             
             let persistAction = UIAlertAction(title: COPY_TITLE_BUTTON_SAVE_CHANGES, style: .default) { action in
                 self.presentingViewController?.dismiss(animated: true) {
@@ -138,6 +137,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             momentToPersist.subject = self.moment.subject
             momentToPersist.video = self.moment.video
             momentToPersist.notes.append(objectsIn: self.moment.notes)
+            
+            if let topic = self.moment.topic {
+                momentToPersist.topic = topic
+            }
         }
 
         self.moment = momentToPersist
@@ -180,20 +183,28 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
         case Identifiers.Segues.ENTER_INTERVIEW_TOPIC:
             
-            if let descriptionController = segue.destination.contentViewController as? CreateTopicController {
+            if let topicController = segue.destination.contentViewController as? TopicController {
                 
-                var isUpdating = false
-                
-                //pass along data if we have any:
-                if let videoTitle = self.moment.video?.name, let videoDescription = self.moment.video?.videoDescription {
-                    descriptionController.videoTitle = videoTitle
-                    descriptionController.videoDescription = videoDescription
-                    isUpdating = true
-                }
+                var isUpdating = self.moment.topic != nil
                 
                 //set completionHandler:
-                descriptionController.completion = { (videoTitle, videoDescription) in
-                    self.handleDescriptionCompletion(withVideoTitle: videoTitle, videoDescription: videoDescription, isUpdating: isUpdating)
+                topicController.completion = { (videoTitle, videoDescription, isCustom) in
+                    self.handleTopicCompletion(withVideoTitle: videoTitle, videoDescription: videoDescription, isCustom: isCustom, isUpdating: isUpdating)
+                }
+            }
+            
+        case Identifiers.Segues.EDIT_INTERVIEW_TOPIC:
+            
+            if let createTopicController = segue.destination.contentViewController as? CreateTopicController {
+                
+                //pass along data if we have any (we should):
+                if let videoTitle = self.moment.topic?.title, let videoDescription = self.moment.topic?.topicDescription {
+                    createTopicController.videoTitle = videoTitle
+                    createTopicController.videoDescription = videoDescription
+                }
+                
+                createTopicController.completion = { (videoTitle, videoDescription, isCustom) in
+                    self.handleTopicCompletion(withVideoTitle: videoTitle, videoDescription: videoDescription, isCustom: true, isUpdating: true)
                 }
             }
             
@@ -353,12 +364,18 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.lastSelectedPath = indexPath
         
         switch indexPath.section {
+            
         case NewMomentSetting.interviewing.rawValue:
             self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_SUBJECT, sender: nil)
         
         case NewMomentSetting.topic.rawValue:
-            self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_TOPIC, sender: nil)
-        
+            if let momentTopic = self.moment.topic, momentTopic.isCustom {
+                self.performSegue(withIdentifier: Identifiers.Segues.EDIT_INTERVIEW_TOPIC, sender: nil)
+            }
+            else {
+                self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_TOPIC, sender: nil)
+            }
+            
         case NewMomentSetting.notes.rawValue:
             let note = self.note(forIndexPath: indexPath)
             self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: note)
@@ -490,11 +507,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.updateUI()
     }
     
-    private func handleDescriptionCompletion(withVideoTitle videoTitle: String, videoDescription: String, isUpdating: Bool)
+    private func handleTopicCompletion(withVideoTitle videoTitle: String, videoDescription: String, isCustom: Bool, isUpdating: Bool)
     {
         Moment.writeToRealm {
             self.moment.video?.name = videoTitle
             self.moment.video?.videoDescription = videoDescription
+            self.moment.topic = Topic(title: videoTitle, description: videoDescription)
+            self.moment.topic?.isCustom = isCustom
             
             //animate TitleDescription cell in:
             let newPath = IndexPath(row: 0, section: NewMomentSetting.topic.rawValue)
@@ -569,7 +588,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleInterviewSubject(fromView sender: UIView)
     {
-        let controller = UIAlertController(title: COPY_TITLE_INTERVIEWEE_OPTIONS, message: nil, preferredStyle: .actionSheet)
+        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         controller.popoverPresentationController?.sourceView = sender
         controller.popoverPresentationController?.sourceRect = sender.bounds
         controller.popoverPresentationController?.permittedArrowDirections = [.up]

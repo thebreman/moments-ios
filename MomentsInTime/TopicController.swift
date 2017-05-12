@@ -10,7 +10,6 @@ import UIKit
 
 class TopicController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate
 {
-    @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
     
     var videoTitle = String()
@@ -37,8 +36,6 @@ class TopicController: UIViewController, UITableViewDelegate, UITableViewDataSou
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
-        self.saveButton.isEnabled = false
         self.setupTableView()
     }
     
@@ -51,6 +48,7 @@ class TopicController: UIViewController, UITableViewDelegate, UITableViewDataSou
             //pass along the completion handler:
             if let createTopicController = segue.destination.contentViewController as? CreateTopicController {
                 createTopicController.completion = self.completion
+                createTopicController.shouldDismissTwice = true
             }
         }
     }
@@ -60,10 +58,6 @@ class TopicController: UIViewController, UITableViewDelegate, UITableViewDataSou
     @IBAction func handleCancel(_ sender: BouncingButton)
     {
         self.presentingViewController?.dismiss(animated: true, completion: nil)
-    }
-    @IBAction func handleSave(_ sender: BouncingButton)
-    {
-        print("handle save")
     }
     
     //MARK: UITableViewDelegate
@@ -102,6 +96,14 @@ class TopicController: UIViewController, UITableViewDelegate, UITableViewDataSou
         default:
             let topic = self.topics[indexPath.row - 1]
             return self.topicCell(forTopic: topic)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        let selectedTopic = self.topics[indexPath.row - 1]
+        self.presentingViewController?.dismiss(animated: true) {
+            self.completion?(selectedTopic.title, selectedTopic.topicDescription, false)
         }
     }
     
@@ -146,7 +148,7 @@ class TopicController: UIViewController, UITableViewDelegate, UITableViewDataSou
     {
         if let cell = self.tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE) as? ImageTitleSubtitleCell {
             cell.titleText = topic.title
-            cell.subtitleText = topic.description
+            cell.subtitleText = topic.topicDescription
             cell.roundImage = nil
             return cell
         }

@@ -175,6 +175,7 @@
                         <segue destination="9RF-7C-mDN" kind="presentation" identifier="newMomentToNote" id="NOG-fl-7Zg"/>
                         <segue destination="e3s-4x-RTz" kind="presentation" identifier="newMomentToPlayer" id="Lb7-be-TB6"/>
                         <segue destination="HhE-lt-dH3" kind="presentation" identifier="newMomentToTopic" id="7eG-Fs-ZNX"/>
+                        <segue destination="eLY-2x-A2x" kind="presentation" identifier="newMomentToCreateTopic" id="Q56-P5-VKI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="di5-tN-qqt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -253,7 +254,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y9b-tJ-VdU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8236" y="967"/>
+            <point key="canvasLocation" x="8177" y="1094"/>
         </scene>
         <!--Topic-->
         <scene sceneID="hkA-NF-lKX">
@@ -267,9 +268,10 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="XSv-fL-YHp">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="XSv-fL-YHp">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -295,40 +297,15 @@
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="Eou-G8-79r">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="aNC-iG-C6h" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
-                                <rect key="frame" x="276" y="5" width="83" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <state key="normal" title="Save">
-                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="disabled">
-                                    <color key="titleColor" white="0.69999999999999996" alpha="0.80249357880000005" colorSpace="calibratedWhite"/>
-                                </state>
-                                <state key="selected">
-                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <state key="highlighted">
-                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="handleSave:" destination="lZp-vR-PqC" eventType="touchUpInside" id="PSz-DB-rz3"/>
-                                    <action selector="handleSubmit:" destination="XSC-mP-BNu" eventType="touchUpInside" id="60q-b7-udi"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="saveButton" destination="aNC-iG-C6h" id="7VW-lj-8u9"/>
                         <outlet property="tableView" destination="XSv-fL-YHp" id="jwa-7T-FwN"/>
                         <segue destination="eLY-2x-A2x" kind="presentation" identifier="createTopic" id="52o-6V-7hN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11b-FG-Fil" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6289" y="967"/>
+            <point key="canvasLocation" x="6289" y="615"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="RGx-Nt-bJ5">
@@ -507,7 +484,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HQM-nh-Zk7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5350" y="193"/>
+            <point key="canvasLocation" x="5350" y="-445"/>
         </scene>
         <!--Interviewing-->
         <scene sceneID="8dJ-2c-iIa">
@@ -583,7 +560,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BF5-sq-Qo9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6289" y="193"/>
+            <point key="canvasLocation" x="6289" y="-446"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Y92-3o-C5a">
@@ -606,7 +583,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VVp-P0-Fo7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7298" y="967"/>
+            <point key="canvasLocation" x="7194" y="1095"/>
         </scene>
         <!--Note-->
         <scene sceneID="cfJ-U8-CIV">
@@ -686,7 +663,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sci-6F-vfs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6289" y="1770"/>
+            <point key="canvasLocation" x="6289" y="1818"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="koX-No-pxd">
@@ -709,14 +686,14 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9xb-2G-kJB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5350" y="1770"/>
+            <point key="canvasLocation" x="5350" y="1818"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FSq-Oi-CU5">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HhE-lt-dH3" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="g4R-KP-vQS">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="g4R-KP-vQS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -732,7 +709,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TGq-zJ-EAd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5350" y="967"/>
+            <point key="canvasLocation" x="5350" y="615"/>
         </scene>
     </scenes>
     <resources>
@@ -742,5 +719,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Lb7-be-TB6"/>
+        <segue reference="52o-6V-7hN"/>
     </inferredMetricsTieBreakers>
 </document>
