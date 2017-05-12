@@ -175,7 +175,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
     {
-        UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: "Moment") { action in
+        UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: "Moment") { action in
             self.adapter.removeMoment(moment)
             moment.deleteLocally()
         }

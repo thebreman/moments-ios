@@ -406,7 +406,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         guard let note = noteCell.note else { return }
         
-        UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: COPY_TITLE_NOTE_OPTIONS) { action in
+        UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: COPY_TITLE_NOTE_OPTIONS) { action in
             self.deleteNote(note)
         }
     }
@@ -435,7 +435,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         guard let video = videoPreviewCell.video else { return }
         
-        UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: COPY_TITLE_VIDEO_OPTIONS) { action in
+        UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: COPY_TITLE_VIDEO_OPTIONS) { action in
             self.deleteVideo(video)
         }
     }
