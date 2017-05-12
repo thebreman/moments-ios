@@ -50,6 +50,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         static let IDENTIFIER_SEGUE_NEW_MOMENT = "NewMoment"
         static let IDENTIFIER_SEGUE_PLAYER = "myMomentsToPlayer"
     }
+    
+    private let vimeoConnector = VimeoConnector()
 
     override func viewDidLoad()
     {
@@ -57,8 +59,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         self.setupCollectionView()
         self.refresh()
         
-        //this is temporary:
-        //self.verifyMoments()
+        //this is temporary?:
+        self.verifyMoments()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -70,27 +72,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         //even though viewWilTransition: gets called on all VCs in the tab bar controller,
         //when we come back on screen the collectinView width is no longer valid.
         self.collectionView.collectionViewLayout.invalidateLayout()
-    }
-    
-    private var vimeoConnector = VimeoConnector()
-    
-    private func verifyMoments()
-    {
-        for moment in self.momentList.moments {
-            print(moment)
-            
-            if moment.momentStatus == .uploading {
-                self.vimeoConnector.addMetadata(for: moment) { (moment, error) in
-                    
-                    if let momentToRefresh = moment {
-                        Moment.writeToRealm {
-                            moment?.momentStatus = .live
-                            self.adapter.refreshMoment(momentToRefresh)
-                        }
-                    }
-                }
-            }
-        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -241,5 +222,56 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         self.adapter.moments = self.momentList.getLocalMoments()
         self.adapter.refreshData(shouldReload: true)
         self.refreshControl.endRefreshing()
+    }
+    
+    private func verifyMoments()
+    {
+        for moment in self.momentList.moments {
+            
+            switch moment.momentStatus {
+                
+            case .uploading:
+                if moment.video?.uri != nil {
+                    moment.handleSuccessUpload()
+                    self.verifyMetadata(forMoment: moment)
+                }
+                else if BackgroundUploadSessionManager.shared.moment == nil && BackgroundUploadCompleteSessionManager.shared.moment == nil && BackgroundUploadVideoMetadataSessionManager.shared.moment == nil {
+                    moment.handleFailedUpload()
+                }
+                
+            case .live:
+                self.verifyMetadata(forMoment: moment)
+                
+            default:
+                break
+            }
+            
+            self.adapter.refreshMoment(moment)
+        }
+    }
+    
+    private func verifyMetadata(forMoment moment: Moment)
+    {
+        guard let video = moment.video else { return }
+        
+        if video.uri != nil {
+            self.vimeoConnector.getRemoteVideo(video) { (fetchedVideo, error) in
+                
+                if let newVideo = fetchedVideo {
+                    
+                    //check for metadata and add if necessary:
+                    if newVideo.name == nil || newVideo.name == "Untitled" || newVideo.name == "untitled" || newVideo.videoDescription == nil {
+                        self.vimeoConnector.addMetadata(for: moment) { (newMoment, error) in
+                            if error != nil { print(error) }
+                        }
+                    }
+                }
+                else {
+                    
+                    // video does not exist so what do we do with the local one?
+                    print(error)
+                }
+            }
+        }
     }
 }

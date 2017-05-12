@@ -92,6 +92,13 @@ class Moment: Object
         }
     }
     
+    func handleSuccessUpload()
+    {
+        Moment.writeToRealm {
+            self.momentStatus = .live
+        }
+    }
+    
     // add a new moment to realm:
     func create()
     {

@@ -14,6 +14,8 @@ import FacebookCore
 import FacebookLogin
 import FacebookShare
 
+private let REQUIRE_FB_LOGIN_ON_LAUNCH = false
+
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
@@ -59,8 +61,10 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.setupCollectionView()
         self.fetchCommunityMoments()
         
-        self.checkForUser {
-            print("We have a user!")
+        if REQUIRE_FB_LOGIN_ON_LAUNCH {
+            self.checkForUser {
+                print("We have a user!")
+            }
         }
     }
     
