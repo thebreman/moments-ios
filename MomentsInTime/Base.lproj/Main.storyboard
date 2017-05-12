@@ -184,7 +184,7 @@
         <!--Create a Topic-->
         <scene sceneID="QiY-GO-5Kb">
             <objects>
-                <viewController id="Lvh-lQ-yEb" customClass="DescriptionController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Lvh-lQ-yEb" customClass="CreateTopicController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WVI-sw-M4W"/>
                         <viewControllerLayoutGuide type="bottom" id="qe9-n0-jKR"/>
@@ -217,8 +217,7 @@
                                     <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="handleCancel:" destination="XSC-mP-BNu" eventType="touchUpInside" id="0PS-IF-61A"/>
-                                    <action selector="handleCancel:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="bau-Hr-eRO"/>
+                                    <action selector="handleCancel:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="pNN-9n-YHT"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -241,15 +240,15 @@
                                     <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="handleSave:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="zRw-u4-dcb"/>
+                                    <action selector="handleSave:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="3tY-mw-fe3"/>
                                     <action selector="handleSubmit:" destination="XSC-mP-BNu" eventType="touchUpInside" id="5Bt-Jd-e2c"/>
                                 </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="saveButton" destination="KOz-BU-xch" id="xM5-Ft-XCC"/>
-                        <outlet property="tableView" destination="RHO-Bm-5FM" id="PpV-Cl-KpM"/>
+                        <outlet property="saveButton" destination="KOz-BU-xch" id="EzT-rZ-Ykw"/>
+                        <outlet property="tableView" destination="RHO-Bm-5FM" id="zCO-CS-3Up"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y9b-tJ-VdU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -292,9 +291,7 @@
                                     <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="handleCancel:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="4Uo-Nr-Wnu"/>
                                     <action selector="handleCancel:" destination="lZp-vR-PqC" eventType="touchUpInside" id="aZq-lA-kBn"/>
-                                    <action selector="handleCancel:" destination="XSC-mP-BNu" eventType="touchUpInside" id="qlD-2f-ESL"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -317,7 +314,6 @@
                                     <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="handleSave:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="58L-H1-ay6"/>
                                     <action selector="handleSave:" destination="lZp-vR-PqC" eventType="touchUpInside" id="PSz-DB-rz3"/>
                                     <action selector="handleSubmit:" destination="XSC-mP-BNu" eventType="touchUpInside" id="60q-b7-udi"/>
                                 </connections>
@@ -325,6 +321,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="saveButton" destination="aNC-iG-C6h" id="7VW-lj-8u9"/>
+                        <outlet property="tableView" destination="XSv-fL-YHp" id="jwa-7T-FwN"/>
                         <segue destination="eLY-2x-A2x" kind="presentation" identifier="createTopic" id="52o-6V-7hN"/>
                     </connections>
                 </viewController>
@@ -548,7 +546,6 @@
                                     <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="handleCancel:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="A5s-f8-Qe7"/>
                                     <action selector="handleCancel:" destination="XSC-mP-BNu" eventType="touchUpInside" id="S2U-1C-iLC"/>
                                     <action selector="handleCancel:" destination="iAH-9Z-SNQ" eventType="touchUpInside" id="wvN-BC-9Vw"/>
                                 </connections>
@@ -574,7 +571,6 @@
                                 </state>
                                 <connections>
                                     <action selector="handleSave:" destination="iAH-9Z-SNQ" eventType="touchUpInside" id="OTU-Gh-atl"/>
-                                    <action selector="handleSave:" destination="Lvh-lQ-yEb" eventType="touchUpInside" id="smo-FI-Jf6"/>
                                     <action selector="handleSubmit:" destination="XSC-mP-BNu" eventType="touchUpInside" id="3uv-eI-5gp"/>
                                 </connections>
                             </button>

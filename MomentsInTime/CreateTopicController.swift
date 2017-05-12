@@ -11,11 +11,11 @@ import UITextView_Placeholder
 import PureLayout
 
 private let MAX_CHARACTERS_DESCRIPTION = 300
-private let MIN_CHARACTERS_DESCRIPTION = 20
+private let MIN_CHARACTERS_DESCRIPTION = 10
 private let MAX_CHARACTERS_TITLE = 100
 private let MIN_CHARACTERS_TITLE = 10
 
-class DescriptionController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, KeyboardMover
+class CreateTopicController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, KeyboardMover
 {
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
@@ -31,7 +31,7 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         view.textField.translatesAutoresizingMaskIntoConstraints = false
         view.textField.textColor = UIColor.mitText
         view.textField.font = UIFont.systemFont(ofSize: 16.0)
-        view.textField.placeholder = DescriptionSection.title.placeholderText
+        view.textField.placeholder = CreateTopicSection.title.placeholderText
         view.textField.tintColor = UIColor.mitActionblue
         view.textField.delegate = self
         view.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
@@ -48,7 +48,7 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textView.textColor = UIColor.gray
         view.textView.font = UIFont.systemFont(ofSize: 16.0)
-        view.textView.placeholder = DescriptionSection.description.placeholderText
+        view.textView.placeholder = CreateTopicSection.description.placeholderText
         view.textView.tintColor = UIColor.mitActionblue
         view.textView.delegate = self
         NSLayoutConstraint.autoSetPriority(999, forConstraints: {
@@ -97,7 +97,7 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
         
         self.tableView.endEditing(true)
         
-        self.presentingViewController?.dismiss(animated: true) {
+        self.presentingViewController?.presentingViewController?.dismiss(animated: true) {
             self.completion?(self.videoTitle, self.videoDescription)
         }
     }
@@ -115,16 +115,16 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
      * section to visible, we also scroll the appropriate section to visible anytime one of them begins editing...
      */
     
-    private var currentEditingSection = DescriptionSection.title //title starts off as the first responder
+    private var currentEditingSection = CreateTopicSection.title //title starts off as the first responder
     
     //MARK: UITextViewDelegate
     
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool
     {
-        self.currentEditingSection = DescriptionSection.description
+        self.currentEditingSection = CreateTopicSection.description
         
         //scroll textView cell to visible:
-        let path = IndexPath(row: 0, section: DescriptionSection.description.rawValue)
+        let path = IndexPath(row: 0, section: CreateTopicSection.description.rawValue)
         self.tableView.scrollToRow(at: path, at: UITableViewScrollPosition.top, animated: true)
         
         return true
@@ -145,10 +145,10 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool
     {
-        self.currentEditingSection = DescriptionSection.title
+        self.currentEditingSection = CreateTopicSection.title
        
         //scroll textView cell to visible:
-        let path = IndexPath(row: 0, section: DescriptionSection.title.rawValue)
+        let path = IndexPath(row: 0, section: CreateTopicSection.title.rawValue)
         self.tableView.scrollToRow(at: path, at: UITableViewScrollPosition.top, animated: true)
         
         return true
@@ -180,8 +180,8 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
             var pathToScroll = IndexPath()
             
             switch self.currentEditingSection {
-            case .title: pathToScroll = IndexPath(row: 0, section: DescriptionSection.title.rawValue)
-            case .description: pathToScroll = IndexPath(row: 0, section: DescriptionSection.description.rawValue)
+            case .title: pathToScroll = IndexPath(row: 0, section: CreateTopicSection.title.rawValue)
+            case .description: pathToScroll = IndexPath(row: 0, section: CreateTopicSection.description.rawValue)
             }
             
             self.tableView.scrollToRow(at: pathToScroll, at: UITableViewScrollPosition.top, animated: false)
@@ -212,13 +212,13 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     
     func numberOfSections(in tableView: UITableView) -> Int
     {
-        return DescriptionSection.titles.count
+        return CreateTopicSection.titles.count
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
     {
         if let sectionHeaderView = tableView.dequeueReusableHeaderFooterView(withIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER) as? MITSectionHeaderView {
-            sectionHeaderView.title = DescriptionSection.titles[section]
+            sectionHeaderView.title = CreateTopicSection.titles[section]
             return sectionHeaderView
         }
         
@@ -235,10 +235,10 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     {
         switch indexPath.section {
             
-        case DescriptionSection.title.rawValue:
+        case CreateTopicSection.title.rawValue:
             return self.containerCell(forView: self.titleFieldView, withTableView: tableView)
             
-        case DescriptionSection.description.rawValue:
+        case CreateTopicSection.description.rawValue:
             return self.containerCell(forView: self.descriptionFieldView, withTableView: tableView)
             
         default:

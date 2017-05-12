@@ -13,7 +13,7 @@ private let COPY_TITLE_DESCRIPTION = "Question/Theme"
 private let COPY_TEXT_PLACEHOLDER_TITLE_FIELD = "Enter headline"
 private let COPY_TEXT_PLACEHOLDER_DESCRIPTION_FIELD = "Enter question/theme"
 
-enum DescriptionSection: Int
+enum CreateTopicSection: Int
 {
     case title = 0
     case description = 1

@@ -180,7 +180,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
         case Identifiers.Segues.ENTER_INTERVIEW_TOPIC:
             
-            if let descriptionController = segue.destination.contentViewController as? DescriptionController {
+            if let descriptionController = segue.destination.contentViewController as? CreateTopicController {
                 
                 var isUpdating = false
                 
