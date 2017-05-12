@@ -234,30 +234,36 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                 
             case .uploading:
                 if moment.video?.uri != nil {
+                    print("video has uri, changing status from uploading to live")
                     moment.handleSuccessUpload()
-                    self.verifyMetadata(forMoment: moment, completion: completion)
+                    self.verifyMetadata(forMoment: moment)
                 }
-                else if BackgroundUploadSessionManager.shared.moment == nil && BackgroundUploadCompleteSessionManager.shared.moment == nil && BackgroundUploadVideoMetadataSessionManager.shared.moment == nil {
+                else if BackgroundUploadSessionManager.shared.moment == nil
+                    && BackgroundUploadCompleteSessionManager.shared.moment == nil
+                    && BackgroundUploadVideoMetadataSessionManager.shared.moment == nil {
+                    print("moment is uploading but no upload is going on so changing status to uploadFailed: \(moment)")
                     moment.handleFailedUpload()
+                    return
                 }
                 
             case .live:
-                self.verifyMetadata(forMoment: moment, completion: completion)
+                self.verifyMetadata(forMoment: moment)
                 
             default:
+                print("status was neither uploading nor live")
                 break
             }
             
             self.adapter.refreshMoment(moment)
         }
+        
+        //completion after inspecting all the moments:
+        completion?()
     }
     
-    private func verifyMetadata(forMoment moment: Moment, completion: (() -> Void)?)
+    private func verifyMetadata(forMoment moment: Moment)
     {
-        guard let video = moment.video else {
-            completion?()
-            return
-        }
+        guard let video = moment.video else { return }
         
         if video.uri != nil {
             self.vimeoConnector.getRemoteVideo(video) { (fetchedVideo, error) in
@@ -268,7 +274,10 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                     print(newVideo.videoDescription ?? "no video description")
                     
                     //check for metadata and add if necessary:
-                    if newVideo.name == nil || newVideo.name == "Untitled" || newVideo.name == "untitled" || newVideo.videoDescription == nil {
+                    if newVideo.name == nil
+                        || newVideo.name == "Untitled"
+                        || newVideo.name == "untitled"
+                        || newVideo.videoDescription == nil {
                         
                         print("\nadding metadata in verify moments")
                         
@@ -282,11 +291,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                     // video does not exist so what do we do with the local one?
                     print(error ?? "no error")
                 }
-                
-                completion?()
             }
         }
-        
-        completion?()
     }
 }

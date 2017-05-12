@@ -143,7 +143,12 @@ class VimeoConnector: NSObject
      */
     func create(moment: Moment, uploadProgress: UploadProgressClosure?, completion: @escaping UploadCompletion)
     {
-        guard VimeoConnector.isUploading == false else { return }
+        guard VimeoConnector.isUploading == false else {
+            print("already uploading")
+            let error = NSError(domain: "VimeoConnector.create", code: 400, userInfo: [NSLocalizedDescriptionKey: "Already uploading another video"])
+            completion(nil, error)
+            return
+        }
         
         self.request(router: VideoRouter.create) { (response, error) in
             
@@ -178,7 +183,6 @@ class VimeoConnector: NSObject
     
     //MARK: Private
     
-    //we need to retain these:
     private var uploadManager = BackgroundUploadSessionManager.shared
     private var uploadCompleteManager = BackgroundUploadCompleteSessionManager.shared
     private var uploadMetaDataManager = BackgroundUploadVideoMetadataSessionManager.shared
