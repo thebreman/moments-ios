@@ -33,7 +33,7 @@ private let COPY_BUTTON_TITLE_MANUAL_ENTRY = "Enter Manually"
 private let COPY_BUTTON_TITLE_FACEBOOK_ENTRY = "Select from Facebook"
 
 typealias InterviewingCompletion = (UIImage?, _ name: String?, _ role: String?) -> Void
-typealias DescriptionCompletion = (_ videoTitle: String, _ videoDescription: String) -> Void
+typealias TopicCompletion = (_ videoTitle: String, _ videoDescription: String) -> Void
 typealias NoteCompletion = (String?) -> Void
 
 class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate, VideoPreviewCellDelegate
@@ -69,7 +69,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         enum Segues
         {
             static let ENTER_INTERVIEW_SUBJECT = "newMomentToInterviewing"
-            static let ENTER_INTERVIEW_DESCRIPTION = "newMomentToDescription"
+            static let ENTER_INTERVIEW_TOPIC = "newMomentToTopic"
             static let ENTER_NEW_NOTE = "newMomentToNote"
             static let PLAY_VIDEO = "newMomentToPlayer"
         }
@@ -178,7 +178,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
             }
             
-        case Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION:
+        case Identifiers.Segues.ENTER_INTERVIEW_TOPIC:
             
             if let descriptionController = segue.destination.contentViewController as? DescriptionController {
                 
@@ -308,7 +308,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             return self.activeLinkCell(forSetting: setting, withTableView: tableView)
             
-        case NewMomentSetting.description.rawValue:
+        case NewMomentSetting.topic.rawValue:
             
             if let videoName = self.moment.video?.name, let videoDescription = self.moment.video?.videoDescription {
                 return self.descriptionCell(forName: videoName, description: videoDescription, withTableView: tableView)
@@ -356,8 +356,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         case NewMomentSetting.interviewing.rawValue:
             self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_SUBJECT, sender: nil)
         
-        case NewMomentSetting.description.rawValue:
-            self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION, sender: nil)
+        case NewMomentSetting.topic.rawValue:
+            self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_TOPIC, sender: nil)
         
         case NewMomentSetting.notes.rawValue:
             let note = self.note(forIndexPath: indexPath)
@@ -376,8 +376,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         case COPY_SELECT_INTERVIEW_SUBJECT:
             self.handleInterviewSubject(fromView: activeLinkCell.activeLabel)
             
-        case COPY_CREATE_DESCRIPTION:
-            self.handleInterviewDescription()
+        case COPY_CREATE_TOPIC:
+            self.handleInterviewTopic()
             
         case COPY_LINK_START_FILMING:
             self.handleVideoCamera()
@@ -497,7 +497,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             self.moment.video?.videoDescription = videoDescription
             
             //animate TitleDescription cell in:
-            let newPath = IndexPath(row: 0, section: NewMomentSetting.description.rawValue)
+            let newPath = IndexPath(row: 0, section: NewMomentSetting.topic.rawValue)
             
             if isUpdating {
                 self.tableView.updateRows(forIndexPaths: [newPath])
@@ -601,9 +601,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_SUBJECT, sender: nil)
     }
     
-    private func handleInterviewDescription()
+    private func handleInterviewTopic()
     {
-        self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_DESCRIPTION, sender: nil)
+        self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_TOPIC, sender: nil)
     }
     
     private func handleNoteCreation()

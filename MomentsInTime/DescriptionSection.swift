@@ -8,8 +8,8 @@
 
 import Foundation
 
-private let COPY_TEXT_PLACEHOLDER_TITLE_FIELD = "Enter title"
-private let COPY_TEXT_PLACEHOLDER_DESCRIPTION_FIELD = "Enter description"
+private let COPY_TEXT_PLACEHOLDER_TITLE_FIELD = "Headline (short and sweet)"
+private let COPY_TEXT_PLACEHOLDER_DESCRIPTION_FIELD = "Question/Theme"
 
 enum DescriptionSection: Int
 {

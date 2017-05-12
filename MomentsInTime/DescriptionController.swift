@@ -23,7 +23,7 @@ class DescriptionController: UIViewController, UITableViewDelegate, UITableViewD
     var videoTitle = String()
     var videoDescription = String()
     
-    var completion: DescriptionCompletion?
+    var completion: TopicCompletion?
     
     private lazy var titleFieldView: TextFieldView = {
         let view = TextFieldView()

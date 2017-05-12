@@ -9,7 +9,7 @@
 import Foundation
 
 let COPY_SELECT_INTERVIEW_SUBJECT = "Select a special person to interview"
-let COPY_CREATE_DESCRIPTION = "Add a title and description"
+let COPY_CREATE_TOPIC = "Select a topic"
 let COPY_CREATE_VIDEO = "Start filming or upload a video"
 let COPY_CREATE_NOTE = "Add a new note"
 
@@ -19,12 +19,12 @@ let COPY_LINK_UPLOAD_VIDEO = "upload a video"
 enum NewMomentSetting: Int
 {
     case interviewing = 0
-    case description = 1
+    case topic = 1
     case video = 2
     case notes = 3
     
     static var titles: [String] {
-        return ["Interviewing", "Description", "Video", "Notes"]
+        return ["Interviewing", "Topic", "Video", "Notes"]
     }
     
     static var defaultNotes: [Note] {
@@ -42,7 +42,7 @@ enum NewMomentSetting: Int
     var text: String {
         switch self {
         case .interviewing: return COPY_SELECT_INTERVIEW_SUBJECT
-        case .description: return COPY_CREATE_DESCRIPTION
+        case .topic: return COPY_CREATE_TOPIC
         case .video: return COPY_CREATE_VIDEO
         case .notes: return COPY_CREATE_NOTE
         }
@@ -51,7 +51,7 @@ enum NewMomentSetting: Int
     var activeLinks: [String] {
         switch self {
         case .interviewing: return [COPY_SELECT_INTERVIEW_SUBJECT]
-        case .description: return [COPY_CREATE_DESCRIPTION]
+        case .topic: return [COPY_CREATE_TOPIC]
         case .video: return [COPY_LINK_START_FILMING, COPY_LINK_UPLOAD_VIDEO]
         case .notes: return [COPY_CREATE_NOTE]
         }

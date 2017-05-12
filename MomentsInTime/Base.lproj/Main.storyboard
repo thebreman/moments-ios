@@ -172,7 +172,7 @@
                         <outlet property="submitButton" destination="bFu-MX-Ugj" id="Ksm-aP-c7B"/>
                         <outlet property="tableView" destination="TYd-KS-ATk" id="zWp-4g-Q6y"/>
                         <segue destination="tMY-Ml-CZK" kind="presentation" identifier="newMomentToInterviewing" id="8pJ-IV-bfk"/>
-                        <segue destination="eLY-2x-A2x" kind="presentation" identifier="newMomentToDescription" id="sBM-Up-TOI"/>
+                        <segue destination="eLY-2x-A2x" kind="presentation" identifier="newMomentToTopic" id="sBM-Up-TOI"/>
                         <segue destination="9RF-7C-mDN" kind="presentation" identifier="newMomentToNote" id="NOG-fl-7Zg"/>
                         <segue destination="e3s-4x-RTz" kind="presentation" identifier="newMomentToPlayer" id="Lb7-be-TB6"/>
                     </connections>
@@ -181,7 +181,7 @@
             </objects>
             <point key="canvasLocation" x="3854" y="1245"/>
         </scene>
-        <!--Description-->
+        <!--Topic-->
         <scene sceneID="QiY-GO-5Kb">
             <objects>
                 <viewController id="Lvh-lQ-yEb" customClass="DescriptionController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
@@ -206,7 +206,7 @@
                             <constraint firstAttribute="trailing" secondItem="RHO-Bm-5FM" secondAttribute="trailing" id="f5X-aH-5w3"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Description" id="mCY-F3-CcA">
+                    <navigationItem key="navigationItem" title="Topic" id="mCY-F3-CcA">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="BAb-il-25D">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zPu-rH-bon" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="16" y="-1" width="82" height="45"/>
