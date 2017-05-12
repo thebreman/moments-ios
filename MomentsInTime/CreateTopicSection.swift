@@ -8,16 +8,18 @@
 
 import Foundation
 
-private let COPY_TEXT_PLACEHOLDER_TITLE_FIELD = "Enter title"
-private let COPY_TEXT_PLACEHOLDER_DESCRIPTION_FIELD = "Enter description"
+private let COPY_TITLE_TITLE = "Headline (short and sweet)"
+private let COPY_TITLE_DESCRIPTION = "Question/Theme"
+private let COPY_TEXT_PLACEHOLDER_TITLE_FIELD = "Enter headline"
+private let COPY_TEXT_PLACEHOLDER_DESCRIPTION_FIELD = "Enter question/theme"
 
-enum DescriptionSection: Int
+enum CreateTopicSection: Int
 {
     case title = 0
     case description = 1
     
     static var titles: [String] {
-        return ["Title", "Description"]
+        return [COPY_TITLE_TITLE, COPY_TITLE_DESCRIPTION]
     }
     
     var placeholderText: String {

@@ -107,6 +107,8 @@ class Video: Object
     {
         let valid = (self.uri != nil
             && self.name != nil
+            && self.name != "untitled"
+            && self.name != "Untitled"
             && self.thumbnailImageURL != nil
         )
         

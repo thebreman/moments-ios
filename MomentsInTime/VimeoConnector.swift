@@ -78,6 +78,35 @@ class VimeoConnector: NSObject
     }
     
     /**
+     * fetches a video from video uri, passes along name, and description in completion:
+     */
+    func getRemoteVideo(_ video: Video, completion: @escaping (Video?, Error?) -> Void)
+    {
+        self.request(router: VideoRouter.read(video)) { (response, error) in
+            
+            guard error == nil else {
+                completion(nil, error)
+                return
+            }
+            
+            if let result = response as? [String: Any], let name = result["name"] as? String,
+                let description = result["description"] as? String {
+                
+                let fetchedVideo = Video()
+                fetchedVideo.name = name
+                fetchedVideo.videoDescription = description
+                
+                completion(fetchedVideo, nil)
+                return
+            }
+            
+            //catch all parsing errors:
+            let error = NSError(domain: "VimeoConnector.getRemoteVideo", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
+            completion(nil, error)
+        }
+    }
+    
+    /**
      * Fetches playback urlString for specified Video, urlString passed along in the completion handler:
      * AuthToken must be for a Pro Account in order for the response to contain the correct fields...
      */
@@ -104,11 +133,18 @@ class VimeoConnector: NSObject
         }
     }
     
+    //we can only allow 1 upload at a time b/c of shared background session managers...
+    private static var isUploading: Bool {
+        return BackgroundUploadSessionManager.shared.moment == nil || BackgroundUploadCompleteSessionManager.shared.moment == nil || BackgroundUploadVideoMetadataSessionManager.shared.moment == nil
+    }
+    
     /**
      * Upon successful upload, the new video will be populated with its new Vimeo URI and will be passed along in the completion handler:
      */
     func create(moment: Moment, uploadProgress: UploadProgressClosure?, completion: @escaping UploadCompletion)
     {
+        guard VimeoConnector.isUploading == false else { return }
+        
         self.request(router: VideoRouter.create) { (response, error) in
             
             guard error == nil else {
