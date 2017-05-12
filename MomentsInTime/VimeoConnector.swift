@@ -133,11 +133,18 @@ class VimeoConnector: NSObject
         }
     }
     
+    //we can only allow 1 upload at a time b/c of shared background session managers...
+    private static var isUploading: Bool {
+        return BackgroundUploadSessionManager.shared.moment == nil || BackgroundUploadCompleteSessionManager.shared.moment == nil || BackgroundUploadVideoMetadataSessionManager.shared.moment == nil
+    }
+    
     /**
      * Upon successful upload, the new video will be populated with its new Vimeo URI and will be passed along in the completion handler:
      */
     func create(moment: Moment, uploadProgress: UploadProgressClosure?, completion: @escaping UploadCompletion)
     {
+        guard VimeoConnector.isUploading == false else { return }
+        
         self.request(router: VideoRouter.create) { (response, error) in
             
             guard error == nil else {

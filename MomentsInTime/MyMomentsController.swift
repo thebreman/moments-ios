@@ -58,9 +58,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         super.viewDidLoad()
         self.setupCollectionView()
         self.refresh()
-        
-        //this is temporary?:
-        self.verifyMoments()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -221,10 +218,15 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         self.adapter.moments = self.momentList.getLocalMoments()
         self.adapter.refreshData(shouldReload: true)
-        self.refreshControl.endRefreshing()
+        
+        //verification temporary?
+        self.verifyMoments {
+            self.refreshControl.endRefreshing()
+
+        }
     }
     
-    private func verifyMoments()
+    private func verifyMoments(completion: (() -> Void)?)
     {
         for moment in self.momentList.moments {
             
@@ -233,14 +235,14 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             case .uploading:
                 if moment.video?.uri != nil {
                     moment.handleSuccessUpload()
-                    self.verifyMetadata(forMoment: moment)
+                    self.verifyMetadata(forMoment: moment, completion: completion)
                 }
                 else if BackgroundUploadSessionManager.shared.moment == nil && BackgroundUploadCompleteSessionManager.shared.moment == nil && BackgroundUploadVideoMetadataSessionManager.shared.moment == nil {
                     moment.handleFailedUpload()
                 }
                 
             case .live:
-                self.verifyMetadata(forMoment: moment)
+                self.verifyMetadata(forMoment: moment, completion: completion)
                 
             default:
                 break
@@ -250,28 +252,41 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         }
     }
     
-    private func verifyMetadata(forMoment moment: Moment)
+    private func verifyMetadata(forMoment moment: Moment, completion: (() -> Void)?)
     {
-        guard let video = moment.video else { return }
+        guard let video = moment.video else {
+            completion?()
+            return
+        }
         
         if video.uri != nil {
             self.vimeoConnector.getRemoteVideo(video) { (fetchedVideo, error) in
                 
                 if let newVideo = fetchedVideo {
                     
+                    print(newVideo.name ?? "no video name")
+                    print(newVideo.videoDescription ?? "no video description")
+                    
                     //check for metadata and add if necessary:
                     if newVideo.name == nil || newVideo.name == "Untitled" || newVideo.name == "untitled" || newVideo.videoDescription == nil {
+                        
+                        print("\nadding metadata in verify moments")
+                        
                         self.vimeoConnector.addMetadata(for: moment) { (newMoment, error) in
-                            if error != nil { print(error) }
+                            if error != nil { print(error ?? "no error") }
                         }
                     }
                 }
                 else {
                     
                     // video does not exist so what do we do with the local one?
-                    print(error)
+                    print(error ?? "no error")
                 }
+                
+                completion?()
             }
         }
+        
+        completion?()
     }
 }
