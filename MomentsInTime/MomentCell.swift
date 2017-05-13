@@ -28,6 +28,7 @@ class MomentCell: BouncingCollectionViewCell
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var thumbnailImageView: CachedImageView!
     @IBOutlet weak var playButton: BouncingButton!
+    @IBOutlet weak var shareButton: BouncingButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var titleTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var subtitleLabel: UILabel!
@@ -52,8 +53,6 @@ class MomentCell: BouncingCollectionViewCell
         self.isSelectable = false
         self.drawShadow()
         self.containerView.layer.masksToBounds = true
-        self.contentView.frame = self.contentView.bounds
-        self.contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
     
     class func sizeForMoment(_ moment: Moment, width: CGFloat) -> CGSize
@@ -112,6 +111,7 @@ class MomentCell: BouncingCollectionViewCell
         self.configureLabels()
         self.configureUploadingContainer()
         self.togglePlayButton()
+        self.toggleShareButton()
     }
     
     private func configureUploadingContainer()
@@ -194,5 +194,17 @@ class MomentCell: BouncingCollectionViewCell
         }
         
         self.playButton.isHidden = true
+    }
+    
+    private func toggleShareButton()
+    {
+        guard let moment = self.moment else {
+            self.shareButton.isHidden = false
+            return
+        }
+        
+        //only live moments and new ones (fetched from Vimeo) can be shared:
+        //newly created local in progress Moments are saved and status is local not new...
+        self.shareButton.isHidden = moment.momentStatus != .live && moment.momentStatus != .new
     }
 }

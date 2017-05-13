@@ -113,14 +113,14 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         let newPath = IndexPath(item: 0, section: SECTION_MOMENT_FEED)
         
         self.collectionView.performBatchUpdates({
-            self.collectionView.reloadEmptyDataSet()
             self.collectionView.insertItems(at: [newPath])
+            self.collectionView.reloadEmptyDataSet()
         }, completion: nil)
     }
     
     func refreshMoment(_ moment: Moment)
     {
-        //not supporting thir right now with accessory views:
+        //not supporting this right now with accessory views:
         if let indexToRefresh = self.moments.index(of: moment) {
             
             //reset cache height if necessary:

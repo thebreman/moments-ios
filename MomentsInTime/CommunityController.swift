@@ -19,8 +19,6 @@ private let REQUIRE_FB_LOGIN_ON_LAUNCH = false
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
-private let COPY_MESSAGE_INVITE_INTERVIEW = "Hello, I would like to interview you on the Moments In Time app!"
-
 class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
@@ -111,62 +109,17 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     @objc private func handleAskToInterview(_ sender: BouncingButton)
     {
-        //Display AlertActionSheet for user to choose Facebook or iMessage,
-        //must be popover for iPad:
-        let controller = UIAlertController(title: "Ask To Interview", message: nil, preferredStyle: .actionSheet)
-        controller.popoverPresentationController?.sourceView = sender
-        controller.popoverPresentationController?.sourceRect = sender.bounds
-        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        
-        let facebookAction = UIAlertAction(title: "Ask on Facebook", style: .default) { action in
-            self.handleFacebookInvite()
-        }
-        controller.addAction(facebookAction)
-        
-        let messageAction = UIAlertAction(title: "Message...", style: .default) { action in
-            self.handleMessageInvite(sender: sender)
-        }
-        controller.addAction(messageAction)
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        controller.addAction(cancelAction)
-        
-        self.present(controller, animated: true, completion: nil)
+        let interviewInviteSheet = InterviewInviteAlertSheet()
+        interviewInviteSheet.showFrom(viewController: self, sender: sender)
     }
-    
-    private func handleFacebookInvite()
-    {
-        print("handle facebook invite")
-        
-        //this is a bunch of test code:
-        
-        FacebookConnector().getTaggableFriends()
-        //FacebookConnector().lauchAppInvite(withPresenter: self)
-    }
-    
-    private func handleMessageInvite(sender: UIView)
-    {
-        //present UIActivityViewController,
-        //must be popover for iPad:
-        let message = COPY_MESSAGE_INVITE_INTERVIEW
-        let link = URL(string: "https://marvelapp.com/fj8ic86/screen/26066627")! //just a test appLink for angry birds...
-        
-        let controller = UIActivityViewController(activityItems: [message, link], applicationActivities: nil)
-        
-        controller.popoverPresentationController?.sourceView = sender
-        controller.popoverPresentationController?.sourceRect = sender.bounds
-        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        
-        self.present(controller, animated: true, completion: nil)
-    }
-    
 
     @IBAction func starOfDavidTapped(_ sender: UIButton)
     {
         print("showing rating prompt")
-        // show rating prompt
         
+        // show rating prompt
         //TODO: eventually
+        
         let comingSoon = ComingSoonAlertView()
         comingSoon.showFrom(viewController: self) {
             print("coming soon")
@@ -207,36 +160,16 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
     {
-        print("HANDLE SHARE")
-        
-        if let appLinkURL = URL(string: "https://fb.me/1717667415199470") {
-            
-            var linkContent = LinkShareContent(url: appLinkURL)
-            linkContent.taggedPeopleIds = ["AaL-AjaBzLgY9ZaI4rFzFHSExDOGyCieObP774k83t32sO3Fn-Hyvlk57dFukM9r_S20crRA4Rycw6euIzANw_ReAFrRg40zQhR6KkEYjcfrFg"]
-            
-            let dialog = ShareDialog(content: linkContent)
-            dialog.mode = .automatic
-            
-            dialog.completion = { result in
-                switch result {
-                case .success: print("\n\nsuccessful share\n")
-                case .cancelled: print("\n\ncancelled share\n")
-                case .failed(let error): print("\n\nError sharing: \(error)\n")
-                }
-            }
-            
-            do {
-                try dialog.show()
-            }
-            catch let error {
-                print(error)
-            }
-        }
+        let shareSheet = ShareAlertSheet()
+        shareSheet.showFrom(viewController: self, sender: sender)
     }
     
+    //need to retain this for delegation:
+    private let optionsSheet = CommunityMomentOptionsAlertSheet()
+
     func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
     {
-        print("handle options")
+        self.optionsSheet.showFrom(viewController: self, sender: sender, forMoment: moment)
     }
     
     //MARK: MITMomentCollectionViewAdapterInfiniteScrollDelegate
@@ -279,7 +212,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             self.spinner.stopAnimating()
             self.adapter.moments = self.momentList.moments
             self.adapter.refreshData(shouldReload: true)
-            self.adapter.allowsInfiniteScrolling = true
+            self.adapter.allowsInfiniteScrolling = self.momentList.hasNextPage
         }
     }
     

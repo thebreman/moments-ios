@@ -21,6 +21,7 @@ private let COPY_TITLE_BUTTON_SAVE_CHANGES = "Save changes"
 let COPY_TITLE_BUTTON_DELETE = "Delete"
 let COPY_TITLE_BUTTON_SUBMIT = "Submit"
 let COPY_TITLE_BUTTON_CANCEL = "Cancel"
+let COPY_TITLE_BUTTON_OK = "OK"
 
 private let COPY_TITLE_BUTTON_DONE = "Done"
 private let COPY_TITLE_BUTTON_TRY_AGAIN = "Try Again"
@@ -31,6 +32,11 @@ private let COPY_TITLE_NOTE_OPTIONS = "Note"
 private let COPY_TITLE_INTERVIEWEE_OPTIONS = "Interviewee"
 private let COPY_BUTTON_TITLE_MANUAL_ENTRY = "Enter Manually"
 private let COPY_BUTTON_TITLE_FACEBOOK_ENTRY = "Select from Facebook"
+
+private let COPY_TITLE_EDIT_VIDEO = "Edit Video"
+private let COPY_TITLE_EDIT_VIDEO_ALERT = "Edit until your heart is content"
+private let COPY_MESSAGE_EDIT_VIDEO_ALERT = "The video has been saved to your camera roll. You can edit the video with your favorite tools and update this Moment with the new video when you're ready. Nothing will be uploaded until you say so."
+private let COPY_TITLE_BUTTON_REMOVE_VIDEO = "Delete Video"
 
 typealias InterviewingCompletion = (UIImage?, _ name: String?, _ role: String?) -> Void
 typealias TopicCompletion = (_ videoTitle: String, _ videoDescription: String, _ isCustom: Bool) -> Void
@@ -83,6 +89,15 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.configureInitialButtonStates()
         self.updateUI()
         self.setupTableView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        
+        if self.moment.momentStatus == .live {
+            self.tableView.allowsSelection = false
+        }
     }
     
 //MARK: Actions
@@ -248,7 +263,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         //setup sectionHeaderViews:
         self.tableView.register(UINib(nibName: String(describing: MITSectionHeaderView.self), bundle: nil), forHeaderFooterViewReuseIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER)
-        self.tableView.estimatedSectionHeaderHeight = 64
+        self.tableView.estimatedSectionHeaderHeight = 44
         self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         self.tableView.sectionFooterHeight = 8
         
@@ -264,7 +279,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         //setup NoteCells:
         self.tableView.register(UINib(nibName: String(describing: MITNoteCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_NOTE)
         
-        self.tableView.estimatedRowHeight = 100
+        self.tableView.estimatedRowHeight = 44
         self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
@@ -292,6 +307,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
+        //If we have a localVideo we need VideoPreviewCell and editVideo activeLinkCell:
+        if section == NewMomentSetting.video.rawValue {
+            return self.moment.video?.isLocal ?? false ? 2 : 1
+        }
+        
         //Notes section must have all the notes + the top Add a new note activeLinkCell:
         if section == NewMomentSetting.notes.rawValue {
             return self.moment.notes.count + 1
@@ -329,11 +349,32 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
         case NewMomentSetting.video.rawValue:
             
-            if let video = self.moment.video, video.isLocal {
-                return self.videoPreviewCell(forVideo: video, withTableView: tableView)
+            //first cell is videoPreview or activeLink
+            if indexPath.row == 0 {
+                if let video = self.moment.video, video.isLocal {
+                    return self.videoPreviewCell(forVideo: video, withTableView: tableView)
+                }
+                
+                return self.activeLinkCell(forSetting: setting, withTableView: tableView)
+            }
+            else if indexPath.row == 1 {
+                
+                //if we have a second row it must be the editVideo activeLinkCell:
+                if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
+                    cell.shouldCenterLabel = true
+                    cell.activeLabel.text = COPY_TITLE_EDIT_VIDEO
+                    cell.activeLinks = [COPY_TITLE_EDIT_VIDEO]
+                    cell.delegate = self
+                    cell.detailDisclosureButton.isHidden = true
+                    return cell
+                }
+                
+                assert(false, "unknown cell dequeued")
+                return UITableViewCell()
             }
             
-            return self.activeLinkCell(forSetting: setting, withTableView: tableView)
+            assert(false, "unknown row in Video section")
+            return UITableViewCell()
             
         case NewMomentSetting.notes.rawValue:
             
@@ -389,6 +430,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, handleSelection selection: String)
     {
+        guard self.moment.momentStatus != .live else { return }
+        
         switch selection {
         case COPY_SELECT_INTERVIEW_SUBJECT:
             self.handleInterviewSubject(fromView: activeLinkCell.activeLabel)
@@ -405,6 +448,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         case COPY_CREATE_NOTE:
             self.handleNoteCreation()
             
+        case COPY_TITLE_EDIT_VIDEO:
+            self.handleEditVideo()
+            
         default:
             break
         }
@@ -412,6 +458,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, detailDisclosureButtonTapped sender: UIButton)
     {
+        guard self.moment.momentStatus != .live else { return }
+        
         if self.tableView.cellForRow(at: IndexPath(row: 0, section: NewMomentSetting.video.rawValue)) == activeLinkCell {
             UIAlertController.explain(withPresenter: self, title: COPY_TITLE_VIDEO_QUESTION_ALERT, message: COPY_MESSAGE_VIDEO_QUESTION_ALERT)
         }
@@ -421,7 +469,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func noteCell(_ noteCell: MITNoteCell, handleOptions sender: BouncingButton)
     {
-        guard let note = noteCell.note else { return }
+        guard let note = noteCell.note, self.moment.momentStatus != .live else { return }
         
         UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: COPY_TITLE_NOTE_OPTIONS) { action in
             self.deleteNote(note)
@@ -450,7 +498,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handleOptions sender: BouncingButton)
     {
-        guard let video = videoPreviewCell.video else { return }
+        guard let video = videoPreviewCell.video, self.moment.momentStatus != .live else { return }
         
         UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: COPY_TITLE_VIDEO_OPTIONS) { action in
             self.deleteVideo(video)
@@ -474,8 +522,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 video.localURL = nil
             }
             
-            let pathToDelete = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
-            self.tableView.refreshRows(forIndexPaths: [pathToDelete])
+            let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+            let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
+            self.tableView.removeRows(forIndexPaths: [editVideoPath])
+            self.tableView.refreshRows(forIndexPaths: [videoPath])
         }
     }
     
@@ -612,6 +662,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func handleFacebookInterviewSelection()
     {
         print("Select from Facebook")
+        
         //make sure to use InterviewingCompletion to get the Subject
         let comingSoon = ComingSoonAlertView()
         comingSoon.showFrom(viewController: self) { 
@@ -632,6 +683,25 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func handleNoteCreation()
     {
         self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: nil)
+    }
+    
+    private func handleEditVideo()
+    {
+        let controller = UIAlertController(title: COPY_TITLE_EDIT_VIDEO_ALERT, message: COPY_MESSAGE_EDIT_VIDEO_ALERT, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: COPY_TITLE_BUTTON_OK, style: .cancel, handler: nil)
+        controller.addAction(okAction)
+        
+        let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_REMOVE_VIDEO, style: .destructive) { action in
+            
+            guard let video = self.moment.video, video.isLocal else { return }
+            
+            self.deleteVideo(video)
+        }
+        controller.addAction(deleteAction)
+        
+        self.present(controller, animated: true, completion: nil)
+        
     }
     
     private func interviewingSubjectCell(forSubject subject: Subject, withTableView tableView: UITableView) -> ImageTitleSubtitleCell
@@ -675,6 +745,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func activeLinkCell(forSetting setting: NewMomentSetting, withTableView tableView: UITableView) -> ActiveLinkCell
     {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
+            cell.shouldCenterLabel = false
             cell.activeLabel.text = setting.text
             cell.activeLinks = setting.activeLinks
             cell.detailDisclosureButton.isHidden = (setting == .video ? false : true)
@@ -698,10 +769,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         return MITNoteCell()
     }
     
-    private func updateVideoRow()
+    private func updateVideoSection()
     {
-        let newPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
-        self.tableView.refreshRows(forIndexPaths: [newPath])
+        let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+        let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
+        self.tableView.insertNewRows(forIndexPaths: [editVideoPath])
+        self.tableView.refreshRows(forIndexPaths: [videoPath])
     }
     
     private func configureInitialButtonStates()
@@ -744,7 +817,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
                 Moment.writeToRealm {
                     video.localThumbnailImageURL = imageURL
-                    self.updateVideoRow()
+                    self.updateVideoSection()
                     self.updateUI()
                 }
             }

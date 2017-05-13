@@ -28,13 +28,13 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Video Creator - Video Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPw-KP-Sda">
-                                <rect key="frame" x="12" y="212" width="417" height="19.5"/>
+                                <rect key="frame" x="12" y="214" width="417" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                 <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6A7-Im-XA3">
-                                <rect key="frame" x="12" y="233.5" width="417" height="50.5"/>
+                                <rect key="frame" x="12" y="235.5" width="417" height="50.5"/>
                                 <string key="text">Description about the Video and who the person is interviewing and why their story is amazing! This can be however many lines that it takes</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -112,7 +112,7 @@
                             <constraint firstAttribute="trailing" secondItem="PIY-i8-7Yl" secondAttribute="trailing" identifier="separator trailing" id="GZJ-O3-0GR"/>
                             <constraint firstAttribute="bottom" secondItem="PIY-i8-7Yl" secondAttribute="bottom" constant="40" id="R8k-a5-Top"/>
                             <constraint firstAttribute="trailing" secondItem="Y66-Vl-xRy" secondAttribute="trailing" constant="12" identifier="options trailing" id="Rq5-fo-SdV"/>
-                            <constraint firstItem="PIY-i8-7Yl" firstAttribute="top" relation="greaterThanOrEqual" secondItem="6A7-Im-XA3" secondAttribute="bottom" constant="8" identifier="bottom greaterThan" id="Uht-cl-jGz"/>
+                            <constraint firstItem="PIY-i8-7Yl" firstAttribute="top" secondItem="6A7-Im-XA3" secondAttribute="bottom" constant="8" identifier="bottom greaterThan" id="Uht-cl-jGz"/>
                             <constraint firstItem="6A7-Im-XA3" firstAttribute="leading" secondItem="fPw-KP-Sda" secondAttribute="leading" id="dvp-Qw-APZ"/>
                             <constraint firstItem="PeZ-Qp-yev" firstAttribute="centerX" secondItem="DAz-xY-OdE" secondAttribute="centerX" identifier="share center x" id="er1-cS-SWM"/>
                             <constraint firstItem="PIY-i8-7Yl" firstAttribute="leading" secondItem="DAz-xY-OdE" secondAttribute="leading" identifier="sep leading" id="ewH-on-AmW"/>
@@ -122,7 +122,7 @@
                             <constraint firstItem="PeZ-Qp-yev" firstAttribute="top" secondItem="PIY-i8-7Yl" secondAttribute="bottom" constant="4" identifier="share top" id="o3C-cO-nIN"/>
                             <constraint firstAttribute="trailing" secondItem="fqy-BN-vep" secondAttribute="trailing" id="o3x-K4-yUq"/>
                             <constraint firstItem="6A7-Im-XA3" firstAttribute="trailing" secondItem="fPw-KP-Sda" secondAttribute="trailing" id="owi-Zx-ULX"/>
-                            <constraint firstItem="fPw-KP-Sda" firstAttribute="top" secondItem="i4G-03-3dv" secondAttribute="bottom" constant="8" id="sSN-lb-aZt"/>
+                            <constraint firstItem="fPw-KP-Sda" firstAttribute="top" secondItem="i4G-03-3dv" secondAttribute="bottom" priority="999" constant="8" id="sSN-lb-aZt"/>
                             <constraint firstItem="i4G-03-3dv" firstAttribute="top" secondItem="fqy-BN-vep" secondAttribute="bottom" id="tea-xW-GVR"/>
                             <constraint firstItem="6A7-Im-XA3" firstAttribute="top" secondItem="fPw-KP-Sda" secondAttribute="bottom" constant="2" identifier="sub top" id="w78-hO-7HO"/>
                         </constraints>
@@ -146,6 +146,7 @@
                 <outlet property="blinkingView" destination="2CE-Tc-41h" id="y60-1a-pkY"/>
                 <outlet property="containerView" destination="DAz-xY-OdE" id="LPK-99-YdA"/>
                 <outlet property="playButton" destination="UKm-Zv-5eP" id="tbd-6c-tjj"/>
+                <outlet property="shareButton" destination="PeZ-Qp-yev" id="eF3-4R-IL9"/>
                 <outlet property="statusLabel" destination="lVj-XG-esd" id="1nD-Io-dYL"/>
                 <outlet property="subtitleBottomConstraint" destination="Uht-cl-jGz" id="BVN-hA-vIZ"/>
                 <outlet property="subtitleLabel" destination="6A7-Im-XA3" id="PJk-G3-fuE"/>

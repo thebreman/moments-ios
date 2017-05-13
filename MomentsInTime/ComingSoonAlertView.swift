@@ -12,19 +12,20 @@ private let ALERT_TITLE = "Coming Soon"
 private let ALERT_MESSAGE = "Feature in development. It will be ready in no time!"
 private let ALERT_CONFIRM = "Cool!"
 
-typealias ComingSoonAlertCompletion = () -> Void
+typealias AlertCompletion = () -> Void
 
 class ComingSoonAlertView: NSObject
 {
-    var completionClosure: ComingSoonAlertCompletion?
+    var completionClosure: AlertCompletion?
     
-    func showFrom(viewController: UIViewController, completion: ComingSoonAlertCompletion? = nil)
+    func showFrom(viewController: UIViewController, completion: AlertCompletion? = nil)
     {
         self.completionClosure = completion
         
         let alertController = UIAlertController(title: ALERT_TITLE, message: ALERT_MESSAGE, preferredStyle: UIAlertControllerStyle.alert)
         
         let okayButton = UIAlertAction(title: ALERT_CONFIRM, style: UIAlertActionStyle.default) { _ in
+            
             // call the completion after dismissing
             self.completionClosure?()
             self.completionClosure = nil
@@ -34,5 +35,4 @@ class ComingSoonAlertView: NSObject
         
         viewController.present(alertController, animated: true, completion: nil)
     }
-    
 }

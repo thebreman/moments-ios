@@ -40,7 +40,7 @@ enum VideoRouter: URLRequestConvertible
         case .create: return "/me/videos"
         case .read(let video): return video.uri!
         case .update(let video): return video.uri!
-        case .destroy: return ""
+        case .destroy(let video): return video.uri!
         }
     }
     

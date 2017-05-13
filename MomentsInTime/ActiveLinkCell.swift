@@ -8,6 +8,7 @@
 
 import UIKit
 import ActiveLabel
+import PureLayout
 
 protocol ActiveLinkCellDelegate: class
 {
@@ -19,6 +20,11 @@ class ActiveLinkCell: UITableViewCell
 {
     @IBOutlet weak var activeLabel: ActiveLabel!
     @IBOutlet weak var detailDisclosureButton: BouncingButton!
+    @IBOutlet var activeLabelLeadingConstraint: NSLayoutConstraint!
+    @IBOutlet var activeLabelTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet var activeLabelCenterXConstraint: NSLayoutConstraint!
+    
+    var shouldCenterLabel = false
     
     weak var delegate: ActiveLinkCellDelegate?
     
@@ -46,7 +52,17 @@ class ActiveLinkCell: UITableViewCell
                     }
                 }
             }
+            
+            self.updateUI()
         }
+    }
+    
+    private func updateUI()
+    {
+        self.activeLabelLeadingConstraint.isActive = self.shouldCenterLabel ? false : true
+        self.activeLabelTrailingConstraint.isActive = self.shouldCenterLabel ? false : true
+        self.activeLabelCenterXConstraint.isActive = self.shouldCenterLabel ? true : false
+        self.activeLabel.needsUpdateConstraints()
     }
     
     //MARK: Actions

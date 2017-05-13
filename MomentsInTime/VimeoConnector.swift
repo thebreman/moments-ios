@@ -133,9 +133,28 @@ class VimeoConnector: NSObject
         }
     }
     
+    /**
+     * Deletes a video from Vimeo, false and error if failed, true and nil if successful:
+     */
+    func delete(video: Video, completion: @escaping BooleanResponseClosure)
+    {
+        self.request(router: VideoRouter.destroy(video)) { (response, error) in
+            
+            guard error == nil else {
+                completion(false, error)
+                return
+            }
+            
+            completion(true, nil)
+            return
+        }
+    }
+    
     //we can only allow 1 upload at a time b/c of shared background session managers...
     private static var isUploading: Bool {
-        return BackgroundUploadSessionManager.shared.moment == nil || BackgroundUploadCompleteSessionManager.shared.moment == nil || BackgroundUploadVideoMetadataSessionManager.shared.moment == nil
+        return BackgroundUploadSessionManager.shared.moment != nil
+            || BackgroundUploadCompleteSessionManager.shared.moment != nil
+            || BackgroundUploadVideoMetadataSessionManager.shared.moment != nil
     }
     
     /**
@@ -143,7 +162,12 @@ class VimeoConnector: NSObject
      */
     func create(moment: Moment, uploadProgress: UploadProgressClosure?, completion: @escaping UploadCompletion)
     {
-        guard VimeoConnector.isUploading == false else { return }
+        guard VimeoConnector.isUploading == false else {
+            print("already uploading")
+            let error = NSError(domain: "VimeoConnector.create", code: 400, userInfo: [NSLocalizedDescriptionKey: "Already uploading another video"])
+            completion(nil, error)
+            return
+        }
         
         self.request(router: VideoRouter.create) { (response, error) in
             
@@ -178,7 +202,6 @@ class VimeoConnector: NSObject
     
     //MARK: Private
     
-    //we need to retain these:
     private var uploadManager = BackgroundUploadSessionManager.shared
     private var uploadCompleteManager = BackgroundUploadCompleteSessionManager.shared
     private var uploadMetaDataManager = BackgroundUploadVideoMetadataSessionManager.shared

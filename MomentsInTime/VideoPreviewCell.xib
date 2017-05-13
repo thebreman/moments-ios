@@ -11,15 +11,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="videoPreviewCell" rowHeight="227" id="w9B-W4-4uQ" customClass="VideoPreviewCell" customModule="MomentsInTime" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="227"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="videoPreviewCell" rowHeight="249" id="w9B-W4-4uQ" customClass="VideoPreviewCell" customModule="MomentsInTime" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="249"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w9B-W4-4uQ" id="tsi-Pn-EwL">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="226.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="248.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fj0-p0-n4a">
-                        <rect key="frame" x="12" y="6" width="351" height="214.5"/>
+                        <rect key="frame" x="12" y="6" width="351" height="234.5"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="sbP-WA-ifK">
                                 <rect key="frame" x="0.0" y="0.0" width="351" height="180"/>
@@ -28,7 +28,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YkX-KC-A8A" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
-                                <rect key="frame" x="301" y="188" width="38" height="18.5"/>
+                                <rect key="frame" x="301" y="188" width="38" height="38.5"/>
                                 <state key="normal" image="Options"/>
                                 <connections>
                                     <action selector="handleOptions:" destination="w9B-W4-4uQ" eventType="touchUpInside" id="ivf-p0-LnV"/>
@@ -68,7 +68,7 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="fj0-p0-n4a" secondAttribute="bottom" constant="6" id="ZF7-fS-NgB"/>
+                    <constraint firstAttribute="bottom" secondItem="fj0-p0-n4a" secondAttribute="bottom" constant="8" id="3C5-Yd-KVI"/>
                     <constraint firstItem="fj0-p0-n4a" firstAttribute="leading" secondItem="tsi-Pn-EwL" secondAttribute="leading" constant="12" id="hh5-XU-fjh"/>
                     <constraint firstAttribute="trailing" secondItem="fj0-p0-n4a" secondAttribute="trailing" constant="12" id="pre-Sn-g6a"/>
                     <constraint firstItem="fj0-p0-n4a" firstAttribute="top" secondItem="tsi-Pn-EwL" secondAttribute="top" constant="6" id="yS8-ph-t8C"/>
@@ -81,7 +81,7 @@
                 <outlet property="spinner" destination="2da-HA-dQK" id="Rsv-VK-nEQ"/>
                 <outlet property="videoImageView" destination="sbP-WA-ifK" id="NOG-qG-q8I"/>
             </connections>
-            <point key="canvasLocation" x="-122.5" y="24.5"/>
+            <point key="canvasLocation" x="-122.5" y="35.5"/>
         </tableViewCell>
     </objects>
     <resources>

@@ -17,6 +17,13 @@ extension UITableView
         self.endUpdates()
     }
     
+    func refreshSections(_ sections: Int...)
+    {
+        self.beginUpdates()
+        self.reloadSections(IndexSet(sections), with: .automatic)
+        self.endUpdates()
+    }
+    
     func updateRows(forIndexPaths paths: [IndexPath])
     {
         self.beginUpdates()
