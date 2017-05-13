@@ -91,6 +91,15 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.setupTableView()
     }
     
+    override func viewWillAppear(_ animated: Bool)
+    {
+        super.viewWillAppear(animated)
+        
+        if self.moment.momentStatus == .live {
+            self.tableView.isUserInteractionEnabled = false
+        }
+    }
+    
 //MARK: Actions
     
     @IBAction func handleSubmit(_ sender: BouncingButton)
