@@ -279,7 +279,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             self.spinner.stopAnimating()
             self.adapter.moments = self.momentList.moments
             self.adapter.refreshData(shouldReload: true)
-            self.adapter.allowsInfiniteScrolling = true
+            self.adapter.allowsInfiniteScrolling = self.momentList.hasNextPage
         }
     }
     

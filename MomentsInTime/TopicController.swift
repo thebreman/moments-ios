@@ -15,7 +15,7 @@ private enum Identifiers
     static let SEGUE_CREATE_TOPIC = "createTopic"
 }
 
-private enum TopicSection : Int
+private enum TopicSection: Int
 {
     case chooseTopic
     case topics
@@ -124,9 +124,13 @@ class TopicController: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        let selectedTopic = self.topics[indexPath.row - 1]
-        self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(selectedTopic.title, selectedTopic.topicDescription, false)
+        if indexPath.section == TopicSection.topics.rawValue {
+            
+            let selectedTopic = self.topics[indexPath.row]
+            
+            self.presentingViewController?.dismiss(animated: true) {
+                self.completion?(selectedTopic.title, selectedTopic.topicDescription, false)
+            }
         }
     }
     

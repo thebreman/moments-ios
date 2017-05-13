@@ -80,12 +80,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //if the background session manager moment object is not nil, then we are uploading and need to fail:
         BackgroundUploadSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadSessionManager.shared.session.invalidateAndCancel()
+        BackgroundUploadSessionManager.shared.moment = nil
         
         BackgroundUploadCompleteSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadCompleteSessionManager.shared.session.invalidateAndCancel()
+        BackgroundUploadCompleteSessionManager.shared.moment = nil
         
         BackgroundUploadVideoMetadataSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadVideoMetadataSessionManager.shared.session.invalidateAndCancel()
+        BackgroundUploadVideoMetadataSessionManager.shared.moment = nil
     }
 }
 

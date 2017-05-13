@@ -135,7 +135,9 @@ class VimeoConnector: NSObject
     
     //we can only allow 1 upload at a time b/c of shared background session managers...
     private static var isUploading: Bool {
-        return BackgroundUploadSessionManager.shared.moment == nil || BackgroundUploadCompleteSessionManager.shared.moment == nil || BackgroundUploadVideoMetadataSessionManager.shared.moment == nil
+        return BackgroundUploadSessionManager.shared.moment != nil
+            || BackgroundUploadCompleteSessionManager.shared.moment != nil
+            || BackgroundUploadVideoMetadataSessionManager.shared.moment != nil
     }
     
     /**

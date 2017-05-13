@@ -41,9 +41,9 @@
                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="DHY-gs-XnJ" firstAttribute="top" secondItem="Yjc-aW-qsE" secondAttribute="topMargin" id="6dz-o3-z5d"/>
-                    <constraint firstItem="DHY-gs-XnJ" firstAttribute="leading" secondItem="Yjc-aW-qsE" secondAttribute="leadingMargin" constant="8" id="WL3-Hs-Zfw"/>
+                    <constraint firstItem="DHY-gs-XnJ" firstAttribute="leading" secondItem="Yjc-aW-qsE" secondAttribute="leadingMargin" priority="999" constant="8" id="WL3-Hs-Zfw"/>
                     <constraint firstItem="ZBy-Xp-KwX" firstAttribute="centerY" secondItem="DHY-gs-XnJ" secondAttribute="centerY" id="azq-pq-n52"/>
-                    <constraint firstItem="ZBy-Xp-KwX" firstAttribute="leading" secondItem="DHY-gs-XnJ" secondAttribute="trailing" constant="12" id="fex-xX-y2u"/>
+                    <constraint firstItem="ZBy-Xp-KwX" firstAttribute="leading" secondItem="DHY-gs-XnJ" secondAttribute="trailing" priority="999" constant="12" id="fex-xX-y2u"/>
                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="ZBy-Xp-KwX" secondAttribute="trailing" constant="8" id="g2n-Ii-0Dt"/>
                     <constraint firstAttribute="bottomMargin" secondItem="DHY-gs-XnJ" secondAttribute="bottom" id="kYc-5W-Ru3"/>
                 </constraints>
@@ -51,6 +51,8 @@
             <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
                 <outlet property="activeLabel" destination="DHY-gs-XnJ" id="JOb-gc-smF"/>
+                <outlet property="activeLabelLeadingConstraint" destination="WL3-Hs-Zfw" id="cxu-Dr-Oh8"/>
+                <outlet property="activeLabelTrailingConstraint" destination="fex-xX-y2u" id="hca-Q7-xPG"/>
                 <outlet property="detailDisclosureButton" destination="ZBy-Xp-KwX" id="SYN-qb-bGd"/>
             </connections>
             <point key="canvasLocation" x="58.5" y="17.5"/>
