@@ -21,6 +21,7 @@ private let COPY_TITLE_BUTTON_SAVE_CHANGES = "Save changes"
 let COPY_TITLE_BUTTON_DELETE = "Delete"
 let COPY_TITLE_BUTTON_SUBMIT = "Submit"
 let COPY_TITLE_BUTTON_CANCEL = "Cancel"
+let COPY_TITLE_BUTTON_OK = "OK"
 
 private let COPY_TITLE_BUTTON_DONE = "Done"
 private let COPY_TITLE_BUTTON_TRY_AGAIN = "Try Again"
@@ -33,6 +34,9 @@ private let COPY_BUTTON_TITLE_MANUAL_ENTRY = "Enter Manually"
 private let COPY_BUTTON_TITLE_FACEBOOK_ENTRY = "Select from Facebook"
 
 private let COPY_TITLE_EDIT_VIDEO = "Edit Video"
+private let COPY_TITLE_EDIT_VIDEO_ALERT = "Edit until your heart is content"
+private let COPY_MESSAGE_EDIT_VIDEO_ALERT = "The video has been saved to your camera roll. You can edit the video with your favorite tools and update this Moment with the new video when you're ready. Nothing will be uploaded until you say so."
+private let COPY_TITLE_BUTTON_REMOVE_VIDEO = "Delete Video"
 
 typealias InterviewingCompletion = (UIImage?, _ name: String?, _ role: String?) -> Void
 typealias TopicCompletion = (_ videoTitle: String, _ videoDescription: String, _ isCustom: Bool) -> Void
@@ -250,7 +254,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         //setup sectionHeaderViews:
         self.tableView.register(UINib(nibName: String(describing: MITSectionHeaderView.self), bundle: nil), forHeaderFooterViewReuseIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER)
-        self.tableView.estimatedSectionHeaderHeight = 64
+        self.tableView.estimatedSectionHeaderHeight = 44
         self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
         self.tableView.sectionFooterHeight = 8
         
@@ -266,7 +270,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         //setup NoteCells:
         self.tableView.register(UINib(nibName: String(describing: MITNoteCell.self), bundle: nil), forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_NOTE)
         
-        self.tableView.estimatedRowHeight = 100
+        self.tableView.estimatedRowHeight = 44
         self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
@@ -348,11 +352,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 //if we have a second row it must be the editVideo activeLinkCell:
                 if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
-                    cell.detailDisclosureButton.isHidden = true
                     cell.shouldCenterLabel = true
                     cell.activeLabel.text = COPY_TITLE_EDIT_VIDEO
                     cell.activeLinks = [COPY_TITLE_EDIT_VIDEO]
                     cell.delegate = self
+                    cell.detailDisclosureButton.isHidden = true
                     return cell
                 }
                 
@@ -505,7 +509,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 video.localURL = nil
             }
             
-            self.tableView.refreshSections(NewMomentSetting.video.rawValue)
+            let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+            let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
+            self.tableView.removeRows(forIndexPaths: [editVideoPath])
+            self.tableView.refreshRows(forIndexPaths: [videoPath])
         }
     }
     
@@ -642,6 +649,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func handleFacebookInterviewSelection()
     {
         print("Select from Facebook")
+        
         //make sure to use InterviewingCompletion to get the Subject
         let comingSoon = ComingSoonAlertView()
         comingSoon.showFrom(viewController: self) { 
@@ -666,7 +674,21 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleEditVideo()
     {
-        print("Edit Video")
+        let controller = UIAlertController(title: COPY_TITLE_EDIT_VIDEO_ALERT, message: COPY_MESSAGE_EDIT_VIDEO_ALERT, preferredStyle: .alert)
+        
+        let okAction = UIAlertAction(title: COPY_TITLE_BUTTON_OK, style: .cancel, handler: nil)
+        controller.addAction(okAction)
+        
+        let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_REMOVE_VIDEO, style: .destructive) { action in
+            
+            guard let video = self.moment.video, video.isLocal else { return }
+            
+            self.deleteVideo(video)
+        }
+        controller.addAction(deleteAction)
+        
+        self.present(controller, animated: true, completion: nil)
+        
     }
     
     private func interviewingSubjectCell(forSubject subject: Subject, withTableView tableView: UITableView) -> ImageTitleSubtitleCell
@@ -736,7 +758,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func updateVideoSection()
     {
-        self.tableView.refreshSections(NewMomentSetting.video.rawValue)
+        let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+        let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
+        self.tableView.insertNewRows(forIndexPaths: [editVideoPath])
+        self.tableView.refreshRows(forIndexPaths: [videoPath])
     }
     
     private func configureInitialButtonStates()

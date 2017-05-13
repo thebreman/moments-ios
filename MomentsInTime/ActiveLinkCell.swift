@@ -22,10 +22,9 @@ class ActiveLinkCell: UITableViewCell
     @IBOutlet weak var detailDisclosureButton: BouncingButton!
     @IBOutlet var activeLabelLeadingConstraint: NSLayoutConstraint!
     @IBOutlet var activeLabelTrailingConstraint: NSLayoutConstraint!
+    @IBOutlet var activeLabelCenterXConstraint: NSLayoutConstraint!
     
-    private var activeLabelCenterXConstraint: NSLayoutConstraint?
-    
-    var shouldCenterLabel = false 
+    var shouldCenterLabel = false
     
     weak var delegate: ActiveLinkCellDelegate?
     
@@ -60,21 +59,9 @@ class ActiveLinkCell: UITableViewCell
     
     private func updateUI()
     {
-        if self.shouldCenterLabel {
-            self.activeLabelLeadingConstraint.isActive = false
-            self.activeLabelTrailingConstraint.isActive = false
-            self.activeLabelCenterXConstraint = self.activeLabel.centerXAnchor.constraint(equalTo: self.contentView.centerXAnchor)
-            self.activeLabelCenterXConstraint?.isActive = true
-        }
-        else {
-            self.activeLabelLeadingConstraint.isActive = true
-            self.activeLabelTrailingConstraint.isActive = true
-            
-            if let centerConstraint = self.activeLabelCenterXConstraint {
-                centerConstraint.isActive = false
-            }
-        }
-        
+        self.activeLabelLeadingConstraint.isActive = self.shouldCenterLabel ? false : true
+        self.activeLabelTrailingConstraint.isActive = self.shouldCenterLabel ? false : true
+        self.activeLabelCenterXConstraint.isActive = self.shouldCenterLabel ? true : false
         self.activeLabel.needsUpdateConstraints()
     }
     

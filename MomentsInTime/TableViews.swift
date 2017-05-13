@@ -20,7 +20,7 @@ extension UITableView
     func refreshSections(_ sections: Int...)
     {
         self.beginUpdates()
-        self.reloadSections(IndexSet(sections), with: .fade)
+        self.reloadSections(IndexSet(sections), with: .automatic)
         self.endUpdates()
     }
     

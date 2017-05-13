@@ -25,6 +25,7 @@ class ComingSoonAlertView: NSObject
         let alertController = UIAlertController(title: ALERT_TITLE, message: ALERT_MESSAGE, preferredStyle: UIAlertControllerStyle.alert)
         
         let okayButton = UIAlertAction(title: ALERT_CONFIRM, style: UIAlertActionStyle.default) { _ in
+            
             // call the completion after dismissing
             self.completionClosure?()
             self.completionClosure = nil
@@ -34,5 +35,4 @@ class ComingSoonAlertView: NSObject
         
         viewController.present(alertController, animated: true, completion: nil)
     }
-    
 }
