@@ -223,7 +223,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         //verification temporary?
         self.verifyMoments {
             self.refreshControl.endRefreshing()
-
         }
     }
     

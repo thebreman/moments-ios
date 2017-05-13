@@ -53,8 +53,6 @@ class MomentCell: BouncingCollectionViewCell
         self.isSelectable = false
         self.drawShadow()
         self.containerView.layer.masksToBounds = true
-        self.contentView.frame = self.contentView.bounds
-        self.contentView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
     }
     
     class func sizeForMoment(_ moment: Moment, width: CGFloat) -> CGSize
