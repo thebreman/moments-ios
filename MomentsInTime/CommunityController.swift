@@ -102,7 +102,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         }
     }
     
-    //MARK: Actions
+//MARK: Actions
     
     @objc private func handleNewMoment()
     {
@@ -160,7 +160,20 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.present(controller, animated: true, completion: nil)
     }
     
-    //MARK: MITMomentCollectionViewAdapterDelegate
+
+    @IBAction func starOfDavidTapped(_ sender: UIButton)
+    {
+        print("showing rating prompt")
+        // show rating prompt
+        
+        //TODO: eventually
+        let comingSoon = ComingSoonAlertView()
+        comingSoon.showFrom(viewController: self) {
+            print("coming soon")
+        }
+    }
+    
+//MARK: MITMomentCollectionViewAdapterDelegate
     
     func accessoryViewFrequency(forAdaptor adapter: MITMomentCollectionViewAdapter) -> Int
     {

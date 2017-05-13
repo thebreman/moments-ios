@@ -9,7 +9,7 @@
 import UIKit
 import PureLayout
 
-private let MIN_CHARACTERS_NAME = 10
+private let MIN_CHARACTERS_NAME = 1
 private let MAX_CHARACTERS = 100
 
 class InterviewingController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, KeyboardMover

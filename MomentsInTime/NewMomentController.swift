@@ -185,7 +185,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let topicController = segue.destination.contentViewController as? TopicController {
                 
-                var isUpdating = self.moment.topic != nil
+                let isUpdating = self.moment.topic != nil
                 
                 //set completionHandler:
                 topicController.completion = { (videoTitle, videoDescription, isCustom) in
@@ -613,6 +613,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         print("Select from Facebook")
         //make sure to use InterviewingCompletion to get the Subject
+        let comingSoon = ComingSoonAlertView()
+        comingSoon.showFrom(viewController: self) { 
+            print("coming soon!")
+        }
     }
     
     private func handleManualInterviewSelection()

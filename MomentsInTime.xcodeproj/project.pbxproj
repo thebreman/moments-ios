@@ -83,6 +83,7 @@
 		D332E6671E80BE6D00778462 /* MomentsInTimeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D332E6661E80BE6D00778462 /* MomentsInTimeUITests.swift */; };
 		D34A94191EC5310A008A77F1 /* default_topics.json in Resources */ = {isa = PBXBuildFile; fileRef = D34A94181EC5310A008A77F1 /* default_topics.json */; };
 		D34A941B1EC535FB008A77F1 /* Topic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34A941A1EC535FB008A77F1 /* Topic.swift */; };
+		D34A941D1EC6919B008A77F1 /* ComingSoonAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34A941C1EC6919B008A77F1 /* ComingSoonAlertView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -186,6 +187,7 @@
 		D332E6681E80BE6D00778462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D34A94181EC5310A008A77F1 /* default_topics.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = default_topics.json; sourceTree = "<group>"; };
 		D34A941A1EC535FB008A77F1 /* Topic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Topic.swift; sourceTree = "<group>"; };
+		D34A941C1EC6919B008A77F1 /* ComingSoonAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComingSoonAlertView.swift; sourceTree = "<group>"; };
 		FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MomentsInTime.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MomentsInTime/Pods-MomentsInTime.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -391,6 +393,7 @@
 			isa = PBXGroup;
 			children = (
 				680BE08E1E8E301D00A5D339 /* CachedImageView.swift */,
+				D34A941C1EC6919B008A77F1 /* ComingSoonAlertView.swift */,
 				680922821EB51DB200CD1F6D /* MITCircleImageView.swift */,
 				680BE08C1E8E2FE700A5D339 /* BouncingButton.swift */,
 				68EB8FF41E825A3C00C1B320 /* MITTabBar.swift */,
@@ -545,7 +548,7 @@
 				TargetAttributes = {
 					D332E6421E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 6M96U28V8B;
+						DevelopmentTeam = L46LSX2XUR;
 						ProvisioningStyle = Automatic;
 					};
 					D332E6561E80BE6C00778462 = {
@@ -691,6 +694,7 @@
 				680C8A171EB3321B004CDC5E /* TextViewView.swift in Sources */,
 				68E580591EA37504002E8C6A /* TextActionView.swift in Sources */,
 				68EC740C1EB2DA330048DAD2 /* KeyboardMover.swift in Sources */,
+				D34A941D1EC6919B008A77F1 /* ComingSoonAlertView.swift in Sources */,
 				68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */,
 				688E998D1EB07D1200AEF2F7 /* NewNoteController.swift in Sources */,
 				6808D9E31EC59E20005B341B /* MomentStatus.swift in Sources */,
@@ -883,7 +887,7 @@
 			baseConfigurationReference = FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6M96U28V8B;
+				DEVELOPMENT_TEAM = L46LSX2XUR;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
@@ -897,7 +901,7 @@
 			baseConfigurationReference = 5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6M96U28V8B;
+				DEVELOPMENT_TEAM = L46LSX2XUR;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
