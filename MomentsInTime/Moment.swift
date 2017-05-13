@@ -23,6 +23,7 @@ class Moment: Object
     
     let notes = List<Note>()
     
+    
     var momentStatus: MomentStatus {
         get {
             return MomentStatus(rawValue: self._momentStatus)!

@@ -164,9 +164,12 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         shareSheet.showFrom(viewController: self, sender: sender)
     }
     
+    //need to retain this for delegation:
+    private let optionsSheet = CommunityMomentOptionsAlertSheet()
+
     func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
     {
-        print("handle options")
+        self.optionsSheet.showFrom(viewController: self, sender: sender, forMoment: moment)
     }
     
     //MARK: MITMomentCollectionViewAdapterInfiniteScrollDelegate
