@@ -23,7 +23,6 @@ class Moment: Object
     
     let notes = List<Note>()
     
-    
     var momentStatus: MomentStatus {
         get {
             return MomentStatus(rawValue: self._momentStatus)!
@@ -65,7 +64,7 @@ class Moment: Object
                 self.momentStatus = .uploading
             }
             
-            self.vimeoConnector.create(moment: self, uploadProgress: nil, completion: { newVideo, error in
+            self.vimeoConnector.create(moment: self, uploadProgress: nil) { newVideo, error in
                 DispatchQueue.main.async {
                     Moment.writeToRealm {
                         
@@ -79,7 +78,7 @@ class Moment: Object
                         completion(self, nil)
                     }
                 }
-            })
+            }
         }
     }
     
@@ -117,19 +116,26 @@ class Moment: Object
         }
     }
     
-    var needsMetaDataPatch: Bool {
-        
-        guard let video = self.video else { return false }
-        
-        //if we have a uri but no name return true:
-        if video.uri != nil {
-            return video.name == nil
+    func delete()
+    {
+        //if we can, delete video from Vimeo, then delete locally:
+        if let video = self.video, video.uri != nil {
+            self.vimeoConnector.delete(video: video) { (success, error) in
+                
+                //if not successful, return and don't delete locally:
+                if success {
+                    self.deleteLocally()
+                }
+                
+                return
+            }
         }
-        
-        return false
+        else {
+            self.deleteLocally()
+        }
     }
     
-    func deleteLocally()
+    private func deleteLocally()
     {
         if self.existsInRealm {
             

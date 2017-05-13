@@ -133,6 +133,23 @@ class VimeoConnector: NSObject
         }
     }
     
+    /**
+     * Deletes a video from Vimeo, false and error if failed, true and nil if successful:
+     */
+    func delete(video: Video, completion: @escaping BooleanResponseClosure)
+    {
+        self.request(router: VideoRouter.destroy(video)) { (response, error) in
+            
+            guard error == nil else {
+                completion(false, error)
+                return
+            }
+            
+            completion(true, nil)
+            return
+        }
+    }
+    
     //we can only allow 1 upload at a time b/c of shared background session managers...
     private static var isUploading: Bool {
         return BackgroundUploadSessionManager.shared.moment != nil
