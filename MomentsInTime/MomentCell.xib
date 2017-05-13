@@ -146,6 +146,7 @@
                 <outlet property="blinkingView" destination="2CE-Tc-41h" id="y60-1a-pkY"/>
                 <outlet property="containerView" destination="DAz-xY-OdE" id="LPK-99-YdA"/>
                 <outlet property="playButton" destination="UKm-Zv-5eP" id="tbd-6c-tjj"/>
+                <outlet property="shareButton" destination="PeZ-Qp-yev" id="eF3-4R-IL9"/>
                 <outlet property="statusLabel" destination="lVj-XG-esd" id="1nD-Io-dYL"/>
                 <outlet property="subtitleBottomConstraint" destination="Uht-cl-jGz" id="BVN-hA-vIZ"/>
                 <outlet property="subtitleLabel" destination="6A7-Im-XA3" id="PJk-G3-fuE"/>
