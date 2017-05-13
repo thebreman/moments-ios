@@ -254,7 +254,7 @@ class VimeoConnector: NSObject
         }
         
         //start the task:
-        self.uploadManager.upload(uploadURL, with: router)
+        self.uploadManager.upload(uploadURL, with: router)        
     }
     
     /**

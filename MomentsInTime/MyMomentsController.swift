@@ -250,6 +250,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                 self.verifyMetadata(forMoment: moment)
                 
             default:
+                self.verifyMetadata(forMoment: moment)
                 print("status was neither uploading nor live")
                 break
             }

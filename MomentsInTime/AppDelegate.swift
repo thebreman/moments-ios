@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         UIView.appearance().tintColor = UIColor.mitActionblue
+        self.cancelPendingTasks()
         
         return true
     }
@@ -77,6 +78,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("\napp will terminate")
         
         //it is imperitive to stop any upload tasks,
+        self.invalidateTasks()
+    }
+    
+    private func invalidateTasks()
+    {
         //if the background session manager moment object is not nil, then we are uploading and need to fail:
         BackgroundUploadSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadSessionManager.shared.session.invalidateAndCancel()
@@ -89,6 +95,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BackgroundUploadVideoMetadataSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadVideoMetadataSessionManager.shared.session.invalidateAndCancel()
         BackgroundUploadVideoMetadataSessionManager.shared.moment = nil
+    }
+    
+    private func cancelPendingTasks()
+    {
+        BackgroundUploadSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
+            uploads.forEach { $0.cancel() }
+            downloads.forEach { $0.cancel() }
+        }
+        
+        BackgroundUploadCompleteSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
+            uploads.forEach { $0.cancel() }
+            downloads.forEach { $0.cancel() }
+        }
+        
+        BackgroundUploadVideoMetadataSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
+            uploads.forEach { $0.cancel() }
+            downloads.forEach { $0.cancel() }
+        }
     }
 }
 
