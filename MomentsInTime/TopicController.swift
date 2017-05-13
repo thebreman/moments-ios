@@ -8,6 +8,19 @@
 
 import UIKit
 
+private enum Identifiers
+{
+    static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
+    static let IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE = "imageTitleSubtitleCell"
+    static let SEGUE_CREATE_TOPIC = "createTopic"
+}
+
+private enum TopicSection : Int
+{
+    case chooseTopic
+    case topics
+}
+
 class TopicController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate
 {
     @IBOutlet weak var tableView: UITableView!
@@ -25,13 +38,6 @@ class TopicController: UIViewController, UITableViewDelegate, UITableViewDataSou
     }()
     
     var completion: TopicCompletion?
-    
-    private enum Identifiers
-    {
-        static let IDENTIFIER_CELL_ACTIVE_LINK = "activeLinkCell"
-        static let IDENTIFIER_CELL_IMAGE_TITLE_SUBTITLE = "imageTitleSubtitleCell"
-        static let SEGUE_CREATE_TOPIC = "createTopic"
-    }
     
     override func viewDidLoad()
     {
@@ -79,23 +85,40 @@ class TopicController: UIViewController, UITableViewDelegate, UITableViewDataSou
     
     func numberOfSections(in tableView: UITableView) -> Int
     {
-        return 1
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        switch section
+        {
+            case TopicSection.chooseTopic.rawValue: return 20
+            default: return 0.00001
+        }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return self.topics.count + 1 //for the activeLinkCell
+        switch section
+        {
+            case TopicSection.chooseTopic.rawValue: return 1
+            case TopicSection.topics.rawValue: return self.topics.count
+            default: return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        switch indexPath.row {
-        case 0:
-            return self.activeLinkCellForHeader()
-        
-        default:
-            let topic = self.topics[indexPath.row - 1]
-            return self.topicCell(forTopic: topic)
+        switch indexPath.section
+        {
+            case TopicSection.chooseTopic.rawValue:
+                return self.activeLinkCellForHeader()
+            
+            case TopicSection.topics.rawValue:
+                let topic = self.topics[indexPath.row]
+                return self.topicCell(forTopic: topic)
+            
+            default: return UITableViewCell()
         }
     }
     
