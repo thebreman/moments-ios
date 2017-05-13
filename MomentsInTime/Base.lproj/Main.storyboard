@@ -417,6 +417,16 @@
                     </view>
                     <navigationItem key="navigationItem" title="Moments In Time" id="bgh-Mz-knt">
                         <barButtonItem key="backBarButtonItem" title=" " id="tjD-3c-ynZ"/>
+                        <barButtonItem key="rightBarButtonItem" id="kxE-JI-OxL">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="0ML-Hu-E1y">
+                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="StarOfDavid"/>
+                                <connections>
+                                    <action selector="starOfDavidTapped:" destination="fNd-MJ-35M" eventType="touchUpInside" id="cgv-Sw-2vG"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="xzF-qz-0gc" id="cQe-dJ-z14"/>
@@ -716,6 +726,7 @@
         <image name="Community" width="24" height="18"/>
         <image name="MyMoments" width="21" height="20"/>
         <image name="PlusButton" width="18" height="17"/>
+        <image name="StarOfDavid" width="21" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="52o-6V-7hN"/>

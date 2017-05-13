@@ -18,7 +18,7 @@ class ComingSoonAlertView: NSObject
 {
     var completionClosure: ComingSoonAlertCompletion?
     
-    func showFrom(viewController: UIViewController, completion: ComingSoonAlertCompletion?)
+    func showFrom(viewController: UIViewController, completion: ComingSoonAlertCompletion? = nil)
     {
         self.completionClosure = completion
         
