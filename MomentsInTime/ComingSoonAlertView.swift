@@ -12,13 +12,13 @@ private let ALERT_TITLE = "Coming Soon"
 private let ALERT_MESSAGE = "Feature in development. It will be ready in no time!"
 private let ALERT_CONFIRM = "Cool!"
 
-typealias ComingSoonAlertCompletion = () -> Void
+typealias AlertCompletion = () -> Void
 
 class ComingSoonAlertView: NSObject
 {
-    var completionClosure: ComingSoonAlertCompletion?
+    var completionClosure: AlertCompletion?
     
-    func showFrom(viewController: UIViewController, completion: ComingSoonAlertCompletion? = nil)
+    func showFrom(viewController: UIViewController, completion: AlertCompletion? = nil)
     {
         self.completionClosure = completion
         

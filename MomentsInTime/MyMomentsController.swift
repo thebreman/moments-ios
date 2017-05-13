@@ -136,7 +136,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
     {
-        print("handle share")
+        let shareSheet = ShareAlertSheet()
+        shareSheet.showFrom(viewController: self, sender: sender)
     }
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
