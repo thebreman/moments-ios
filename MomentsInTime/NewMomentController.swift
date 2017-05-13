@@ -613,6 +613,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         print("Select from Facebook")
         //make sure to use InterviewingCompletion to get the Subject
+        let comingSoon = ComingSoonAlertView()
+        comingSoon.showFrom(viewController: self) { 
+            print("coming soon!")
+        }
     }
     
     private func handleManualInterviewSelection()
