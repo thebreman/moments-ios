@@ -264,8 +264,6 @@ class VimeoConnector: NSObject
         
         self.uploadManager.delegate.taskDidComplete = { session, task, error in
             
-            self.uploadManager.moment = nil
-            
             guard error == nil else {
                 print(error!)
                 uploadCompletion(nil, error)
@@ -279,10 +277,13 @@ class VimeoConnector: NSObject
                 return
             }
             
-            self.completeUpload(moment: moment, router: UploadRouter.complete(completeURI: completeURI), uploadCompletion: uploadCompletion)
+            self.completeUpload(moment: (self.uploadManager.moment ?? moment), router: UploadRouter.complete(completeURI: completeURI), uploadCompletion: uploadCompletion)
             
             //call system completion handler for this background task:
-            self.uploadManager.systemCompletionHandler?()
+            DispatchQueue.main.async {
+                self.uploadManager.moment = nil
+                self.uploadManager.systemCompletionHandler?()
+            }
         }
         
         //start the task:
@@ -296,6 +297,8 @@ class VimeoConnector: NSObject
      */
     private func completeUpload(moment: Moment, router: URLRequestConvertible, uploadCompletion: @escaping UploadCompletion)
     {
+        self.uploadCompleteManager.moment = moment
+        
         //configure delegate callbacks for the SessionManager:
         self.uploadCompleteManager.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
             
@@ -307,17 +310,13 @@ class VimeoConnector: NSObject
             
             DispatchQueue.main.async {
                 Moment.writeToRealm {
-                    moment.video?.uri = locationURI
+                    self.uploadCompleteManager.moment?.video?.uri = locationURI
                 }
             }
         }
         
-        self.uploadCompleteManager.moment = moment
-        
         self.uploadCompleteManager.delegate.taskDidComplete = { session, task, error in
             DispatchQueue.main.async {
-                
-                self.uploadCompleteManager.moment = nil
                 
                 guard error == nil else {
                     print(error!)
@@ -325,11 +324,13 @@ class VimeoConnector: NSObject
                     return
                 }
                 
-                self.addMetadata(for: moment, uploadCompletion: uploadCompletion)
+                self.addMetadata(for: (self.uploadCompleteManager.moment ?? moment), uploadCompletion: uploadCompletion)
+                
+                
+                //call system completion handler for this background task:
+                self.uploadCompleteManager.moment = nil
+                self.uploadCompleteManager.systemCompletionHandler?()
             }
-            
-            //call system completion handler for this background task:
-            self.uploadCompleteManager.systemCompletionHandler?()
         }
         
         //start the task:
@@ -348,8 +349,6 @@ class VimeoConnector: NSObject
         self.uploadMetaDataManager.delegate.taskDidComplete = { session, task, error in
             DispatchQueue.main.async {
                 
-                self.uploadMetaDataManager.moment = nil
-                
                 guard error == nil else {
                     print(error!)
                     uploadCompletion(nil, error)
@@ -357,14 +356,15 @@ class VimeoConnector: NSObject
                 }
                 
                 uploadCompletion(moment, nil)
+                
+                //call system completion handler for this background task:
+                self.uploadMetaDataManager.moment = nil
+                self.uploadMetaDataManager.systemCompletionHandler?()
             }
-            
-            //call system completion handler for this background task:
-            self.uploadMetaDataManager.systemCompletionHandler?()
         }
         
         //start the task:
-        guard let video = moment.video else { return }
+        guard let video = self.uploadMetaDataManager.moment?.video else { return }
         
         self.uploadMetaDataManager.download(VideoRouter.update(video))
     }

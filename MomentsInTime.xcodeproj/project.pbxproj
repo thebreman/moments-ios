@@ -51,6 +51,7 @@
 		6811A1E61E826E9C006362E8 /* CommunityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811A1E51E826E9C006362E8 /* CommunityController.swift */; };
 		6811A1E81E826EB2006362E8 /* MyMomentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811A1E71E826EB2006362E8 /* MyMomentsController.swift */; };
 		6811AE1F1EAC763E004386E4 /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */; };
+		68122D0B1EC8078D00E59EFD /* ThrowAway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68122D0A1EC8078D00E59EFD /* ThrowAway.swift */; };
 		6825E1371EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */; };
 		6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1381EA20525003DEF20 /* ContainerCell.swift */; };
 		6825E13D1EA2119F003DEF20 /* MITEmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */; };
@@ -152,6 +153,7 @@
 		6811A1E51E826E9C006362E8 /* CommunityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityController.swift; sourceTree = "<group>"; };
 		6811A1E71E826EB2006362E8 /* MyMomentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMomentsController.swift; sourceTree = "<group>"; };
 		6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
+		68122D0A1EC8078D00E59EFD /* ThrowAway.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThrowAway.swift; sourceTree = "<group>"; };
 		6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITMomentCollectionViewAdapter.swift; sourceTree = "<group>"; };
 		6825E1381EA20525003DEF20 /* ContainerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerCell.swift; sourceTree = "<group>"; };
 		6825E13C1EA2119F003DEF20 /* MITEmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITEmptyStateView.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				680CEB9A1E9F67B0009ED223 /* BackgroundSessionManagers.swift */,
 				680BE0871E8E2E9B00A5D339 /* VideoRouter.swift */,
 				680BE0881E8E2E9B00A5D339 /* UploadRouter.swift */,
+				68122D0A1EC8078D00E59EFD /* ThrowAway.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -708,6 +711,7 @@
 				68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */,
 				683B361E1EC6F67300F68A8C /* InterviewInviteAlertSheet.swift in Sources */,
 				688E998D1EB07D1200AEF2F7 /* NewNoteController.swift in Sources */,
+				68122D0B1EC8078D00E59EFD /* ThrowAway.swift in Sources */,
 				6808D9E31EC59E20005B341B /* MomentStatus.swift in Sources */,
 				6811AE1F1EAC763E004386E4 /* SpinnerCell.swift in Sources */,
 				680BE07F1E8E2C9500A5D339 /* Views.swift in Sources */,
