@@ -12,7 +12,7 @@ import MessageUI
 private let TITLE_SHARE_ACTION = "Share"
 private let TITLE_REPORT_ACTION = "Report"
 private let TITLE_CANCEL = "Cancel"
-private let EMAIL_FEEDBACK = "rdm_d_dp@icloud.com"
+private let EMAIL_FEEDBACK = "justinmilrad@gmail.com"
 private let EMAIL_FEEDBACK_SUBJECT = "Moment Video Report"
 private let EMAIL_FEEDBACK_BODY = "Hello, I would like to report this video"
 private let TITLE_DEVICE_CANT_MAIL = "Oh No!"

@@ -11,8 +11,8 @@ import UIKit
 private let TITLE_FACEBOOK_ACTION = "Ask on Facebook"
 private let TITLE_MESSAGE_ACTION = "Message..."
 private let TITLE_CANCEL = "Cancel"
-private let COPY_MESSAGE_INVITE_INTERVIEW = "Hello, I would like to interview you on the Moments In Time app!"
-private let APP_LINK = "https://marvelapp.com/fj8ic86/screen/26066627"
+private let COPY_MESSAGE_INVITE_INTERVIEW = "Hey I think you have a story to tell. Want to share it on the Moments in Time app?"
+private let APP_LINK = "https://itunes.apple.com/us/app/moments-in-time/id1236516374"
 
 class InterviewInviteAlertSheet: NSObject
 {
