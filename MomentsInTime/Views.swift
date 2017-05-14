@@ -41,7 +41,7 @@ extension UIView
         let options : UIViewAnimationOptions = [.curveEaseOut, .beginFromCurrentState]
         
         UIView.animate(withDuration: duration, delay: 0, usingSpringWithDamping: damping, initialSpringVelocity: velocity, options: options, animations: {
-            self.layer.transform = (touchDown) ? CATransform3DMakeScale(0.92, 0.92, 1) : CATransform3DIdentity
+            self.layer.transform = (touchDown) ? CATransform3DMakeScale(0.96, 0.96, 1) : CATransform3DIdentity
         }) { (done) in
             if done { completion?() }
         }

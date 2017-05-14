@@ -689,9 +689,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         let controller = UIAlertController(title: COPY_TITLE_EDIT_VIDEO_ALERT, message: COPY_MESSAGE_EDIT_VIDEO_ALERT, preferredStyle: .alert)
         
-        let okAction = UIAlertAction(title: COPY_TITLE_BUTTON_OK, style: .cancel, handler: nil)
-        controller.addAction(okAction)
-        
         let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_REMOVE_VIDEO, style: .destructive) { action in
             
             guard let video = self.moment.video, video.isLocal else { return }
@@ -699,6 +696,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             self.deleteVideo(video)
         }
         controller.addAction(deleteAction)
+        
+        let okAction = UIAlertAction(title: COPY_TITLE_BUTTON_OK, style: .cancel, handler: nil)
+        controller.addAction(okAction)
         
         self.present(controller, animated: true, completion: nil)
         
