@@ -47,18 +47,11 @@
                                     <constraint firstAttribute="height" constant="0.5" id="cYQ-M9-L1x"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PeZ-Qp-yev" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
-                                <rect key="frame" x="199.5" y="299" width="42" height="32"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="Share">
-                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="handleShare:" destination="Wnt-g4-gte" eventType="touchUpInside" id="e4G-S0-uUN"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y66-Vl-xRy" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
-                                <rect key="frame" x="391" y="304" width="38" height="22"/>
+                                <rect key="frame" x="369" y="295" width="72" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="72" id="9re-cw-Lq0"/>
+                                </constraints>
                                 <state key="normal" image="Options"/>
                                 <connections>
                                     <action selector="handleOptions:" destination="Wnt-g4-gte" eventType="touchUpInside" id="OAi-Md-sk0"/>
@@ -99,19 +92,34 @@
                                     <constraint firstItem="lVj-XG-esd" firstAttribute="centerY" secondItem="fqy-BN-vep" secondAttribute="centerY" id="yvb-7x-1ru"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PeZ-Qp-yev" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="171" y="295" width="99" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="99" id="mjV-pE-Yhp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="Share">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleShare:" destination="Wnt-g4-gte" eventType="touchUpInside" id="e4G-S0-uUN"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="i4G-03-3dv" secondAttribute="trailing" id="22Y-7M-z4r"/>
                             <constraint firstAttribute="trailing" secondItem="fPw-KP-Sda" secondAttribute="trailing" constant="12" identifier="title label trailing" id="2k4-pg-CqP"/>
                             <constraint firstItem="i4G-03-3dv" firstAttribute="leading" secondItem="DAz-xY-OdE" secondAttribute="leading" id="3kP-Ht-Vru"/>
-                            <constraint firstAttribute="bottom" secondItem="PeZ-Qp-yev" secondAttribute="bottom" constant="4" identifier="share bottom" id="8Or-z4-SLb"/>
+                            <constraint firstItem="Y66-Vl-xRy" firstAttribute="top" secondItem="PIY-i8-7Yl" secondAttribute="bottom" id="6jP-1K-H2F"/>
+                            <constraint firstAttribute="bottom" secondItem="PeZ-Qp-yev" secondAttribute="bottom" identifier="share bottom" id="8Or-z4-SLb"/>
                             <constraint firstItem="fqy-BN-vep" firstAttribute="top" secondItem="DAz-xY-OdE" secondAttribute="top" id="BJy-VC-NAm"/>
-                            <constraint firstItem="Y66-Vl-xRy" firstAttribute="centerY" secondItem="PeZ-Qp-yev" secondAttribute="centerY" identifier="options center" id="Dqy-rN-t7Y"/>
+                            <constraint firstAttribute="bottom" secondItem="Y66-Vl-xRy" secondAttribute="bottom" id="D2J-Ze-ayd"/>
                             <constraint firstItem="UKm-Zv-5eP" firstAttribute="centerX" secondItem="i4G-03-3dv" secondAttribute="centerX" id="EuA-lr-rAY"/>
                             <constraint firstAttribute="trailing" secondItem="PIY-i8-7Yl" secondAttribute="trailing" identifier="separator trailing" id="GZJ-O3-0GR"/>
+                            <constraint firstAttribute="bottom" secondItem="Y66-Vl-xRy" secondAttribute="bottom" id="Np0-tD-fNQ"/>
                             <constraint firstAttribute="bottom" secondItem="PIY-i8-7Yl" secondAttribute="bottom" constant="40" id="R8k-a5-Top"/>
-                            <constraint firstAttribute="trailing" secondItem="Y66-Vl-xRy" secondAttribute="trailing" constant="12" identifier="options trailing" id="Rq5-fo-SdV"/>
+                            <constraint firstAttribute="trailing" secondItem="Y66-Vl-xRy" secondAttribute="trailing" identifier="options trailing" id="Rq5-fo-SdV"/>
                             <constraint firstItem="PIY-i8-7Yl" firstAttribute="top" secondItem="6A7-Im-XA3" secondAttribute="bottom" constant="8" identifier="bottom greaterThan" id="Uht-cl-jGz"/>
                             <constraint firstItem="6A7-Im-XA3" firstAttribute="leading" secondItem="fPw-KP-Sda" secondAttribute="leading" id="dvp-Qw-APZ"/>
                             <constraint firstItem="PeZ-Qp-yev" firstAttribute="centerX" secondItem="DAz-xY-OdE" secondAttribute="centerX" identifier="share center x" id="er1-cS-SWM"/>
@@ -119,7 +127,7 @@
                             <constraint firstItem="fPw-KP-Sda" firstAttribute="leading" secondItem="DAz-xY-OdE" secondAttribute="leading" constant="12" identifier="title label leading" id="gn4-Ab-ok2"/>
                             <constraint firstItem="UKm-Zv-5eP" firstAttribute="centerY" secondItem="i4G-03-3dv" secondAttribute="centerY" id="hXg-9Q-7bR"/>
                             <constraint firstItem="fqy-BN-vep" firstAttribute="leading" secondItem="DAz-xY-OdE" secondAttribute="leading" id="jmZ-FG-VOI"/>
-                            <constraint firstItem="PeZ-Qp-yev" firstAttribute="top" secondItem="PIY-i8-7Yl" secondAttribute="bottom" constant="4" identifier="share top" id="o3C-cO-nIN"/>
+                            <constraint firstItem="PeZ-Qp-yev" firstAttribute="top" secondItem="PIY-i8-7Yl" secondAttribute="bottom" identifier="share top" id="o3C-cO-nIN"/>
                             <constraint firstAttribute="trailing" secondItem="fqy-BN-vep" secondAttribute="trailing" id="o3x-K4-yUq"/>
                             <constraint firstItem="6A7-Im-XA3" firstAttribute="trailing" secondItem="fPw-KP-Sda" secondAttribute="trailing" id="owi-Zx-ULX"/>
                             <constraint firstItem="fPw-KP-Sda" firstAttribute="top" secondItem="i4G-03-3dv" secondAttribute="bottom" priority="999" constant="8" id="sSN-lb-aZt"/>
