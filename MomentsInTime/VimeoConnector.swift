@@ -150,11 +150,40 @@ class VimeoConnector: NSObject
         }
     }
     
-    //we can only allow 1 upload at a time b/c of shared background session managers...
-    private static var isUploading: Bool {
-        return BackgroundUploadSessionManager.shared.moment != nil
-            || BackgroundUploadCompleteSessionManager.shared.moment != nil
-            || BackgroundUploadVideoMetadataSessionManager.shared.moment != nil
+    //true if there is an active upload already:
+    func checkForPendingUploads(completion: @escaping (Bool) -> Void)
+    {
+        BackgroundUploadSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
+            if uploads.isEmpty && downloads.isEmpty {
+                BackgroundUploadSessionManager.shared.moment = nil
+                
+                BackgroundUploadCompleteSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
+                    if uploads.isEmpty && downloads.isEmpty {
+                        BackgroundUploadCompleteSessionManager.shared.moment = nil
+                        
+                        BackgroundUploadVideoMetadataSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
+                            if uploads.isEmpty && downloads.isEmpty {
+                                BackgroundUploadVideoMetadataSessionManager.shared.moment = nil
+                                completion(false)
+                                return
+                            }
+                            else {
+                                completion(true)
+                                return
+                            }
+                        }
+                    }
+                    else {
+                        completion(true)
+                        return
+                    }
+                }
+            }
+            else {
+                completion(true)
+                return
+            }
+        }
     }
     
     /**
@@ -162,41 +191,44 @@ class VimeoConnector: NSObject
      */
     func create(moment: Moment, uploadProgress: UploadProgressClosure?, completion: @escaping UploadCompletion)
     {
-        guard VimeoConnector.isUploading == false else {
-            print("already uploading")
-            let error = NSError(domain: "VimeoConnector.create", code: 400, userInfo: [NSLocalizedDescriptionKey: "Already uploading another video"])
-            completion(nil, error)
-            return
-        }
-        
-        self.request(router: VideoRouter.create) { (response, error) in
+        self.checkForPendingUploads { alreadyUploading in
             
-            guard error == nil else {
+            guard alreadyUploading == false else {
+                print("already uploading")
+                let error = NSError(domain: "VimeoConnector.create", code: 400, userInfo: [NSLocalizedDescriptionKey: "Already uploading another video"])
                 completion(nil, error)
                 return
             }
             
-            if let result = response as? [String: Any],
-                let ticketID = result["ticket_id"] as? String,
-                let uploadLink = result["upload_link_secure"] as? String,
-                let completeURI = result["complete_uri"] as? String {
+            self.request(router: VideoRouter.create) { (response, error) in
                 
-                //pass along the complete URI to the sessionManager that will handle this request:
-                self.uploadCompleteManager.completeURI = completeURI
+                guard error == nil else {
+                    completion(nil, error)
+                    return
+                }
                 
-                //now that we have generated an upload ticket, we can stream an upload to Vimeo with a PUT request to uploadLink:
-                self.upload(moment: moment, router: UploadRouter.create(ticketID: ticketID, uploadLink: uploadLink), uploadProgress: { fractionCompleted in
+                if let result = response as? [String: Any],
+                    let ticketID = result["ticket_id"] as? String,
+                    let uploadLink = result["upload_link_secure"] as? String,
+                    let completeURI = result["complete_uri"] as? String {
                     
-                    uploadProgress?(fractionCompleted)
+                    //pass along the complete URI to the sessionManager that will handle this request:
+                    self.uploadCompleteManager.completeURI = completeURI
                     
-                }, uploadCompletion: completion) //pass along the completion
+                    //now that we have generated an upload ticket, we can stream an upload to Vimeo with a PUT request to uploadLink:
+                    self.upload(moment: moment, router: UploadRouter.create(ticketID: ticketID, uploadLink: uploadLink), uploadProgress: { fractionCompleted in
+                        
+                        uploadProgress?(fractionCompleted)
+                        
+                    }, uploadCompletion: completion) //pass along the completion
+                    
+                    return
+                }
                 
-                return
+                //catch any errors:
+                let error = NSError(domain: "VimeoConnector.create:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
+                completion(nil, error)
             }
-            
-            //catch any errors:
-            let error = NSError(domain: "VimeoConnector.create:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
-            completion(nil, error)
         }
     }
     
