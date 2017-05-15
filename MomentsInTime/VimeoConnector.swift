@@ -255,7 +255,6 @@ class VimeoConnector: NSObject
     }
 }
 
-
 /**
  * Extension for Parsing:
  */

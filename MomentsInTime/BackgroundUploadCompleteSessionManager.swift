@@ -13,16 +13,29 @@ import RealmSwift
 /***** DO NOT CHANGE *****/
 private let USER_DEFAULT_SUITE_COMPLETE_UPLOAD = "CurrentUserUploadComplete"
 private let DEFAULTS_KEY_MOMENT_UPLOAD_COMPLETE = "momentIDKey"
+private let DEFAULTS_KEY_COMPLETE_URI = "uploadCompleteURI"
 /***** DO NOT CHANGE *****/
 
 class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
 {
     private static var userDefaults = UserDefaults(suiteName: USER_DEFAULT_SUITE_COMPLETE_UPLOAD)! // do not modify name
     
-    var completeURI: String?
-    
     var uploadCompletion: UploadCompletion?
     var systemCompletionHandler: (() -> Void)?
+    
+    var completeURI: String? {
+        get {
+            return BackgroundUploadCompleteSessionManager.userDefaults.string(forKey: DEFAULTS_KEY_COMPLETE_URI)
+        }
+        set {
+            if newValue == nil {
+                BackgroundUploadCompleteSessionManager.userDefaults.removeObject(forKey: DEFAULTS_KEY_COMPLETE_URI)
+            }
+            else {
+                BackgroundUploadCompleteSessionManager.userDefaults.set(newValue!, forKey: DEFAULTS_KEY_COMPLETE_URI)
+            }
+        }
+    }
     
     var moment: Moment? {
         get {
