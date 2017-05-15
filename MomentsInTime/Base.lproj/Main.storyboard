@@ -418,8 +418,8 @@
                     </view>
                     <navigationItem key="navigationItem" title="Moments In Time" id="bgh-Mz-knt">
                         <barButtonItem key="backBarButtonItem" title=" " id="tjD-3c-ynZ"/>
-                        <barButtonItem key="rightBarButtonItem" id="kxE-JI-OxL">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="0ML-Hu-E1y">
+                        <barButtonItem key="rightBarButtonItem" title="Item" style="done" id="kxE-JI-OxL">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="0ML-Hu-E1y">
                                 <rect key="frame" x="276" y="7" width="83" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" image="StarOfDavid"/>
