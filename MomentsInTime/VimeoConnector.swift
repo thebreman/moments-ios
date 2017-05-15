@@ -89,15 +89,12 @@ class VimeoConnector: NSObject
                 return
             }
             
-            if let result = response as? [String: Any],
-                let name = result["name"] as? String,
-                let description = result["description"] as? String,
-                let link = result["link"] as? String {
+            if let result = response as? [String: Any] {
                 
                 let fetchedVideo = Video()
-                fetchedVideo.name = name
-                fetchedVideo.videoDescription = description
-                fetchedVideo.videoLink = link
+                fetchedVideo.name = result["name"] as? String
+                fetchedVideo.videoDescription = result["description"] as? String
+                fetchedVideo.videoLink = result["link"] as? String
                 
                 completion(fetchedVideo, nil)
                 return
