@@ -11,15 +11,16 @@ import UIKit
 private let TITLE_FACEBOOK_ACTION = "Share on Facebook"
 private let TITLE_MESSAGE_ACTION = "Message..."
 private let TITLE_CANCEL = "Cancel"
-private let MESSAGE_SHARE = "Hello, checkout this awesome app Moments In Time"
-private let APP_LINK = "https://marvelapp.com/fj8ic86/screen/26066627"
+private let MESSAGE_SHARE = "Check out this story on Moments in Time!"
 
 class ShareAlertSheet: NSObject
 {
+    var moment: Moment?
     var completionHandler: AlertCompletion?
     
-    func showFrom(viewController: UIViewController, sender: UIView, completion: AlertCompletion? = nil)
+    func showFrom(viewController: UIViewController, sender: UIView, moment: Moment, completion: AlertCompletion? = nil)
     {
+        self.moment = moment
         self.completionHandler = completion
         
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -51,10 +52,12 @@ class ShareAlertSheet: NSObject
     
     private func handleMessageShare(withViewController presenter: UIViewController, sender: UIView)
     {
+        guard let videoLinkString = self.moment?.video?.videoLink, let videoLink = URL(string: videoLinkString) else { return }
+        
         //present UIActivityViewController,
         //must be popover for iPad:
         let message = MESSAGE_SHARE
-        let link = URL(string: APP_LINK)!
+        let link = videoLink
         let controller = UIActivityViewController(activityItems: [message, link], applicationActivities: nil)
         
         controller.popoverPresentationController?.sourceView = sender
