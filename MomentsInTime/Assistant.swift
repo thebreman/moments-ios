@@ -39,7 +39,7 @@ class Assistant
             }
         }
     }
-    
+
     class func removeImageFromDisk(atRelativeURLString relativeURLString: String)
     {
         if let images = FileManager.getImagesDirectory() {
