@@ -161,7 +161,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
     {
         let shareSheet = ShareAlertSheet()
-        shareSheet.showFrom(viewController: self, sender: sender)
+        shareSheet.showFrom(viewController: self, sender: sender, moment: moment)
     }
     
     //need to retain this for delegation:

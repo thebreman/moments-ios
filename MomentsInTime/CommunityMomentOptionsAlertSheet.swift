@@ -18,13 +18,14 @@ private let EMAIL_FEEDBACK_BODY = "Hello, I would like to report this video"
 private let TITLE_DEVICE_CANT_MAIL = "Oh No!"
 private let MESSAGE_DEVICE_CANT_MAIL = "This device cannot send mail."
 
-
 class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDelegate
 {
+    var moment: Moment?
     var completionHandler: AlertCompletion?
     
     func showFrom(viewController: UIViewController, sender: UIView, forMoment moment: Moment, completion: AlertCompletion? = nil)
     {
+        self.moment = moment
         self.completionHandler = completion
         
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -50,8 +51,10 @@ class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDel
     
     private func handleShare(withViewController presenter: UIViewController, sender: UIView)
     {
+        guard let momentToShare = self.moment else { return }
+        
         let shareSheet = ShareAlertSheet()
-        shareSheet.showFrom(viewController: presenter, sender: sender)
+        shareSheet.showFrom(viewController: presenter, sender: sender, moment: momentToShare)
     }
     
     private func handleReport(withViewController presenter: UIViewController, sender: UIView, forMoment moment: Moment)

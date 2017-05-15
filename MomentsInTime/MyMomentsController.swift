@@ -137,7 +137,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
     {
         let shareSheet = ShareAlertSheet()
-        shareSheet.showFrom(viewController: self, sender: sender)
+        shareSheet.showFrom(viewController: self, sender: sender, moment: moment)
     }
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
@@ -194,7 +194,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         else {
             self.adapter.refreshMoment(moment)
         }
-        
     }
     
     private func handleSubmit(forMoment moment: Moment)
@@ -209,6 +208,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             }
             
             self.adapter.refreshMoment(moment)
+            self.refresh()
             
             //TODO:
             //send a local notification about uploaded video and processing time.
@@ -270,8 +270,10 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                 
                 if let newVideo = fetchedVideo {
                     
-                    print(newVideo.name ?? "no video name")
-                    print(newVideo.videoDescription ?? "no video description")
+                    //add link:
+                    Moment.writeToRealm {
+                        moment.video?.videoLink = newVideo.videoLink
+                    }
                     
                     //check for metadata and add if necessary:
                     if newVideo.name == nil

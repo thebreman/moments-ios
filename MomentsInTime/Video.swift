@@ -20,8 +20,7 @@ class Video: Object
     dynamic var videoDescription: String? = nil
     dynamic var localURL: String? = nil //file path for videos that are being uploaded:
     dynamic var localThumbnailImageURL: String? = nil
-    
-    var videoLink: String?
+    dynamic var videoLink: String?
     
     var thumbnailImageURL: String?
     var status: String?
@@ -131,7 +130,7 @@ class Video: Object
     
     override static func ignoredProperties() -> [String]
     {
-        return ["thumbnailImageURL", "status", "localThumbnailImage", "_localThumbnailImage", "playbackURL", "videoLink"]
+        return ["thumbnailImageURL", "status", "localThumbnailImage", "_localThumbnailImage", "playbackURL"]
     }
 }
 

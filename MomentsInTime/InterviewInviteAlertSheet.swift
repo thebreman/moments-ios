@@ -51,10 +51,12 @@ class InterviewInviteAlertSheet: NSObject
     
     private func handleMessageInvite(withViewController presenter: UIViewController, sender: UIView)
     {
+        guard let appLink = URL(string: APP_LINK) else { return }
+        
         //present UIActivityViewController,
         //must be popover for iPad:
         let message = COPY_MESSAGE_INVITE_INTERVIEW
-        let link = URL(string: APP_LINK)!
+        let link = appLink
         let controller = UIActivityViewController(activityItems: [message, link], applicationActivities: nil)
         
         controller.popoverPresentationController?.sourceView = sender
