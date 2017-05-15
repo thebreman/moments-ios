@@ -24,7 +24,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         UIView.appearance().tintColor = UIColor.mitActionblue
-        self.cancelPendingTasks()
+        
+        print(BackgroundUploadSessionManager.shared.moment)
+        print(BackgroundUploadCompleteSessionManager.shared.moment)
+        print(BackgroundUploadVideoMetadataSessionManager.shared.moment)
+        
+        BackgroundUploadSessionManager.shared.session.getAllTasks { tasks in
+            print(tasks)
+        }
+        
+        BackgroundUploadCompleteSessionManager.shared.session.getAllTasks {tasks in
+            print(tasks)
+        }
+        
+        BackgroundUploadVideoMetadataSessionManager.shared.session.getAllTasks { tasks in
+            print(tasks)
+        }
+        
+        application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
         
         return true
     }
@@ -95,24 +112,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BackgroundUploadVideoMetadataSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadVideoMetadataSessionManager.shared.session.invalidateAndCancel()
         BackgroundUploadVideoMetadataSessionManager.shared.moment = nil
-    }
-    
-    private func cancelPendingTasks()
-    {
-        BackgroundUploadSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
-            uploads.forEach { $0.cancel() }
-            downloads.forEach { $0.cancel() }
-        }
         
-        BackgroundUploadCompleteSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
-            uploads.forEach { $0.cancel() }
-            downloads.forEach { $0.cancel() }
-        }
-        
-        BackgroundUploadVideoMetadataSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
-            uploads.forEach { $0.cancel() }
-            downloads.forEach { $0.cancel() }
-        }
+        Assistant.triggerNotification(withTitle: "Inavalidated all background sessions", message: "", delay: 1)
     }
 }
 
