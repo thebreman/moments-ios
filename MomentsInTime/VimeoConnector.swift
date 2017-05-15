@@ -26,11 +26,11 @@ typealias VideoCompletion = ([Video]?, Error?) -> Void
 
 class VimeoConnector: NSObject
 {
-    static let baseAPIEndpoint: String = HOST
-    static let accessTokenKey: String = ACCESS_TOKEN_KEY
-    static let accessTokenValue: String = ACCESS_TOKEN_VALUE_STAGING
-    static let versionAPIHeaderValue: String = VERSION_ACCEPT_HEADER_VALUE
-    static let versionAPIHeaderKey: String = VERSION_ACCEPT_HEADER_KEY
+    static var baseAPIEndpoint: String { return HOST }
+    static var accessTokenKey: String { return ACCESS_TOKEN_KEY }
+    static var accessTokenValue: String { return ACCESS_TOKEN_VALUE_STAGING }
+    static var versionAPIHeaderValue: String { return VERSION_ACCEPT_HEADER_VALUE }
+    static var versionAPIHeaderKey: String { return VERSION_ACCEPT_HEADER_KEY }
     
     /**
      * Fetches all the videos from our vimeo account (me/videos).
@@ -78,7 +78,7 @@ class VimeoConnector: NSObject
     }
     
     /**
-     * fetches a video from video uri, passes along name, and description in completion:
+     * fetches a video from video uri, passes along name, description, and link as optionals in completion:
      */
     func getRemoteVideo(_ video: Video, completion: @escaping (Video?, Error?) -> Void)
     {
