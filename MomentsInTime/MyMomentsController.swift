@@ -221,11 +221,9 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         self.adapter.refreshData(shouldReload: true)
         
         //verification temporary?
-//        self.verifyMoments {
-//            self.refreshControl.endRefreshing()
-//        }
-        self.refreshControl.endRefreshing()
-
+        self.verifyMoments {
+            self.refreshControl.endRefreshing()
+        }
     }
     
     private func verifyMoments(completion: (() -> Void)?)
@@ -250,6 +248,13 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                         
                     case .live:
                         self.verifyMetadata(forMoment: moment)
+                        
+                    case .uploadFailed:
+                        if moment.video?.uri != nil {
+                            print("video had uri, changing status from uploadFailed to live")
+                            moment.handleSuccessUpload()
+                            self.verifyMetadata(forMoment: moment)
+                        }
                         
                     default:
                         self.verifyMetadata(forMoment: moment)
@@ -287,8 +292,13 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                         
                         print("\nadding metadata in verify moments")
                         
+<<<<<<< HEAD
                         BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment) { (newMoment, error) in
                             if error != nil { print(error ?? "no error") }
+=======
+                        BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment) { (moment, error) in
+                            if error != nil { print(error!) }
+>>>>>>> Refactors upload networking flow
                         }
                     }
                 }

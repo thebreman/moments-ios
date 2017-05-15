@@ -78,8 +78,12 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
         self.uploadCompletion = uploadCompletion
         
         guard let uploadURL = moment.video?.localPlaybackURL else {
-            let error = NSError(domain: "BackgroundUploadManager.upload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't create valid video file url"])
-            uploadCompletion(nil, error)
+            DispatchQueue.main.async {
+                let error = NSError(domain: "BackgroundUploadManager.upload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't create valid video file url"])
+                self.moment?.handleFailedUpload()
+                uploadCompletion(nil, error)
+            }
+
             return
         }
         
@@ -89,15 +93,21 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
     private func configureTaskDidFinishHandler()
     {
         self.delegate.taskDidComplete = { session, task, error in
-            
-            guard let moment = self.moment, error == nil else {
-                print(error!)
-                self.uploadCompletion?(nil, error)
-                return
+            DispatchQueue.main.async {
+                
+                guard let moment = self.moment, error == nil else {
+                    print(error!)
+                    self.moment?.handleFailedUpload()
+                    self.uploadCompletion?(nil, error)
+                    return
+                }
+                
+                //complete the upload:
+                BackgroundUploadCompleteSessionManager.shared.completeUpload(moment: moment, completion: self.uploadCompletion)
+                self.moment = nil
+                
+                Assistant.triggerNotification(withTitle: "uploadComplete", message: "upload task finished", delay: 1)
             }
-            
-            //complete the upload:
-            BackgroundUploadCompleteSessionManager.shared.completeUpload(moment: moment, completion: self.uploadCompletion)
         }
     }
     

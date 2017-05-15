@@ -86,46 +86,62 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
         self.uploadCompletion = completion
         
         guard let completeURI = self.completeURI else {
-            let error = NSError(domain: "BackgroundUploadCompleteManager.completeUpload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "No valid completeURI"])
-            self.uploadCompletion?(nil, error)
+            DispatchQueue.main.async {
+                let error = NSError(domain: "BackgroundUploadCompleteManager.completeUpload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "No valid completeURI"])
+                self.moment?.handleFailedUpload()
+                self.uploadCompletion?(nil, error)
+            }
+
             return
         }
         
         self.download(UploadRouter.complete(completeURI: completeURI))
+        
+        Assistant.triggerNotification(withTitle: "DELETE call started", message: "completeURI call", delay: 4)
     }
     
     private func configureDownloadTaskDidFinishHandler()
     {
         self.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
-            
-            guard let httpResponse = task.response as? HTTPURLResponse,
-                let locationURI = httpResponse.allHeaderFields["Location"] as? String else {
-                    let error = NSError(domain: "BackgroundUploadCompleteManager.downloadFinish:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Could not get location header"])
-                    self.uploadCompletion?(nil, error)
-                    return
-            }
-            
-            //update moment with the uri:
             DispatchQueue.main.async {
+                
+                guard let httpResponse = task.response as? HTTPURLResponse,
+                    let locationURI = httpResponse.allHeaderFields["Location"] as? String,
+                    let moment = self.moment else {
+                        let error = NSError(domain: "BackgroundUploadCompleteManager.downloadFinish:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Could not get location header"])
+                        self.moment?.handleFailedUpload()
+                        self.uploadCompletion?(nil, error)
+                        return
+                }
+                
+                //update moment with the uri:
                 Moment.writeToRealm {
                     self.moment?.video?.uri = locationURI
                 }
+                
+                //add video metadata:
+                BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment, completion: self.uploadCompletion)
+                self.completeURI = nil
+                self.moment = nil
+                
+                Assistant.triggerNotification(withTitle: "got location", message: "\(locationURI)", delay: 4)
             }
         }
     }
     
     private func configureTaskDidFinishHandler()
     {
+        //handle errors here
         self.delegate.taskDidComplete = { session, task, error in
-            
-            guard let moment = self.moment, error == nil else {
-                print(error!)
-                self.uploadCompletion?(nil, error)
-                return
+            DispatchQueue.main.async {
+                
+                guard error == nil else {
+                    print(error!)
+                    self.moment?.handleFailedUpload()
+                    self.uploadCompletion?(nil, error)
+                    return
+                }
             }
-            
-            //add video metadata:
-            BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment, completion: self.uploadCompletion)
         }
     }
     
@@ -133,6 +149,7 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
     {
         self.delegate.sessionDidFinishEventsForBackgroundURLSession = { session in
             DispatchQueue.main.async {
+                self.completeURI = nil
                 self.moment = nil
                 self.systemCompletionHandler?()
                 self.systemCompletionHandler = nil

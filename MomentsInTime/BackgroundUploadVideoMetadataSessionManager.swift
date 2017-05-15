@@ -55,6 +55,7 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
         configuration.timeoutIntervalForResource = 3600 //1 hour - default is 7 days
         super.init(configuration: configuration)
         
+        self.configureDownloadTaskDidFinishHandler()
         self.configureTaskDidFinishHandler()
         self.configureSessionDidFinishHandler()
     }
@@ -68,26 +69,48 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
         self.moment = moment
         self.uploadCompletion = completion
         
-        guard let video = self.moment?.video else {
-            let error = NSError(domain: "BackgroundUploadVideoMetadataSessionManager.sendMetadata:", code: 400, userInfo: [NSLocalizedDescriptionKey: "No valid video"])
-            self.uploadCompletion?(nil, error)
+        guard let video = self.moment?.video, video.uri != nil else {
+            DispatchQueue.main.async {
+                let error = NSError(domain: "BackgroundUploadVideoMetadataSessionManager.sendMetadata:", code: 400, userInfo: [NSLocalizedDescriptionKey: "No valid video"])
+                self.moment?.handleFailedUpload()
+                self.uploadCompletion?(nil, error)
+            }
+            
             return
         }
         
         self.download(VideoRouter.update(video))
+        
+        Assistant.triggerNotification(withTitle: "metatdata send started", message: "PATCH call", delay: 4)
+    }
+    
+    private func configureDownloadTaskDidFinishHandler()
+    {
+        self.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
+            DispatchQueue.main.async {
+                
+                self.moment?.handleSuccessUpload()
+                self.uploadCompletion?(self.moment, nil)
+                self.moment = nil
+                
+                Assistant.triggerNotification(withTitle: "metadata send complete", message: "upload flow finished", delay: 5)
+            }
+        }
     }
     
     private func configureTaskDidFinishHandler()
     {
+        //handle errors here:
         self.delegate.taskDidComplete = { session, task, error in
-            
-            guard let moment = self.moment, error == nil else {
-                print(error!)
-                self.uploadCompletion?(nil, error)
-                return
+            DispatchQueue.main.async {
+                
+                guard error == nil else {
+                    print(error!)
+                    self.moment?.handleFailedUpload()
+                    self.uploadCompletion?(nil, error)
+                    return
+                }
             }
-            
-            self.uploadCompletion?(moment, nil)
         }
     }
     
