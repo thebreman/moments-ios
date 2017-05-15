@@ -121,6 +121,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             let controller = UIAlertController(title: COPY_TITLE_SAVE_CHANGES, message: COPY_MESSAGE_SAVE_CHANGES, preferredStyle: .alert)
             
+            
+            let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_DELETE, style: .destructive) { action in
+                self.deleteMoment()
+            }
+            controller.addAction(deleteAction)
+            
             let persistAction = UIAlertAction(title: COPY_TITLE_BUTTON_SAVE_CHANGES, style: .default) { action in
                 self.presentingViewController?.dismiss(animated: true) {
                     self.persistMoment()
@@ -128,11 +134,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
             }
             controller.addAction(persistAction)
-            
-            let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_DELETE, style: .destructive) { action in
-                self.deleteMoment()
-            }
-            controller.addAction(deleteAction)
             
             self.present(controller, animated: true, completion: nil)
         }
