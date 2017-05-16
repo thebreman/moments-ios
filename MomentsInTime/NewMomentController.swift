@@ -95,7 +95,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         super.viewWillAppear(animated)
         
-        if self.moment.momentStatus == .live {
+        if self.moment.momentStatus == .live || self.moment.momentStatus == .uploading {
             self.tableView.allowsSelection = false
         }
     }
@@ -431,7 +431,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, handleSelection selection: String)
     {
-        guard self.moment.momentStatus != .live else { return }
+        guard self.moment.momentStatus != .live || self.moment.momentStatus != .uploading else { return }
         
         switch selection {
         case COPY_SELECT_INTERVIEW_SUBJECT:
@@ -459,7 +459,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, detailDisclosureButtonTapped sender: UIButton)
     {
-        guard self.moment.momentStatus != .live else { return }
+        guard self.moment.momentStatus != .live || self.moment.momentStatus != .uploading else { return }
         
         if self.tableView.cellForRow(at: IndexPath(row: 0, section: NewMomentSetting.video.rawValue)) == activeLinkCell {
             UIAlertController.explain(withPresenter: self, title: COPY_TITLE_VIDEO_QUESTION_ALERT, message: COPY_MESSAGE_VIDEO_QUESTION_ALERT)
@@ -470,7 +470,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func noteCell(_ noteCell: MITNoteCell, handleOptions sender: BouncingButton)
     {
-        guard let note = noteCell.note, self.moment.momentStatus != .live else { return }
+        guard let note = noteCell.note,
+            self.moment.momentStatus != .live,
+            self.moment.momentStatus != .uploading else { return }
         
         UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: COPY_TITLE_NOTE_OPTIONS) { action in
             self.deleteNote(note)
@@ -499,7 +501,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handleOptions sender: BouncingButton)
     {
-        guard let video = videoPreviewCell.video, self.moment.momentStatus != .live else { return }
+        guard let video = videoPreviewCell.video,
+            self.moment.momentStatus != .live,
+            self.moment.momentStatus != .uploading else { return }
         
         UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: COPY_TITLE_VIDEO_OPTIONS) { action in
             self.deleteVideo(video)
