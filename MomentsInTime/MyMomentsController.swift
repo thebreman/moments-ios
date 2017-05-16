@@ -56,6 +56,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        self.listenForNotifications(true)
         self.setupCollectionView()
         self.refresh()
     }
@@ -108,6 +109,11 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         default:
             break
         }
+    }
+    
+    deinit
+    {
+        self.listenForNotifications(false)
     }
     
     //MARK: Actions
@@ -208,7 +214,9 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             }
             
             self.adapter.refreshMoment(moment)
-            self.refresh() //fix this
+            wait(seconds: 2, then: {
+                self.refresh()
+            })
             
             //TODO:
             //send a local notification about uploaded video and processing time.
@@ -293,6 +301,25 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                     }
                 }
             }
+        }
+    }
+    
+    @objc private func handleVideoUploaded(notification: Notification)
+    {
+        if let moment = notification.object as? Moment {
+            self.adapter.refreshMoment(moment)
+            wait(seconds: 2, then: { 
+                self.refresh()
+            })
+        }
+    }
+    
+    private func listenForNotifications(_ shouldListen: Bool)
+    {
+        if shouldListen {
+            NotificationCenter.default.addObserver(self, selector: #selector(handleVideoUploaded(notification:)), name: Notification.Name(rawValue: NOTIFICATION_VIDEO_UPLOADED), object: nil)
+        } else {
+            NotificationCenter.default.removeObserver(self)
         }
     }
 }

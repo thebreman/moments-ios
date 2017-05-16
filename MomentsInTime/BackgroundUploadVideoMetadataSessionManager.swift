@@ -14,6 +14,8 @@ private let USER_DEFAULT_SUITE_UPLOAD_METADATA = "CurrentUserUploadMetadata"
 private let DEFAULTS_KEY_MOMENT_UPLOAD_METADATA = "momentIDKey"
 /***** DO NOT CHANGE *****/
 
+let NOTIFICATION_VIDEO_UPLOADED = "video_uploaded"
+
 //let this guy hold onto the completion for the UI
 class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
 {
@@ -87,9 +89,9 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
     {
         self.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
             DispatchQueue.main.async {
-                
                 self.moment?.handleSuccessUpload()
                 self.uploadCompletion?(self.moment, nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NOTIFICATION_VIDEO_UPLOADED), object: self.moment)
                 self.moment = nil
             }
         }
