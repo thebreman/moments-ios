@@ -97,8 +97,6 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
         }
         
         self.download(UploadRouter.complete(completeURI: completeURI))
-        
-        Assistant.triggerNotification(withTitle: "DELETE call started", message: "completeURI call", delay: 4)
     }
     
     private func configureDownloadTaskDidFinishHandler()
@@ -125,8 +123,6 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
                 BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment, completion: self.uploadCompletion)
                 self.completeURI = nil
                 self.moment = nil
-                
-                Assistant.triggerNotification(withTitle: "got location", message: "\(locationURI)", delay: 4)
             }
         }
     }

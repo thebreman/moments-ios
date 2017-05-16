@@ -25,24 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIView.appearance().tintColor = UIColor.mitActionblue
         
-        print(BackgroundUploadSessionManager.shared.moment)
-        print(BackgroundUploadCompleteSessionManager.shared.moment)
-        print(BackgroundUploadVideoMetadataSessionManager.shared.moment)
-        
-        BackgroundUploadSessionManager.shared.session.getAllTasks { tasks in
-            print(tasks)
-        }
-        
-        BackgroundUploadCompleteSessionManager.shared.session.getAllTasks {tasks in
-            print(tasks)
-        }
-        
-        BackgroundUploadVideoMetadataSessionManager.shared.session.getAllTasks { tasks in
-            print(tasks)
-        }
-        
-        application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.sound, .alert, .badge], categories: nil))
-        
         return true
     }
     
@@ -111,9 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         BackgroundUploadVideoMetadataSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadVideoMetadataSessionManager.shared.session.invalidateAndCancel()
-        BackgroundUploadVideoMetadataSessionManager.shared.moment = nil
-        
-        Assistant.triggerNotification(withTitle: "Inavalidated all background sessions", message: "", delay: 1)
+        BackgroundUploadVideoMetadataSessionManager.shared.moment = nil        
     }
 }
 

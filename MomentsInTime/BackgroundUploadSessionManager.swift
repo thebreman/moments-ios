@@ -106,9 +106,7 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
                 
                 //complete the upload:
                 BackgroundUploadCompleteSessionManager.shared.completeUpload(moment: moment, completion: self.uploadCompletion)
-                self.moment = nil
-                
-                Assistant.triggerNotification(withTitle: "uploadComplete", message: "upload task finished", delay: 1)
+                self.moment = nil                
             }
         }
     }

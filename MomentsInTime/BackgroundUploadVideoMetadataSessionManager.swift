@@ -81,8 +81,6 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
         }
         
         self.download(VideoRouter.update(video))
-        
-        Assistant.triggerNotification(withTitle: "metatdata send started", message: "PATCH call", delay: 4)
     }
     
     private func configureDownloadTaskDidFinishHandler()
@@ -93,8 +91,6 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
                 self.moment?.handleSuccessUpload()
                 self.uploadCompletion?(self.moment, nil)
                 self.moment = nil
-                
-                Assistant.triggerNotification(withTitle: "metadata send complete", message: "upload flow finished", delay: 5)
             }
         }
     }
