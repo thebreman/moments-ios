@@ -28,7 +28,7 @@ class VimeoConnector: NSObject
 {
     static var baseAPIEndpoint: String { return HOST }
     static var accessTokenKey: String { return ACCESS_TOKEN_KEY }
-    static var accessTokenValue: String { return ACCESS_TOKEN_VALUE_STAGING }
+    static var accessTokenValue: String { return ACCESS_TOKEN_VALUE_PRODUCTION }
     static var versionAPIHeaderValue: String { return VERSION_ACCEPT_HEADER_VALUE }
     static var versionAPIHeaderKey: String { return VERSION_ACCEPT_HEADER_KEY }
     
