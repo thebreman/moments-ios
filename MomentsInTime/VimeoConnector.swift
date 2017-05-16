@@ -10,7 +10,7 @@ import Alamofire
 
 private let ACCESS_TOKEN_KEY = "Authorization"
 private let ACCESS_TOKEN_VALUE_STAGING = "Bearer aa145c1d9bb318d4ef2a459c732503bc"
-private let ACCESS_TOKEN_VALUE_PRODUCTION = "Bearer 4bb6e9e2e0ecbdc0871a5f290bd1ed83"
+private let ACCESS_TOKEN_VALUE_PRODUCTION = "Bearer cbcd60a11d6c8dbad7310a4074312963"
 
 private let HOST = "https://api.vimeo.com"
 
@@ -202,6 +202,7 @@ class VimeoConnector: NSObject
         }
         
         completion(true)
+        return
     }
     
     // MARK: Utilities

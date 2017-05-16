@@ -229,41 +229,41 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     private func verifyMoments(completion: (() -> Void)?)
     {
         self.vimeoConnector.checkForPendingUploads { uploadIsInProgress in
-            DispatchQueue.main.async {
+            
+            print("upload is in progeress: \(uploadIsInProgress)")
+            
+            for moment in self.momentList.moments {
                 
-                for moment in self.momentList.moments {
+                switch moment.momentStatus {
                     
-                    switch moment.momentStatus {
-                        
-                    case .uploading:
-                        if moment.video?.uri != nil {
-                            print("video has uri, changing status from uploading to live")
-                            moment.handleSuccessUpload()
-                            self.verifyMetadata(forMoment: moment)
-                        }
-                        else if !uploadIsInProgress {
-                            print("moment is uploading but no upload is going on so changing status to uploadFailed: \(moment)")
-                            moment.handleFailedUpload()
-                        }
-                        
-                    case .live:
+                case .uploading:
+                    if moment.video?.uri != nil {
+                        print("video has uri, changing status from uploading to live")
+                        moment.handleSuccessUpload()
                         self.verifyMetadata(forMoment: moment)
-                        
-                    default:
-                        if moment.video?.uri != nil {
-                            print("video has uri, changing status from uploadFailed to live")
-                            moment.handleSuccessUpload()
-                            self.verifyMetadata(forMoment: moment)
-                        }
-                        print("status was new nor local")
+                    }
+                    else if uploadIsInProgress == false {
+                        print("moment is uploading but no upload is going on so changing status to uploadFailed: \(moment)")
+                        moment.handleFailedUpload()
                     }
                     
-                    self.adapter.refreshMoment(moment)
+                case .live:
+                    self.verifyMetadata(forMoment: moment)
+                    
+                default:
+                    if moment.video?.uri != nil {
+                        print("video has uri, changing status from uploadFailed to live")
+                        moment.handleSuccessUpload()
+                        self.verifyMetadata(forMoment: moment)
+                    }
+                    print("status was new or local or uploadFailed")
                 }
                 
-                //completion after inspecting all the moments:
-                completion?()
+                self.adapter.refreshMoment(moment)
             }
+            
+            //completion after inspecting all the moments:
+            completion?()
         }
     }
     

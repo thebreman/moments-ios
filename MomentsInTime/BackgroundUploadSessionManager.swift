@@ -89,6 +89,10 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
         }
         
         self.upload(uploadURL, with: router)
+        
+        BackgroundUploadSessionManager.shared.session.getAllTasks { (tasks) in
+            print("\ntask count: \(tasks.count)")
+        }
     }
     
     private func configureTaskDidFinishHandler()
