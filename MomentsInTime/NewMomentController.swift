@@ -310,7 +310,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         //If we have a localVideo we need VideoPreviewCell and editVideo activeLinkCell:
         if section == NewMomentSetting.video.rawValue {
-            return self.moment.video?.isLocal ?? false ? 2 : 1
+            
+            guard let video = self.moment.video else {
+                return 1
+            }
+            
+            return video.isLocal ? 2 : 1
         }
         
         //Notes section must have all the notes + the top Add a new note activeLinkCell:
@@ -526,12 +531,14 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 Assistant.removeVideoFromDisk(atRelativeURLString: localRelativeVideoURLString)
                 video.localURL = nil
             }
-            
-            let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
-            let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
-            self.tableView.removeRows(forIndexPaths: [editVideoPath])
-            self.tableView.refreshRows(forIndexPaths: [videoPath])
         }
+        
+        let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+        let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
+        self.tableView.beginUpdates()
+        self.tableView.reloadRows(at: [videoPath], with: .fade)
+        self.tableView.deleteRows(at: [editVideoPath], with: .fade)
+        self.tableView.endUpdates()
     }
     
     //MARK: Utilities:
@@ -778,8 +785,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
         let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
-        self.tableView.insertNewRows(forIndexPaths: [editVideoPath])
-        self.tableView.refreshRows(forIndexPaths: [videoPath])
+        self.tableView.beginUpdates()
+        self.tableView.reloadRows(at: [videoPath], with: .fade)
+        self.tableView.insertRows(at: [editVideoPath], with: .middle)
+        self.tableView.endUpdates()
     }
     
     private func configureInitialButtonStates()
@@ -822,9 +831,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
                 Moment.writeToRealm {
                     video.localThumbnailImageURL = imageURL
-                    self.updateVideoSection()
-                    self.updateUI()
                 }
+                self.updateVideoSection()
+                self.updateUI()
             }
         }
         
