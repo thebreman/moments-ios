@@ -151,7 +151,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         guard let video = moment.video else { return }
         
         //for now just grab the local url:
-        if video.isLocal {
+        if video.localURL != nil {
             if let localVideoURL = video.localPlaybackURL {
                 self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_PLAYER, sender: localVideoURL)
             }

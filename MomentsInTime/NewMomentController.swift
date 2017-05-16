@@ -531,6 +531,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 Assistant.removeVideoFromDisk(atRelativeURLString: localRelativeVideoURLString)
                 video.localURL = nil
             }
+            
+            //mark that video is no longer local:
+            video.isLocal = false
         }
         
         let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
@@ -816,6 +819,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         guard let video = self.moment.video else { return }
         
+        Moment.writeToRealm {
+            video.isLocal = true
+        }
+        
         self.assistant.copyVideo(withURL: url) { newURL in
             Moment.writeToRealm {
                 video.localURL = newURL
@@ -832,11 +839,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 Moment.writeToRealm {
                     video.localThumbnailImageURL = imageURL
                 }
-                self.updateVideoSection()
+                let path = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+                self.tableView.refreshRows(forIndexPaths: [path])
                 self.updateUI()
             }
         }
-        
+        self.updateVideoSection()
         self.updateUI()
     }
 

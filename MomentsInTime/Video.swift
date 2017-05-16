@@ -21,6 +21,7 @@ class Video: Object
     dynamic var localURL: String? = nil //file path for videos that are being uploaded:
     dynamic var localThumbnailImageURL: String? = nil
     dynamic var videoLink: String?
+    dynamic var isLocal: Bool = false
     
     var thumbnailImageURL: String?
     var status: String?
@@ -44,10 +45,6 @@ class Video: Object
     
     var isPlayable: Bool {
         return self.localURL != nil || self.uri != nil
-    }
-    
-    var isLocal: Bool {
-        return self.localURL != nil
     }
     
     var localPlaybackURL: URL? {
