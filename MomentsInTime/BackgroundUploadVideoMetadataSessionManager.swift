@@ -74,6 +74,7 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
                 let error = NSError(domain: "BackgroundUploadVideoMetadataSessionManager.sendMetadata:", code: 400, userInfo: [NSLocalizedDescriptionKey: "No valid video"])
                 self.moment?.handleFailedUpload()
                 self.uploadCompletion?(nil, error)
+                self.moment = nil
             }
             
             return
@@ -108,6 +109,7 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
                     print(error!)
                     self.moment?.handleFailedUpload()
                     self.uploadCompletion?(nil, error)
+                    self.moment = nil
                     return
                 }
             }

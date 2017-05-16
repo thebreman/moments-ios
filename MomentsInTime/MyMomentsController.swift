@@ -38,9 +38,9 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private lazy var adapter: MITMomentCollectionViewAdapter = {
         let adapter = MITMomentCollectionViewAdapter(withCollectionView: self.collectionView,
-                                                    moments: self.momentList.moments,
-                                                    emptyStateView: self.emptyStateView,
-                                                    bannerView: nil)
+                                                     moments: self.momentList.moments,
+                                                     emptyStateView: self.emptyStateView,
+                                                     bannerView: nil)
         adapter.momentDelegate = self
         return adapter
     }()
@@ -52,7 +52,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     }
     
     private let vimeoConnector = VimeoConnector()
-
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -208,7 +208,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             }
             
             self.adapter.refreshMoment(moment)
-            self.refresh()
+            self.refresh() //fix this
             
             //TODO:
             //send a local notification about uploaded video and processing time.
@@ -249,16 +249,13 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                     case .live:
                         self.verifyMetadata(forMoment: moment)
                         
-                    case .uploadFailed:
+                    default:
                         if moment.video?.uri != nil {
-                            print("video had uri, changing status from uploadFailed to live")
+                            print("video has uri, changing status from uploadFailed to live")
                             moment.handleSuccessUpload()
                             self.verifyMetadata(forMoment: moment)
                         }
-                        
-                    default:
-                        self.verifyMetadata(forMoment: moment)
-                        print("status was neither uploading nor live")
+                        print("status was new nor local")
                     }
                     
                     self.adapter.refreshMoment(moment)
@@ -272,42 +269,31 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private func verifyMetadata(forMoment moment: Moment)
     {
-        guard let video = moment.video else { return }
+        guard let video = moment.video, video.uri != nil else { return }
         
-        if video.uri != nil {
-            self.vimeoConnector.getRemoteVideo(video) { (fetchedVideo, error) in
+        self.vimeoConnector.getRemoteVideo(video) { (fetchedVideo, error) in
+            
+            if let newVideo = fetchedVideo {
                 
-                if let newVideo = fetchedVideo {
-                    
-                    //add link:
-                    Moment.writeToRealm {
-                        moment.video?.videoLink = newVideo.videoLink
-                    }
-                    
-                    //check for metadata and add if necessary:
-                    if newVideo.name == nil
-                        || newVideo.name == "Untitled"
-                        || newVideo.name == "untitled"
-                        || newVideo.videoDescription == nil {
-                        
-                        print("\nadding metadata in verify moments")
-                        
-<<<<<<< HEAD
-                        BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment) { (newMoment, error) in
-                            if error != nil { print(error ?? "no error") }
-=======
-                        BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment) { (moment, error) in
-                            if error != nil { print(error!) }
->>>>>>> Refactors upload networking flow
-                        }
-                    }
+                //add link:
+                Moment.writeToRealm {
+                    moment.video?.videoLink = newVideo.videoLink
                 }
-                else {
+                
+                //check for metadata and add if necessary:
+                if newVideo.name == nil
+                    || newVideo.name == "Untitled"
+                    || newVideo.name == "untitled"
+                    || newVideo.videoDescription == nil {
                     
-                    // video does not exist so what do we do with the local one?
-                    print(error ?? "no error")
+                    print("\nadding metadata in verify moments")
+                    
+                    BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment) { (moment, error) in
+                        if error != nil { print(error!) }
+                    }
                 }
             }
         }
     }
 }
+

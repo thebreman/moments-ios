@@ -82,6 +82,7 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
                 let error = NSError(domain: "BackgroundUploadManager.upload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't create valid video file url"])
                 self.moment?.handleFailedUpload()
                 uploadCompletion(nil, error)
+                self.moment = nil
             }
 
             return
@@ -99,6 +100,7 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
                     print(error!)
                     self.moment?.handleFailedUpload()
                     self.uploadCompletion?(nil, error)
+                    self.moment = nil
                     return
                 }
                 

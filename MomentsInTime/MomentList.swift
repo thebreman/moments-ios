@@ -97,14 +97,4 @@ class MomentList: NSObject
         
         return nil
     }
-    
-    func addMoment()
-    {
-        //TODO if necessary
-    }
-    
-    func removeMoments()
-    {
-        //TODO if necessary
-    }
 }

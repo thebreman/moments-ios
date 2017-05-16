@@ -196,36 +196,33 @@ class VimeoConnector: NSObject
     //true if there is an active upload already:
     func checkForPendingUploads(completion: @escaping (Bool) -> Void)
     {
-        BackgroundUploadSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
-            if uploads.isEmpty && downloads.isEmpty {
+        BackgroundUploadSessionManager.shared.session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
+            
+            guard tasks.isEmpty && uploads.isEmpty && downloads.isEmpty else {
                 BackgroundUploadSessionManager.shared.moment = nil
-                
-                BackgroundUploadCompleteSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
-                    if uploads.isEmpty && downloads.isEmpty {
-                        BackgroundUploadCompleteSessionManager.shared.moment = nil
-                        
-                        BackgroundUploadVideoMetadataSessionManager.shared.session.getTasksWithCompletionHandler { (_, uploads, downloads) in
-                            if uploads.isEmpty && downloads.isEmpty {
-                                BackgroundUploadVideoMetadataSessionManager.shared.moment = nil
-                                completion(false)
-                                return
-                            }
-                            else {
-                                completion(true)
-                                return
-                            }
-                        }
-                    }
-                    else {
-                        completion(true)
-                        return
-                    }
-                }
-            }
-            else {
                 completion(true)
                 return
             }
+        }
+        
+        BackgroundUploadCompleteSessionManager.shared.session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
+            
+            guard tasks.isEmpty && uploads.isEmpty && downloads.isEmpty else {
+                BackgroundUploadCompleteSessionManager.shared.moment = nil
+                completion(true)
+                return
+            }
+        }
+        
+        BackgroundUploadVideoMetadataSessionManager.shared.session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
+            
+            guard tasks.isEmpty && uploads.isEmpty && downloads.isEmpty else {
+                completion(true)
+                return
+            }
+            
+            completion(false)
+            return
         }
     }
     

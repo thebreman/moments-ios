@@ -89,6 +89,7 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
             DispatchQueue.main.async {
                 let error = NSError(domain: "BackgroundUploadCompleteManager.completeUpload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "No valid completeURI"])
                 self.moment?.handleFailedUpload()
+                self.moment = nil
                 self.uploadCompletion?(nil, error)
             }
 
@@ -111,6 +112,7 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
                         let error = NSError(domain: "BackgroundUploadCompleteManager.downloadFinish:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Could not get location header"])
                         self.moment?.handleFailedUpload()
                         self.uploadCompletion?(nil, error)
+                        self.moment = nil
                         return
                 }
                 
@@ -139,6 +141,7 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
                     print(error!)
                     self.moment?.handleFailedUpload()
                     self.uploadCompletion?(nil, error)
+                    self.moment = nil
                     return
                 }
             }
