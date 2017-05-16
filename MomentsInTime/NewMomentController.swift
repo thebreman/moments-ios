@@ -840,11 +840,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                     video.localThumbnailImageURL = imageURL
                 }
                 let path = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
-                self.tableView.refreshRows(forIndexPaths: [path])
+                self.updateVideoSection()
                 self.updateUI()
             }
         }
-        self.updateVideoSection()
         self.updateUI()
     }
 
