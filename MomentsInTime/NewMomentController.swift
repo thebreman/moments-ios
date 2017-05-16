@@ -839,7 +839,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 Moment.writeToRealm {
                     video.localThumbnailImageURL = imageURL
                 }
-                let path = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
                 self.updateVideoSection()
                 self.updateUI()
             }
