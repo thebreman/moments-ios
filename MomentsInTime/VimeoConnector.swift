@@ -106,6 +106,7 @@ class VimeoConnector: NSObject
         }
     }
     
+    
     /**
      * Fetches playback urlString for specified Video, urlString passed along in the completion handler:
      * AuthToken must be for a Pro Account in order for the response to contain the correct fields...
@@ -215,6 +216,12 @@ class VimeoConnector: NSObject
         let request = Alamofire.request(router)
             .validate(statusCode: 200..<300)
             .responseJSON { response in
+                
+                //print rate limiting info:
+                if let httpResponse = response.response,
+                    let limitPerHour = httpResponse.allHeaderFields["X-RateLimit-Limit"] as? String {
+                    print("\nrate limit per hour: \(limitPerHour)")
+                }
                 
                 switch response.result {
                 case .success(let value):
