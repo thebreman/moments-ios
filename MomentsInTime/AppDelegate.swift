@@ -77,7 +77,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print("\napp will terminate")
         
         //it is imperitive to stop any upload tasks,
-        //if the background session manager moment object is not nil, then we are uploading and need to fail:
+        //system will cancel them is user force quits app but we need to do a little cleanup:
+        self.invalidateTasks()
+    }
+    
+    private func invalidateTasks()
+    {
         BackgroundUploadSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadSessionManager.shared.session.invalidateAndCancel()
         BackgroundUploadSessionManager.shared.moment = nil
@@ -88,7 +93,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         BackgroundUploadVideoMetadataSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadVideoMetadataSessionManager.shared.session.invalidateAndCancel()
-        BackgroundUploadVideoMetadataSessionManager.shared.moment = nil
+        BackgroundUploadVideoMetadataSessionManager.shared.moment = nil        
     }
 }
 

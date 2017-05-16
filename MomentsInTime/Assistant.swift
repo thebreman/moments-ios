@@ -7,9 +7,39 @@
 //
 
 import UIKit
+import UserNotifications
 
 class Assistant
 {
+    //fires off local notifications for background session debugging
+    class func triggerNotification(withTitle title: String, message: String, delay: TimeInterval)
+    {
+        //local notification
+        let center = UNUserNotificationCenter.current()
+        let options: UNAuthorizationOptions = [.alert, .sound];
+        
+        center.requestAuthorization(options: options) {
+            (granted, error) in
+            if !granted {
+                print("Permission to send notifications denied")
+            }
+        }
+        
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = message
+        content.sound = UNNotificationSound.default()
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(identifier: "debug", content: content, trigger: trigger)
+        
+        center.add(request) { (error) in
+            if let error = error {
+                print(error)
+            }
+        }
+    }
+
     class func removeImageFromDisk(atRelativeURLString relativeURLString: String)
     {
         if let images = FileManager.getImagesDirectory() {
