@@ -41,7 +41,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     private lazy var adapter: MITMomentCollectionViewAdapter = {
         let adapter = MITMomentCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    moments: self.momentList.moments,
-                                                   emptyStateView: self.emptyStateView,
+                                                   emptyStateView: UIView(frame: .zero),
                                                    bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
         adapter.accessoryViewDelegate = self
