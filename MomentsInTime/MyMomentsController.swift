@@ -235,9 +235,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                     }
                     
                     self.adapter.refreshMoment(moment)
-                    wait(seconds: 2, then: {
-                        self.refresh()
-                    })
                 }
                 
                 completion()
@@ -330,9 +327,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         if let moment = notification.object as? Moment {
             self.adapter.refreshMoment(moment)
-            wait(seconds: 2, then: { 
-                self.refresh()
-            })
         }
     }
     
