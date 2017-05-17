@@ -439,6 +439,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         guard self.moment.momentStatus != .live || self.moment.momentStatus != .uploading else { return }
         
         switch selection {
+            
         case COPY_SELECT_INTERVIEW_SUBJECT:
             self.handleInterviewSubject(fromView: activeLinkCell.activeLabel)
             
@@ -843,6 +844,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 self.updateUI()
             }
         }
+        
         self.updateUI()
     }
 

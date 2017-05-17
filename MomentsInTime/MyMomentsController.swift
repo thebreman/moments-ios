@@ -16,7 +16,10 @@ private let COPY_TITLE_UPLOAD_FAILED = "Oh No!"
 private let COPY_MESSAGE_UPLOAD_FAILED = "Something went wrong during the upload. Please try again and make sure the app is running and connected until the upload completes."
 
 private let COPY_TITLE_DELETE_UPLOADING_ALERT = "Oh No!"
-private let COPY_MESSAGE_DELETE_UPLOADING_ALERT = "Sorry, but you'll need to wait until the upload is finished to modify this Moment"
+private let COPY_MESSAGE_DELETE_UPLOADING_ALERT = "Sorry, but you'll need to wait until the upload is finished to modify this Moment."
+
+private let COPY_TITLE_ALREADY_UPLOADING = "Oh No!"
+private let COPY_MESSAGE_ALREADY_UPLOADING = "Sorry, but you'll need to wait until the current upload is finished before uploading another Moment."
 
 typealias NewMomentCompletion = (Moment, _ justCreated: Bool, _ shouldUpload: Bool) -> Void
 
@@ -26,12 +29,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     lazy var momentList = MomentList()
-    
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        return refreshControl
-    }()
     
     private var emptyStateView: MITTextActionView = {
         let view = MITTextActionView.mitEmptyStateView()
@@ -185,7 +182,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             flowLayout.sectionInset = .zero
         }
         
-        self.collectionView?.addSubview(self.refreshControl)
         self.collectionView.contentInset.top = 12
     }
     
@@ -210,32 +206,42 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         }
         
         if shouldSubmit {
-            self.handleSubmit(forMoment: moment)
-            self.adapter.refreshMoment(moment)
+            self.handleSubmit(forMoment: moment) {
+                self.adapter.refreshMoment(moment)
+            }
         }
         else {
             self.adapter.refreshMoment(moment)
         }
     }
     
-    private func handleSubmit(forMoment moment: Moment)
+    private func handleSubmit(forMoment moment: Moment, completion: @escaping () -> Void)
     {
-        moment.upload { (_, error) in
-            
-            if error != nil {
+        self.vimeoConnector.checkForPendingUploads { alreadyUploading in
+            DispatchQueue.main.async {
                 
-                //inform the user that the upload failed,
-                //the moment's status is already set to .uploadFailed:
-                UIAlertController.explain(withPresenter: self, title: COPY_TITLE_UPLOAD_FAILED, message: COPY_MESSAGE_UPLOAD_FAILED)
+                guard !alreadyUploading else {
+                    UIAlertController.explain(withPresenter: self, title: COPY_TITLE_ALREADY_UPLOADING, message: COPY_MESSAGE_ALREADY_UPLOADING)
+                    return
+                }
+                
+                moment.upload { (_, error) in
+                    
+                    if error != nil {
+                        
+                        //inform the user that the upload failed,
+                        //the moment's status is already set to .uploadFailed:
+                        UIAlertController.explain(withPresenter: self, title: COPY_TITLE_UPLOAD_FAILED, message: COPY_MESSAGE_UPLOAD_FAILED)
+                    }
+                    
+                    self.adapter.refreshMoment(moment)
+                    wait(seconds: 2, then: {
+                        self.refresh()
+                    })
+                }
+                
+                completion()
             }
-            
-            self.adapter.refreshMoment(moment)
-            wait(seconds: 2, then: {
-                self.refresh()
-            })
-            
-            //TODO:
-            //send a local notification about uploaded video and processing time.
         }
     }
     
@@ -246,7 +252,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         
         //verification temporary?
         self.verifyMoments {
-            self.refreshControl.endRefreshing()
+            print("verification complete")
         }
     }
     
