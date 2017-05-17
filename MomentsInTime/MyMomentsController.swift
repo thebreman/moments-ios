@@ -15,6 +15,9 @@ private let COPY_TITLE_MOMENT_DETAIL = "Moment"
 private let COPY_TITLE_UPLOAD_FAILED = "Oh No!"
 private let COPY_MESSAGE_UPLOAD_FAILED = "Something went wrong during the upload. Please try again and make sure the app is running and connected until the upload completes."
 
+private let COPY_TITLE_DELETE_UPLOADING_ALERT = "Oh No!"
+private let COPY_MESSAGE_DELETE_UPLOADING_ALERT = "Sorry, but you'll need to wait until the upload is finished to modify this Moment"
+
 typealias NewMomentCompletion = (Moment, _ justCreated: Bool, _ shouldUpload: Bool) -> Void
 
 class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
@@ -161,8 +164,9 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
     {
         UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: "Moment") { action in
-            self.adapter.removeMoment(moment)
-            moment.delete()
+            DispatchQueue.main.async {
+                self.handleDelete(forMoment: moment)
+            }
         }
     }
     
@@ -186,6 +190,18 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     }
     
     //MARK: Utilities
+    
+    private func handleDelete(forMoment moment: Moment)
+    {
+        //no deleting while a moment is uploading... strange and unwanted things will ensue:
+        guard moment.momentStatus != .uploading else {
+            UIAlertController.explain(withPresenter: self, title: COPY_TITLE_DELETE_UPLOADING_ALERT, message: COPY_MESSAGE_DELETE_UPLOADING_ALERT)
+            return
+        }
+        
+        self.adapter.removeMoment(moment)
+        moment.delete()
+    }
     
     private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool, shouldSubmit: Bool)
     {

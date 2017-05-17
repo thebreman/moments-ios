@@ -11,7 +11,7 @@ import PureLayout
 
 class BlinkingView: UIView
 {
-    private lazy var circle: UIView! = {
+    private lazy var circle: UIView = {
         let view = UIView()
         view.backgroundColor = self.circleColor
         view.frame = CGRect(x: 0, y: 0, width: 1, height: 1)
