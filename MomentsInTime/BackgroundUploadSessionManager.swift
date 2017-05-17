@@ -97,7 +97,7 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
     
     private func configureTaskDidFinishHandler()
     {
-        self.delegate.taskDidComplete = { session, task, error in
+        self.delegate.taskDidComplete = { (session, task, error) in
             DispatchQueue.main.async {
                 
                 guard let moment = self.moment, error == nil else {
