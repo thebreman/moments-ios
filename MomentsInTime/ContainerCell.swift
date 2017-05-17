@@ -22,16 +22,18 @@ private var _sizingWidth = NSLayoutConstraint()
 
 class ContainerCell: UICollectionViewCell
 {
-    var containedView: UIView! {
+    var containedView: UIView? {
         didSet {
             
             if self.contentView.subviews.count > 0 {
                 self.contentView.subviews.forEach({ $0.removeFromSuperview() })
             }
             
-            self.contentView.addSubview(self.containedView)
-            self.containedView.autoPinEdgesToSuperviewEdges()
-            self.layoutIfNeeded()
+            if let newView = self.containedView {
+                self.contentView.addSubview(newView)
+                newView.autoPinEdgesToSuperviewEdges()
+                self.layoutIfNeeded()
+            }
         }
     }
     

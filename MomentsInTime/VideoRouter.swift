@@ -72,7 +72,7 @@ enum VideoRouter: URLRequestConvertible
             urlRequest = try URLEncoding.default.encode(urlRequest, with: [FILTER_KEY: FILTER_VIDEO_READ_VALUE])
             
         case .create:
-            urlRequest = try URLEncoding.default.encode(urlRequest, with: ["type": "streaming", FILTER_KEY: FILTER_CREATE_VIDEO_VALUE])
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: ["type": "streaming", FILTER_KEY: FILTER_CREATE_VIDEO_VALUE])
             
         case .update(let video):
             urlRequest = try URLEncoding.default.encode(urlRequest, with: video.videoParameters())
