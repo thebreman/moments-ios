@@ -224,9 +224,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         
         video.fetchPlaybackURL { (urlString, error) in
             
-            guard error == nil else {
-                return
-            }
+            guard error == nil else { return }
             
             if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
                 self.performSegue(withIdentifier: IDENTIFIER_SEGUE_PLAYER, sender: videoURL)
