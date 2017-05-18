@@ -16,7 +16,7 @@ private let COPY_TITLE_UPLOAD_FAILED = "Oh No!"
 private let COPY_MESSAGE_UPLOAD_FAILED = "Something went wrong during the upload. Please try again and make sure the app is running and connected until the upload completes."
 
 let COPY_TITLE_NETWORK_ERROR = "Oops!"
-let COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR = "Something went wrong. Your Moment uploaded successfully but it is still being processed. Check back soon!"
+let COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR = "Your Moment uploaded successfully but it is still being processed. Check back soon!"
 
 private let COPY_TITLE_DELETE_UPLOADING_ALERT = "Oh No!"
 private let COPY_MESSAGE_DELETE_UPLOADING_ALERT = "Sorry, but you'll need to wait until the upload is finished to modify this Moment."
@@ -333,52 +333,101 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                 Moment.writeToRealm {
                     moment.video?.videoLink = newVideo.videoLink
                     moment.video?.playbackURL = newVideo.playbackURL
+                    moment.video?.thumbnailImageURL = newVideo.thumbnailImageURL
                 }
                 
                 //if we got a playback url, remove the local video:
-                if moment.video?.playbackURL != nil, let relativeLocalURL = moment.video?.localURL {
-                    print("\nwe have a playback url, so removing local video from disk")
-                    Assistant.removeVideoFromDisk(atRelativeURLString: relativeLocalURL) { success in
-                        if success {
-                            Moment.writeToRealm {
-                                moment.video?.localURL = nil
-                            }
-                        }
-                    }
-                }
+                self.removeVideo(forMoment: moment)
                 
                 //check for metadata and add if necessary:
-                if newVideo.name == nil
-                    || newVideo.name == "Untitled"
-                    || newVideo.name == "untitled"
-                    || newVideo.videoDescription == nil {
-                    
-                    print("\nadding metadata in verify moments")
-                    
-                    BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment) { (moment, error) in
-                        DispatchQueue.main.async {
-                            
-                            guard error == nil else {
-                                print(error!)
-                                Moment.writeToRealm {
-                                    moment?.video?.liveVerified = false
-                                }
-                                return
-                            }
-                            
-                            //mark the video as verified so we don't check next time:
-                            Moment.writeToRealm {
-                                moment?.video?.liveVerified = true
-                            }
-                        }
-                    }
+                self.checkMetadata(forVideo: newVideo, moment: moment)
+                
+                //if we got a thumbnailImage url, swap the local photos:
+                //do this last before updating liveVerified, b/c thumbnailImageURL is not a realm property
+                //so we have no way of checking if we swapped out for the right image so check it last
+                if let thumbnailURL = newVideo.thumbnailImageURL {
+                    self.replaceImage(forMoment: moment, withImageURL: thumbnailURL)
                 }
-                else {
-                    Moment.writeToRealm {
-                        moment.video?.liveVerified = (moment.video?.playbackURL != nil) //this could have not passed above
+                
+                self.adapter.refreshMoment(moment)
+            }
+        }
+    }
+    
+    private func replaceImage(forMoment moment: Moment, withImageURL imageURLString: String)
+    {
+        if let imageURL = URL(string: imageURLString) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                
+                if let imageData = try? Data(contentsOf: imageURL), let image = UIImage(data: imageData) {
+                    
+                    DispatchQueue.main.async {
+                        Moment.writeToRealm {
+                            print("/nreplacing thumbnail image")
+                            let relativePath = Assistant.persistImage(image, compressionQuality: 0.5, atRelativeURLString: moment.video?.localThumbnailImageURL)
+                            moment.video?.localThumbnailImageURL = relativePath
+                            moment.video?.localThumbnailImage = image
+                            self.adapter.refreshMoment(moment)
+                        }
+                        self.updateLiveVerifiedStatus(forMoment: moment)
                     }
                 }
             }
+        }
+    }
+    
+    private func removeVideo(forMoment moment: Moment)
+    {
+        if moment.video?.playbackURL != nil, let relativeLocalURL = moment.video?.localURL {
+            
+            print("\nwe have a playback url, so removing local video from disk")
+            
+            Assistant.removeVideoFromDisk(atRelativeURLString: relativeLocalURL) { success in
+                if success {
+                    Moment.writeToRealm {
+                        moment.video?.localURL = nil
+                    }
+                }
+            }
+        }
+    }
+    
+    private func checkMetadata(forVideo newVideo: Video, moment: Moment)
+    {
+        if newVideo.name == nil
+            || newVideo.name == "Untitled"
+            || newVideo.name == "untitled"
+            || newVideo.videoDescription == nil {
+            
+            print("\nadding metadata in verify moments")
+            
+            BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment) { (moment, error) in
+                DispatchQueue.main.async {
+                    
+                    guard error == nil else {
+                        print(error!)
+                        Moment.writeToRealm {
+                            moment?.video?.liveVerified = false
+                        }
+                        return
+                    }
+                }
+            }
+        }
+    }
+    
+    private func updateLiveVerifiedStatus(forMoment moment: Moment?)
+    {
+        Moment.writeToRealm {
+            moment?.video?.liveVerified = (moment?.video?.playbackURL != nil
+                && moment?.video?.name != nil
+                && moment?.video?.name != "Untitled"
+                && moment?.video?.name != "untitled"
+                && moment?.video?.videoDescription != nil)
+        }
+        
+        if let status = moment?.video?.liveVerified, status == true {
+            print("\nVideo is now live verified!!")
         }
     }
     

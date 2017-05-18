@@ -93,6 +93,7 @@ class Assistant
         return nil
     }
     
+    //returns the relative path for the persisted image
     class func persistImage(_ image: UIImage, compressionQuality: CGFloat, atRelativeURLString urlString: String?) -> String?
     {
         var relativeImageFileName: String

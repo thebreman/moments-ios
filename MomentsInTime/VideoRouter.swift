@@ -11,7 +11,7 @@ import Alamofire
 let FILTER_KEY = "fields"
 private let FILTER_ALL_VIDEOS_VALUE = "uri,name,description,link,pictures.sizes,status"
 private let FILTER_CREATE_VIDEO_VALUE = "ticket_id,upload_link_secure,complete_uri"
-private let FILTER_READ_VIDEO_VALUE = "name,description,link,status,files"
+private let FILTER_READ_VIDEO_VALUE = "name,description,link,pictures,sizes,files,status"
 private let FILTER_UPDATE_VIDEO_VALUE = "link"
 
 

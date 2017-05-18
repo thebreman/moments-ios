@@ -731,6 +731,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func handleEditVideo()
     {
+        guard self.moment.momentStatus != .live && self.moment.momentStatus != .uploading else { return }
+        
         let controller = UIAlertController(title: COPY_TITLE_EDIT_VIDEO_ALERT, message: COPY_MESSAGE_EDIT_VIDEO_ALERT, preferredStyle: .alert)
         
         let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_REMOVE_VIDEO, style: .destructive) { action in
