@@ -342,7 +342,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                         if success {
                             Moment.writeToRealm {
                                 moment.video?.localURL = nil
-                                moment.video?.liveVerified = true
                             }
                         }
                     }
@@ -376,7 +375,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                 }
                 else {
                     Moment.writeToRealm {
-                        moment.video?.liveVerified = true
+                        moment.video?.liveVerified = (moment.video?.playbackURL != nil) //this could have not passed above
                     }
                 }
             }
