@@ -15,6 +15,9 @@ private let COPY_TITLE_MOMENT_DETAIL = "Moment"
 private let COPY_TITLE_UPLOAD_FAILED = "Oh No!"
 private let COPY_MESSAGE_UPLOAD_FAILED = "Something went wrong during the upload. Please try again and make sure the app is running and connected until the upload completes."
 
+let COPY_TITLE_NETWORK_ERROR = "Oops!"
+let COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR = "Something went wrong. Your Moment uploaded successfully but it is still being processed. Check back soon!"
+
 private let COPY_TITLE_DELETE_UPLOADING_ALERT = "Oh No!"
 private let COPY_MESSAGE_DELETE_UPLOADING_ALERT = "Sorry, but you'll need to wait until the upload is finished to modify this Moment."
 
@@ -154,7 +157,14 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         if moment.momentStatus == .live {
             video.fetchPlaybackURL { (urlString, error) in
                 
-                guard error == nil else { return }
+                guard error == nil else {
+                    if video.uri != nil {
+                        
+                        //inform user that their video uploaded successfully (.live and uri != nil) but is still processing
+                        UIAlertController.explain(withPresenter: self, title: COPY_TITLE_NETWORK_ERROR, message: COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR)
+                    }
+                    return
+                }
                 
                 if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
                     self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_PLAYER, sender: videoURL)
@@ -362,6 +372,11 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                                 moment?.video?.liveVerified = true
                             }
                         }
+                    }
+                }
+                else {
+                    Moment.writeToRealm {
+                        moment.video?.liveVerified = true
                     }
                 }
             }
