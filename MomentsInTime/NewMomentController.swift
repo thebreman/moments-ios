@@ -56,6 +56,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         return newMoment
     }()
     
+    //for new moments, if this remains false, we won't ask user to save or delete when they tap DONE
+    //if they modify the moment in anyway, set this flag to true, then ask user if they want to save or delete the first time around:
+    var newMomentWasModified = false
+    
     var completion: NewMomentCompletion?
     
     private var cameraMan: CameraMan = {
@@ -119,8 +123,16 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         if self.moment.momentStatus == .new {
             
-            let controller = UIAlertController(title: COPY_TITLE_SAVE_CHANGES, message: COPY_MESSAGE_SAVE_CHANGES, preferredStyle: .alert)
+            //if nothing changed, just dismiss:
+            guard self.newMomentWasModified == true else {
+                self.presentingViewController?.dismiss(animated: true) {
+                    self.completion?(self.moment, false, false)
+                }
+                return
+            }
             
+            //otherwise ask user if they want to save or delete any changes:
+            let controller = UIAlertController(title: COPY_TITLE_SAVE_CHANGES, message: COPY_MESSAGE_SAVE_CHANGES, preferredStyle: .alert)
             
             let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_DELETE, style: .destructive) { action in
                 self.deleteMoment()
@@ -494,6 +506,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 let pathToDelete = IndexPath(row: indexToDelete + 1, section: NewMomentSetting.notes.rawValue)
                 self.tableView.removeRows(forIndexPaths: [pathToDelete])
             }
+            
+            self.newMomentWasModified = true
         }
     }
     
@@ -598,6 +612,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             }
         }
         
+        self.newMomentWasModified = true
         self.updateUI()
     }
     
@@ -620,6 +635,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             }
         }
         
+        self.newMomentWasModified = true
         self.updateUI()
     }
     
@@ -642,6 +658,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 }
             }
         }
+        
+        self.newMomentWasModified = true
     }
     
     private func handleVideoCamera()
@@ -834,7 +852,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.submitButton.isHidden = status == .uploading || status == .processing || status == .live
         self.submitButton.isEnabled = status == .uploadFailed
         
-        let cancelButtonTitle = status == .new ? COPY_TITLE_BUTTON_CANCEL : COPY_TITLE_BUTTON_DONE
+        //cancel button will now always say DONE [AF]
+        let cancelButtonTitle = COPY_TITLE_BUTTON_DONE
         self.cancelButton.setTitle(cancelButtonTitle, for: .normal)
         self.cancelButton.isHidden = false
     }
@@ -875,6 +894,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             }
         }
         
+        self.newMomentWasModified = true
         self.updateUI()
     }
 
