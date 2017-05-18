@@ -229,7 +229,7 @@ class VimeoConnector: NSObject
                 //print rate limiting info:
                 if let httpResponse = response.response,
                     let limitPerHour = httpResponse.allHeaderFields["X-RateLimit-Limit"] as? String {
-                    print("\nrate limit per hour: \(limitPerHour)")
+                    print("\nrate limit per 15 min: \(limitPerHour)")
                 }
                 
                 switch response.result {
