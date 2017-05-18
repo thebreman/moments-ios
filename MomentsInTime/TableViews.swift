@@ -10,6 +10,11 @@ import UIKit
 
 extension UITableView
 {
+    /**
+     * IMPORTANT: if you are going to do more than one of these updates consecutively
+     * You can't use these methods, you need to do every update inside begin/end updates...
+     */
+    
     func refreshRows(forIndexPaths paths: [IndexPath])
     {
         self.beginUpdates()

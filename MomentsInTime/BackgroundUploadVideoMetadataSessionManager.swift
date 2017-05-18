@@ -14,6 +14,8 @@ private let USER_DEFAULT_SUITE_UPLOAD_METADATA = "CurrentUserUploadMetadata"
 private let DEFAULTS_KEY_MOMENT_UPLOAD_METADATA = "momentIDKey"
 /***** DO NOT CHANGE *****/
 
+let NOTIFICATION_VIDEO_UPLOADED = "video_uploaded"
+
 //let this guy hold onto the completion for the UI
 class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
 {
@@ -85,11 +87,20 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
     
     private func configureDownloadTaskDidFinishHandler()
     {
-        self.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
+        self.delegate.downloadTaskDidFinishDownloadingToURL = { (session, task, url) in
+            
+            //in this case the download is json, cached to disk at url:
+            if let responseData = try? Data(contentsOf: url),
+                let result = try? JSONSerialization.jsonObject(with: responseData, options: .mutableContainers) as? [String: Any] {
+                Moment.writeToRealm {
+                    self.moment?.video?.videoLink = result?["link"] as? String
+                }
+            }
+            
             DispatchQueue.main.async {
-                
                 self.moment?.handleSuccessUpload()
                 self.uploadCompletion?(self.moment, nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: NOTIFICATION_VIDEO_UPLOADED), object: self.moment)
                 self.moment = nil
             }
         }
@@ -98,7 +109,7 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
     private func configureTaskDidFinishHandler()
     {
         //handle errors here:
-        self.delegate.taskDidComplete = { session, task, error in
+        self.delegate.taskDidComplete = { (session, task, error) in
             DispatchQueue.main.async {
                 
                 guard error == nil else {

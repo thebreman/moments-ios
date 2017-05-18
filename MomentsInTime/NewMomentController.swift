@@ -95,7 +95,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         super.viewWillAppear(animated)
         
-        if self.moment.momentStatus == .live {
+        if self.moment.momentStatus == .live || self.moment.momentStatus == .uploading {
             self.tableView.allowsSelection = false
         }
     }
@@ -310,7 +310,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         //If we have a localVideo we need VideoPreviewCell and editVideo activeLinkCell:
         if section == NewMomentSetting.video.rawValue {
-            return self.moment.video?.isLocal ?? false ? 2 : 1
+            
+            guard let video = self.moment.video else {
+                return 1
+            }
+            
+            return video.isLocal ? 2 : 1
         }
         
         //Notes section must have all the notes + the top Add a new note activeLinkCell:
@@ -431,9 +436,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, handleSelection selection: String)
     {
-        guard self.moment.momentStatus != .live else { return }
+        guard self.moment.momentStatus != .live || self.moment.momentStatus != .uploading else { return }
         
         switch selection {
+            
         case COPY_SELECT_INTERVIEW_SUBJECT:
             self.handleInterviewSubject(fromView: activeLinkCell.activeLabel)
             
@@ -459,7 +465,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func activeLinkCell(_ activeLinkCell: ActiveLinkCell, detailDisclosureButtonTapped sender: UIButton)
     {
-        guard self.moment.momentStatus != .live else { return }
+        guard self.moment.momentStatus != .live || self.moment.momentStatus != .uploading else { return }
         
         if self.tableView.cellForRow(at: IndexPath(row: 0, section: NewMomentSetting.video.rawValue)) == activeLinkCell {
             UIAlertController.explain(withPresenter: self, title: COPY_TITLE_VIDEO_QUESTION_ALERT, message: COPY_MESSAGE_VIDEO_QUESTION_ALERT)
@@ -470,7 +476,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func noteCell(_ noteCell: MITNoteCell, handleOptions sender: BouncingButton)
     {
-        guard let note = noteCell.note, self.moment.momentStatus != .live else { return }
+        guard let note = noteCell.note,
+            self.moment.momentStatus != .live,
+            self.moment.momentStatus != .uploading else { return }
         
         UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: COPY_TITLE_NOTE_OPTIONS) { action in
             self.deleteNote(note)
@@ -493,13 +501,40 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handlePlay video: Video)
     {
-        guard let url = video.localPlaybackURL else { return }
-        self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: url)
+        if self.moment.momentStatus == .live {
+            video.fetchPlaybackURL { (urlString, error) in
+                
+                guard error == nil else {
+                    if video.uri != nil {
+                        
+                        //inform user that their video uploaded successfully (.live and uri != nil) but is still processing
+                        UIAlertController.explain(withPresenter: self, title: COPY_TITLE_NETWORK_ERROR, message: COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR)
+                    }
+                    return
+                }
+                
+                if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
+                    self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: videoURL)
+                    return
+                }
+            }
+            
+            return
+        }
+        
+        //for local videos:
+        if video.localURL != nil {
+            if let localVideoURL = video.localPlaybackURL {
+                self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: localVideoURL)
+            }
+        }
     }
     
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handleOptions sender: BouncingButton)
     {
-        guard let video = videoPreviewCell.video, self.moment.momentStatus != .live else { return }
+        guard let video = videoPreviewCell.video,
+            self.moment.momentStatus != .live,
+            self.moment.momentStatus != .uploading else { return }
         
         UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: COPY_TITLE_VIDEO_OPTIONS) { action in
             self.deleteVideo(video)
@@ -519,15 +554,23 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             //delete local video:
             if let localRelativeVideoURLString = video.localURL {
-                Assistant.removeVideoFromDisk(atRelativeURLString: localRelativeVideoURLString)
-                video.localURL = nil
+                Assistant.removeVideoFromDisk(atRelativeURLString: localRelativeVideoURLString) { success in
+                    if success {
+                        video.localURL = nil
+                    }
+                }
             }
             
-            let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
-            let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
-            self.tableView.removeRows(forIndexPaths: [editVideoPath])
-            self.tableView.refreshRows(forIndexPaths: [videoPath])
+            //mark that video is no longer local:
+            video.isLocal = false
         }
+        
+        let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+        let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
+        self.tableView.beginUpdates()
+        self.tableView.reloadRows(at: [videoPath], with: .fade)
+        self.tableView.deleteRows(at: [editVideoPath], with: .fade)
+        self.tableView.endUpdates()
     }
     
     //MARK: Utilities:
@@ -774,8 +817,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
         let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
-        self.tableView.insertNewRows(forIndexPaths: [editVideoPath])
-        self.tableView.refreshRows(forIndexPaths: [videoPath])
+        self.tableView.beginUpdates()
+        self.tableView.reloadRows(at: [videoPath], with: .fade)
+        self.tableView.insertRows(at: [editVideoPath], with: .middle)
+        self.tableView.endUpdates()
     }
     
     private func configureInitialButtonStates()
@@ -803,6 +848,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         guard let video = self.moment.video else { return }
         
+        Moment.writeToRealm {
+            video.isLocal = true
+        }
+        
         self.assistant.copyVideo(withURL: url) { newURL in
             Moment.writeToRealm {
                 video.localURL = newURL
@@ -818,9 +867,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
                 Moment.writeToRealm {
                     video.localThumbnailImageURL = imageURL
-                    self.updateVideoSection()
-                    self.updateUI()
                 }
+                self.updateVideoSection()
+                self.updateUI()
             }
         }
         

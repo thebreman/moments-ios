@@ -101,7 +101,7 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
     
     private func configureDownloadTaskDidFinishHandler()
     {
-        self.delegate.downloadTaskDidFinishDownloadingToURL = { session, task, url in
+        self.delegate.downloadTaskDidFinishDownloadingToURL = { (session, task, url) in
             DispatchQueue.main.async {
                 
                 guard let httpResponse = task.response as? HTTPURLResponse,
@@ -130,7 +130,7 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
     private func configureTaskDidFinishHandler()
     {
         //handle errors here
-        self.delegate.taskDidComplete = { session, task, error in
+        self.delegate.taskDidComplete = { (session, task, error) in
             DispatchQueue.main.async {
                 
                 guard error == nil else {

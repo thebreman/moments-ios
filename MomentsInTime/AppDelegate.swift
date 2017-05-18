@@ -25,6 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIView.appearance().tintColor = UIColor.mitActionblue
         
+        BackgroundUploadSessionManager.shared.session.getAllTasks { (tasks) in
+            print("\ntask count: \(tasks.count)")
+        }
+        
         return true
     }
     

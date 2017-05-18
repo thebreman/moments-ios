@@ -89,11 +89,15 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
         }
         
         self.upload(uploadURL, with: router)
+        
+        BackgroundUploadSessionManager.shared.session.getAllTasks { (tasks) in
+            print("\ntask count: \(tasks.count)")
+        }
     }
     
     private func configureTaskDidFinishHandler()
     {
-        self.delegate.taskDidComplete = { session, task, error in
+        self.delegate.taskDidComplete = { (session, task, error) in
             DispatchQueue.main.async {
                 
                 guard let moment = self.moment, error == nil else {
