@@ -16,7 +16,8 @@ private let COPY_TITLE_UPLOAD_FAILED = "Oh No!"
 private let COPY_MESSAGE_UPLOAD_FAILED = "Something went wrong during the upload. Please try again and make sure the app is running and connected until the upload completes."
 
 let COPY_TITLE_NETWORK_ERROR = "Oops!"
-let COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR = "Your Moment uploaded successfully but it is still being processed. Check back soon!"
+let COPY_TITLE_NETWORK_WAITING = "Almost there!"
+let COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR = "Your Moment uploaded successfully and is being processed. Check back soon!"
 
 private let COPY_TITLE_DELETE_UPLOADING_ALERT = "Oh No!"
 private let COPY_MESSAGE_DELETE_UPLOADING_ALERT = "Sorry, but you'll need to wait until the upload is finished to modify this Moment."
@@ -161,7 +162,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                     if video.uri != nil {
                         
                         //inform user that their video uploaded successfully (.live and uri != nil) but is still processing
-                        UIAlertController.explain(withPresenter: self, title: COPY_TITLE_NETWORK_ERROR, message: COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR)
+                        UIAlertController.explain(withPresenter: self, title: COPY_TITLE_NETWORK_WAITING, message: COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR)
                     }
                     return
                 }

@@ -20,7 +20,7 @@ private let COPY_TITLE_BUTTON_SAVE_CHANGES = "Save changes"
 
 let COPY_TITLE_BUTTON_DELETE = "Delete"
 let COPY_TITLE_BUTTON_SUBMIT = "Submit"
-let COPY_TITLE_BUTTON_CANCEL = "Cancel"
+let COPY_TITLE_BUTTON_CANCEL = "Done"
 let COPY_TITLE_BUTTON_OK = "OK"
 
 private let COPY_TITLE_BUTTON_DONE = "Done"
