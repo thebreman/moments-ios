@@ -504,7 +504,14 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         if self.moment.momentStatus == .live {
             video.fetchPlaybackURL { (urlString, error) in
                 
-                guard error == nil else { return }
+                guard error == nil else {
+                    if video.uri != nil {
+                        
+                        //inform user that their video uploaded successfully (.live and uri != nil) but is still processing
+                        UIAlertController.explain(withPresenter: self, title: COPY_TITLE_NETWORK_ERROR, message: COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR)
+                    }
+                    return
+                }
                 
                 if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
                     self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: videoURL)
