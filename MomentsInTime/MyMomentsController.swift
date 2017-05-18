@@ -86,6 +86,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         guard let id = segue.identifier else { return }
         
         switch id {
+            
         case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
             if let newMomentController = segue.destination.contentViewController as? NewMomentController {
                 
@@ -150,7 +151,20 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         guard let video = moment.video else { return }
         
-        //for now just grab the local url:
+        if moment.momentStatus == .live {
+            video.fetchPlaybackURL { (urlString, error) in
+                
+                guard error == nil else { return }
+                
+                if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
+                    self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_PLAYER, sender: videoURL)
+                    return
+                }
+            }
+            return
+        }
+        
+        //for local videos:
         if video.localURL != nil {
             if let localVideoURL = video.localPlaybackURL {
                 self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_PLAYER, sender: localVideoURL)
@@ -296,15 +310,32 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private func verifyMetadata(forMoment moment: Moment)
     {
-        guard let video = moment.video, video.uri != nil else { return }
+        guard let video = moment.video, video.uri != nil, !video.liveVerified else {
+            if let video = moment.video, video.liveVerified { print("\nvideo has already been verified") }
+            return
+        }
         
         self.vimeoConnector.getRemoteVideo(video) { (fetchedVideo, error) in
             
             if let newVideo = fetchedVideo {
                 
-                //add link:
+                //add link and playback url:
                 Moment.writeToRealm {
                     moment.video?.videoLink = newVideo.videoLink
+                    moment.video?.playbackURL = newVideo.playbackURL
+                }
+                
+                //if we got a playback url, remove the local video:
+                if moment.video?.playbackURL != nil, let relativeLocalURL = moment.video?.localURL {
+                    print("\nwe have a playback url, so removing local video from disk")
+                    Assistant.removeVideoFromDisk(atRelativeURLString: relativeLocalURL) { success in
+                        if success {
+                            Moment.writeToRealm {
+                                moment.video?.localURL = nil
+                                moment.video?.liveVerified = true
+                            }
+                        }
+                    }
                 }
                 
                 //check for metadata and add if necessary:
@@ -316,7 +347,21 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                     print("\nadding metadata in verify moments")
                     
                     BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment) { (moment, error) in
-                        if error != nil { print(error!) }
+                        DispatchQueue.main.async {
+                            
+                            guard error == nil else {
+                                print(error!)
+                                Moment.writeToRealm {
+                                    moment?.video?.liveVerified = false
+                                }
+                                return
+                            }
+                            
+                            //mark the video as verified so we don't check next time:
+                            Moment.writeToRealm {
+                                moment?.video?.liveVerified = true
+                            }
+                        }
                     }
                 }
             }

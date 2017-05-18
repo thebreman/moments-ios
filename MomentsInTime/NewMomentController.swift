@@ -501,8 +501,26 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handlePlay video: Video)
     {
-        guard let url = video.localPlaybackURL else { return }
-        self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: url)
+        if self.moment.momentStatus == .live {
+            video.fetchPlaybackURL { (urlString, error) in
+                
+                guard error == nil else { return }
+                
+                if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
+                    self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: videoURL)
+                    return
+                }
+            }
+            
+            return
+        }
+        
+        //for local videos:
+        if video.localURL != nil {
+            if let localVideoURL = video.localPlaybackURL {
+                self.performSegue(withIdentifier: Identifiers.Segues.PLAY_VIDEO, sender: localVideoURL)
+            }
+        }
     }
     
     func videoPreviewCell(_ videoPreviewCell: VideoPreviewCell, handleOptions sender: BouncingButton)
@@ -529,8 +547,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             //delete local video:
             if let localRelativeVideoURLString = video.localURL {
-                Assistant.removeVideoFromDisk(atRelativeURLString: localRelativeVideoURLString)
-                video.localURL = nil
+                Assistant.removeVideoFromDisk(atRelativeURLString: localRelativeVideoURLString) { success in
+                    if success {
+                        video.localURL = nil
+                    }
+                }
             }
             
             //mark that video is no longer local:

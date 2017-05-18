@@ -55,7 +55,7 @@ class Assistant
         }
     }
     
-    class func removeVideoFromDisk(atRelativeURLString relativeURLString: String)
+    class func removeVideoFromDisk(atRelativeURLString relativeURLString: String, completion: ((Bool) -> Void)?)
     {
         if let videos = FileManager.getVideosDirectory() {
             
@@ -63,9 +63,11 @@ class Assistant
             
             do {
                 try FileManager.default.removeItem(at: pathToRemove)
+                completion?(true)
             }
             catch let error {
                 print("unable to remove video from disk: \(error)")
+                completion?(false)
             }
         }
     }

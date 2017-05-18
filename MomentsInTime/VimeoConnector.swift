@@ -95,6 +95,11 @@ class VimeoConnector: NSObject
                 fetchedVideo.name = result["name"] as? String
                 fetchedVideo.videoDescription = result["description"] as? String
                 fetchedVideo.videoLink = result["link"] as? String
+                fetchedVideo.status = result["status"] as? String
+                
+                if let files = result["files"] as? [[String: Any]] {
+                    fetchedVideo.playbackURL = self.playbackURLString(fromFiles: files)
+                }
 
                 completion(fetchedVideo, nil)
                 return

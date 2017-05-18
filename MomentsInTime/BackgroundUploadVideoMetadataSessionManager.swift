@@ -89,6 +89,7 @@ class BackgroundUploadVideoMetadataSessionManager: Alamofire.SessionManager
     {
         self.delegate.downloadTaskDidFinishDownloadingToURL = { (session, task, url) in
             
+            //in this case the download is json, cached to disk at url:
             if let responseData = try? Data(contentsOf: url),
                 let result = try? JSONSerialization.jsonObject(with: responseData, options: .mutableContainers) as? [String: Any] {
                 Moment.writeToRealm {

@@ -22,6 +22,8 @@ class Video: Object
     dynamic var localThumbnailImageURL: String? = nil
     dynamic var videoLink: String?
     dynamic var isLocal: Bool = false
+    dynamic var liveVerified: Bool = false
+    dynamic var playbackURL: String?
     
     var thumbnailImageURL: String?
     var status: String?
@@ -49,11 +51,12 @@ class Video: Object
     
     var localPlaybackURL: URL? {
         guard let localURLString = self.localURL, let videos = FileManager.getVideosDirectory() else { return nil }
-        return videos.appendingPathComponent(localURLString)        
+        let path = videos.appendingPathComponent(localURLString)
+        if FileManager.default.fileExists(atPath: path.path) {
+            return path
+        }
+        return nil
     }
-    
-    //optional url to pass to PlayerViewController (must be fetched upon request):
-    private(set) var playbackURL: String?
     
     /**
      * if we have previously fetched and stored a playbackURL, completion will contain this url,
@@ -74,7 +77,23 @@ class Video: Object
             }
             
             if let newURLString = urlString {
-                self.playbackURL = newURLString
+                
+                //delete local video if we have one:
+                if let localVideoURLString = self.localURL {
+                    print("removing local video since we have a playback url")
+                    Assistant.removeVideoFromDisk(atRelativeURLString: localVideoURLString) { success in
+                        if success {
+                            Moment.writeToRealm {
+                                self.localURL = nil
+                            }
+                        }
+                    }
+                }
+                
+                //update with new playbackURL:
+                Moment.writeToRealm {
+                    self.playbackURL = newURLString
+                }
                 completion(newURLString, nil)
                 return
             }
@@ -93,7 +112,7 @@ class Video: Object
         
         if let localVideoURLString = self.localURL {
             print("Deleting video local video")
-            Assistant.removeVideoFromDisk(atRelativeURLString: localVideoURLString)
+            Assistant.removeVideoFromDisk(atRelativeURLString: localVideoURLString, completion: nil)
         }
     }
     
@@ -127,7 +146,7 @@ class Video: Object
     
     override static func ignoredProperties() -> [String]
     {
-        return ["thumbnailImageURL", "status", "localThumbnailImage", "_localThumbnailImage", "playbackURL"]
+        return ["thumbnailImageURL", "status", "localThumbnailImage", "_localThumbnailImage"]
     }
 }
 
