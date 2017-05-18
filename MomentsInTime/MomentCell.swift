@@ -50,6 +50,7 @@ class MomentCell: BouncingCollectionViewCell
     override func awakeFromNib()
     {
         super.awakeFromNib()
+        
         self.isSelectable = false
         self.drawShadow()
         self.containerView.layer.masksToBounds = true
@@ -172,13 +173,14 @@ class MomentCell: BouncingCollectionViewCell
         self.thumbnailImageView.contentMode = .scaleAspectFill
         
         //for vimeo thumbnail image urls:
-        if let imageURLString = self.moment?.video?.thumbnailImageURL {
-            self.thumbnailImageView.loadImageFromCache(withUrlString: imageURLString)
-        }
-        else if let localImage = self.moment?.video?.localThumbnailImage {
+        if let localImage = self.moment?.video?.localThumbnailImage {
             
             //for local images that have not been uploaded yet:
             self.thumbnailImageView.image = localImage
+            return
+        }
+        else if let imageURLString = self.moment?.video?.thumbnailImageURL {
+            self.thumbnailImageView.loadImageFromCache(withUrlString: imageURLString)
         }
         else {
             self.thumbnailImageView.image = #imageLiteral(resourceName: "interviewee_placeholder")

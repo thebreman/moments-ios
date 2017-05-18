@@ -185,7 +185,7 @@ extension Video: VideoRouterCompliant
         var thumbnailImageURL: String?
         
         if let pictures = params["pictures"] as? [String: Any] {
-            thumbnailImageURL = self.imageURL(fromPictures: pictures)
+            thumbnailImageURL = Video.imageURL(fromPictures: pictures)
         }
     
         video.uri = uri
@@ -204,7 +204,7 @@ extension Video: VideoRouterCompliant
         }
     }
     
-    private static func imageURL(fromPictures pictures: [String: Any]) -> String?
+    class func imageURL(fromPictures pictures: [String: Any]) -> String?
     {
         var imageURL: String?
         
