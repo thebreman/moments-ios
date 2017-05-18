@@ -115,7 +115,11 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         self.collectionView.performBatchUpdates({
             self.collectionView.insertItems(at: [newPath])
             self.collectionView.reloadEmptyDataSet()
-        }, completion: nil)
+        }, completion: { success in
+            if success {
+                self.collectionView.scrollToItem(at: newPath, at: .top, animated: true)
+            }
+        })
     }
     
     func refreshMoment(_ moment: Moment)

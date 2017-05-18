@@ -8,7 +8,12 @@
 
 import Alamofire
 
-private let FILTER_VIDEOS_VALUE = "uri,name,description,link,pictures.sizes,status"
+let FILTER_KEY = "fields"
+private let FILTER_ALL_VIDEOS_VALUE = "uri,name,description,link,pictures.sizes,status"
+private let FILTER_CREATE_VIDEO_VALUE = "ticket_id,upload_link_secure,complete_uri"
+private let FILTER_READ_VIDEO_VALUE = "name,description,link,status,files"
+private let FILTER_UPDATE_VIDEO_VALUE = "link"
+
 
 protocol VideoRouterCompliant
 {
@@ -59,16 +64,22 @@ enum VideoRouter: URLRequestConvertible
         
         //add any necessary params:
         switch self {
+            
         case .all:
             let urlString = VimeoConnector.baseAPIEndpoint + self.path
             let url = try urlString.asURL()
             urlRequest.url = url
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE])
+            
+        case .read:
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_READ_VIDEO_VALUE])
             
         case .create:
-            urlRequest = try URLEncoding.default.encode(urlRequest, with: ["type": "streaming"])
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: ["type": "streaming", FILTER_KEY: FILTER_CREATE_VIDEO_VALUE])
             
         case .update(let video):
             urlRequest = try URLEncoding.default.encode(urlRequest, with: video.videoParameters())
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_UPDATE_VIDEO_VALUE])
             
         default:
             break

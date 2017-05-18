@@ -15,6 +15,15 @@ private let COPY_TITLE_MOMENT_DETAIL = "Moment"
 private let COPY_TITLE_UPLOAD_FAILED = "Oh No!"
 private let COPY_MESSAGE_UPLOAD_FAILED = "Something went wrong during the upload. Please try again and make sure the app is running and connected until the upload completes."
 
+let COPY_TITLE_NETWORK_ERROR = "Oops!"
+let COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR = "Something went wrong. Your Moment uploaded successfully but it is still being processed. Check back soon!"
+
+private let COPY_TITLE_DELETE_UPLOADING_ALERT = "Oh No!"
+private let COPY_MESSAGE_DELETE_UPLOADING_ALERT = "Sorry, but you'll need to wait until the upload is finished to modify this Moment."
+
+private let COPY_TITLE_ALREADY_UPLOADING = "Oh No!"
+private let COPY_MESSAGE_ALREADY_UPLOADING = "Sorry, but you'll need to wait until the current upload is finished before uploading another Moment."
+
 typealias NewMomentCompletion = (Moment, _ justCreated: Bool, _ shouldUpload: Bool) -> Void
 
 class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
@@ -23,12 +32,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     lazy var momentList = MomentList()
-    
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        return refreshControl
-    }()
     
     private var emptyStateView: MITTextActionView = {
         let view = MITTextActionView.mitEmptyStateView()
@@ -56,6 +59,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        self.listenForNotifications(true)
         self.setupCollectionView()
         self.refresh()
     }
@@ -85,6 +89,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         guard let id = segue.identifier else { return }
         
         switch id {
+            
         case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
             if let newMomentController = segue.destination.contentViewController as? NewMomentController {
                 
@@ -108,6 +113,11 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         default:
             break
         }
+    }
+    
+    deinit
+    {
+        self.listenForNotifications(false)
     }
     
     //MARK: Actions
@@ -144,8 +154,28 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         guard let video = moment.video else { return }
         
-        //for now just grab the local url:
-        if video.isLocal {
+        if moment.momentStatus == .live {
+            video.fetchPlaybackURL { (urlString, error) in
+                
+                guard error == nil else {
+                    if video.uri != nil {
+                        
+                        //inform user that their video uploaded successfully (.live and uri != nil) but is still processing
+                        UIAlertController.explain(withPresenter: self, title: COPY_TITLE_NETWORK_ERROR, message: COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR)
+                    }
+                    return
+                }
+                
+                if let videoURLString = urlString, let videoURL = URL(string: videoURLString) {
+                    self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_PLAYER, sender: videoURL)
+                    return
+                }
+            }
+            return
+        }
+        
+        //for local videos:
+        if video.localURL != nil {
             if let localVideoURL = video.localPlaybackURL {
                 self.performSegue(withIdentifier: Identifiers.IDENTIFIER_SEGUE_PLAYER, sender: localVideoURL)
             }
@@ -155,8 +185,9 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
     {
         UIAlertController.showDeleteSheet(withPresenter: self, sender: sender, title: nil, itemToDeleteTitle: "Moment") { action in
-            self.adapter.removeMoment(moment)
-            moment.delete()
+            DispatchQueue.main.async {
+                self.handleDelete(forMoment: moment)
+            }
         }
     }
     
@@ -175,11 +206,22 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             flowLayout.sectionInset = .zero
         }
         
-        self.collectionView?.addSubview(self.refreshControl)
         self.collectionView.contentInset.top = 12
     }
     
     //MARK: Utilities
+    
+    private func handleDelete(forMoment moment: Moment)
+    {
+        //no deleting while a moment is uploading... strange and unwanted things will ensue:
+        guard moment.momentStatus != .uploading else {
+            UIAlertController.explain(withPresenter: self, title: COPY_TITLE_DELETE_UPLOADING_ALERT, message: COPY_MESSAGE_DELETE_UPLOADING_ALERT)
+            return
+        }
+        
+        self.adapter.removeMoment(moment)
+        moment.delete()
+    }
     
     private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool, shouldSubmit: Bool)
     {
@@ -188,30 +230,39 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         }
         
         if shouldSubmit {
-            self.handleSubmit(forMoment: moment)
-            self.adapter.refreshMoment(moment)
+            self.handleSubmit(forMoment: moment) {
+                self.adapter.refreshMoment(moment)
+            }
         }
         else {
             self.adapter.refreshMoment(moment)
         }
     }
     
-    private func handleSubmit(forMoment moment: Moment)
+    private func handleSubmit(forMoment moment: Moment, completion: @escaping () -> Void)
     {
-        moment.upload { (_, error) in
-            
-            if error != nil {
+        self.vimeoConnector.checkForPendingUploads { alreadyUploading in
+            DispatchQueue.main.async {
                 
-                //inform the user that the upload failed,
-                //the moment's status is already set to .uploadFailed:
-                UIAlertController.explain(withPresenter: self, title: COPY_TITLE_UPLOAD_FAILED, message: COPY_MESSAGE_UPLOAD_FAILED)
+                guard !alreadyUploading else {
+                    UIAlertController.explain(withPresenter: self, title: COPY_TITLE_ALREADY_UPLOADING, message: COPY_MESSAGE_ALREADY_UPLOADING)
+                    return
+                }
+                
+                moment.upload { (_, error) in
+                    
+                    if error != nil {
+                        
+                        //inform the user that the upload failed,
+                        //the moment's status is already set to .uploadFailed:
+                        UIAlertController.explain(withPresenter: self, title: COPY_TITLE_UPLOAD_FAILED, message: COPY_MESSAGE_UPLOAD_FAILED)
+                    }
+                    
+                    self.adapter.refreshMoment(moment)
+                }
+                
+                completion()
             }
-            
-            self.adapter.refreshMoment(moment)
-            self.refresh() //fix this
-            
-            //TODO:
-            //send a local notification about uploaded video and processing time.
         }
     }
     
@@ -222,62 +273,78 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         
         //verification temporary?
         self.verifyMoments {
-            self.refreshControl.endRefreshing()
+            print("verification complete")
         }
     }
     
     private func verifyMoments(completion: (() -> Void)?)
     {
         self.vimeoConnector.checkForPendingUploads { uploadIsInProgress in
-            DispatchQueue.main.async {
+            
+            print("upload is in progeress: \(uploadIsInProgress)")
+            
+            for moment in self.momentList.moments {
                 
-                for moment in self.momentList.moments {
+                switch moment.momentStatus {
                     
-                    switch moment.momentStatus {
-                        
-                    case .uploading:
-                        if moment.video?.uri != nil {
-                            print("video has uri, changing status from uploading to live")
-                            moment.handleSuccessUpload()
-                            self.verifyMetadata(forMoment: moment)
-                        }
-                        else if !uploadIsInProgress {
-                            print("moment is uploading but no upload is going on so changing status to uploadFailed: \(moment)")
-                            moment.handleFailedUpload()
-                        }
-                        
-                    case .live:
+                case .uploading:
+                    if moment.video?.uri != nil {
+                        print("video has uri, changing status from uploading to live")
+                        moment.handleSuccessUpload()
                         self.verifyMetadata(forMoment: moment)
-                        
-                    default:
-                        if moment.video?.uri != nil {
-                            print("video has uri, changing status from uploadFailed to live")
-                            moment.handleSuccessUpload()
-                            self.verifyMetadata(forMoment: moment)
-                        }
-                        print("status was new nor local")
+                    }
+                    else if uploadIsInProgress == false {
+                        print("moment is uploading but no upload is going on so changing status to uploadFailed: \(moment)")
+                        moment.handleFailedUpload()
                     }
                     
-                    self.adapter.refreshMoment(moment)
+                case .live:
+                    self.verifyMetadata(forMoment: moment)
+                    
+                default:
+                    if moment.video?.uri != nil {
+                        print("video has uri, changing status from uploadFailed to live")
+                        moment.handleSuccessUpload()
+                        self.verifyMetadata(forMoment: moment)
+                    }
+                    print("status was new or local or uploadFailed")
                 }
                 
-                //completion after inspecting all the moments:
-                completion?()
+                self.adapter.refreshMoment(moment)
             }
+            
+            //completion after inspecting all the moments:
+            completion?()
         }
     }
     
     private func verifyMetadata(forMoment moment: Moment)
     {
-        guard let video = moment.video, video.uri != nil else { return }
+        guard let video = moment.video, video.uri != nil, !video.liveVerified else {
+            if let video = moment.video, video.liveVerified { print("\nvideo has already been verified") }
+            return
+        }
         
         self.vimeoConnector.getRemoteVideo(video) { (fetchedVideo, error) in
             
             if let newVideo = fetchedVideo {
                 
-                //add link:
+                //add link and playback url:
                 Moment.writeToRealm {
                     moment.video?.videoLink = newVideo.videoLink
+                    moment.video?.playbackURL = newVideo.playbackURL
+                }
+                
+                //if we got a playback url, remove the local video:
+                if moment.video?.playbackURL != nil, let relativeLocalURL = moment.video?.localURL {
+                    print("\nwe have a playback url, so removing local video from disk")
+                    Assistant.removeVideoFromDisk(atRelativeURLString: relativeLocalURL) { success in
+                        if success {
+                            Moment.writeToRealm {
+                                moment.video?.localURL = nil
+                            }
+                        }
+                    }
                 }
                 
                 //check for metadata and add if necessary:
@@ -289,10 +356,45 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                     print("\nadding metadata in verify moments")
                     
                     BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment) { (moment, error) in
-                        if error != nil { print(error!) }
+                        DispatchQueue.main.async {
+                            
+                            guard error == nil else {
+                                print(error!)
+                                Moment.writeToRealm {
+                                    moment?.video?.liveVerified = false
+                                }
+                                return
+                            }
+                            
+                            //mark the video as verified so we don't check next time:
+                            Moment.writeToRealm {
+                                moment?.video?.liveVerified = true
+                            }
+                        }
+                    }
+                }
+                else {
+                    Moment.writeToRealm {
+                        moment.video?.liveVerified = (moment.video?.playbackURL != nil) //this could have not passed above
                     }
                 }
             }
+        }
+    }
+    
+    @objc private func handleVideoUploaded(notification: Notification)
+    {
+        if let moment = notification.object as? Moment {
+            self.adapter.refreshMoment(moment)
+        }
+    }
+    
+    private func listenForNotifications(_ shouldListen: Bool)
+    {
+        if shouldListen {
+            NotificationCenter.default.addObserver(self, selector: #selector(handleVideoUploaded(notification:)), name: Notification.Name(rawValue: NOTIFICATION_VIDEO_UPLOADED), object: nil)
+        } else {
+            NotificationCenter.default.removeObserver(self)
         }
     }
 }

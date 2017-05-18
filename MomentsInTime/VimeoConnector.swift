@@ -10,7 +10,7 @@ import Alamofire
 
 private let ACCESS_TOKEN_KEY = "Authorization"
 private let ACCESS_TOKEN_VALUE_STAGING = "Bearer aa145c1d9bb318d4ef2a459c732503bc"
-private let ACCESS_TOKEN_VALUE_PRODUCTION = "Bearer 4bb6e9e2e0ecbdc0871a5f290bd1ed83"
+private let ACCESS_TOKEN_VALUE_PRODUCTION = "Bearer cbcd60a11d6c8dbad7310a4074312963"
 
 private let HOST = "https://api.vimeo.com"
 
@@ -95,6 +95,11 @@ class VimeoConnector: NSObject
                 fetchedVideo.name = result["name"] as? String
                 fetchedVideo.videoDescription = result["description"] as? String
                 fetchedVideo.videoLink = result["link"] as? String
+                fetchedVideo.status = result["status"] as? String
+                
+                if let files = result["files"] as? [[String: Any]] {
+                    fetchedVideo.playbackURL = self.playbackURLString(fromFiles: files)
+                }
 
                 completion(fetchedVideo, nil)
                 return
@@ -105,6 +110,7 @@ class VimeoConnector: NSObject
             completion(nil, error)
         }
     }
+    
     
     /**
      * Fetches playback urlString for specified Video, urlString passed along in the completion handler:
@@ -196,34 +202,13 @@ class VimeoConnector: NSObject
     //true if there is an active upload already:
     func checkForPendingUploads(completion: @escaping (Bool) -> Void)
     {
-        BackgroundUploadSessionManager.shared.session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
-            
-            guard tasks.isEmpty && uploads.isEmpty && downloads.isEmpty else {
-                BackgroundUploadSessionManager.shared.moment = nil
-                completion(true)
-                return
-            }
-        }
-        
-        BackgroundUploadCompleteSessionManager.shared.session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
-            
-            guard tasks.isEmpty && uploads.isEmpty && downloads.isEmpty else {
-                BackgroundUploadCompleteSessionManager.shared.moment = nil
-                completion(true)
-                return
-            }
-        }
-        
-        BackgroundUploadVideoMetadataSessionManager.shared.session.getTasksWithCompletionHandler { (tasks, uploads, downloads) in
-            
-            guard tasks.isEmpty && uploads.isEmpty && downloads.isEmpty else {
-                completion(true)
-                return
-            }
-            
+        if BackgroundUploadSessionManager.shared.moment == nil && BackgroundUploadCompleteSessionManager.shared.moment == nil && BackgroundUploadVideoMetadataSessionManager.shared.moment == nil {
             completion(false)
             return
         }
+        
+        completion(true)
+        return
     }
     
     // MARK: Utilities
@@ -236,6 +221,12 @@ class VimeoConnector: NSObject
         let request = Alamofire.request(router)
             .validate(statusCode: 200..<300)
             .responseJSON { response in
+                
+                //print rate limiting info:
+                if let httpResponse = response.response,
+                    let limitPerHour = httpResponse.allHeaderFields["X-RateLimit-Limit"] as? String {
+                    print("\nrate limit per hour: \(limitPerHour)")
+                }
                 
                 switch response.result {
                 case .success(let value):
