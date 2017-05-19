@@ -11,9 +11,9 @@ import UITextView_Placeholder
 import PureLayout
 
 private let MAX_CHARACTERS_DESCRIPTION = 300
-private let MIN_CHARACTERS_DESCRIPTION = 10
+private let MIN_CHARACTERS_DESCRIPTION = 1
 private let MAX_CHARACTERS_TITLE = 100
-private let MIN_CHARACTERS_TITLE = 10
+private let MIN_CHARACTERS_TITLE = 1
 
 class CreateTopicController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, KeyboardMover
 {
