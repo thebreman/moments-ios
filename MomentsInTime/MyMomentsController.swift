@@ -281,7 +281,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         self.vimeoConnector.checkForPendingUploads { uploadIsInProgress in
             
-            print("upload is in progeress: \(uploadIsInProgress)")
+            print("upload is in progress: \(uploadIsInProgress)")
             
             for moment in self.momentList.moments {
                 
@@ -329,7 +329,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             
             if let newVideo = fetchedVideo {
                 
-                //add link and playback url:
+                //add link, playbackURI, and thumbnailImageURL:
                 Moment.writeToRealm {
                     moment.video?.videoLink = newVideo.videoLink
                     moment.video?.playbackURL = newVideo.playbackURL
@@ -345,33 +345,12 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                 //if we got a thumbnailImage url, swap the local photos:
                 //do this last before updating liveVerified, b/c thumbnailImageURL is not a realm property
                 //so we have no way of checking if we swapped out for the right image so check it last
+                //and only if we successfully swapped photos will we check/ update live verified...
                 if let thumbnailURL = newVideo.thumbnailImageURL {
                     self.replaceImage(forMoment: moment, withImageURL: thumbnailURL)
                 }
                 
                 self.adapter.refreshMoment(moment)
-            }
-        }
-    }
-    
-    private func replaceImage(forMoment moment: Moment, withImageURL imageURLString: String)
-    {
-        if let imageURL = URL(string: imageURLString) {
-            DispatchQueue.global(qos: .userInitiated).async {
-                
-                if let imageData = try? Data(contentsOf: imageURL), let image = UIImage(data: imageData) {
-                    
-                    DispatchQueue.main.async {
-                        Moment.writeToRealm {
-                            print("/nreplacing thumbnail image")
-                            let relativePath = Assistant.persistImage(image, compressionQuality: 0.5, atRelativeURLString: moment.video?.localThumbnailImageURL)
-                            moment.video?.localThumbnailImageURL = relativePath
-                            moment.video?.localThumbnailImage = image
-                            self.adapter.refreshMoment(moment)
-                        }
-                        self.updateLiveVerifiedStatus(forMoment: moment)
-                    }
-                }
             }
         }
     }
@@ -410,6 +389,28 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                             moment?.video?.liveVerified = false
                         }
                         return
+                    }
+                }
+            }
+        }
+    }
+    
+    private func replaceImage(forMoment moment: Moment, withImageURL imageURLString: String)
+    {
+        if let imageURL = URL(string: imageURLString) {
+            DispatchQueue.global(qos: .userInitiated).async {
+                
+                if let imageData = try? Data(contentsOf: imageURL), let image = UIImage(data: imageData) {
+                    
+                    DispatchQueue.main.async {
+                        Moment.writeToRealm {
+                            print("/nreplacing thumbnail image")
+                            let relativePath = Assistant.persistImage(image, compressionQuality: 0.5, atRelativeURLString: moment.video?.localThumbnailImageURL)
+                            moment.video?.localThumbnailImageURL = relativePath
+                            moment.video?.localThumbnailImage = image
+                            self.adapter.refreshMoment(moment)
+                        }
+                        self.updateLiveVerifiedStatus(forMoment: moment)
                     }
                 }
             }

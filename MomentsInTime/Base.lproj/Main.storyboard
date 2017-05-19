@@ -730,7 +730,7 @@
         <image name="StarOfDavid" width="21" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="ibu-DI-7Ln"/>
         <segue reference="Q56-P5-VKI"/>
-        <segue reference="Lb7-be-TB6"/>
     </inferredMetricsTieBreakers>
 </document>
