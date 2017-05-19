@@ -120,6 +120,7 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="TYd-KS-ATk" firstAttribute="top" secondItem="sdL-8j-G2y" secondAttribute="bottom" id="2Tj-Js-o4q"/>
                             <constraint firstItem="TYd-KS-ATk" firstAttribute="centerX" secondItem="Dnc-cO-o1K" secondAttribute="centerX" id="7ge-jt-B1o"/>
@@ -201,6 +202,7 @@
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="RHO-Bm-5FM" firstAttribute="leading" secondItem="GOb-D2-iXN" secondAttribute="leading" id="Hvh-h2-pL5"/>
                             <constraint firstItem="qe9-n0-jKR" firstAttribute="top" secondItem="RHO-Bm-5FM" secondAttribute="bottom" id="IXK-V9-pzI"/>
@@ -275,7 +277,8 @@
                                 <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="XSv-fL-YHp" secondAttribute="trailing" id="HGW-cU-tmX"/>
                             <constraint firstItem="cK7-HQ-mea" firstAttribute="top" secondItem="XSv-fL-YHp" secondAttribute="bottom" id="YVg-bY-ans"/>
@@ -512,6 +515,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="grouped" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="UEi-Nx-Mws">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -730,7 +734,7 @@
         <image name="StarOfDavid" width="21" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ibu-DI-7Ln"/>
         <segue reference="Q56-P5-VKI"/>
+        <segue reference="Lb7-be-TB6"/>
     </inferredMetricsTieBreakers>
 </document>
