@@ -9,6 +9,8 @@
 import UIKit
 import MessageUI
 
+let appURL = "itms-apps://itunes.apple.com/app/id1236516374"
+
 private let COPY_TITLE_HOW_ARE_WE_DOING = "We're glad you're here."
 private let COPY_MESSAGE_HOW_ARE_WE_DOING = "We want this to be a warm and enriching community, and that takes feedback from you. How are we doing?"
 private let COPY_TITLE_I_LOVE_IT = "I LOVE IT 🙏🏼"
@@ -33,7 +35,7 @@ class HowAreWeDoingAlertView: NSObject, MFMailComposeViewControllerDelegate
         let lovinItAction = UIAlertAction(title: COPY_TITLE_I_LOVE_IT, style: .default) { _ in
             
             //handle I LOVE IT 🙏🏼!!!
-            print("I love this app and can't wait to give it a 5-star rating")
+            self.handleLovinIt()
             
             self.completionHandler?()
             self.completionHandler = nil
@@ -71,5 +73,14 @@ class HowAreWeDoingAlertView: NSObject, MFMailComposeViewControllerDelegate
     private func handleProblem(withPresenter presenter: UIViewController)
     {
         self.assistant.handleEmail(toRecipients: [EMAIL_FEEDBACK], subject: EMAIL_FEEDBACK_SUBJECT, message: EMAIL_FEEDBACK_BODY, presenter: presenter)
+    }
+    
+    private func handleLovinIt()
+    {
+        guard let url = URL(string: appURL) else { return }
+        
+        UIApplication.shared.open(url, options: [:]) { success in
+            self.completionHandler?()
+        }
     }
 }
