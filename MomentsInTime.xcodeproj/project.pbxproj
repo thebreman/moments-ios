@@ -258,7 +258,6 @@
 			isa = PBXGroup;
 			children = (
 				6811A1E51E826E9C006362E8 /* CommunityController.swift */,
-				683B361F1EC6F96F00F68A8C /* CommunityMomentOptionsAlertSheet.swift */,
 			);
 			name = "Community Flow";
 			sourceTree = "<group>";
@@ -275,6 +274,7 @@
 			isa = PBXGroup;
 			children = (
 				688E5D0E1EA883BA00BF258F /* Alerts.swift */,
+				683B361F1EC6F96F00F68A8C /* CommunityMomentOptionsAlertSheet.swift */,
 				683B361D1EC6F67300F68A8C /* InterviewInviteAlertSheet.swift */,
 				680F9BE91EC6F3AD00C920B4 /* ShareAlertSheet.swift */,
 				681B45301ED0045E00C18893 /* HowAreWeDoingAlertView.swift */,
