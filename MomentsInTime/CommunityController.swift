@@ -113,18 +113,13 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         let interviewInviteSheet = InterviewInviteAlertSheet()
         interviewInviteSheet.showFrom(viewController: self, sender: sender)
     }
+    
+    //need to retain this for MFMailComposeViewController delegation:
+    private let ratingsAlert = HowAreWeDoingAlertView()
 
     @IBAction func starOfDavidTapped(_ sender: UIButton)
     {
-        print("showing rating prompt")
-        
-        // show rating prompt
-        //TODO: eventually
-        
-        let comingSoon = ComingSoonAlertView()
-        comingSoon.showFrom(viewController: self) {
-            print("coming soon")
-        }
+        self.ratingsAlert.showFrom(viewController: self)
     }
     
 //MARK: MITMomentCollectionViewAdapterDelegate
@@ -165,7 +160,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         shareSheet.showFrom(viewController: self, sender: sender, moment: moment)
     }
     
-    //need to retain this for delegation:
+    //need to retain this for MFMailComposeViewController delegation:
     private let optionsSheet = CommunityMomentOptionsAlertSheet()
 
     func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)

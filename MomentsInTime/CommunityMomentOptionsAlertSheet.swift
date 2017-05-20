@@ -12,17 +12,17 @@ import MessageUI
 private let TITLE_SHARE_ACTION = "Share"
 private let TITLE_REPORT_ACTION = "Report"
 private let TITLE_CANCEL = "Cancel"
-private let EMAIL_FEEDBACK = "justinmilrad@gmail.com"
+let EMAIL_FEEDBACK = "justinmilrad@gmail.com"
 private let EMAIL_FEEDBACK_SUBJECT = "Moment Video Report"
 private let EMAIL_FEEDBACK_BODY = "Hello, I would like to report this video"
-private let TITLE_DEVICE_CANT_MAIL = "Oh No!"
-private let MESSAGE_DEVICE_CANT_MAIL = "This device cannot send mail."
 
 class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDelegate
 {
     var moment: Moment?
     var allowsSharing = false
     var completionHandler: AlertCompletion?
+    
+    private let assistant = Assistant()
     
     func showFrom(viewController: UIViewController, sender: UIView, forMoment moment: Moment, completion: AlertCompletion? = nil)
     {
@@ -64,28 +64,6 @@ class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDel
     {
         guard let videoLink = moment.video?.videoLink else { return }
         
-        let mailComposer = MFMailComposeViewController()
-        
-        // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property:
-        mailComposer.mailComposeDelegate = self
-        
-        mailComposer.setToRecipients([EMAIL_FEEDBACK])
-        mailComposer.setSubject(EMAIL_FEEDBACK_SUBJECT)
-        mailComposer.setMessageBody("\(EMAIL_FEEDBACK_BODY): \(videoLink)\n\n", isHTML: false)
-        mailComposer.view.tintColor = UIColor.mitActionblue
-        
-        if MFMailComposeViewController.canSendMail() {
-            presenter.present(mailComposer, animated: true, completion: nil)
-        }
-        else {
-            UIAlertController.explain(withPresenter: presenter, title: TITLE_DEVICE_CANT_MAIL, message: MESSAGE_DEVICE_CANT_MAIL)
-        }
-    }
-    
-    //MARK: MFMailComposeViewControllerDelegate
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?)
-    {
-        controller.contentViewController.dismiss(animated: true, completion: nil)
+        self.assistant.handleEmail(toRecipients: [EMAIL_FEEDBACK], subject: EMAIL_FEEDBACK_SUBJECT, message: "\(EMAIL_FEEDBACK_BODY): \(videoLink)\n\n", presenter: presenter)
     }
 }

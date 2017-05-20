@@ -8,8 +8,12 @@
 
 import UIKit
 import UserNotifications
+import MessageUI
 
-class Assistant
+private let TITLE_DEVICE_CANT_MAIL = "Oh No!"
+private let MESSAGE_DEVICE_CANT_MAIL = "This device cannot send mail."
+
+class Assistant: NSObject, MFMailComposeViewControllerDelegate
 {
     //fires off local notifications for background session debugging
     class func triggerNotification(withTitle title: String, message: String, delay: TimeInterval)
@@ -164,6 +168,36 @@ class Assistant
         self.endBackgroundTask()
         completion(nil)
     }
+    
+    //MARK: Email
+    
+    func handleEmail(toRecipients recipients: [String], subject: String, message: String, presenter: UIViewController)
+    {
+        let mailComposer = MFMailComposeViewController()
+        
+        // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property:
+        mailComposer.mailComposeDelegate = self
+        mailComposer.setToRecipients(recipients)
+        mailComposer.setSubject(subject)
+        mailComposer.setMessageBody(message, isHTML: false)
+        mailComposer.view.tintColor = UIColor.mitActionblue
+        
+        if MFMailComposeViewController.canSendMail() {
+            presenter.present(mailComposer, animated: true, completion: nil)
+        }
+        else {
+            UIAlertController.explain(withPresenter: presenter, title: TITLE_DEVICE_CANT_MAIL, message: MESSAGE_DEVICE_CANT_MAIL)
+        }
+    }
+    
+    //MARK: MFMailComposeViewControllerDelegate
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?)
+    {
+        controller.contentViewController.dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: Utilities:
     
     private func endBackgroundTask()
     {
