@@ -21,6 +21,7 @@ private let MESSAGE_DEVICE_CANT_MAIL = "This device cannot send mail."
 class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDelegate
 {
     var moment: Moment?
+    var allowsSharing = false
     var completionHandler: AlertCompletion?
     
     func showFrom(viewController: UIViewController, sender: UIView, forMoment moment: Moment, completion: AlertCompletion? = nil)
@@ -33,10 +34,12 @@ class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDel
         controller.popoverPresentationController?.sourceRect = sender.bounds
         controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
         
-        let shareAction = UIAlertAction(title: TITLE_SHARE_ACTION, style: .default) { _ in
-            self.handleShare(withViewController: viewController, sender: sender)
+        if self.allowsSharing {
+            let shareAction = UIAlertAction(title: TITLE_SHARE_ACTION, style: .default) { _ in
+                self.handleShare(withViewController: viewController, sender: sender)
+            }
+            controller.addAction(shareAction)
         }
-        controller.addAction(shareAction)
         
         let reportAction = UIAlertAction(title: TITLE_REPORT_ACTION, style: .destructive) { _ in
             self.handleReport(withViewController: viewController, sender: sender, forMoment: moment)

@@ -15,6 +15,7 @@ import FacebookLogin
 import FacebookShare
 
 private let REQUIRE_FB_LOGIN_ON_LAUNCH = false
+private let OPTIONS_ALLOWS_SHARE = false
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
@@ -169,6 +170,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
 
     func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
     {
+        self.optionsSheet.allowsSharing = OPTIONS_ALLOWS_SHARE
         self.optionsSheet.showFrom(viewController: self, sender: sender, forMoment: moment)
     }
     

@@ -42,12 +42,12 @@ enum UploadRouter: URLRequestConvertible
             url = try self.path.asURL()
             urlRequest = URLRequest(url: url)
             urlRequest = try URLEncoding.httpBody.encode(urlRequest, with: ["ticket_id": ticketID])
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: ""])
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_VALUE_DEFAULT])
             
         case .complete:
             url = try self.path.asURL()
             urlRequest = URLRequest(url: url)
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: ""])
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_VALUE_DEFAULT])
         }
         
         urlRequest.httpMethod = self.method.rawValue
