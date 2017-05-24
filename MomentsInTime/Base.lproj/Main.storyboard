@@ -75,7 +75,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gc6-67-h1v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1849" y="866"/>
+            <point key="canvasLocation" x="2788" y="865.81709145427294"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="HAh-Kw-glc">
@@ -96,7 +96,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yUS-Gr-Zeg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2886" y="1246"/>
+            <point key="canvasLocation" x="3824.8000000000002" y="1245.4272863568217"/>
         </scene>
         <!--New Moment-->
         <scene sceneID="74a-UX-Qjj">
@@ -181,7 +181,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="di5-tN-qqt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3854" y="1245"/>
+            <point key="canvasLocation" x="4792.8000000000002" y="1244.527736131934"/>
         </scene>
         <!--Create a Topic-->
         <scene sceneID="QiY-GO-5Kb">
@@ -257,7 +257,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y9b-tJ-VdU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8177" y="1094"/>
+            <point key="canvasLocation" x="9116" y="1093.4032983508246"/>
         </scene>
         <!--Topic-->
         <scene sceneID="hkA-NF-lKX">
@@ -309,7 +309,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11b-FG-Fil" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6289" y="615"/>
+            <point key="canvasLocation" x="7228" y="614.84257871064472"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="RGx-Nt-bJ5">
@@ -350,6 +350,38 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JMn-yY-RYv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1054" y="396"/>
+        </scene>
+        <!--Terms of Service-->
+        <scene sceneID="ZPO-UV-GBC">
+            <objects>
+                <viewController id="9BO-Sx-sx3" customClass="TermsOfServiceController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
+                    <textView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" id="7ny-Bv-9be">
+                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    </textView>
+                    <navigationItem key="navigationItem" title="Terms of Service" id="p4E-be-1oC">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="6aC-1o-2dn">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" id="Vhk-wV-Nzu" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
+                                <rect key="frame" x="276" y="7" width="83" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Accept">
+                                    <color key="titleColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="handleAccept:" destination="9BO-Sx-sx3" eventType="touchUpInside" id="8f6-bb-uJT"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ouT-us-oa6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-116" y="1146.4767616191905"/>
         </scene>
         <!--Community-->
         <scene sceneID="GZ3-ca-aEy">
@@ -475,7 +507,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G9f-7I-qj2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="948" y="866"/>
+            <point key="canvasLocation" x="1887.2" y="865.81709145427294"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="XEI-he-jP4">
@@ -598,7 +630,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VVp-P0-Fo7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7194" y="1095"/>
+            <point key="canvasLocation" x="8132" y="1094.3028485757122"/>
         </scene>
         <!--Note-->
         <scene sceneID="cfJ-U8-CIV">
@@ -724,7 +756,31 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TGq-zJ-EAd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5350" y="615"/>
+            <point key="canvasLocation" x="6288.8000000000002" y="614.84257871064472"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="6Tt-Em-XbV">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="59W-2M-ikK" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="F39-T6-uti">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="9BO-Sx-sx3" kind="relationship" relationship="rootViewController" id="0Dv-SX-2UD"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6iX-9b-9GV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1055.2" y="1146.4767616191905"/>
         </scene>
     </scenes>
     <resources>
@@ -734,7 +790,7 @@
         <image name="StarOfDavid" width="21" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Q56-P5-VKI"/>
         <segue reference="Lb7-be-TB6"/>
+        <segue reference="Q56-P5-VKI"/>
     </inferredMetricsTieBreakers>
 </document>

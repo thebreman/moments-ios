@@ -15,7 +15,7 @@ private let MESSAGE_DEVICE_CANT_MAIL = "This device cannot send mail."
 
 class Assistant: NSObject, MFMailComposeViewControllerDelegate
 {
-    //fires off local notifications for background session debugging
+    //fires off local notifications for background session debugging:
     class func triggerNotification(withTitle title: String, message: String, delay: TimeInterval)
     {
         //local notification
