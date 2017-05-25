@@ -11,8 +11,6 @@ import AVFoundation
 import FacebookCore
 import Alamofire
 
-private let KEY_ACCEPTED_TERMS_OF_SERVICE = "didAcceptTermsOfService"
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -24,9 +22,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Facebook, Track App Installs and App Opens:
         SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
-        
-        //on first launch display modal terms of service:
-        self.handleTermsOfService()
         
         UIView.appearance().tintColor = UIColor.mitActionblue
         
@@ -99,23 +94,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         BackgroundUploadVideoMetadataSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadVideoMetadataSessionManager.shared.session.invalidateAndCancel()
         BackgroundUploadVideoMetadataSessionManager.shared.moment = nil        
-    }
-    
-    private func handleTermsOfService()
-    {
-        guard let didAcceptTermsOfService: Bool = UserDefaults.standard.bool(forKey: KEY_ACCEPTED_TERMS_OF_SERVICE) else {
-            self.showTermsOfService()
-            return
-        }
-        
-        if !didAcceptTermsOfService {
-            self.showTermsOfService()
-        }
-    }
-    
-    private func showTermsOfService()
-    {
-        //
     }
 }
 

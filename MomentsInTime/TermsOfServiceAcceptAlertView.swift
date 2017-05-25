@@ -11,6 +11,7 @@ import UIKit
 private let COPY_TITLE_TERMS = "Terms and Conditions"
 private let COPY_MESSAGE_TERMS = "I have read and agree to the Moments In Time Terms and Conditions"
 private let COPY_TITLE_BUTTON_ACCEPT = "Agree"
+private let COPY_TITLE_TERMS_BUTTON_CANCEL = "Cancel"
 
 //true if user accepted terms:
 typealias TermsOfServiceAcceptCompletion = (Bool) -> Void
@@ -29,9 +30,10 @@ class TermsOfServiceAcceptAlertView: NSObject
             self.completionHandler?(true)
         }
         controller.addAction(acceptAction)
+        controller.preferredAction = acceptAction
         
-        let cancelAction = UIAlertAction(title: COPY_TITLE_BUTTON_CANCEL, style: .cancel) { _ in
-            self.completionsHandler?(false)
+        let cancelAction = UIAlertAction(title: COPY_TITLE_TERMS_BUTTON_CANCEL, style: .cancel) { _ in
+            self.completionHandler?(false)
         }
         controller.addAction(cancelAction)
         
