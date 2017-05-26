@@ -14,7 +14,10 @@ import FacebookCore
 import FacebookLogin
 import FacebookShare
 
-private let REQUIRE_FB_LOGIN_ON_LAUNCH = false
+private let KEY_ACCEPTED_TERMS_OF_SERVICE = "didAcceptTermsOfService"
+private let IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER = "TermsOfServiceStoryboardID"
+
+private let REQUIRE_FB_LOGIN_ON_LAUNCH = false 
 private let OPTIONS_ALLOWS_SHARE = false
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
@@ -60,9 +63,17 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.setupCollectionView()
         self.fetchCommunityMoments()
         
-        if REQUIRE_FB_LOGIN_ON_LAUNCH {
-            self.checkForUser {
-                print("We have a user!")
+        //on first launch display modal terms of service:
+        self.handleTermsOfService {
+            
+            //successful terms agreement, so indicate in UserDefaults:
+            UserDefaults.standard.set(true, forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
+            
+            //check FB login:
+            if REQUIRE_FB_LOGIN_ON_LAUNCH {
+                self.checkForUser {
+                    print("We have a user!")
+                }
             }
         }
     }
@@ -233,7 +244,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     {
         guard AccessToken.current != nil else {
             
-            if let loginController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as?LoginController {
+            if let loginController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as? LoginController {
                 
                 loginController.loginCompletionHandler = {
                     loginController.presentingViewController?.dismiss(animated: true) {
@@ -264,5 +275,28 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         
         self.collectionView.contentInset.top = 12
         self.collectionView?.addSubview(self.refreshControl)
+    }
+    
+    private func handleTermsOfService(completion: TermsOfServiceSuccessCompletion? = nil)
+    {
+        let didAcceptTermsOfService: Bool = UserDefaults.standard.bool(forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
+        
+        if !didAcceptTermsOfService {
+            self.showTermsOfService(completion: completion)
+        }
+        else {
+            completion?()
+        }
+    }
+    
+    private func showTermsOfService(completion: TermsOfServiceSuccessCompletion? = nil)
+    {
+        if let termsNavController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER) as? UINavigationController,
+            let termsOfServiceController = termsNavController.viewControllers.first as? TermsOfServiceController {
+            
+            termsOfServiceController.successCompletionHandler = completion
+            
+            self.tabBarController?.present(termsNavController, animated: true, completion: nil)
+        }
     }
 }

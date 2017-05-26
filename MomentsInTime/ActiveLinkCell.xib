@@ -20,13 +20,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="600" text="Select Something with this link" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DHY-gs-XnJ" customClass="ActiveLabel" customModule="ActiveLabel">
-                        <rect key="frame" x="16" y="8" width="241" height="52.5"/>
-                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                        <rect key="frame" x="16" y="8" width="235" height="52.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="highlightedColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZBy-Xp-KwX" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
-                        <rect key="frame" x="269" y="22.5" width="22" height="22"/>
+                        <rect key="frame" x="263" y="22.5" width="22" height="22"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="22" id="7rk-sY-1jt"/>
                             <constraint firstAttribute="height" constant="22" id="BP9-yp-giF"/>

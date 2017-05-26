@@ -50,6 +50,8 @@
 		6811A1E61E826E9C006362E8 /* CommunityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811A1E51E826E9C006362E8 /* CommunityController.swift */; };
 		6811A1E81E826EB2006362E8 /* MyMomentsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811A1E71E826EB2006362E8 /* MyMomentsController.swift */; };
 		6811AE1F1EAC763E004386E4 /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */; };
+		6812B6D51ED64A71003E3862 /* TermsOfServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6812B6D41ED64A71003E3862 /* TermsOfServiceController.swift */; };
+		6812B6D71ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6812B6D61ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift */; };
 		681B45311ED0045F00C18893 /* HowAreWeDoingAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681B45301ED0045E00C18893 /* HowAreWeDoingAlertView.swift */; };
 		6825E1371EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */; };
 		6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1381EA20525003DEF20 /* ContainerCell.swift */; };
@@ -154,6 +156,8 @@
 		6811A1E51E826E9C006362E8 /* CommunityController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityController.swift; sourceTree = "<group>"; };
 		6811A1E71E826EB2006362E8 /* MyMomentsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyMomentsController.swift; sourceTree = "<group>"; };
 		6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
+		6812B6D41ED64A71003E3862 /* TermsOfServiceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceController.swift; sourceTree = "<group>"; };
+		6812B6D61ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceAcceptAlertView.swift; sourceTree = "<group>"; };
 		681B45301ED0045E00C18893 /* HowAreWeDoingAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HowAreWeDoingAlertView.swift; sourceTree = "<group>"; };
 		6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITMomentCollectionViewAdapter.swift; sourceTree = "<group>"; };
 		6825E1381EA20525003DEF20 /* ContainerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerCell.swift; sourceTree = "<group>"; };
@@ -270,6 +274,14 @@
 			name = "My Moments Flow";
 			sourceTree = "<group>";
 		};
+		6812B6D31ED64A52003E3862 /* Terms of Service Flow */ = {
+			isa = PBXGroup;
+			children = (
+				6812B6D41ED64A71003E3862 /* TermsOfServiceController.swift */,
+			);
+			name = "Terms of Service Flow";
+			sourceTree = "<group>";
+		};
 		681B45321ED004E800C18893 /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
@@ -279,6 +291,7 @@
 				680F9BE91EC6F3AD00C920B4 /* ShareAlertSheet.swift */,
 				681B45301ED0045E00C18893 /* HowAreWeDoingAlertView.swift */,
 				D34A941C1EC6919B008A77F1 /* ComingSoonAlertView.swift */,
+				6812B6D61ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift */,
 			);
 			name = Alerts;
 			sourceTree = "<group>";
@@ -516,6 +529,7 @@
 				D332E64D1E80BE6C00778462 /* Assets.xcassets */,
 				D332E64F1E80BE6C00778462 /* LaunchScreen.storyboard */,
 				D332E64A1E80BE6C00778462 /* Main.storyboard */,
+				6812B6D31ED64A52003E3862 /* Terms of Service Flow */,
 				688133BD1EAF22C300696D58 /* Login Flow */,
 				6811A1E31E826E63006362E8 /* Community Flow */,
 				6811A1E41E826E6C006362E8 /* My Moments Flow */,
@@ -835,6 +849,7 @@
 				680C8A171EB3321B004CDC5E /* TextViewView.swift in Sources */,
 				68E580591EA37504002E8C6A /* TextActionView.swift in Sources */,
 				68EC740C1EB2DA330048DAD2 /* KeyboardMover.swift in Sources */,
+				6812B6D51ED64A71003E3862 /* TermsOfServiceController.swift in Sources */,
 				D34A941D1EC6919B008A77F1 /* ComingSoonAlertView.swift in Sources */,
 				681B45311ED0045F00C18893 /* HowAreWeDoingAlertView.swift in Sources */,
 				68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */,
@@ -870,6 +885,7 @@
 				680FC6761EBC07A900FED470 /* InterviewingSection.swift in Sources */,
 				680C20681EA5CB0D00757608 /* ActiveLinkCell.swift in Sources */,
 				6811A1E81E826EB2006362E8 /* MyMomentsController.swift in Sources */,
+				6812B6D71ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift in Sources */,
 				687E23901EC970EE00BDF987 /* BackgroundUploadCompleteSessionManager.swift in Sources */,
 				68EC740E1EB2EB900048DAD2 /* ScrollViews.swift in Sources */,
 				688E5D0D1EA74A2C00BF258F /* Note.swift in Sources */,
