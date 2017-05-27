@@ -72,7 +72,7 @@ class WelcomeHeaderView: UIView
         self.addSubview(self.textActionView)
         self.addSubview(self.closeButton)
         
-        self.textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 20, left: 0, bottom: 24, right: 0))
+        self.textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 20, left: 0, bottom: 22, right: 0))
         self.textActionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 144).isActive = true
         self.closeButton.autoPinEdge(toSuperviewEdge: .top, withInset: 12.0)
         self.closeButton.autoPinEdge(toSuperviewEdge: .trailing, withInset: 12.0)

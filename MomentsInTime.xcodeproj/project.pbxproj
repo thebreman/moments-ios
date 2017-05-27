@@ -264,7 +264,6 @@
 			isa = PBXGroup;
 			children = (
 				6811A1E51E826E9C006362E8 /* CommunityController.swift */,
-				686079581ED9014500FD7260 /* WelcomeHeaderView.swift */,
 			);
 			name = "Community Flow";
 			sourceTree = "<group>";
@@ -302,6 +301,7 @@
 		681B45331ED0059400C18893 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				686079581ED9014500FD7260 /* WelcomeHeaderView.swift */,
 				6810B1991EB424CB00B9EE7D /* ProfileImageView.swift */,
 				680C8A161EB3321B004CDC5E /* TextViewView.swift */,
 				680CA52A1EA5F36E006A735E /* MITSectionHeaderView.xib */,

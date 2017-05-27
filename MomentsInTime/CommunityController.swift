@@ -135,14 +135,16 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     //MARK: WelcomeHeaderViewDelegate
     
+    //For both cases we will just close the header so user can browse throught Community Moments:
+    
     func handleAction(forWelcomeHeaderView welcomeView: WelcomeHeaderView)
     {
-        print("handle welcome view action")
+        self.closeWelcomeHeaderView()
     }
     
     func handleClose(forWelcomeHeaderView welcomeView: WelcomeHeaderView)
     {
-        print("handle welcome view close")
+        self.closeWelcomeHeaderView()
     }
     
     //MARK: MITMomentCollectionViewAdapterDelegate
@@ -237,6 +239,11 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     }
     
     //MARK: Utilities
+    
+    private func closeWelcomeHeaderView()
+    {
+        print("Close welcome header view")
+    }
     
     private func playVideo(forMoment moment: Moment)
     {
