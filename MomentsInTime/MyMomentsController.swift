@@ -437,6 +437,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         if let moment = notification.object as? Moment {
             self.adapter.refreshMoment(moment)
+            
+            //insert header view...
         }
     }
     

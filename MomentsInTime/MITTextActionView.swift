@@ -20,6 +20,10 @@ private let COPY_TITLE_WELCOME = "Welcome to Moments in Time!"
 private let COPY_MESSAGE_WELCOME = "We believe that these stories will inspire, educate and encourage others to capture their own \"Moments In Time,\" connecting one generations to another while preserving amazing stories..."
 private let COPY_TITLE_BUTTON_WELCOME = "Got it, let's go!"
 
+private let COPY_TITLE_SHARE_LIVE_MOMENT = "You made a Moment!"
+private let COPY_MESSAGE_SHARE_LIVE_MOMENT = "People are going to love your post. Want to share your creation?"
+private let COPY_TITLE_BUTTON_SHARE_LIVE_MOMENT = "Share your Moment"
+
 class MITTextActionView: TextActionView
 {
     override func setup()
@@ -64,6 +68,16 @@ class MITTextActionView: TextActionView
         view.title = COPY_TITLE_WELCOME
         view.message = COPY_MESSAGE_WELCOME
         view.actionButton.setTitle(COPY_TITLE_BUTTON_WELCOME, for: .normal)
+        
+        return view
+    }
+    
+    class func mitShareLiveMomentView() -> MITTextActionView
+    {
+        let view = MITTextActionView()
+        view.title = COPY_TITLE_SHARE_LIVE_MOMENT
+        view.message = COPY_MESSAGE_SHARE_LIVE_MOMENT
+        view.actionButton.setTitle(COPY_TITLE_BUTTON_SHARE_LIVE_MOMENT, for: .normal)
         
         return view
     }

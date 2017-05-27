@@ -1,8 +1,8 @@
 //
-//  WelcomeHeaderView.swift
+//  ShareLiveMomentHeaderView.swift
 //  MomentsInTime
 //
-//  Created by Andrew Ferrarone on 5/26/17.
+//  Created by Andrew Ferrarone on 5/27/17.
 //  Copyright © 2017 Tikkun Olam. All rights reserved.
 //
 
@@ -10,34 +10,34 @@ import UIKit
 import PureLayout
 
 //delegate for optional accessoryView to be displayed every nth cell (n is frequency):
-protocol WelcomeHeaderViewDelegate: class
+protocol ShareLiveMomentHeaderViewDelegate: class
 {
-    func handleAction(forWelcomeHeaderView welcomeView: WelcomeHeaderView)
-    func handleClose(forWelcomeHeaderView welcomeView: WelcomeHeaderView)
+    func handleAction(forShareLiveMomentHeaderView headerView: ShareLiveMomentHeaderView)
+    func handleClose(forShareLiveMomentHeaderView headerView: ShareLiveMomentHeaderView)
 }
 
-class WelcomeHeaderView: MITHeaderView, MITHeaderViewDelegate
+class ShareLiveMomentHeaderView: MITHeaderView, MITHeaderViewDelegate
 {
     private let textActionView: MITTextActionView = {
-        let textView = MITTextActionView.mitWelcomeView()
+        let textView = MITTextActionView.mitShareLiveMomentView()
         textView.actionButton.addTarget(self, action: #selector(handleAction), for: .touchUpInside)
         return textView
     }()
     
-    weak var delegate: WelcomeHeaderViewDelegate?
+    weak var delegate: ShareLiveMomentHeaderViewDelegate?
     
     //MARK: Actions
     
     @objc private func handleAction()
     {
-        self.delegate?.handleAction(forWelcomeHeaderView: self)
+        self.delegate?.handleAction(forShareLiveMomentHeaderView: self)
     }
     
     //MARK: MITHeaderViewDelegate
     
     func handleClose(forWelcomeHeaderView welcomeView: MITHeaderView)
     {
-        self.delegate?.handleClose(forWelcomeHeaderView: self)
+        self.delegate?.handleClose(forShareLiveMomentHeaderView: self)
     }
     
     //MARK: Private
