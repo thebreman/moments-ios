@@ -41,7 +41,8 @@ protocol MITMomentCollectionViewAdapterInfiniteScrollDelegate: class
 }
 
 /**
- * Manages UICollectionViews throughout the app that display MomentCells...
+ * Manages UICollectionViews throughout the app that display MomentCells...\]['
+ ;
  * The collectionViews are still responsible for loading and refreshing their content (MomentList),
  * but this class manages displaying the [Moment].
  */

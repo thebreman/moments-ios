@@ -23,7 +23,7 @@ private let OPTIONS_ALLOWS_SHARE = false
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
-class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate
+class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate, WelcomeHeaderViewDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -36,17 +36,17 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         return refreshControl
     }()
     
-    private var emptyStateView: MITTextActionView = {
-        let view = MITTextActionView.mitEmptyStateView()
-        view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
-        return view
+    private lazy var welcomeView: WelcomeHeaderView = {
+        let welcomeHeaderView = WelcomeHeaderView()
+        welcomeHeaderView.delegate = self
+        return welcomeHeaderView
     }()
     
     private lazy var adapter: MITMomentCollectionViewAdapter = {
         let adapter = MITMomentCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    moments: self.momentList.moments,
                                                    emptyStateView: UIView(frame: .zero),
-                                                   bannerView: nil)
+                                                   bannerView: self.welcomeView)
         adapter.allowsEmptyStateScrolling = true
         adapter.accessoryViewDelegate = self
         adapter.momentDelegate = self
@@ -133,7 +133,19 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.ratingsAlert.showFrom(viewController: self)
     }
     
-//MARK: MITMomentCollectionViewAdapterDelegate
+    //MARK: WelcomeHeaderViewDelegate
+    
+    func handleAction(forWelcomeHeaderView welcomeView: WelcomeHeaderView)
+    {
+        print("handle welcome view action")
+    }
+    
+    func handleClose(forWelcomeHeaderView welcomeView: WelcomeHeaderView)
+    {
+        print("handle welcome view close")
+    }
+    
+    //MARK: MITMomentCollectionViewAdapterDelegate
     
     func accessoryViewFrequency(forAdaptor adapter: MITMomentCollectionViewAdapter) -> Int
     {
