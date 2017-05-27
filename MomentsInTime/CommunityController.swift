@@ -17,6 +17,8 @@ import FacebookShare
 private let KEY_ACCEPTED_TERMS_OF_SERVICE = "didAcceptTermsOfService"
 private let IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER = "TermsOfServiceStoryboardID"
 
+private let KEY_CLOSED_WELCOME_HEADER = "didCloseWelcomeHeader"
+
 private let REQUIRE_FB_LOGIN_ON_LAUNCH = false 
 private let OPTIONS_ALLOWS_SHARE = false
 
@@ -62,6 +64,11 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.spinner.startAnimating()
         self.setupCollectionView()
         self.fetchCommunityMoments()
+        
+        //Close welcome header view if user has already closed it:
+        if UserDefaults.standard.bool(forKey: KEY_CLOSED_WELCOME_HEADER) == true {
+            self.adapter.closeBannerView()
+        }
         
         //on first launch display modal terms of service:
         self.handleTermsOfService {
@@ -242,7 +249,8 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     private func closeWelcomeHeaderView()
     {
-        print("Close welcome header view")
+        self.adapter.closeBannerView()
+        UserDefaults.standard.set(true, forKey: KEY_CLOSED_WELCOME_HEADER)
     }
     
     private func playVideo(forMoment moment: Moment)

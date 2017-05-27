@@ -106,6 +106,21 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         self.collectionView.emptyDataSetSource = self
     }
     
+    func closeBannerView()
+    {
+        //handle animated removal of banner view...
+        guard self.bannerView != nil else { return }
+        
+        //remove top section and set bannerView to nil:
+        let pathToRemove = IndexPath(item: 0, section: SECTION_BANNER_TOP)
+        
+        self.collectionView.performBatchUpdates({
+            self.bannerView = nil
+            self.collectionView.deleteItems(at: [pathToRemove])
+            self.collectionView.reloadEmptyDataSet()
+        }, completion: nil)
+    }
+    
     func insertNewMoment(_ newMoment: Moment)
     {
         self.moments.insert(newMoment, at: 0)

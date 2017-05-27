@@ -32,7 +32,7 @@ class WelcomeHeaderView: UIView
         button.tintColor = UIColor.mitActionblue
         button.reversesTitleShadowWhenHighlighted = false
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.autoSetDimensions(to: CGSize(width: 20, height: 20))
+        button.autoSetDimensions(to: CGSize(width: 24, height: 24))
         button.addTarget(self, action: #selector(handleClose), for: .touchUpInside)
         return button
     }()
