@@ -9,14 +9,7 @@
 import UIKit
 import PureLayout
 
-//delegate for optional accessoryView to be displayed every nth cell (n is frequency):
-protocol ShareLiveMomentHeaderViewDelegate: class
-{
-    func handleAction(forShareLiveMomentHeaderView headerView: ShareLiveMomentHeaderView)
-    func handleClose(forShareLiveMomentHeaderView headerView: ShareLiveMomentHeaderView)
-}
-
-class ShareLiveMomentHeaderView: MITHeaderView, MITHeaderViewDelegate
+class ShareLiveMomentHeaderView: MITHeaderView
 {
     private let textActionView: MITTextActionView = {
         let textView = MITTextActionView.mitShareLiveMomentView()
@@ -24,27 +17,18 @@ class ShareLiveMomentHeaderView: MITHeaderView, MITHeaderViewDelegate
         return textView
     }()
     
-    weak var delegate: ShareLiveMomentHeaderViewDelegate?
-    
     //MARK: Actions
     
     @objc private func handleAction()
     {
-        self.delegate?.handleAction(forShareLiveMomentHeaderView: self)
-    }
-    
-    //MARK: MITHeaderViewDelegate
-    
-    func handleClose(forWelcomeHeaderView welcomeView: MITHeaderView)
-    {
-        self.delegate?.handleClose(forShareLiveMomentHeaderView: self)
+        self.delegate?.handleAction(forHeaderView: self, sender: self.textActionView.actionButton)
     }
     
     //MARK: Private
     
     internal override func setup()
     {
-        self.headerDelegate = self
+        super.setup()
         
         self.addSubview(self.textActionView)
         self.textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 20, left: 0, bottom: 22, right: 0))

@@ -11,7 +11,8 @@ import PureLayout
 
 protocol MITHeaderViewDelegate: class
 {
-    func handleClose(forWelcomeHeaderView welcomeView: MITHeaderView)
+    func handleClose(forHeaderView headerView: MITHeaderView)
+    func handleAction(forHeaderView headerView: MITHeaderView, sender: UIButton)
 }
 
 class MITHeaderView: UIView
@@ -29,7 +30,7 @@ class MITHeaderView: UIView
         return button
     }()
     
-    weak var headerDelegate: MITHeaderViewDelegate?
+    weak var delegate: MITHeaderViewDelegate?
     
     override init(frame: CGRect)
     {
@@ -47,7 +48,7 @@ class MITHeaderView: UIView
     
     @objc private func handleClose()
     {
-        self.headerDelegate?.handleClose(forWelcomeHeaderView: self)
+        self.delegate?.handleClose(forHeaderView: self)
     }
     
     //MARK: Private
@@ -56,7 +57,6 @@ class MITHeaderView: UIView
     {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.closeButton)
-
         self.closeButton.autoPinEdge(toSuperviewEdge: .top, withInset: 12.0)
         self.closeButton.autoPinEdge(toSuperviewEdge: .trailing, withInset: 12.0)
     }

@@ -25,9 +25,11 @@ private let COPY_MESSAGE_DELETE_UPLOADING_ALERT = "Sorry, but you'll need to wai
 private let COPY_TITLE_ALREADY_UPLOADING = "Oh No!"
 private let COPY_MESSAGE_ALREADY_UPLOADING = "Sorry, but you'll need to wait until the current upload is finished before uploading another Moment."
 
+private let KEY_CLOSED_HEADER = "didCloseShareNewMomentHeader" //Don't change
+
 typealias NewMomentCompletion = (Moment, _ justCreated: Bool, _ shouldUpload: Bool) -> Void
 
-class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
+class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate, MITHeaderViewDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -38,6 +40,12 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         let view = MITTextActionView.mitEmptyStateView()
         view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
         return view
+    }()
+    
+    private lazy var newMomentHeaderView: ShareLiveMomentHeaderView = {
+        let headerView = ShareLiveMomentHeaderView()
+        headerView.delegate = self
+        return headerView
     }()
     
     private lazy var adapter: MITMomentCollectionViewAdapter = {
@@ -140,6 +148,22 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             else {
                 print("\nrealm is NOT empty")
             }
+        }
+    }
+    
+    //MARK: ShareLiveMomentHeaderViewDelegate
+    
+    func handleClose(forHeaderView headerView: MITHeaderView)
+    {
+        self.adapter.closeBannerView()
+        UserDefaults.standard.set(true, forKey: KEY_CLOSED_HEADER)
+    }
+    
+    func handleAction(forHeaderView headerView: MITHeaderView, sender: UIButton)
+    {
+        if let momentToShare = self.momentList.getLocalMoments().first {
+            let shareSheet = ShareAlertSheet()
+            shareSheet.showFrom(viewController: self, sender: sender, moment: momentToShare)
         }
     }
     
@@ -437,8 +461,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         if let moment = notification.object as? Moment {
             self.adapter.refreshMoment(moment)
-            
-            //insert header view...
+            self.adapter.insertBanner(withView: self.newMomentHeaderView)
+            UserDefaults.standard.set(false, forKey: KEY_CLOSED_HEADER)
         }
     }
     

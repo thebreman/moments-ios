@@ -288,6 +288,16 @@
 			name = "Terms of Service Flow";
 			sourceTree = "<group>";
 		};
+		681549C51EDAB0A300FE0639 /* HeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				681549C11EDA437300FE0639 /* MITHeaderView.swift */,
+				686079581ED9014500FD7260 /* WelcomeHeaderView.swift */,
+				681549C31EDA467700FE0639 /* ShareLiveMomentHeaderView.swift */,
+			);
+			name = HeaderView;
+			sourceTree = "<group>";
+		};
 		681B45321ED004E800C18893 /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
@@ -305,9 +315,6 @@
 		681B45331ED0059400C18893 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				681549C11EDA437300FE0639 /* MITHeaderView.swift */,
-				686079581ED9014500FD7260 /* WelcomeHeaderView.swift */,
-				681549C31EDA467700FE0639 /* ShareLiveMomentHeaderView.swift */,
 				6810B1991EB424CB00B9EE7D /* ProfileImageView.swift */,
 				680C8A161EB3321B004CDC5E /* TextViewView.swift */,
 				680CA52A1EA5F36E006A735E /* MITSectionHeaderView.xib */,
@@ -317,6 +324,7 @@
 				6825E13C1EA2119F003DEF20 /* MITTextActionView.swift */,
 				680693C61EC182CE003D9F2C /* BlinkingView.swift */,
 				680BE07E1E8E2C9500A5D339 /* Views.swift */,
+				681549C51EDAB0A300FE0639 /* HeaderView */,
 			);
 			name = Views;
 			sourceTree = "<group>";

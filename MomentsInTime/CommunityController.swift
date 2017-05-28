@@ -25,7 +25,7 @@ private let OPTIONS_ALLOWS_SHARE = false
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
-class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate, WelcomeHeaderViewDelegate
+class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate, MITHeaderViewDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -65,24 +65,8 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.setupCollectionView()
         self.fetchCommunityMoments()
         
-        //Close welcome header view if user has already closed it:
-        if UserDefaults.standard.bool(forKey: KEY_CLOSED_WELCOME_HEADER) == true {
-            self.adapter.closeBannerView()
-        }
-        
-        //on first launch display modal terms of service:
-        self.handleTermsOfService {
-            
-            //successful terms agreement, so indicate in UserDefaults:
-            UserDefaults.standard.set(true, forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
-            
-            //check FB login:
-            if REQUIRE_FB_LOGIN_ON_LAUNCH {
-                self.checkForUser {
-                    print("We have a user!")
-                }
-            }
-        }
+        self.verifyWelcomeHeader()
+        self.verifyTermsOfService()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -119,7 +103,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         }
     }
     
-//MARK: Actions
+    //MARK: Actions
     
     @objc private func handleNewMoment()
     {
@@ -142,14 +126,14 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     //MARK: WelcomeHeaderViewDelegate
     
-    //For both cases we will just close the header so user can browse throught Community Moments:
+    //For both cases we will just close the header so user can browse through Community Moments:
     
-    func handleAction(forWelcomeHeaderView welcomeView: WelcomeHeaderView)
+    func handleAction(forHeaderView headerView: MITHeaderView, sender: UIButton)
     {
         self.closeWelcomeHeaderView()
     }
     
-    func handleClose(forWelcomeHeaderView welcomeView: WelcomeHeaderView)
+    func handleClose(forHeaderView headerView: MITHeaderView)
     {
         self.closeWelcomeHeaderView()
     }
@@ -246,6 +230,31 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     }
     
     //MARK: Utilities
+    
+    private func verifyTermsOfService()
+    {
+        //on first launch display modal terms of service:
+        self.handleTermsOfService {
+            
+            //successful terms agreement, so indicate in UserDefaults:
+            UserDefaults.standard.set(true, forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
+            
+            //check FB login:
+            if REQUIRE_FB_LOGIN_ON_LAUNCH {
+                self.checkForUser {
+                    print("We have a user!")
+                }
+            }
+        }
+    }
+    
+    private func verifyWelcomeHeader()
+    {
+        //Close welcome header view if user has already closed it:
+        if UserDefaults.standard.bool(forKey: KEY_CLOSED_WELCOME_HEADER) == true {
+            self.adapter.closeBannerView()
+        }
+    }
     
     private func closeWelcomeHeaderView()
     {
