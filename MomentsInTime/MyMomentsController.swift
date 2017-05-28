@@ -155,8 +155,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     func handleClose(forHeaderView headerView: MITHeaderView)
     {
-        self.adapter.closeBannerView()
-        UserDefaults.standard.set(true, forKey: KEY_CLOSED_HEADER)
+        self.closeBannerView()
     }
     
     func handleAction(forHeaderView headerView: MITHeaderView, sender: UIButton)
@@ -244,8 +243,21 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             return
         }
         
+        //check if this is the top moment and if there is also a header view:
+        if moment == self.momentList.getLocalMoments().first {
+            
+            //remove header view (nothing happens if there isn't one)
+            self.closeBannerView()
+        }
+        
         self.adapter.removeMoment(moment)
         moment.delete()
+    }
+    
+    private func closeBannerView()
+    {
+        self.adapter.closeBannerView()
+        UserDefaults.standard.set(true, forKey: KEY_CLOSED_HEADER)
     }
     
     private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool, shouldSubmit: Bool)
@@ -461,8 +473,11 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         if let moment = notification.object as? Moment {
             self.adapter.refreshMoment(moment)
-            self.adapter.insertBanner(withView: self.newMomentHeaderView)
-            UserDefaults.standard.set(false, forKey: KEY_CLOSED_HEADER)
+            
+            wait(seconds: 2, then: { 
+                self.adapter.insertBanner(withView: self.newMomentHeaderView)
+                UserDefaults.standard.set(false, forKey: KEY_CLOSED_HEADER)
+            })
         }
     }
     

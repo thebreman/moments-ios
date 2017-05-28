@@ -108,6 +108,10 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     
     func insertBanner(withView newBannerView: UIView)
     {
+        guard self.bannerView == nil else { return }
+        
+        self.collectionView.register(ContainerCell.self, forCellWithReuseIdentifier: Identifiers.IDENTIFIER_REUSE_CONTAINER_CELL)
+        
         let pathToInsert = IndexPath(item: 0, section: SECTION_BANNER_TOP)
         
         self.collectionView.performBatchUpdates({ 
