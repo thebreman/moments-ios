@@ -52,6 +52,8 @@
 		6811AE1F1EAC763E004386E4 /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */; };
 		6812B6D51ED64A71003E3862 /* TermsOfServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6812B6D41ED64A71003E3862 /* TermsOfServiceController.swift */; };
 		6812B6D71ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6812B6D61ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift */; };
+		681549C21EDA437300FE0639 /* MITHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681549C11EDA437300FE0639 /* MITHeaderView.swift */; };
+		681549C41EDA467700FE0639 /* ShareLiveMomentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681549C31EDA467700FE0639 /* ShareLiveMomentHeaderView.swift */; };
 		681B45311ED0045F00C18893 /* HowAreWeDoingAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681B45301ED0045E00C18893 /* HowAreWeDoingAlertView.swift */; };
 		6825E1371EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */; };
 		6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1381EA20525003DEF20 /* ContainerCell.swift */; };
@@ -159,6 +161,8 @@
 		6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
 		6812B6D41ED64A71003E3862 /* TermsOfServiceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceController.swift; sourceTree = "<group>"; };
 		6812B6D61ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceAcceptAlertView.swift; sourceTree = "<group>"; };
+		681549C11EDA437300FE0639 /* MITHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITHeaderView.swift; sourceTree = "<group>"; };
+		681549C31EDA467700FE0639 /* ShareLiveMomentHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareLiveMomentHeaderView.swift; sourceTree = "<group>"; };
 		681B45301ED0045E00C18893 /* HowAreWeDoingAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HowAreWeDoingAlertView.swift; sourceTree = "<group>"; };
 		6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITMomentCollectionViewAdapter.swift; sourceTree = "<group>"; };
 		6825E1381EA20525003DEF20 /* ContainerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerCell.swift; sourceTree = "<group>"; };
@@ -284,6 +288,16 @@
 			name = "Terms of Service Flow";
 			sourceTree = "<group>";
 		};
+		681549C51EDAB0A300FE0639 /* HeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				681549C11EDA437300FE0639 /* MITHeaderView.swift */,
+				686079581ED9014500FD7260 /* WelcomeHeaderView.swift */,
+				681549C31EDA467700FE0639 /* ShareLiveMomentHeaderView.swift */,
+			);
+			name = HeaderView;
+			sourceTree = "<group>";
+		};
 		681B45321ED004E800C18893 /* Alerts */ = {
 			isa = PBXGroup;
 			children = (
@@ -301,7 +315,6 @@
 		681B45331ED0059400C18893 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				686079581ED9014500FD7260 /* WelcomeHeaderView.swift */,
 				6810B1991EB424CB00B9EE7D /* ProfileImageView.swift */,
 				680C8A161EB3321B004CDC5E /* TextViewView.swift */,
 				680CA52A1EA5F36E006A735E /* MITSectionHeaderView.xib */,
@@ -311,6 +324,7 @@
 				6825E13C1EA2119F003DEF20 /* MITTextActionView.swift */,
 				680693C61EC182CE003D9F2C /* BlinkingView.swift */,
 				680BE07E1E8E2C9500A5D339 /* Views.swift */,
+				681549C51EDAB0A300FE0639 /* HeaderView */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -840,6 +854,7 @@
 				680FC67C1EBC5D3C00FED470 /* MomentList.swift in Sources */,
 				6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */,
 				687E238E1EC9709600BDF987 /* BackgroundUploadSessionManager.swift in Sources */,
+				681549C21EDA437300FE0639 /* MITHeaderView.swift in Sources */,
 				687E23921EC9718200BDF987 /* BackgroundUploadVideoMetadataSessionManager.swift in Sources */,
 				680BE07D1E8E20A200A5D339 /* MomentCell.swift in Sources */,
 				6809C1921EB5CACB0015C69A /* Moment.swift in Sources */,
@@ -886,6 +901,7 @@
 				680CEB991E9F670E009ED223 /* VimeoConnector.swift in Sources */,
 				6811A1E61E826E9C006362E8 /* CommunityController.swift in Sources */,
 				680922831EB51DB200CD1F6D /* MITCircleImageView.swift in Sources */,
+				681549C41EDA467700FE0639 /* ShareLiveMomentHeaderView.swift in Sources */,
 				680FC6761EBC07A900FED470 /* InterviewingSection.swift in Sources */,
 				680C20681EA5CB0D00757608 /* ActiveLinkCell.swift in Sources */,
 				6811A1E81E826EB2006362E8 /* MyMomentsController.swift in Sources */,

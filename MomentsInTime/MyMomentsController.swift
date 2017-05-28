@@ -25,9 +25,11 @@ private let COPY_MESSAGE_DELETE_UPLOADING_ALERT = "Sorry, but you'll need to wai
 private let COPY_TITLE_ALREADY_UPLOADING = "Oh No!"
 private let COPY_MESSAGE_ALREADY_UPLOADING = "Sorry, but you'll need to wait until the current upload is finished before uploading another Moment."
 
+private let KEY_CLOSED_HEADER = "didCloseShareNewMomentHeader" //Don't change
+
 typealias NewMomentCompletion = (Moment, _ justCreated: Bool, _ shouldUpload: Bool) -> Void
 
-class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate
+class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomentDelegate, MITHeaderViewDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -38,6 +40,12 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         let view = MITTextActionView.mitEmptyStateView()
         view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
         return view
+    }()
+    
+    private lazy var newMomentHeaderView: ShareLiveMomentHeaderView = {
+        let headerView = ShareLiveMomentHeaderView()
+        headerView.delegate = self
+        return headerView
     }()
     
     private lazy var adapter: MITMomentCollectionViewAdapter = {
@@ -143,6 +151,21 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         }
     }
     
+    //MARK: ShareLiveMomentHeaderViewDelegate
+    
+    func handleClose(forHeaderView headerView: MITHeaderView)
+    {
+        self.closeBannerView()
+    }
+    
+    func handleAction(forHeaderView headerView: MITHeaderView, sender: UIButton)
+    {
+        if let momentToShare = self.momentList.getLocalMoments().first {
+            let shareSheet = ShareAlertSheet()
+            shareSheet.showFrom(viewController: self, sender: sender, moment: momentToShare)
+        }
+    }
+    
     //MARK: MITMomentCollectionViewAdapterMomentDelegate
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
@@ -220,8 +243,21 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             return
         }
         
+        //check if this is the top moment and if there is also a header view:
+        if moment == self.momentList.getLocalMoments().first {
+            
+            //remove header view (nothing happens if there isn't one)
+            self.closeBannerView()
+        }
+        
         self.adapter.removeMoment(moment)
         moment.delete()
+    }
+    
+    private func closeBannerView()
+    {
+        self.adapter.closeBannerView()
+        UserDefaults.standard.set(true, forKey: KEY_CLOSED_HEADER)
     }
     
     private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool, shouldSubmit: Bool)
@@ -437,6 +473,11 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         if let moment = notification.object as? Moment {
             self.adapter.refreshMoment(moment)
+            
+            wait(seconds: 2, then: { 
+                self.adapter.insertBanner(withView: self.newMomentHeaderView)
+                UserDefaults.standard.set(false, forKey: KEY_CLOSED_HEADER)
+            })
         }
     }
     
