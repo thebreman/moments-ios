@@ -17,13 +17,15 @@ import FacebookShare
 private let KEY_ACCEPTED_TERMS_OF_SERVICE = "didAcceptTermsOfService"
 private let IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER = "TermsOfServiceStoryboardID"
 
+private let KEY_CLOSED_WELCOME_HEADER = "didCloseWelcomeHeader"
+
 private let REQUIRE_FB_LOGIN_ON_LAUNCH = false 
 private let OPTIONS_ALLOWS_SHARE = false
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 
-class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate
+class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate, WelcomeHeaderViewDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -36,17 +38,17 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         return refreshControl
     }()
     
-    private var emptyStateView: MITTextActionView = {
-        let view = MITTextActionView.mitEmptyStateView()
-        view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
-        return view
+    private lazy var welcomeView: WelcomeHeaderView = {
+        let welcomeHeaderView = WelcomeHeaderView()
+        welcomeHeaderView.delegate = self
+        return welcomeHeaderView
     }()
     
     private lazy var adapter: MITMomentCollectionViewAdapter = {
         let adapter = MITMomentCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    moments: self.momentList.moments,
                                                    emptyStateView: UIView(frame: .zero),
-                                                   bannerView: nil)
+                                                   bannerView: self.welcomeView)
         adapter.allowsEmptyStateScrolling = true
         adapter.accessoryViewDelegate = self
         adapter.momentDelegate = self
@@ -62,6 +64,11 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.spinner.startAnimating()
         self.setupCollectionView()
         self.fetchCommunityMoments()
+        
+        //Close welcome header view if user has already closed it:
+        if UserDefaults.standard.bool(forKey: KEY_CLOSED_WELCOME_HEADER) == true {
+            self.adapter.closeBannerView()
+        }
         
         //on first launch display modal terms of service:
         self.handleTermsOfService {
@@ -133,7 +140,21 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.ratingsAlert.showFrom(viewController: self)
     }
     
-//MARK: MITMomentCollectionViewAdapterDelegate
+    //MARK: WelcomeHeaderViewDelegate
+    
+    //For both cases we will just close the header so user can browse throught Community Moments:
+    
+    func handleAction(forWelcomeHeaderView welcomeView: WelcomeHeaderView)
+    {
+        self.closeWelcomeHeaderView()
+    }
+    
+    func handleClose(forWelcomeHeaderView welcomeView: WelcomeHeaderView)
+    {
+        self.closeWelcomeHeaderView()
+    }
+    
+    //MARK: MITMomentCollectionViewAdapterDelegate
     
     func accessoryViewFrequency(forAdaptor adapter: MITMomentCollectionViewAdapter) -> Int
     {
@@ -225,6 +246,12 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     }
     
     //MARK: Utilities
+    
+    private func closeWelcomeHeaderView()
+    {
+        self.adapter.closeBannerView()
+        UserDefaults.standard.set(true, forKey: KEY_CLOSED_WELCOME_HEADER)
+    }
     
     private func playVideo(forMoment moment: Moment)
     {

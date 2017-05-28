@@ -16,6 +16,10 @@ private let COPY_TITLE_EMPTY_STATE = "Where are all the moments?"
 private let COPY_MESSAGE_EMPTY_STATE = "Even if you're not ready to film, you can create the plans for an interview now."
 private let COPY_TITLE_BUTTON_EMPTY_STATE = "Let's make a moment"
 
+private let COPY_TITLE_WELCOME = "Welcome to Moments in Time!"
+private let COPY_MESSAGE_WELCOME = "We believe that these stories will inspire, educate and encourage others to capture their own \"Moments In Time,\" connecting one generations to another while preserving amazing stories..."
+private let COPY_TITLE_BUTTON_WELCOME = "Got it, let's go!"
+
 class MITTextActionView: TextActionView
 {
     override func setup()
@@ -52,5 +56,15 @@ class MITTextActionView: TextActionView
         textActionView.actionButton.setTitle(COPY_TITLE_BUTTON_ASK_TO_INTERVIEW, for: .normal)
         
         return textActionView
+    }
+    
+    class func mitWelcomeView() -> MITTextActionView
+    {
+        let view = MITTextActionView()
+        view.title = COPY_TITLE_WELCOME
+        view.message = COPY_MESSAGE_WELCOME
+        view.actionButton.setTitle(COPY_TITLE_BUTTON_WELCOME, for: .normal)
+        
+        return view
     }
 }

@@ -151,7 +151,7 @@ class TextActionView: UIView
     private func setupConstraints()
     {
         //configure everything inside of containerView:
-        self.containerView.addContraints(withFormat: "V:|-4-[v0]-4-[v1]-4-[v2]|", views: self.titleLabel, self.messageLabel, self.actionButton)
+        self.containerView.addContraints(withFormat: "V:|-4-[v0]-8-[v1]-4-[v2]|", views: self.titleLabel, self.messageLabel, self.actionButton)
         self.containerView.addContraints(withFormat: "H:|[v0]|", views: self.titleLabel)
         self.containerView.addContraints(withFormat: "H:|[v0]|", views: self.messageLabel)
         self.containerView.addContraints(withFormat: "H:|->=0-[v0]->=0-|", views: self.actionButton)
