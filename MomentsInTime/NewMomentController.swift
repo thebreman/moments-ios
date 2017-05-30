@@ -516,6 +516,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             
             self.newMomentWasModified = true
+            self.updateUI()
         }
     }
     
@@ -593,6 +594,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.tableView.reloadRows(at: [videoPath], with: .fade)
         self.tableView.deleteRows(at: [editVideoPath], with: .fade)
         self.tableView.endUpdates()
+        
+        self.updateUI()
     }
     
     //MARK: CNContactPickerDelegate
@@ -895,20 +898,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func updateUI()
     {
         self.submitButton.isEnabled = self.moment.isReadyToSubmit
-        
-        if self.moment.isReadyToSubmit {
-            
-            guard let topic = self.moment.topic, let subjectName = self.moment.subject.name else { return }
-            
-            //change topic to include the subject name:
-            Moment.writeToRealm {
-                self.moment.topic?.title = "\(subjectName) - \(topic.title)"
-                
-                //animate changes:
-                let topicPath = IndexPath(row: 0, section: NewMomentSetting.topic.rawValue)
-                self.tableView.refreshRows(forIndexPaths: [topicPath])
-            }
-        }
     }
     
     private let assistant = Assistant()

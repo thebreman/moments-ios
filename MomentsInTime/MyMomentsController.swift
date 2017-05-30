@@ -278,6 +278,12 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private func handleSubmit(forMoment moment: Moment, completion: @escaping () -> Void)
     {
+        Moment.writeToRealm {
+            if let topic = moment.topic, let subjectName = moment.subject?.name {
+                moment.topic?.title = "\(subjectName) - \(topic.title)"
+            }
+        }
+        
         self.vimeoConnector.checkForPendingUploads { alreadyUploading in
             DispatchQueue.main.async {
                 
