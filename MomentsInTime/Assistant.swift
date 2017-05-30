@@ -173,19 +173,21 @@ class Assistant: NSObject, MFMailComposeViewControllerDelegate
     
     func handleEmail(toRecipients recipients: [String], subject: String, message: String, presenter: UIViewController)
     {
-        let mailComposer = MFMailComposeViewController()
-        
-        // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property:
-        mailComposer.mailComposeDelegate = self
-        mailComposer.setToRecipients(recipients)
-        mailComposer.setSubject(subject)
-        mailComposer.setMessageBody(message, isHTML: false)
-        mailComposer.view.tintColor = UIColor.mitActionblue
-        
-        if MFMailComposeViewController.canSendMail() {
+        // send the email if possible
+        if MFMailComposeViewController.canSendMail()
+        {
+            let mailComposer = MFMailComposeViewController()
+            // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property:
+            mailComposer.mailComposeDelegate = self
+            mailComposer.setToRecipients(recipients)
+            mailComposer.setSubject(subject)
+            mailComposer.setMessageBody(message, isHTML: false)
+            mailComposer.view.tintColor = UIColor.mitActionblue
+            
             presenter.present(mailComposer, animated: true, completion: nil)
         }
-        else {
+        else
+        {
             UIAlertController.explain(withPresenter: presenter, title: TITLE_DEVICE_CANT_MAIL, message: MESSAGE_DEVICE_CANT_MAIL)
         }
     }

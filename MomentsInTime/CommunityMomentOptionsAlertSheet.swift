@@ -10,11 +10,11 @@ import UIKit
 import MessageUI
 
 private let TITLE_SHARE_ACTION = "Share"
-private let TITLE_REPORT_ACTION = "Report"
+private let TITLE_REPORT_ACTION = "This is inappropriate"
 private let TITLE_CANCEL = "Cancel"
 let EMAIL_FEEDBACK = "justinmilrad@gmail.com"
-private let EMAIL_FEEDBACK_SUBJECT = "Moment Video Report"
-private let EMAIL_FEEDBACK_BODY = "Hello, I would like to report this video"
+private let EMAIL_FEEDBACK_SUBJECT = "Video flagged as inappropriate"
+private let EMAIL_FEEDBACK_BODY = "This video {url} ({title}) is inappropriate because "
 
 class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDelegate
 {
@@ -62,8 +62,13 @@ class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDel
     
     private func handleReport(withViewController presenter: UIViewController, sender: UIView, forMoment moment: Moment)
     {
-        guard let videoLink = moment.video?.videoLink else { return }
+        let videoLink = moment.video?.videoLink ?? ""
+        let videoTitle = moment.video?.name ?? ""
         
-        self.assistant.handleEmail(toRecipients: [EMAIL_FEEDBACK], subject: EMAIL_FEEDBACK_SUBJECT, message: "\(EMAIL_FEEDBACK_BODY): \(videoLink)\n\n", presenter: presenter)
+        let emailBody = EMAIL_FEEDBACK_BODY
+                        .replacingOccurrences(of: "{title}", with: videoTitle)
+                        .replacingOccurrences(of: "{url}", with: videoLink)
+        
+        self.assistant.handleEmail(toRecipients: [EMAIL_FEEDBACK], subject: EMAIL_FEEDBACK_SUBJECT, message: emailBody, presenter: presenter)
     }
 }
