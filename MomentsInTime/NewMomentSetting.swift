@@ -32,7 +32,7 @@ enum NewMomentSetting: Int
         let notes = [
             Note(withText: "Add or remove as many notes as you'd like."),
             Note(withText: "Videos are generally 2-3 minutes long and themed around a question or topic in interview format. Feel free to interview anyone you know- including yourself!"),
-            Note(withText: "Please be the kind and courteous person you're known for. People of all ages can access this content. 🙂"),
+            Note(withText: "Please be the kind and courteous person you're known for being. People of all ages can access this content. 🙂"),
             ]
         
         return notes
