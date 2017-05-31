@@ -23,25 +23,25 @@ class ShareAlertSheet: NSObject
         self.moment = moment
         self.completionHandler = completion
         
-        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        controller.popoverPresentationController?.sourceView = sender
-        controller.popoverPresentationController?.sourceRect = sender.bounds
-        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
-        
-        let facebookAction = UIAlertAction(title: TITLE_FACEBOOK_ACTION, style: .default) { _ in
-            self.handleFacebookShare(withViewController: viewController)
-        }
-        controller.addAction(facebookAction)
-        
-        let messageAction = UIAlertAction(title: TITLE_MESSAGE_ACTION, style: .default) { _ in
+//        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+//        controller.popoverPresentationController?.sourceView = sender
+//        controller.popoverPresentationController?.sourceRect = sender.bounds
+//        controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
+//        
+//        let facebookAction = UIAlertAction(title: TITLE_FACEBOOK_ACTION, style: .default) { _ in
+//            self.handleFacebookShare(withViewController: viewController)
+//        }
+//        controller.addAction(facebookAction)
+//        
+//        let messageAction = UIAlertAction(title: TITLE_MESSAGE_ACTION, style: .default) { _ in
             self.handleMessageShare(withViewController: viewController, sender: sender)
-        }
-        controller.addAction(messageAction)
-        
-        let cancelAction = UIAlertAction(title: TITLE_CANCEL, style: .cancel, handler: nil)
-        controller.addAction(cancelAction)
-        
-        viewController.present(controller, animated: true, completion: nil)
+//        }
+//        controller.addAction(messageAction)
+//        
+//        let cancelAction = UIAlertAction(title: TITLE_CANCEL, style: .cancel, handler: nil)
+//        controller.addAction(cancelAction)
+//        
+//        viewController.present(controller, animated: true, completion: nil)
     }
     
     private func handleFacebookShare(withViewController presenter: UIViewController)
