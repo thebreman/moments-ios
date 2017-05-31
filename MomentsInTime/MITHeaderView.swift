@@ -17,7 +17,7 @@ protocol MITHeaderViewDelegate: class
 
 class MITHeaderView: UIView
 {
-    private let closeButton: BouncingButton = {
+    private(set) var closeButton: BouncingButton = {
         let button = BouncingButton(type: .custom)
         button.setImage(UIImage(named: "cancel-1"), for: .normal)
         button.adjustsImageWhenHighlighted = false
