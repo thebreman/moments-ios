@@ -11,6 +11,8 @@ import AVFoundation
 import AVKit
 import Photos
 import RealmSwift
+import Contacts
+import ContactsUI
 
 private let COPY_TITLE_VIDEO_QUESTION_ALERT = "Camera shy? Don't worry."
 private let COPY_MESSAGE_VIDEO_QUESTION_ALERT = "You don't have to get it first try. When you film a video, we'll save it to your camera roll so you can edit with your favorite tools. Upload a new video at any time before submitting."
@@ -29,9 +31,8 @@ private let COPY_TITLE_BUTTON_TRY_AGAIN = "Try Again"
 private let COPY_TITLE_VIDEO_OPTIONS = "Video"
 private let COPY_TITLE_NOTE_OPTIONS = "Note"
 
-private let COPY_TITLE_INTERVIEWEE_OPTIONS = "Interviewee"
 private let COPY_BUTTON_TITLE_MANUAL_ENTRY = "Enter Manually"
-private let COPY_BUTTON_TITLE_FACEBOOK_ENTRY = "Select from Facebook"
+private let COPY_BUTTON_TITLE_FACEBOOK_ENTRY = "Select from Contacts"
 
 private let COPY_TITLE_EDIT_VIDEO = "Edit Video"
 private let COPY_TITLE_EDIT_VIDEO_ALERT = "Edit until your heart is content"
@@ -42,7 +43,7 @@ typealias InterviewingCompletion = (UIImage?, _ name: String?, _ role: String?) 
 typealias TopicCompletion = (_ videoTitle: String, _ videoDescription: String, _ isCustom: Bool) -> Void
 typealias NoteCompletion = (String?) -> Void
 
-class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate, VideoPreviewCellDelegate
+class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDataSource, ActiveLinkCellDelegate, MITNoteCellDelegate, VideoPreviewCellDelegate, CNContactPickerDelegate
 {
     @IBOutlet weak var submitButton: BouncingButton!
     @IBOutlet weak var cancelButton: BouncingButton!
@@ -201,6 +202,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                     interviewingController.name = subject.name
                     interviewingController.role = subject.role
                     isUpdating = true
+                }
+                else if let contact = sender as? CNContact {
+                    interviewingController.name = "\(contact.givenName) \(contact.familyName)"
+                    interviewingController.profileImage = self.profileImage(forContact: contact)
+                    
+                    //We shouldn't know about this property, but we have to for now, otherwise image won't get saved:
+                    interviewingController.imageDidChange = true
                 }
                 
                 //set completionHandler:
@@ -508,6 +516,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             }
             
             self.newMomentWasModified = true
+            self.updateUI()
         }
     }
     
@@ -585,19 +594,42 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.tableView.reloadRows(at: [videoPath], with: .fade)
         self.tableView.deleteRows(at: [editVideoPath], with: .fade)
         self.tableView.endUpdates()
+        
+        self.updateUI()
+    }
+    
+    //MARK: CNContactPickerDelegate
+    
+    func contactPicker(_ picker: CNContactPickerViewController, didSelect contact: CNContact)
+    {
+        DispatchQueue.main.async {
+            self.performSegue(withIdentifier: Identifiers.Segues.ENTER_INTERVIEW_SUBJECT, sender: contact)
+        }
+    }
+    
+    private func profileImage(forContact contact: CNContact) -> UIImage?
+    {
+        if contact.imageDataAvailable {
+            if let imageData = contact.imageData, let profileImage = UIImage(data: imageData) {
+                return profileImage
+            }
+            else if let imageData = contact.thumbnailImageData, let profileImage = UIImage(data: imageData) {
+                return profileImage
+            }
+        }
+        
+        return nil
     }
     
     //MARK: Utilities:
     
     private func handleInterviewingSubjectCompletion(withImage image: UIImage?, name: String?, role: String?, isUpdating: Bool)
     {
+        if let newProfileImage = image {
+            self.updateSubjectImage(withImage: newProfileImage)
+        }
+        
         Moment.writeToRealm {
-            if let newProfileImage = image {
-                self.moment.subject?.profileImage = newProfileImage
-                self.moment.subject?.profileImageURL = Assistant.persistImage(newProfileImage, compressionQuality: 0.2, atRelativeURLString: self.moment.subject?.profileImageURL)
-                print("\nJust persisted and compressed profile image")
-            }
-            
             self.moment.subject?.name = name
             self.moment.subject?.role = role
             
@@ -705,10 +737,10 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         controller.popoverPresentationController?.sourceRect = sender.bounds
         controller.popoverPresentationController?.permittedArrowDirections = [.up]
         
-        let facebookAction = UIAlertAction(title: COPY_BUTTON_TITLE_FACEBOOK_ENTRY, style: .default) { action in
-            self.handleFacebookInterviewSelection()
+        let contactsAction = UIAlertAction(title: COPY_BUTTON_TITLE_FACEBOOK_ENTRY, style: .default) { action in
+            self.handleContactsInterviewSelection()
         }
-        controller.addAction(facebookAction)
+        controller.addAction(contactsAction)
         
         let manualAction = UIAlertAction(title: COPY_BUTTON_TITLE_MANUAL_ENTRY, style: .default) { action in
             self.handleManualInterviewSelection()
@@ -721,15 +753,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.present(controller, animated: true, completion: nil)
     }
     
-    private func handleFacebookInterviewSelection()
+    private func handleContactsInterviewSelection()
     {
-        print("Select from Facebook")
+        let contactPickerController = CNContactPickerViewController()
+        contactPickerController.delegate = self
         
-        //make sure to use InterviewingCompletion to get the Subject
-        let comingSoon = ComingSoonAlertView()
-        comingSoon.showFrom(viewController: self) { 
-            print("coming soon!")
-        }
+        self.present(contactPickerController, animated: true, completion: nil)
     }
     
     private func handleManualInterviewSelection()
@@ -831,6 +860,14 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         assert(false, "dequeued cell was of unknown type")
         return MITNoteCell()
+    }
+    
+    private func updateSubjectImage(withImage newProfileImage: UIImage)
+    {
+        Moment.writeToRealm {
+            self.moment.subject?.profileImage = newProfileImage
+            self.moment.subject?.profileImageURL = Assistant.persistImage(newProfileImage, compressionQuality: 0.2, atRelativeURLString: self.moment.subject?.profileImageURL)
+        }
     }
     
     private func updateVideoSection()

@@ -43,6 +43,14 @@ class Moment: Object
         return readyToSubmit
     }
     
+    var canonicalTitle : String {
+        let name = self.subject?.name ?? "" // assuming these are trimmed
+        let separator = name != "" ? " - " : "" // only show the separator when there's something to separate
+        let topicTitle = self.topic?.title
+        
+        return "\(name)\(separator)\(topicTitle)"
+    }
+    
     override static func primaryKey() -> String?
     {
         return "momentID"

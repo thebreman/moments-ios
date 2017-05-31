@@ -48,7 +48,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         let adapter = MITMomentCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    moments: self.momentList.moments,
                                                    emptyStateView: UIView(frame: .zero),
-                                                   bannerView: self.welcomeView)
+                                                   bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
         adapter.accessoryViewDelegate = self
         adapter.momentDelegate = self
@@ -251,8 +251,8 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     private func verifyWelcomeHeader()
     {
         //Close welcome header view if user has already closed it:
-        if UserDefaults.standard.bool(forKey: KEY_CLOSED_WELCOME_HEADER) == true {
-            self.adapter.closeBannerView()
+        if UserDefaults.standard.bool(forKey: KEY_CLOSED_WELCOME_HEADER) == false {
+            self.adapter.insertBanner(withView: self.welcomeView)
         }
     }
     

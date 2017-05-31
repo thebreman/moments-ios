@@ -70,7 +70,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     }()
     
     private var justLoaded = true
-    private var imageDidChange = false
+    var imageDidChange = false
     
     override func viewDidLoad()
     {
