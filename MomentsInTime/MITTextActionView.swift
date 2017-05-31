@@ -17,8 +17,8 @@ private let COPY_MESSAGE_EMPTY_STATE = "Even if you're not ready to film, you ca
 private let COPY_TITLE_BUTTON_EMPTY_STATE = "Let's make a moment"
 
 private let COPY_TITLE_WELCOME = "Welcome to Moments in Time!"
-private let COPY_MESSAGE_WELCOME = "We believe that these stories will inspire, educate and encourage others to capture their own \"Moments In Time,\" connecting one generations to another while preserving amazing stories..."
-private let COPY_TITLE_BUTTON_WELCOME = "Got it, let's go!"
+private let COPY_MESSAGE_WELCOME = "We believe that these stories will inspire, educate, and encourage others to capture their own \"Moments In Time,\" connecting one generation to another while preserving amazing stories."
+private let COPY_TITLE_BUTTON_WELCOME = "Let's go!"
 
 private let COPY_TITLE_SHARE_LIVE_MOMENT = "You made a Moment!"
 private let COPY_MESSAGE_SHARE_LIVE_MOMENT = "People are going to love your post. Want to share your creation?"
