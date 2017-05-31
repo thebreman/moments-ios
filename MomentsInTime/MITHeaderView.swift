@@ -18,11 +18,10 @@ protocol MITHeaderViewDelegate: class
 class MITHeaderView: UIView
 {
     private let closeButton: BouncingButton = {
-        let button = BouncingButton(type: .system)
+        let button = BouncingButton(type: .custom)
         button.setImage(UIImage(named: "cancel-1"), for: .normal)
         button.adjustsImageWhenHighlighted = false
         button.showsTouchWhenHighlighted = false
-        button.tintColor = UIColor.mitActionblue
         button.reversesTitleShadowWhenHighlighted = false
         button.translatesAutoresizingMaskIntoConstraints = false
         button.autoSetDimensions(to: CGSize(width: 24, height: 24))
@@ -57,7 +56,7 @@ class MITHeaderView: UIView
     {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(self.closeButton)
-        self.closeButton.autoPinEdge(toSuperviewEdge: .top, withInset: 12.0)
+        self.closeButton.autoPinEdge(toSuperviewEdge: .top, withInset: 4.0)
         self.closeButton.autoPinEdge(toSuperviewEdge: .trailing, withInset: 12.0)
     }
 }
