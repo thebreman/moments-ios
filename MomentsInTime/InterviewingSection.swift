@@ -8,18 +8,18 @@
 
 import Foundation
 
-private let COPY_TEXT_PLACEHOLDER_NAME_FIELD = "Enter name"
-private let COPY_TEXT_PLACEHOLDER_ROLE_FIELD = "Enter role"
+private let COPY_TEXT_PLACEHOLDER_NAME_FIELD = "Interviewee name"
+private let COPY_TEXT_PLACEHOLDER_ROLE_FIELD = "How you're related, or this person's title"
 private let COPY_TITLE_BUTTON_SELECT_PICTURE = "Select photo (optional)"
 
 enum InterviewingSection: Int
 {
     case picture = 0
     case name = 1
-    case role = 2
+    case relation = 2
     
     static var titles: [String] {
-        return ["Picture (optional)", "Name", "Role"]
+        return ["Picture (optional)", "Name", "Relation"]
     }
     
     //for name and role return textField placeholder text
@@ -28,7 +28,7 @@ enum InterviewingSection: Int
         switch self {
         case .picture: return COPY_TITLE_BUTTON_SELECT_PICTURE
         case .name: return COPY_TEXT_PLACEHOLDER_NAME_FIELD
-        case .role: return COPY_TEXT_PLACEHOLDER_ROLE_FIELD
+        case .relation: return COPY_TEXT_PLACEHOLDER_ROLE_FIELD
         }
     }
 }

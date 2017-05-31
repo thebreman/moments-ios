@@ -51,7 +51,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textField.textColor = UIColor.gray
         view.textField.font = UIFont.systemFont(ofSize: 16.0)
-        view.textField.placeholder = InterviewingSection.role.cellContentText
+        view.textField.placeholder = InterviewingSection.relation.cellContentText
         view.textField.tintColor = UIColor.mitActionblue
         view.textField.delegate = self
         return view
@@ -157,7 +157,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
             self.currentEditingSection = InterviewingSection.name
         }
         else if textField == self.roleFieldView.textField {
-            self.currentEditingSection = InterviewingSection.role
+            self.currentEditingSection = InterviewingSection.relation
         }
         
         self.tableView.scrollRectToVisible(textField.frame, animated: true)
@@ -203,7 +203,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
             
             switch self.currentEditingSection {
             case .name: pathToScroll = IndexPath(row: 0, section: InterviewingSection.name.rawValue)
-            case .role: pathToScroll = IndexPath(row: 0, section: InterviewingSection.role.rawValue)
+            case .relation: pathToScroll = IndexPath(row: 0, section: InterviewingSection.relation.rawValue)
             default: break
             }
             
@@ -282,7 +282,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         case InterviewingSection.name.rawValue:
             return self.mitContainerCell(forView: self.nameFieldView, withTableView: tableView)
             
-        case InterviewingSection.role.rawValue:
+        case InterviewingSection.relation.rawValue:
             return self.mitContainerCell(forView: self.roleFieldView, withTableView: tableView)
             
         default:
