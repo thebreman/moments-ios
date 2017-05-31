@@ -280,7 +280,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         Moment.writeToRealm {
             if let topic = moment.topic, let subjectName = moment.subject?.name {
-                moment.topic?.title = "\(subjectName) - \(topic.title)"
+                moment.video?.name = "\(subjectName) - \(topic.title)"
             }
         }
         
