@@ -75,12 +75,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gc6-67-h1v" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1849" y="806"/>
+            <point key="canvasLocation" x="2346" y="806"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="HAh-Kw-glc">
             <objects>
-                <navigationController id="hLJ-EC-isI" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NewMomentNavControllerID" id="hLJ-EC-isI" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="eqv-Z4-y3z">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -367,7 +367,7 @@
                                 <rect key="frame" x="16" y="0.0" width="343" height="559"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <mutableString key="text">
+                                <string key="text">
 Moments in Time
 Terms of Service ("Terms")
 
@@ -398,7 +398,7 @@ By continuing to access or use our Service after those revisions become effectiv
 Contact Us
 
 If you have any questions about these Terms, please contact us.
-</mutableString>
+</string>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -512,6 +512,7 @@ If you have any questions about these Terms, please contact us.
                         <outlet property="collectionView" destination="xzF-qz-0gc" id="cQe-dJ-z14"/>
                         <outlet property="spinner" destination="OHd-NN-at6" id="qlZ-M5-WZ4"/>
                         <segue destination="e3s-4x-RTz" kind="presentation" identifier="communityToPlayer" modalPresentationStyle="fullScreen" id="o7j-gd-ln6"/>
+                        <segue destination="hLJ-EC-isI" kind="presentation" identifier="newMomentSegue" id="V0h-tb-dv5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fSe-db-Ixq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -840,7 +841,8 @@ If you have any questions about these Terms, please contact us.
         <image name="StarOfDavid" width="21" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Lb7-be-TB6"/>
-        <segue reference="52o-6V-7hN"/>
+        <segue reference="ibu-DI-7Ln"/>
+        <segue reference="V0h-tb-dv5"/>
+        <segue reference="Q56-P5-VKI"/>
     </inferredMetricsTieBreakers>
 </document>

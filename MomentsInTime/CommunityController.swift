@@ -24,6 +24,7 @@ private let OPTIONS_ALLOWS_SHARE = false
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
+private let IDENTIFIER_SEGUE_NEW_MOMENT = "newMomentSegue"
 
 class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate, MITHeaderViewDelegate
 {
@@ -103,15 +104,9 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     //MARK: Actions
     
-    @objc private func handleNewMoment()
+    @objc private func handleNewMoment(_ sender: BouncingButton)
     {
-        print("handle new moment")
-    }
-    
-    @objc private func handleAskToInterview(_ sender: BouncingButton)
-    {
-        let interviewInviteSheet = InterviewInviteAlertSheet()
-        interviewInviteSheet.showFrom(viewController: self, sender: sender)
+        self.performSegue(withIdentifier: IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
     }
     
     //need to retain this for MFMailComposeViewController delegation:
@@ -146,7 +141,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     func accessoryView(for adapter: MITMomentCollectionViewAdapter) -> UIView
     {
         let textActionView = MITTextActionView.mitAskToInterviewView()
-        textActionView.actionButton.addTarget(self, action: #selector(handleAskToInterview), for: .touchUpInside)
+        textActionView.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
