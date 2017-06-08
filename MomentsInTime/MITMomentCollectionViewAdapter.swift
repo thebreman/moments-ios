@@ -83,7 +83,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     //optional top view that will be contained in a cell in section 0 at the top:
     //good for announcements, ads etc.
     //if it becomes necessary we could allow for an array of these views...
-    private var bannerView: UIView?
+    var bannerView: UIView?
     
     init(withCollectionView collectionView: UICollectionView, moments: [Moment], emptyStateView: UIView, bannerView: UIView?)
     {

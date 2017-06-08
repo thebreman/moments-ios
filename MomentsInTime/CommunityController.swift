@@ -80,8 +80,6 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
-    //MARK: Trait Collection layout:
-    
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
         super.viewWillTransition(to: size, with: coordinator)
@@ -250,9 +248,10 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     private func verifyWelcomeHeader()
     {
-        //Close welcome header view if user has already closed it:
+        //add welcome header view if user has not already closed it:
         if UserDefaults.standard.bool(forKey: KEY_CLOSED_WELCOME_HEADER) == false {
-            self.adapter.insertBanner(withView: self.welcomeView)
+            self.adapter.bannerView = self.welcomeView
+            self.adapter.refreshData(shouldReload: true)
         }
     }
     
