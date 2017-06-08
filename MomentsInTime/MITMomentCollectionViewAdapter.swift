@@ -319,7 +319,9 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
                 return CGSize(width: self.collectionView.bounds.width, height: height)
             }
             else if let accessoryView = self.momentsAndAccessoryViews[indexPath.item] as? UIView {
-                return ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
+                let size = ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
+                print("accessory view height: \(size.height)")
+                return size
             }
             
             assert(false, "unknown object in dataSource")

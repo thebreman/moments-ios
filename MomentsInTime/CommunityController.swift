@@ -142,6 +142,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     {
         let textActionView = MITTextActionView.mitAskToInterviewView()
         textActionView.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
+        textActionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 86).isActive = true
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
