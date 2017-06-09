@@ -67,7 +67,6 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.fetchCommunityMoments()
         
         self.verifyWelcomeHeader()
-        self.verifyTermsOfService()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -79,6 +78,12 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         //even though viewWilTransition: gets called on all VCs in the tab bar controller,
         //when we come back on screen the collectinView width is no longer valid.
         self.collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(true)
+        self.verifyTermsOfService()
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -327,7 +332,10 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             
             termsOfServiceController.successCompletionHandler = completion
             
-            self.tabBarController?.present(termsNavController, animated: true, completion: nil)
+            //need to ensure that we wait until next run loop to display in case self is not finished being animated yet:
+            DispatchQueue.main.async {
+                self.tabBarController?.present(termsNavController, animated: true, completion: nil)
+            }
         }
     }
 }
