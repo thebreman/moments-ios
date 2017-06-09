@@ -24,6 +24,7 @@ private let OPTIONS_ALLOWS_SHARE = false
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
+private let INDEX_TAB_MY_MOMENTS = 1
 
 class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate, MITHeaderViewDelegate
 {
@@ -44,10 +45,16 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         return welcomeHeaderView
     }()
     
+    private var emptyStateView: MITTextActionView = {
+        let view = MITTextActionView.communityEmptyStateView()
+        view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
+        return view
+    }()
+    
     private lazy var adapter: MITMomentCollectionViewAdapter = {
         let adapter = MITMomentCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    moments: self.momentList.moments,
-                                                   emptyStateView: UIView(frame: .zero),
+                                                   emptyStateView: self.emptyStateView,
                                                    bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
         adapter.accessoryViewDelegate = self
@@ -66,7 +73,6 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.fetchCommunityMoments()
         
         self.verifyWelcomeHeader()
-        self.verifyTermsOfService()
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -80,7 +86,17 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
-    //MARK: Trait Collection layout:
+    private var didVerifyTerms = false
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(true)
+        
+        if !didVerifyTerms {
+            self.verifyTermsOfService()
+            self.didVerifyTerms = true
+        }
+    }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
     {
@@ -105,15 +121,9 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     //MARK: Actions
     
-    @objc private func handleNewMoment()
+    @objc private func handleNewMoment(_ sender: BouncingButton)
     {
-        print("handle new moment")
-    }
-    
-    @objc private func handleAskToInterview(_ sender: BouncingButton)
-    {
-        let interviewInviteSheet = InterviewInviteAlertSheet()
-        interviewInviteSheet.showFrom(viewController: self, sender: sender)
+        self.tabBarController?.selectedIndex = INDEX_TAB_MY_MOMENTS
     }
     
     //need to retain this for MFMailComposeViewController delegation:
@@ -148,7 +158,8 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     func accessoryView(for adapter: MITMomentCollectionViewAdapter) -> UIView
     {
         let textActionView = MITTextActionView.mitAskToInterviewView()
-        textActionView.actionButton.addTarget(self, action: #selector(handleAskToInterview), for: .touchUpInside)
+        textActionView.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
+        textActionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 86).isActive = true
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -238,6 +249,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             
             //successful terms agreement, so indicate in UserDefaults:
             UserDefaults.standard.set(true, forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
+            UserDefaults.standard.synchronize()
             
             //check FB login:
             if REQUIRE_FB_LOGIN_ON_LAUNCH {
@@ -250,9 +262,10 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     private func verifyWelcomeHeader()
     {
-        //Close welcome header view if user has already closed it:
+        //add welcome header view if user has not already closed it:
         if UserDefaults.standard.bool(forKey: KEY_CLOSED_WELCOME_HEADER) == false {
-            self.adapter.insertBanner(withView: self.welcomeView)
+            self.adapter.bannerView = self.welcomeView
+            self.adapter.refreshData(shouldReload: true)
         }
     }
     
@@ -332,7 +345,10 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             
             termsOfServiceController.successCompletionHandler = completion
             
-            self.tabBarController?.present(termsNavController, animated: true, completion: nil)
+            //need to ensure that we wait until next run loop to display in case self is not finished being animated yet:
+            DispatchQueue.main.async {
+                self.tabBarController?.present(termsNavController, animated: true, completion: nil)
+            }
         }
     }
 }

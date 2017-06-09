@@ -83,7 +83,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     //optional top view that will be contained in a cell in section 0 at the top:
     //good for announcements, ads etc.
     //if it becomes necessary we could allow for an array of these views...
-    private var bannerView: UIView?
+    var bannerView: UIView?
     
     init(withCollectionView collectionView: UICollectionView, moments: [Moment], emptyStateView: UIView, bannerView: UIView?)
     {
@@ -212,7 +212,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         switch section {
             
         case SECTION_BANNER_TOP:
-            let count = self.bannerView != nil ? 1 : 0
+            let count = self.bannerView != nil && !self.moments.isEmpty ? 1 : 0
             return count
         
         case SECTION_MOMENT_FEED:
@@ -319,7 +319,9 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
                 return CGSize(width: self.collectionView.bounds.width, height: height)
             }
             else if let accessoryView = self.momentsAndAccessoryViews[indexPath.item] as? UIView {
-                return ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
+                let size = ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
+                print("accessory view height: \(size.height)")
+                return size
             }
             
             assert(false, "unknown object in dataSource")

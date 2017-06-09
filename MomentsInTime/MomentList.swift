@@ -66,7 +66,11 @@ class MomentList: NSObject
     
     func fetchNextCommunityMoments(completion: MomentListNewMomentsCompletion?)
     {
-        guard let nextPage = self.nextPagePath else { return }
+        guard let nextPage = self.nextPagePath else {
+            let error = NSError(domain: "MomentList", code: 400, userInfo: [NSLocalizedDescriptionKey: "no next page to fetch"])
+            completion?(self, nil, error)
+            return
+        }
         
         VimeoConnector().getCommunityMoments(forPagePath: nextPage) { (momentList, error) in
             
