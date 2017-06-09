@@ -212,7 +212,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         switch section {
             
         case SECTION_BANNER_TOP:
-            let count = self.bannerView != nil ? 1 : 0
+            let count = self.bannerView != nil && !self.moments.isEmpty ? 1 : 0
             return count
         
         case SECTION_MOMENT_FEED:

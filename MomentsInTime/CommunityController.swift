@@ -24,7 +24,7 @@ private let OPTIONS_ALLOWS_SHARE = false
 
 private let FREQUENCY_ACCESSORY_VIEW = 2
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
-private let IDENTIFIER_SEGUE_NEW_MOMENT = "newMomentSegue"
+private let INDEX_TAB_MY_MOMENTS = 1
 
 class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate, MITHeaderViewDelegate
 {
@@ -45,10 +45,16 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         return welcomeHeaderView
     }()
     
+    private var emptyStateView: MITTextActionView = {
+        let view = MITTextActionView.communityEmptyStateView()
+        view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
+        return view
+    }()
+    
     private lazy var adapter: MITMomentCollectionViewAdapter = {
         let adapter = MITMomentCollectionViewAdapter(withCollectionView: self.collectionView,
                                                    moments: self.momentList.moments,
-                                                   emptyStateView: UIView(frame: .zero),
+                                                   emptyStateView: self.emptyStateView,
                                                    bannerView: nil)
         adapter.allowsEmptyStateScrolling = true
         adapter.accessoryViewDelegate = self
@@ -80,10 +86,16 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.collectionView.collectionViewLayout.invalidateLayout()
     }
     
+    private var didVerifyTerms = false
+    
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(true)
-        self.verifyTermsOfService()
+        
+        if !didVerifyTerms {
+            self.verifyTermsOfService()
+            self.didVerifyTerms = true
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -111,7 +123,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     @objc private func handleNewMoment(_ sender: BouncingButton)
     {
-        self.performSegue(withIdentifier: IDENTIFIER_SEGUE_NEW_MOMENT, sender: nil)
+        self.tabBarController?.selectedIndex = INDEX_TAB_MY_MOMENTS
     }
     
     //need to retain this for MFMailComposeViewController delegation:
@@ -237,6 +249,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             
             //successful terms agreement, so indicate in UserDefaults:
             UserDefaults.standard.set(true, forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
+            UserDefaults.standard.synchronize()
             
             //check FB login:
             if REQUIRE_FB_LOGIN_ON_LAUNCH {

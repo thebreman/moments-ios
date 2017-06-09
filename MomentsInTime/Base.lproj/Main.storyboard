@@ -512,7 +512,6 @@ If you have any questions about these Terms, please contact us.
                         <outlet property="collectionView" destination="xzF-qz-0gc" id="cQe-dJ-z14"/>
                         <outlet property="spinner" destination="OHd-NN-at6" id="qlZ-M5-WZ4"/>
                         <segue destination="e3s-4x-RTz" kind="presentation" identifier="communityToPlayer" modalPresentationStyle="fullScreen" id="o7j-gd-ln6"/>
-                        <segue destination="hLJ-EC-isI" kind="presentation" identifier="newMomentSegue" id="V0h-tb-dv5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fSe-db-Ixq" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -842,7 +841,6 @@ If you have any questions about these Terms, please contact us.
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ibu-DI-7Ln"/>
-        <segue reference="V0h-tb-dv5"/>
         <segue reference="Q56-P5-VKI"/>
     </inferredMetricsTieBreakers>
 </document>
