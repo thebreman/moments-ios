@@ -17,6 +17,11 @@ private let COPY_TITLE_I_LOVE_IT = "I LOVE IT 🙏🏼"
 private let COPY_TITLE_PROBLEM = "I have a problem"
 private let COPY_TITLE_CANCEL = "Cancel"
 
+private let COPY_TITLE_RATING = "Thanks for the Love!"
+private let COPY_MESSAGE_RATING = "Would you like to share your love and spread the word by giving us a 5-Star rating in the App Store?"
+private let COPY_TITLE_RATING_BUTTON_OK = "Yes!"
+private let COPY_TITLE_RATING_BUTTON_NOT_NOW = "Not now"
+
 private let EMAIL_FEEDBACK_SUBJECT = "Moments In Time Feedback"
 private let EMAIL_FEEDBACK_BODY = "Hello, I have a problem, \n\n"
 
@@ -35,12 +40,10 @@ class HowAreWeDoingAlertView: NSObject, MFMailComposeViewControllerDelegate
         let lovinItAction = UIAlertAction(title: COPY_TITLE_I_LOVE_IT, style: .default) { _ in
             
             //handle I LOVE IT 🙏🏼!!!
-            self.handleLovinIt()
-            
-            self.completionHandler?()
-            self.completionHandler = nil
+            self.handleLovinIt(withPresenter: viewController)
         }
         controller.addAction(lovinItAction)
+        controller.preferredAction = lovinItAction
         
         let theresAProblemAction = UIAlertAction(title: COPY_TITLE_PROBLEM, style: .default) { _ in
             
@@ -75,12 +78,34 @@ class HowAreWeDoingAlertView: NSObject, MFMailComposeViewControllerDelegate
         self.assistant.handleEmail(toRecipients: [EMAIL_FEEDBACK], subject: EMAIL_FEEDBACK_SUBJECT, message: EMAIL_FEEDBACK_BODY, presenter: presenter)
     }
     
-    private func handleLovinIt()
+    private func handleLovinIt(withPresenter presenter: UIViewController)
     {
-        guard let url = URL(string: appURL) else { return }
+        //invite user to Rate the app:
+        let controller = UIAlertController(title: COPY_TITLE_RATING, message: COPY_MESSAGE_RATING, preferredStyle: .alert)
         
-        UIApplication.shared.open(url, options: [:]) { success in
-            self.completionHandler?()
+        let yesAction = UIAlertAction(title: COPY_TITLE_RATING_BUTTON_OK, style: .default) { _ in
+            
+            //to send user to the store for ratings....
+            guard let url = URL(string: appURL) else {
+                self.completionHandler?()
+                self.completionHandler = nil
+                return
+            }
+            
+            UIApplication.shared.open(url, options: [:]) { success in
+                self.completionHandler?()
+                self.completionHandler = nil
+            }
         }
+        controller.addAction(yesAction)
+        controller.preferredAction = yesAction
+        
+        let noAction = UIAlertAction(title: COPY_TITLE_RATING_BUTTON_NOT_NOW, style: .default) { _ in
+            self.completionHandler?()
+            self.completionHandler = nil
+        }
+        controller.addAction(noAction)
+        
+        presenter.present(controller, animated: true, completion: nil)
     }
 }
