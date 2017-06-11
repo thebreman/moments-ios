@@ -23,6 +23,9 @@ class ShareAlertSheet: NSObject
         self.moment = moment
         self.completionHandler = completion
         
+        //We might add the commented out flow back in:
+        //for now just handleMessageShare:
+        
 //        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 //        controller.popoverPresentationController?.sourceView = sender
 //        controller.popoverPresentationController?.sourceRect = sender.bounds
