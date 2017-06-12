@@ -22,7 +22,7 @@ private let KEY_CLOSED_WELCOME_HEADER = "didCloseWelcomeHeader"
 private let REQUIRE_FB_LOGIN_ON_LAUNCH = false 
 private let OPTIONS_ALLOWS_SHARE = false
 
-private let FREQUENCY_ACCESSORY_VIEW = 2
+private let FREQUENCY_ACCESSORY_VIEW = 5
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 private let INDEX_TAB_MY_MOMENTS = 1
 
@@ -152,7 +152,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     func accessoryViewFrequency(forAdaptor adapter: MITMomentCollectionViewAdapter) -> Int
     {
-        return 7
+        return FREQUENCY_ACCESSORY_VIEW
     }
     
     func accessoryView(for adapter: MITMomentCollectionViewAdapter) -> UIView
