@@ -9,6 +9,8 @@
 import Foundation
 import RealmSwift
 
+private let ID_ALBUM_COMMUNITY = "4626849"
+
 typealias MomentListCompletion = (MomentList?, Error?) -> Void
 typealias MomentListNewMomentsCompletion = (MomentList?, [Moment]?, Error?) -> Void
 
@@ -16,7 +18,7 @@ class MomentList: NSObject
 {
     var moments = [Moment]()
     
-    private static let firstPagePath: String = "/me/videos"
+    private static let firstPagePath: String = "/me/albums/\(ID_ALBUM_COMMUNITY)/videos"
     private(set) var nextPagePath: String?
     
     override init()
@@ -66,7 +68,11 @@ class MomentList: NSObject
     
     func fetchNextCommunityMoments(completion: MomentListNewMomentsCompletion?)
     {
-        guard let nextPage = self.nextPagePath else { return }
+        guard let nextPage = self.nextPagePath else {
+            let error = NSError(domain: "MomentList", code: 400, userInfo: [NSLocalizedDescriptionKey: "no next page to fetch"])
+            completion?(self, nil, error)
+            return
+        }
         
         VimeoConnector().getCommunityMoments(forPagePath: nextPage) { (momentList, error) in
             

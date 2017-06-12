@@ -119,8 +119,9 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
                     self.moment?.video?.uri = locationURI
                 }
                 
-                //add video metadata:
+                //add video metadata and move video to Upload Album:
                 BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment, completion: self.uploadCompletion)
+                BackgroundUploadAlbumSessionManager.shared.addToUploadAlbum(moment: moment, completion: nil)
                 self.completeURI = nil
                 self.moment = nil
             }
@@ -133,8 +134,11 @@ class BackgroundUploadCompleteSessionManager: Alamofire.SessionManager
         self.delegate.taskDidComplete = { (session, task, error) in
             DispatchQueue.main.async {
                 
-                guard error == nil else {
-                    print(error!)
+                guard let response = task.response as? HTTPURLResponse,
+                    response.statusCode >= 200,
+                    response.statusCode < 300,
+                    error == nil else {
+                    print(error ?? "")
                     self.moment?.handleFailedUpload()
                     self.uploadCompletion?(nil, error)
                     self.moment = nil

@@ -23,6 +23,7 @@ class Video: Object
     dynamic var videoLink: String?
     dynamic var isLocal: Bool = false
     dynamic var liveVerified: Bool = false
+    dynamic var addedToUploadAlbum: Bool = false
     dynamic var playbackURL: String?
     
     var thumbnailImageURL: String?

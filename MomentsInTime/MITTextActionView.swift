@@ -10,18 +10,20 @@ import UIKit
 
 private let COPY_TITLE_ASK_TO_INTERVIEW = "Make a Moment"
 private let COPY_MESSAGE_ASK_TO_INTERVIEW = "Who do you know that has a story to tell?"
-private let COPY_TITLE_BUTTON_ASK_TO_INTERVIEW = "Ask To Interview"
+private let COPY_TITLE_BUTTON_ASK_TO_INTERVIEW = "Let's make a moment"
 
 private let COPY_TITLE_EMPTY_STATE = "Where are all the moments?"
 private let COPY_MESSAGE_EMPTY_STATE = "Even if you're not ready to film, you can create the plans for an interview now."
 private let COPY_TITLE_BUTTON_EMPTY_STATE = "Let's make a moment"
 
+private let COPY_LET_MESSAGE_COMMUNITY_EMPTY_STATE = "Uh Oh. There are no moments yet."
+
 private let COPY_TITLE_WELCOME = "Welcome to Moments in Time!"
-private let COPY_MESSAGE_WELCOME = "We believe that these stories will inspire, educate, and encourage others to capture their own \"Moments In Time,\" connecting one generation to another while preserving amazing stories."
-private let COPY_TITLE_BUTTON_WELCOME = "Let's go!"
+private let COPY_MESSAGE_WELCOME = "Watch Moments from the community and get inspired to share your own Moments. Scroll down to start."
+private let COPY_TITLE_BUTTON_WELCOME = "Ok, Let's go!"
 
 private let COPY_TITLE_SHARE_LIVE_MOMENT = "You made a Moment!"
-private let COPY_MESSAGE_SHARE_LIVE_MOMENT = "People are going to love your post. Want to share your creation?"
+private let COPY_MESSAGE_SHARE_LIVE_MOMENT = "We got your Moment and people are going to love it! We are processing it and making sure the content is safe for the community before they can see it. Want to share your creation?"
 private let COPY_TITLE_BUTTON_SHARE_LIVE_MOMENT = "Share your Moment"
 
 class MITTextActionView: TextActionView
@@ -47,6 +49,16 @@ class MITTextActionView: TextActionView
         let view = MITTextActionView()
         view.title = COPY_TITLE_EMPTY_STATE
         view.message = COPY_MESSAGE_EMPTY_STATE
+        view.actionButton.setTitle(COPY_TITLE_BUTTON_EMPTY_STATE, for: .normal)
+        
+        return view
+    }
+    
+    class func communityEmptyStateView() -> MITTextActionView
+    {
+        let view = MITTextActionView()
+        view.title = COPY_TITLE_EMPTY_STATE
+        view.message = COPY_LET_MESSAGE_COMMUNITY_EMPTY_STATE
         view.actionButton.setTitle(COPY_TITLE_BUTTON_EMPTY_STATE, for: .normal)
         
         return view

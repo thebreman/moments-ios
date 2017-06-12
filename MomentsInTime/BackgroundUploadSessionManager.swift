@@ -100,8 +100,12 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
         self.delegate.taskDidComplete = { (session, task, error) in
             DispatchQueue.main.async {
                 
-                guard let moment = self.moment, error == nil else {
-                    print(error!)
+                guard let moment = self.moment,
+                    let response = task.response as? HTTPURLResponse,
+                    response.statusCode >= 200,
+                    response.statusCode < 300,
+                    error == nil else {
+                    print(error ?? "")
                     self.moment?.handleFailedUpload()
                     self.uploadCompletion?(nil, error)
                     self.moment = nil

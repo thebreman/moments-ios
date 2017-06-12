@@ -72,7 +72,7 @@ enum VideoRouter: URLRequestConvertible
             let urlString = VimeoConnector.baseAPIEndpoint + self.path
             let url = try urlString.asURL()
             urlRequest.url = url
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE])
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, "sort": "manual"])
             
         case .read:
             urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_READ_VIDEO_VALUE])
