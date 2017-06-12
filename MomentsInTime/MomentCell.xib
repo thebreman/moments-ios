@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -12,43 +12,43 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MomentCell" id="Wnt-g4-gte" userLabel="MomentCell" customClass="MomentCell" customModule="MomentsInTime" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="465" height="347"/>
+            <rect key="frame" x="0.0" y="0.0" width="465" height="373"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="465" height="347"/>
+                <rect key="frame" x="0.0" y="0.0" width="465" height="373"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DAz-xY-OdE">
-                        <rect key="frame" x="12" y="6" width="441" height="335"/>
+                        <rect key="frame" x="12" y="6" width="441" height="361"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" image="interviewee_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="i4G-03-3dv" customClass="CachedImageView" customModule="MomentsInTime" customModuleProvider="target">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="999" verticalCompressionResistancePriority="1000" image="interviewee_placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="i4G-03-3dv" customClass="CachedImageView" customModule="MomentsInTime" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="24" width="441" height="180"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="180" id="Ocd-9g-sYd"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Video Creator - Video Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPw-KP-Sda">
-                                <rect key="frame" x="12" y="214" width="417" height="19.5"/>
+                                <rect key="frame" x="12" y="212" width="417" height="19.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                 <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6A7-Im-XA3">
-                                <rect key="frame" x="12" y="235.5" width="417" height="50.5"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="999" verticalCompressionResistancePriority="1000" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6A7-Im-XA3">
+                                <rect key="frame" x="12" y="233.5" width="417" height="78.5"/>
                                 <string key="text">Description about the Video and who the person is interviewing and why their story is amazing! This can be however many lines that it takes</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="PIY-i8-7Yl">
-                                <rect key="frame" x="0.0" y="294" width="441" height="1"/>
+                                <rect key="frame" x="0.0" y="320" width="441" height="1"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="0.5" id="cYQ-M9-L1x"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y66-Vl-xRy" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
-                                <rect key="frame" x="369" y="295" width="72" height="40"/>
+                                <rect key="frame" x="369" y="321" width="72" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="72" id="9re-cw-Lq0"/>
                                 </constraints>
@@ -93,7 +93,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PeZ-Qp-yev" customClass="BouncingButton" customModule="MomentsInTime" customModuleProvider="target">
-                                <rect key="frame" x="171" y="295" width="99" height="40"/>
+                                <rect key="frame" x="171" y="321" width="99" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="99" id="mjV-pE-Yhp"/>
                                 </constraints>
@@ -131,7 +131,7 @@
                             <constraint firstItem="PeZ-Qp-yev" firstAttribute="top" secondItem="PIY-i8-7Yl" secondAttribute="bottom" identifier="share top" id="o3C-cO-nIN"/>
                             <constraint firstAttribute="trailing" secondItem="fqy-BN-vep" secondAttribute="trailing" id="o3x-K4-yUq"/>
                             <constraint firstItem="6A7-Im-XA3" firstAttribute="trailing" secondItem="fPw-KP-Sda" secondAttribute="trailing" id="owi-Zx-ULX"/>
-                            <constraint firstItem="fPw-KP-Sda" firstAttribute="top" secondItem="i4G-03-3dv" secondAttribute="bottom" priority="999" constant="8" id="sSN-lb-aZt"/>
+                            <constraint firstItem="fPw-KP-Sda" firstAttribute="top" secondItem="i4G-03-3dv" secondAttribute="bottom" constant="8" id="sSN-lb-aZt"/>
                             <constraint firstItem="i4G-03-3dv" firstAttribute="top" secondItem="fqy-BN-vep" secondAttribute="bottom" id="tea-xW-GVR"/>
                             <constraint firstItem="6A7-Im-XA3" firstAttribute="top" secondItem="fPw-KP-Sda" secondAttribute="bottom" constant="2" identifier="sub top" id="w78-hO-7HO"/>
                         </constraints>
@@ -150,7 +150,7 @@
                 <constraint firstAttribute="bottom" secondItem="DAz-xY-OdE" secondAttribute="bottom" constant="6" identifier="container bottom" id="WX4-Vc-3eR"/>
                 <constraint firstAttribute="trailing" secondItem="DAz-xY-OdE" secondAttribute="trailing" constant="12" identifier="container trailing" id="qoc-dP-VGJ"/>
             </constraints>
-            <size key="customSize" width="465" height="347"/>
+            <size key="customSize" width="465" height="373"/>
             <connections>
                 <outlet property="blinkingView" destination="2CE-Tc-41h" id="y60-1a-pkY"/>
                 <outlet property="containerView" destination="DAz-xY-OdE" id="LPK-99-YdA"/>
@@ -166,7 +166,7 @@
                 <outlet property="uploadContainerHeightConstraint" destination="n5M-L8-Ujo" id="j1c-4Z-O8f"/>
                 <outlet property="uploadContainerView" destination="fqy-BN-vep" id="jJG-Ht-FEu"/>
             </connections>
-            <point key="canvasLocation" x="122.5" y="39.5"/>
+            <point key="canvasLocation" x="122.5" y="52.5"/>
         </collectionViewCell>
     </objects>
     <resources>

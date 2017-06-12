@@ -361,6 +361,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         }
     }
     
+    //make sure local video is in sync with remote one and that it is in the right album:
     private func verifyMetadata(forMoment moment: Moment)
     {
         guard let video = moment.video, video.uri != nil, !video.liveVerified else {
@@ -385,6 +386,9 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                 //check for metadata and add if necessary:
                 self.checkMetadata(forVideo: newVideo, moment: moment)
                 
+                //make sure video was added to the uploaded album on vimeo and update live verified:
+                self.verifyVideoAlbum(forMoment: moment)
+                
                 //if we got a thumbnailImage url, swap the local photos:
                 //do this last before updating liveVerified, b/c thumbnailImageURL is not a realm property
                 //so we have no way of checking if we swapped out for the right image so check it last
@@ -394,6 +398,18 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                 }
                 
                 self.adapter.refreshMoment(moment)
+            }
+        }
+    }
+    
+    private func verifyVideoAlbum(forMoment moment: Moment)
+    {
+        guard let video = moment.video else { return }
+        
+        if !video.addedToUploadAlbum {
+            print("adding video to album since it wasn't already done")
+            BackgroundUploadAlbumSessionManager.shared.addToUploadAlbum(moment: moment) {
+                self.updateLiveVerifiedStatus(forMoment: moment)
             }
         }
     }
@@ -462,12 +478,20 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private func updateLiveVerifiedStatus(forMoment moment: Moment?)
     {
+        guard let video = moment?.video else {
+            Moment.writeToRealm {
+                moment?.video?.liveVerified = false
+            }
+            return
+        }
+        
         Moment.writeToRealm {
-            moment?.video?.liveVerified = (moment?.video?.playbackURL != nil
-                && moment?.video?.name != nil
-                && moment?.video?.name != "Untitled"
-                && moment?.video?.name != "untitled"
-                && moment?.video?.videoDescription != nil)
+            moment?.video?.liveVerified = (video.playbackURL != nil
+                && video.name != nil
+                && video.name != "Untitled"
+                && video.name != "untitled"
+                && video.videoDescription != nil
+                && video.addedToUploadAlbum == true)
         }
         
         if let status = moment?.video?.liveVerified, status == true {

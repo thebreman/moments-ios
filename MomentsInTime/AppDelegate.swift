@@ -40,6 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else if BackgroundUploadVideoMetadataSessionManager.shared.session.configuration.identifier == identifier {
             BackgroundUploadVideoMetadataSessionManager.shared.systemCompletionHandler = completionHandler
         }
+        else if BackgroundUploadAlbumSessionManager.shared.session.configuration.identifier == identifier {
+            BackgroundUploadAlbumSessionManager.shared.systemCompletionHandler = completionHandler
+        }
         else {
             assert(false, "background ids didn't match")
         }
@@ -93,7 +96,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         BackgroundUploadVideoMetadataSessionManager.shared.moment?.handleFailedUpload()
         BackgroundUploadVideoMetadataSessionManager.shared.session.invalidateAndCancel()
-        BackgroundUploadVideoMetadataSessionManager.shared.moment = nil        
+        BackgroundUploadVideoMetadataSessionManager.shared.moment = nil
+        
+        BackgroundUploadAlbumSessionManager.shared.session.invalidateAndCancel()
+        BackgroundUploadAlbumSessionManager.shared.moment = nil
     }
 }
 
