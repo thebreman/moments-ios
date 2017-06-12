@@ -23,7 +23,7 @@ private let COPY_MESSAGE_WELCOME = "Watch Moments from the community and get ins
 private let COPY_TITLE_BUTTON_WELCOME = "Ok, Let's go!"
 
 private let COPY_TITLE_SHARE_LIVE_MOMENT = "You made a Moment!"
-private let COPY_MESSAGE_SHARE_LIVE_MOMENT = "People are going to love your post. Want to share your creation?"
+private let COPY_MESSAGE_SHARE_LIVE_MOMENT = "We got your Moment and people are going to love it! We are processing it and making sure the content is safe for the community before they can see it. Want to share your creation?"
 private let COPY_TITLE_BUTTON_SHARE_LIVE_MOMENT = "Share your Moment"
 
 class MITTextActionView: TextActionView

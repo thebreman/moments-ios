@@ -250,7 +250,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             self.closeBannerView()
         }
         
-        self.adapter.removeMoment(moment)
+        self.adapter.removeMoment(moment, completion: nil)
         moment.delete()
     }
     
@@ -279,9 +279,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     private func handleSubmit(forMoment moment: Moment, completion: @escaping () -> Void)
     {
         Moment.writeToRealm {
-            if let topic = moment.topic, let subjectName = moment.subject?.name {
-                moment.video?.name = "\(subjectName) - \(topic.title)"
-            }
+            moment.video?.name = moment.canonicalTitle
         }
         
         self.vimeoConnector.checkForPendingUploads { alreadyUploading in
@@ -364,14 +362,17 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     //make sure local video is in sync with remote one and that it is in the right album:
     private func verifyMetadata(forMoment moment: Moment)
     {
-        guard let video = moment.video, video.uri != nil, !video.liveVerified else {
+        guard let video = moment.video,
+            video.uri != nil,
+            !video.liveVerified,
+            !moment.isInvalidated else {
             if let video = moment.video, video.liveVerified { print("\nvideo has already been verified") }
             return
         }
         
         self.vimeoConnector.getRemoteVideo(video) { (fetchedVideo, error) in
             
-            if let newVideo = fetchedVideo {
+            if let newVideo = fetchedVideo, !moment.isInvalidated {
                 
                 //add link, playbackURI, and thumbnailImageURL:
                 Moment.writeToRealm {
@@ -404,11 +405,12 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private func verifyVideoAlbum(forMoment moment: Moment)
     {
-        guard let video = moment.video else { return }
+        guard let video = moment.video, !moment.isInvalidated else { return }
         
         if !video.addedToUploadAlbum {
             print("adding video to album since it wasn't already done")
             BackgroundUploadAlbumSessionManager.shared.addToUploadAlbum(moment: moment) {
+                guard !moment.isInvalidated else { return }
                 self.updateLiveVerifiedStatus(forMoment: moment)
             }
         }
@@ -416,6 +418,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private func removeVideo(forMoment moment: Moment)
     {
+        guard !moment.isInvalidated else { return }
+        
         if moment.video?.playbackURL != nil, let relativeLocalURL = moment.video?.localURL {
             
             print("\nwe have a playback url, so removing local video from disk")
@@ -432,6 +436,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private func checkMetadata(forVideo newVideo: Video, moment: Moment)
     {
+        guard !moment.isInvalidated else { return }
+        
         if newVideo.name == nil
             || newVideo.name == "Untitled"
             || newVideo.name == "untitled"
@@ -442,8 +448,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             BackgroundUploadVideoMetadataSessionManager.shared.sendMetadata(moment: moment) { (moment, error) in
                 DispatchQueue.main.async {
                     
-                    guard error == nil else {
-                        print(error!)
+                    guard error == nil, moment != nil, !moment!.isInvalidated else {
+                        print(error ?? "")
                         Moment.writeToRealm {
                             moment?.video?.liveVerified = false
                         }
@@ -461,9 +467,15 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                 
                 if let imageData = try? Data(contentsOf: imageURL), let image = UIImage(data: imageData) {
                     
+                    //make sure moment has not been deleted before updating:
+                    guard !moment.isInvalidated else {
+                        print("moment does not exist so do not try to replace image")
+                        return
+                    }
+                    
                     DispatchQueue.main.async {
                         Moment.writeToRealm {
-                            print("/nreplacing thumbnail image")
+                            print("\nreplacing thumbnail image")
                             let relativePath = Assistant.persistImage(image, compressionQuality: 0.5, atRelativeURLString: moment.video?.localThumbnailImageURL)
                             moment.video?.localThumbnailImageURL = relativePath
                             moment.video?.localThumbnailImage = image
@@ -478,6 +490,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private func updateLiveVerifiedStatus(forMoment moment: Moment?)
     {
+        guard moment != nil, !moment!.isInvalidated else { return }
+        
         guard let video = moment?.video else {
             Moment.writeToRealm {
                 moment?.video?.liveVerified = false

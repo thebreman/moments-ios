@@ -171,7 +171,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         }
     }
     
-    func removeMoment(_ moment: Moment)
+    func removeMoment(_ moment: Moment, completion: (() -> Void)?)
     {
         //not supporting this right now with accessory views:
         guard self.accessoryViewDelegate == nil else { return }
