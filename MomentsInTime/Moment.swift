@@ -48,7 +48,7 @@ class Moment: Object
         let separator = name != "" ? " - " : "" // only show the separator when there's something to separate
         let topicTitle = self.topic?.title ?? ""
         
-        return "\(name)\(separator)\(topicTitle)"
+        return "\(name.trimmed())\(separator)\(topicTitle.trimmed())"
     }
     
     override static func primaryKey() -> String?

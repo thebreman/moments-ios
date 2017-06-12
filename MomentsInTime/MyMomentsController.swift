@@ -326,6 +326,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
             
             for moment in self.momentList.moments {
                 
+                guard !moment.isInvalidated else { continue }
+                
                 switch moment.momentStatus {
                     
                 case .uploading:
@@ -403,19 +405,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         }
     }
     
-    private func verifyVideoAlbum(forMoment moment: Moment)
-    {
-        guard let video = moment.video, !moment.isInvalidated else { return }
-        
-        if !video.addedToUploadAlbum {
-            print("adding video to album since it wasn't already done")
-            BackgroundUploadAlbumSessionManager.shared.addToUploadAlbum(moment: moment) {
-                guard !moment.isInvalidated else { return }
-                self.updateLiveVerifiedStatus(forMoment: moment)
-            }
-        }
-    }
-    
     private func removeVideo(forMoment moment: Moment)
     {
         guard !moment.isInvalidated else { return }
@@ -456,6 +445,19 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
                         return
                     }
                 }
+            }
+        }
+    }
+    
+    private func verifyVideoAlbum(forMoment moment: Moment)
+    {
+        guard let video = moment.video, !moment.isInvalidated else { return }
+        
+        if !video.addedToUploadAlbum {
+            print("adding video to album since it wasn't already done")
+            BackgroundUploadAlbumSessionManager.shared.addToUploadAlbum(moment: moment) {
+                guard !moment.isInvalidated else { return }
+                self.updateLiveVerifiedStatus(forMoment: moment)
             }
         }
     }

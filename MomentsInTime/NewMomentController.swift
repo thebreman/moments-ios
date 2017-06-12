@@ -652,7 +652,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         Moment.writeToRealm {
             self.moment.video?.name = videoTitle
-            self.moment.video?.videoDescription = videoDescription
+            self.moment.video?.videoDescription = videoDescription.trimmed()
             self.moment.topic = Topic(title: videoTitle, description: videoDescription)
             self.moment.topic?.isCustom = isCustom
             
