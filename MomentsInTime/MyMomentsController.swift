@@ -136,6 +136,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     func createNewMomentAnimated()
     {
         let pulsar = Pulsar()
+        
         // show a pulsar over the add button
         if let addButton = self.navigationItem.rightBarButtonItem?.customView
         {

@@ -338,8 +338,8 @@
 				6825E13C1EA2119F003DEF20 /* MITTextActionView.swift */,
 				680693C61EC182CE003D9F2C /* BlinkingView.swift */,
 				680BE07E1E8E2C9500A5D339 /* Views.swift */,
-				681549C51EDAB0A300FE0639 /* HeaderView */,
 				D31A1B071EF0FFC8005F7F3E /* Pulsar.swift */,
+				681549C51EDAB0A300FE0639 /* HeaderView */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -734,7 +734,7 @@
 				TargetAttributes = {
 					D332E6421E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 8Y75VLF66U;
+						DevelopmentTeam = 6M96U28V8B;
 						ProvisioningStyle = Automatic;
 					};
 					D332E6561E80BE6C00778462 = {
@@ -1087,7 +1087,7 @@
 			baseConfigurationReference = FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8Y75VLF66U;
+				DEVELOPMENT_TEAM = 6M96U28V8B;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
@@ -1101,7 +1101,7 @@
 			baseConfigurationReference = 5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8Y75VLF66U;
+				DEVELOPMENT_TEAM = 6M96U28V8B;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;

@@ -12,7 +12,6 @@ import AVKit
 import AVFoundation
 import FacebookCore
 import FacebookLogin
-import FacebookShare
 
 private let KEY_ACCEPTED_TERMS_OF_SERVICE = "didAcceptTermsOfService"
 private let IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER = "TermsOfServiceStoryboardID"
@@ -168,7 +167,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     {
         let textActionView = MITTextActionView.mitAskToInterviewView()
         textActionView.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
-        textActionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 86).isActive = true
+        textActionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 108).isActive = true
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
