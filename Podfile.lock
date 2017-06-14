@@ -27,6 +27,7 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.22.0):
     - FBSDKCoreKit
+  - Pulsator (0.3.0)
   - PureLayout (3.0.2)
   - Realm (2.7.0):
     - Realm/Headers (= 2.7.0)
@@ -45,6 +46,7 @@ DEPENDENCIES:
   - FacebookCore
   - FacebookLogin
   - FacebookShare
+  - Pulsator
   - PureLayout
   - RealmSwift
   - SDWebImage
@@ -61,12 +63,13 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: c693bad19feb225469eeff14452ba364522ee48b
   FBSDKLoginKit: 1fa529fc622d7b32ebeaffbecd377180833c6d30
   FBSDKShareKit: 21ab3c8d173f4fa20c47c1061f3a9fac5950b5fa
+  Pulsator: 0191f14f7ab82d6dbde6fdbde42036f07a4450e3
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
   Realm: 07e5d3a9e0e41d65fd5f9f05150ed6295d0f093b
   RealmSwift: 6d06425d3900c86473c4f323bf6949b43fca22bc
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
 
-PODFILE CHECKSUM: 7dc6f036c7dae5d924ae221d79cc22fd5605b998
+PODFILE CHECKSUM: 5e976768db12f1b379f3e125f8857c9a6dfb73a9
 
 COCOAPODS: 1.2.1

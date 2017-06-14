@@ -8,7 +8,7 @@
 
 import UIKit
 
-let COPY_STATUS_LOCAL = "In Progress"
+let COPY_STATUS_LOCAL = "Private"
 let COPY_STATUS_UPLOADING = "Uploading..."
 let COPY_STATUS_UPLOAD_FAILED = "Upload Failed! Tap to Retry"
 let COPY_STATUS_LIVE = "Live"

@@ -395,13 +395,13 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         
         //Go through self.moments, moving each object 1 by 1 into self.momentsAndAccessoryViews,
         //append an accessoryView every nth index (n being frequency):
-        for (index, moment) in moments.enumerated() {
-            
-            self.momentsAndAccessoryViews.append(moment)
-            
+        for (index, moment) in moments.enumerated()
+        {
             if (index % frequency) == (frequency - 1) {
                 self.momentsAndAccessoryViews.append(dataDelegate.accessoryView(for: self))
             }
+            
+            self.momentsAndAccessoryViews.append(moment)
         }
     }
     

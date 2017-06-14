@@ -12,4 +12,5 @@ pod 'DZNEmptyDataSet'
 pod 'ActiveLabel'
 pod 'UITextView+Placeholder'
 pod 'RealmSwift'
+pod 'Pulsator'
 end

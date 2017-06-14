@@ -24,7 +24,7 @@ enum NewMomentSetting: Int
     case notes = 3
     
     static var titles: [String] {
-        return ["Interviewing", "Topic", "Video", "Notes"]
+        return ["Interviewing", "Topic", "Video", "Interview Notes"]
     }
     
     static var defaultNotes: [Note] {
