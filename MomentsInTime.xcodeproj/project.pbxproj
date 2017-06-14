@@ -88,6 +88,7 @@
 		68FD97B51EB7DD140070C3B4 /* ImageViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FD97B41EB7DD140070C3B4 /* ImageViews.swift */; };
 		68FD97B71EB82C3C0070C3B4 /* FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68FD97B61EB82C3C0070C3B4 /* FileManager.swift */; };
 		7CB5F5B1B5E790D27F010AAB /* Pods_MomentsInTime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */; };
+		D31A1B081EF0FFC8005F7F3E /* Pulsar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D31A1B071EF0FFC8005F7F3E /* Pulsar.swift */; };
 		D332E6471E80BE6C00778462 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D332E6461E80BE6C00778462 /* AppDelegate.swift */; };
 		D332E64C1E80BE6C00778462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D332E64A1E80BE6C00778462 /* Main.storyboard */; };
 		D332E64E1E80BE6C00778462 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D332E64D1E80BE6C00778462 /* Assets.xcassets */; };
@@ -199,6 +200,7 @@
 		68FD97B41EB7DD140070C3B4 /* ImageViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViews.swift; sourceTree = "<group>"; };
 		68FD97B61EB82C3C0070C3B4 /* FileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileManager.swift; sourceTree = "<group>"; };
 		97AA476620D69F4F27C04D67 /* Pods_MomentsInTime.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MomentsInTime.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D31A1B071EF0FFC8005F7F3E /* Pulsar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pulsar.swift; sourceTree = "<group>"; };
 		D332E6431E80BE6C00778462 /* MomentsInTime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MomentsInTime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D332E6461E80BE6C00778462 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D332E64B1E80BE6C00778462 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 				680693C61EC182CE003D9F2C /* BlinkingView.swift */,
 				680BE07E1E8E2C9500A5D339 /* Views.swift */,
 				681549C51EDAB0A300FE0639 /* HeaderView */,
+				D31A1B071EF0FFC8005F7F3E /* Pulsar.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -731,7 +734,7 @@
 				TargetAttributes = {
 					D332E6421E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 6M96U28V8B;
+						DevelopmentTeam = 8Y75VLF66U;
 						ProvisioningStyle = Automatic;
 					};
 					D332E6561E80BE6C00778462 = {
@@ -910,6 +913,7 @@
 				6808D9DF1EC58100005B341B /* TopicController.swift in Sources */,
 				680BE0811E8E2C9D00A5D339 /* ViewControllers.swift in Sources */,
 				6809BF181EB70E0200A9E942 /* BouncingTableViewCell.swift in Sources */,
+				D31A1B081EF0FFC8005F7F3E /* Pulsar.swift in Sources */,
 				680693C71EC182CE003D9F2C /* BlinkingView.swift in Sources */,
 				6810B19C1EB43FAF00B9EE7D /* MITContainerTableViewCell.swift in Sources */,
 				D332E6471E80BE6C00778462 /* AppDelegate.swift in Sources */,
@@ -1083,7 +1087,7 @@
 			baseConfigurationReference = FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6M96U28V8B;
+				DEVELOPMENT_TEAM = 8Y75VLF66U;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
@@ -1097,7 +1101,7 @@
 			baseConfigurationReference = 5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6M96U28V8B;
+				DEVELOPMENT_TEAM = 8Y75VLF66U;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
