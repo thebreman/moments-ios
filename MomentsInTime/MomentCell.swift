@@ -208,5 +208,11 @@ class MomentCell: BouncingCollectionViewCell
         //only live moments and new ones (fetched from Vimeo) can be shared:
         //newly created local in progress Moments are saved and status is local not new...
         self.shareButton.isHidden = moment.momentStatus != .live && moment.momentStatus != .new
+        
+        // also, in-progress videos are allowed to share their video files..
+        if moment.momentStatus == .local && moment.video?.localURL != nil
+        {
+            self.shareButton.isHidden = false
+        }
     }
 }

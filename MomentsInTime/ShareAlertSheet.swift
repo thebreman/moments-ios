@@ -12,6 +12,7 @@ private let TITLE_FACEBOOK_ACTION = "Share on Facebook"
 private let TITLE_MESSAGE_ACTION = "Message..."
 private let TITLE_CANCEL = "Cancel"
 private let MESSAGE_SHARE = "Check out this story on Moments in Time!"
+private let MESSAGE_SHARE_LOCAL = "Check out the story I'm making for Moments in Time!"
 
 class ShareAlertSheet: NSObject
 {
@@ -55,13 +56,32 @@ class ShareAlertSheet: NSObject
     
     private func handleMessageShare(withViewController presenter: UIViewController, sender: UIView)
     {
-        guard let videoLinkString = self.moment?.video?.videoLink, let videoLink = URL(string: videoLinkString) else { return }
+        
+        // make sure we have a video link
+
+        let videoURL : URL
+        var message = MESSAGE_SHARE
+
+        
+        // check if we have a video link
+        if let videoLinkString = self.moment?.video?.videoLink, let videoLink = URL(string: videoLinkString)
+        {
+            videoURL = videoLink
+        }
+        else if let localVideoUrl = self.moment?.video?.localPlaybackURL
+        {   // if not, use the local file url
+            videoURL = localVideoUrl
+            // and update the message
+            message = MESSAGE_SHARE_LOCAL
+        }
+        else // if not, bail
+        {
+            return
+        }
         
         //present UIActivityViewController,
         //must be popover for iPad:
-        let message = MESSAGE_SHARE
-        let link = videoLink
-        let controller = UIActivityViewController(activityItems: [message, link], applicationActivities: nil)
+        let controller = UIActivityViewController(activityItems: [message, videoURL], applicationActivities: nil)
         
         controller.popoverPresentationController?.sourceView = sender
         controller.popoverPresentationController?.sourceRect = sender.bounds
