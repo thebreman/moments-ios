@@ -123,7 +123,16 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     @objc private func handleNewMoment(_ sender: BouncingButton)
     {
+        // switch tabs
         self.tabBarController?.selectedIndex = INDEX_TAB_MY_MOMENTS
+        // tell the My Moments controller to start a new one
+        if  let myMomentsNavigation = self.tabBarController?.selectedViewController as? UINavigationController,
+            let myMomentsController = myMomentsNavigation.topViewController as? MyMomentsController
+        {
+            wait(seconds: 0.5) {
+                myMomentsController.createNewMoment()
+            }
+        }
     }
     
     //need to retain this for MFMailComposeViewController delegation:

@@ -129,7 +129,16 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         self.listenForNotifications(false)
     }
     
-    //MARK: Actions
+    
+//MARK: Public
+    
+    func createNewMoment()
+    {
+        // just call into our private moment creation logic
+        self.handleNewMoment()
+    }
+    
+//MARK: Actions
     
     @objc private func handleNewMoment()
     {
