@@ -179,6 +179,8 @@ class Moment: Object
 extension Moment
 {
     //modify objects and perform any UI updates in handler:
+    //this should really be an instance method what performs a check on the Moment to see if it isInvalidated
+    //before performing the write transaction....
     class func writeToRealm(withHandler handler: () -> Void)
     {
         if let realm = try? Realm() {

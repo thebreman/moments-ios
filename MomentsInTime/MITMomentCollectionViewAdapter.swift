@@ -132,8 +132,9 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         self.collectionView.performBatchUpdates({
             self.bannerView = nil
             self.collectionView.deleteItems(at: [pathToRemove])
+        }) { _ in
             self.collectionView.reloadEmptyDataSet()
-        }, completion: nil)
+        }
     }
     
     func insertNewMoment(_ newMoment: Moment)
@@ -184,9 +185,9 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
             
             self.collectionView.performBatchUpdates({
                 self.collectionView.deleteItems(at: [pathToRemove])
+            }) { _ in
                 self.collectionView.reloadEmptyDataSet()
-
-            }, completion: nil)
+            }
         }
     }
     

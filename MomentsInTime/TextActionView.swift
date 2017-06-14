@@ -89,7 +89,7 @@ class TextActionView: UIView
     {
         self.actionButton.setTitleColor(color, for: state)
     }
-
+    
     //MARK: Private
     
     private let containerView: UIView = {
@@ -126,14 +126,14 @@ class TextActionView: UIView
         self.setup()
     }
     
-    override func layoutSubviews()
-    {
-        let labelHorizontalInset: CGFloat = 40.0
-        self.titleLabel.preferredMaxLayoutWidth = self.bounds.width - (labelHorizontalInset * 2)
-        self.messageLabel.preferredMaxLayoutWidth = self.bounds.width - (labelHorizontalInset * 2)
-        
-        super.layoutSubviews()
-    }
+    //    override func layoutSubviews()
+    //    {
+    //        let labelHorizontalInset: CGFloat = 40.0
+    //        self.titleLabel.preferredMaxLayoutWidth = self.bounds.width - (labelHorizontalInset * 2)
+    //        self.messageLabel.preferredMaxLayoutWidth = self.bounds.width - (labelHorizontalInset * 2)
+    //
+    //        super.layoutSubviews()
+    //    }
     
     func setup()
     {
@@ -158,14 +158,14 @@ class TextActionView: UIView
         self.actionButton.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor).isActive = true
         
         self.containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        self.containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        //self.containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
         //pin the containerView to our edges:
         //The above centering constraints should be enough to get the look we want (this is true),
         //however, in order for out actionButton to receive touch events, we need to make sure the top and bottom edges
         //are being pushed on so that we have a height:
         self.addContraints(withFormat: "V:|[v0]|", views: self.containerView)
-        self.addContraints(withFormat: "H:|->=20-[v0]->=20-|", views: self.containerView)
+        self.addContraints(withFormat: "H:|-40-[v0]-40-|", views: self.containerView)
     }
 }
 

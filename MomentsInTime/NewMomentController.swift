@@ -621,7 +621,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         return nil
     }
     
-    //MARK: Utilities:
+//MARK: Utilities:
     
     private func handleInterviewingSubjectCompletion(withImage image: UIImage?, name: String?, role: String?, isUpdating: Bool)
     {

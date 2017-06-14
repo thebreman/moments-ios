@@ -9,7 +9,6 @@
 import Foundation
 import FacebookCore
 import FacebookLogin
-import FacebookShare
 
 private let VERSION_GRAPH_API = GraphAPIVersion(stringLiteral: "2.9")
 private let PERMISSION_PUBLISH_ACTIONS = Permission(name: "publish_actions")
@@ -79,27 +78,27 @@ struct MyFeedPostUpdateRequest: GraphRequestProtocol
 
 class FacebookConnector: NSObject
 {
-    func lauchAppInvite(withPresenter presenter: UIViewController)
-    {
-        if let appURL = URL(string: URL_APP_LINK_STRING) {
-            
-            let invite = AppInvite(appLink: appURL)
-            
-            do {
-                
-                //find out if DoCatch is necessary for this:
-                try AppInvite.Dialog.show(from: presenter, invite: invite, completion: { result in
-                    switch result {
-                    case .success: print("successful fb invite")
-                    case .failed(let error): print("failed with error: \(error)")
-                    }
-                })
-            }
-            catch let error {
-                print(error)
-            }
-        }
-    }
+//    func lauchAppInvite(withPresenter presenter: UIViewController)
+//    {
+//        if let appURL = URL(string: URL_APP_LINK_STRING) {
+//            
+//            let invite = AppInvite(appLink: appURL)
+//            
+//            do {
+//                
+//                //find out if DoCatch is necessary for this:
+//                try AppInvite.Dialog.show(from: presenter, invite: invite, completion: { result in
+//                    switch result {
+//                    case .success: print("successful fb invite")
+//                    case .failed(let error): print("failed with error: \(error)")
+//                    }
+//                })
+//            }
+//            catch let error {
+//                print(error)
+//            }
+//        }
+//    }
     
     func getTaggableFriends()
     {
