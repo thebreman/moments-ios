@@ -38,7 +38,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private var emptyStateView: MITTextActionView = {
         let view = MITTextActionView.mitEmptyStateView()
-        view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
+        view.actionButton.addTarget(self, action: #selector(createNewMomentAnimated), for: .touchUpInside)
         return view
     }()
     
@@ -132,10 +132,22 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
 //MARK: Public
     
-    func createNewMoment()
+    /// to be used when called from outside (highlights the plus button before pushing)
+    func createNewMomentAnimated()
     {
-        // just call into our private moment creation logic
-        self.handleNewMoment()
+        let pulsar = Pulsar()
+        // show a pulsar over the add button
+        if let addButton = self.navigationItem.rightBarButtonItem?.customView
+        {
+            pulsar.showAlertFrom(addButton.superview!, centeredOn: addButton, manualOffset: UIEdgeInsetsMake(0, 5, 0, 0))
+        }
+        
+        wait(seconds: 0.67) {
+            // stop pulsing if its there
+            pulsar.stop()
+            // just call into our private moment creation logic
+            self.handleNewMoment()
+        }
     }
     
 //MARK: Actions

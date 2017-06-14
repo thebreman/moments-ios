@@ -129,8 +129,8 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         if  let myMomentsNavigation = self.tabBarController?.selectedViewController as? UINavigationController,
             let myMomentsController = myMomentsNavigation.topViewController as? MyMomentsController
         {
-            wait(seconds: 0.5) {
-                myMomentsController.createNewMoment()
+            wait(seconds: 0.4) {
+                myMomentsController.createNewMomentAnimated()
             }
         }
     }
