@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import PureLayout
 
 class TextActionView: UIView
 {
@@ -94,13 +95,11 @@ class TextActionView: UIView
     
     private let containerView: UIView = {
         let view = UIView(frame: .zero)
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private let titleLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -108,7 +107,6 @@ class TextActionView: UIView
     
     private let messageLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -126,15 +124,6 @@ class TextActionView: UIView
         self.setup()
     }
     
-    //    override func layoutSubviews()
-    //    {
-    //        let labelHorizontalInset: CGFloat = 40.0
-    //        self.titleLabel.preferredMaxLayoutWidth = self.bounds.width - (labelHorizontalInset * 2)
-    //        self.messageLabel.preferredMaxLayoutWidth = self.bounds.width - (labelHorizontalInset * 2)
-    //
-    //        super.layoutSubviews()
-    //    }
-    
     func setup()
     {
         //add container:
@@ -151,21 +140,17 @@ class TextActionView: UIView
     private func setupConstraints()
     {
         //configure everything inside of containerView:
-        self.containerView.addContraints(withFormat: "V:|-4-[v0]-8-[v1]-4-[v2]|", views: self.titleLabel, self.messageLabel, self.actionButton)
-        self.containerView.addContraints(withFormat: "H:|[v0]|", views: self.titleLabel)
-        self.containerView.addContraints(withFormat: "H:|[v0]|", views: self.messageLabel)
-        self.containerView.addContraints(withFormat: "H:|->=0-[v0]->=0-|", views: self.actionButton)
-        self.actionButton.centerXAnchor.constraint(equalTo: self.containerView.centerXAnchor).isActive = true
+        self.containerView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 4, left: 8, bottom: 8, right: 4))
         
-        self.containerView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        //self.containerView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        self.titleLabel.autoPinEdge(ALEdge.bottom, to: ALEdge.top, of: self.messageLabel, withOffset: -8)
+        self.titleLabel.autoAlignAxis(toSuperviewAxis: ALAxis.vertical)
         
-        //pin the containerView to our edges:
-        //The above centering constraints should be enough to get the look we want (this is true),
-        //however, in order for out actionButton to receive touch events, we need to make sure the top and bottom edges
-        //are being pushed on so that we have a height:
-        self.addContraints(withFormat: "V:|[v0]|", views: self.containerView)
-        self.addContraints(withFormat: "H:|-40-[v0]-40-|", views: self.containerView)
+        self.messageLabel.autoCenterInSuperview()
+        self.messageLabel.autoPinEdge(toSuperviewEdge: ALEdge.left, withInset: 8)
+        self.messageLabel.autoPinEdge(toSuperviewEdge: ALEdge.right, withInset: 8)
+        
+        self.actionButton.autoPinEdge(ALEdge.top, to: ALEdge.bottom, of: self.messageLabel, withOffset: 8)
+        self.actionButton.autoAlignAxis(toSuperviewAxis: ALAxis.vertical)
     }
 }
 

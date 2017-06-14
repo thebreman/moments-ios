@@ -172,7 +172,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(textActionView)
-        textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 30, left: 0, bottom: 30, right: 0))
+        textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0))
         
         return containerView
     }
