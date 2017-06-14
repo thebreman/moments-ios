@@ -107,6 +107,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         
         // ensure the empty state has a static height
         self.emptyStateView.autoSetDimension(ALDimension.height, toSize: 120)
+        self.emptyStateView.autoSetDimension(ALDimension.width, toSize: UIScreen.main.bounds.size.width)
     }
     
     func insertBanner(withView newBannerView: UIView)
