@@ -24,7 +24,7 @@ private let COPY_TITLE_CANCEL_INVITE = "Cancel"
 private let COPY_MESSAGE_INVITE = "Hey I want to interview you on the Moments in Time app"
 private let COPY_SUBJECT_EMAIL = "Moments In Time Interview"
 
-class ContactInviteAlert: NSObject, MFMailComposeViewControllerDelegate
+class ContactInviteAlert: NSObject
 {
     var completionHandler: AlertCompletion?
     var topic: Topic?
@@ -49,15 +49,6 @@ class ContactInviteAlert: NSObject, MFMailComposeViewControllerDelegate
         controller.addAction(noAction)
         
         presenter.present(controller, animated: true, completion: nil)
-    }
-    
-    //MARK: MFMailComposeViewControllerDelegate
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?)
-    {
-        controller.contentViewController.dismiss(animated: true) { 
-            self.completionHandler?()
-        }
     }
     
     //MARK: Private
@@ -87,6 +78,7 @@ class ContactInviteAlert: NSObject, MFMailComposeViewControllerDelegate
             self.handleSMS(withPresenter: presenter, contact: contact)
         }
         controller.addAction(smsAction)
+        controller.preferredAction = smsAction
         
         let cancelAction = UIAlertAction(title: COPY_TITLE_CANCEL_INVITE, style: .cancel) { _ in
             self.completionHandler?()
@@ -109,12 +101,49 @@ class ContactInviteAlert: NSObject, MFMailComposeViewControllerDelegate
         
         let emailMessage = self.contactInviteMessage + "\n" + appURL + "\n"
         
-        self.assistant.handleEmail(toRecipients: emails, subject: COPY_SUBJECT_EMAIL, message: emailMessage, presenter: presenter)
+        self.assistant.handleEmail(toRecipients: emails, subject: COPY_SUBJECT_EMAIL, message: emailMessage, presenter: presenter) {
+            self.completionHandler?()
+        }
     }
     
     private func handleSMS(withPresenter presenter: UIViewController, contact: CNContact)
     {
-        print("handle SMS!")
-        //completion
+        var phoneNumber: CNPhoneNumber? = nil
+        var recipients = [String]()
+        
+        //try and scrape contact for numbers:
+        if !contact.phoneNumbers.isEmpty {
+            
+            //try and grab iPhone:
+            contact.phoneNumbers.forEach {
+                if $0.label == CNLabelPhoneNumberiPhone {
+                    phoneNumber = $0.value
+                }
+            }
+            
+            //if nothing, try and grab mobile:
+            if phoneNumber == nil {
+                contact.phoneNumbers.forEach {
+                    if $0.label == CNLabelPhoneNumberMobile {
+                        phoneNumber = $0.value
+                    }
+                }
+            }
+            
+            //otherwise just grab the first available:
+            if phoneNumber == nil {
+                phoneNumber = contact.phoneNumbers.first?.value
+            }
+        }
+        
+        if let selectedNumber = phoneNumber {
+            recipients.append(selectedNumber.stringValue)
+        }
+        
+        let smsMessage = self.contactInviteMessage + "\n" + appURL
+        
+        self.assistant.handleSMS(toRecipients: recipients, body: smsMessage, presenter: presenter) {
+            self.completionHandler?()
+        }
     }
 }

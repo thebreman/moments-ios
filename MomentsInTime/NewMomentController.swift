@@ -702,13 +702,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.newMomentWasModified = true
     }
     
-    //we need to retain this
+    //we need to retain this:
     private let contactInviteAlertView = ContactInviteAlert()
     
     private func promptInvite(withContact contact: CNContact)
     {
-        self.contactInviteAlertView.showFrom(presenter: self, withContact: contact, name: "TEST", topic: nil)
-        //no completion for now...
+        self.contactInviteAlertView.showFrom(presenter: self, withContact: contact, name: contact.givenName, topic: self.moment.topic)
     }
     
     private func handleVideoCamera()
