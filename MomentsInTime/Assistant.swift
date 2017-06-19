@@ -12,8 +12,9 @@ import MessageUI
 
 private let TITLE_DEVICE_CANT_MAIL = "Oh No!"
 private let MESSAGE_DEVICE_CANT_MAIL = "This device cannot send mail."
+private let MESSAGE_DEVICE_CANT_SMS = "This device cannot send messages."
 
-class Assistant: NSObject, MFMailComposeViewControllerDelegate
+class Assistant: NSObject, MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate
 {
     //fires off local notifications for background session debugging:
     class func triggerNotification(withTitle title: String, message: String, delay: TimeInterval)
@@ -171,12 +172,17 @@ class Assistant: NSObject, MFMailComposeViewControllerDelegate
     
     //MARK: Email
     
-    func handleEmail(toRecipients recipients: [String], subject: String, message: String, presenter: UIViewController)
+    private var emailCompletion: (() -> Void)?
+    
+    func handleEmail(toRecipients recipients: [String], subject: String, message: String, presenter: UIViewController, completion: (() -> Void)? = nil)
     {
-        // send the email if possible
-        if MFMailComposeViewController.canSendMail()
-        {
+        self.emailCompletion = completion
+        
+        // send the email if possible:
+        if MFMailComposeViewController.canSendMail() {
+            
             let mailComposer = MFMailComposeViewController()
+            
             // Extremely important to set the --mailComposeDelegate-- property, NOT the --delegate-- property:
             mailComposer.mailComposeDelegate = self
             mailComposer.setToRecipients(recipients)
@@ -186,8 +192,7 @@ class Assistant: NSObject, MFMailComposeViewControllerDelegate
             
             presenter.present(mailComposer, animated: true, completion: nil)
         }
-        else
-        {
+        else {
             UIAlertController.explain(withPresenter: presenter, title: TITLE_DEVICE_CANT_MAIL, message: MESSAGE_DEVICE_CANT_MAIL)
         }
     }
@@ -196,7 +201,41 @@ class Assistant: NSObject, MFMailComposeViewControllerDelegate
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?)
     {
-        controller.contentViewController.dismiss(animated: true, completion: nil)
+        controller.contentViewController.dismiss(animated: true) {
+            self.emailCompletion?()
+        }
+    }
+    
+    //MARK: SMS
+    
+    private var smsCompletion: (() -> Void)?
+    
+    func handleSMS(toRecipients recipients: [String], body: String, presenter: UIViewController, completion: (() -> Void)? = nil)
+    {
+        self.smsCompletion = completion
+        
+        //send sms if possible:
+        if MFMessageComposeViewController.canSendText() {
+            
+            let smsComposer = MFMessageComposeViewController()
+            smsComposer.messageComposeDelegate = self
+            smsComposer.recipients = recipients
+            smsComposer.body = body
+            smsComposer.view.tintColor = UIColor.mitActionblue
+            
+            presenter.present(smsComposer, animated: true, completion: nil)
+        }
+        else {
+            UIAlertController.explain(withPresenter: presenter, title: TITLE_DEVICE_CANT_MAIL, message: MESSAGE_DEVICE_CANT_SMS)
+        }
+    }
+    
+    //MARK: MFMessageComposeViewControllerDelegate
+    
+    func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+        controller.contentViewController.dismiss(animated: true) {
+            self.smsCompletion?()
+        }
     }
     
     //MARK: Utilities:

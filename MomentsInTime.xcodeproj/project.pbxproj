@@ -53,6 +53,7 @@
 		6811AE1F1EAC763E004386E4 /* SpinnerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */; };
 		6812B6D51ED64A71003E3862 /* TermsOfServiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6812B6D41ED64A71003E3862 /* TermsOfServiceController.swift */; };
 		6812B6D71ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6812B6D61ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift */; };
+		681369F91EF79E5E00329FD0 /* ContactInviteAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681369F81EF79E5E00329FD0 /* ContactInviteAlert.swift */; };
 		681549C21EDA437300FE0639 /* MITHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681549C11EDA437300FE0639 /* MITHeaderView.swift */; };
 		681549C41EDA467700FE0639 /* ShareLiveMomentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681549C31EDA467700FE0639 /* ShareLiveMomentHeaderView.swift */; };
 		6818D45F1EEE0292005862E6 /* BackgroundUploadAlbumSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6818D45E1EEE0292005862E6 /* BackgroundUploadAlbumSessionManager.swift */; };
@@ -165,6 +166,7 @@
 		6811AE1E1EAC763E004386E4 /* SpinnerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SpinnerCell.swift; sourceTree = "<group>"; };
 		6812B6D41ED64A71003E3862 /* TermsOfServiceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceController.swift; sourceTree = "<group>"; };
 		6812B6D61ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServiceAcceptAlertView.swift; sourceTree = "<group>"; };
+		681369F81EF79E5E00329FD0 /* ContactInviteAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactInviteAlert.swift; sourceTree = "<group>"; };
 		681549C11EDA437300FE0639 /* MITHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITHeaderView.swift; sourceTree = "<group>"; };
 		681549C31EDA467700FE0639 /* ShareLiveMomentHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareLiveMomentHeaderView.swift; sourceTree = "<group>"; };
 		6818D45E1EEE0292005862E6 /* BackgroundUploadAlbumSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundUploadAlbumSessionManager.swift; sourceTree = "<group>"; };
@@ -322,6 +324,7 @@
 				681B45301ED0045E00C18893 /* HowAreWeDoingAlertView.swift */,
 				D34A941C1EC6919B008A77F1 /* ComingSoonAlertView.swift */,
 				6812B6D61ED64B1B003E3862 /* TermsOfServiceAcceptAlertView.swift */,
+				681369F81EF79E5E00329FD0 /* ContactInviteAlert.swift */,
 			);
 			name = Alerts;
 			sourceTree = "<group>";
@@ -891,6 +894,7 @@
 				681B45311ED0045F00C18893 /* HowAreWeDoingAlertView.swift in Sources */,
 				68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */,
 				683B361E1EC6F67300F68A8C /* InterviewInviteAlertSheet.swift in Sources */,
+				681369F91EF79E5E00329FD0 /* ContactInviteAlert.swift in Sources */,
 				688E998D1EB07D1200AEF2F7 /* NewNoteController.swift in Sources */,
 				6808D9E31EC59E20005B341B /* MomentStatus.swift in Sources */,
 				6811AE1F1EAC763E004386E4 /* SpinnerCell.swift in Sources */,

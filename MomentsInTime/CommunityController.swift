@@ -124,10 +124,10 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     {
         // switch tabs
         self.tabBarController?.selectedIndex = INDEX_TAB_MY_MOMENTS
+        
         // tell the My Moments controller to start a new one
         if  let myMomentsNavigation = self.tabBarController?.selectedViewController as? UINavigationController,
-            let myMomentsController = myMomentsNavigation.topViewController as? MyMomentsController
-        {
+            let myMomentsController = myMomentsNavigation.topViewController as? MyMomentsController {
             wait(seconds: 0.4) {
                 myMomentsController.createNewMomentAnimated()
             }

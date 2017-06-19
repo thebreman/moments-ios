@@ -25,7 +25,7 @@ private let COPY_TITLE_RATING_BUTTON_NOT_NOW = "Not now"
 private let EMAIL_FEEDBACK_SUBJECT = "Moments In Time Feedback"
 private let EMAIL_FEEDBACK_BODY = "Hello, I have a problem, \n\n"
 
-class HowAreWeDoingAlertView: NSObject, MFMailComposeViewControllerDelegate
+class HowAreWeDoingAlertView: NSObject
 {
     var completionHandler: AlertCompletion?
     
@@ -62,13 +62,6 @@ class HowAreWeDoingAlertView: NSObject, MFMailComposeViewControllerDelegate
         controller.addAction(cancelAction)
         
         viewController.present(controller, animated: true, completion: nil)
-    }
-    
-    //MARK: MFMailComposeViewControllerDelegate
-    
-    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?)
-    {
-        controller.contentViewController.dismiss(animated: true, completion: nil)
     }
     
     //MARK: Utilities:
