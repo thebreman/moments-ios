@@ -14,14 +14,14 @@ import MessageUI
 private let COPY_TITLE_INVITE_PROMPT_START = "Would you like to message "
 private let COPY_TITLE_INVITE_PROMPT_END = " about the interview?"
 
-private let COPY_TITLE_YES_INVITE = "Yes!"
+private let COPY_TITLE_YES_INVITE = "Yes"
 private let COPY_TITLE_NO_INVITE = "No thanks"
 
 private let COPY_TITLE_EMAIL = "Email"
-private let COPY_TITLE_SMS = "iMessage"
+private let COPY_TITLE_SMS = "Text"
 private let COPY_TITLE_CANCEL_INVITE = "Cancel"
 
-private let COPY_MESSAGE_INVITE = "Hey I want to interview you on the Moments in Time app"
+private let COPY_MESSAGE_INVITE = "Hey I want to interview you for Moments in Time{about_subject}. What's your availability?"
 private let COPY_SUBJECT_EMAIL = "Moments In Time Interview"
 
 class ContactInviteAlert: NSObject
@@ -54,7 +54,7 @@ class ContactInviteAlert: NSObject
     //MARK: Private
     
     private var contactInviteMessage: String {
-        return COPY_MESSAGE_INVITE + (self.topic != nil ? " about \(self.topic!.title):" : "!")
+        return COPY_MESSAGE_INVITE.replacingOccurrences(of: "{about_subject}", with: self.topic != nil ? " about \(self.topic!.title)" : "")
     }
     
     private func contactInviteTitle(forName name: String) -> String
