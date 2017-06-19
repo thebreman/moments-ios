@@ -194,6 +194,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             
             if let interviewingController = segue.destination.contentViewController as? InterviewingController {
                 
+                var selectedContact: CNContact? = nil
                 var isUpdating = false
                 
                 //pass along data if we have any:
@@ -204,6 +205,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                     isUpdating = true
                 }
                 else if let contact = sender as? CNContact {
+                    selectedContact = contact
                     interviewingController.name = "\(contact.givenName) \(contact.familyName)"
                     interviewingController.profileImage = self.profileImage(forContact: contact)
                     
@@ -213,7 +215,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 
                 //set completionHandler:
                 interviewingController.completion = { image, name, role in
-                    self.handleInterviewingSubjectCompletion(withImage: image, name: name, role: role, isUpdating: isUpdating)
+                    self.handleInterviewingSubjectCompletion(withImage: image, name: name, role: role, contact: selectedContact, isUpdating: isUpdating)
                 }
             }
             
@@ -623,7 +625,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
 //MARK: Utilities:
     
-    private func handleInterviewingSubjectCompletion(withImage image: UIImage?, name: String?, role: String?, isUpdating: Bool)
+    private func handleInterviewingSubjectCompletion(withImage image: UIImage?, name: String?, role: String?, contact: CNContact?, isUpdating: Bool)
     {
         if let newProfileImage = image {
             self.updateSubjectImage(withImage: newProfileImage)
@@ -646,6 +648,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.newMomentWasModified = true
         self.updateUI()
+        
+        //if we have a contact, then prompt contact invitation flow:
+        if let selectedContact = contact {
+            self.promptInvite(withContact: selectedContact)
+        }
     }
     
     private func handleTopicCompletion(withVideoTitle videoTitle: String, videoDescription: String, isCustom: Bool, isUpdating: Bool)
@@ -692,6 +699,11 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         }
         
         self.newMomentWasModified = true
+    }
+    
+    private func promptInvite(withContact contact: CNContact)
+    {
+        print("\nwe have a contact we need to invite!")
     }
     
     private func handleVideoCamera()

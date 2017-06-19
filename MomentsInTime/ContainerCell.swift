@@ -10,9 +10,9 @@ import UIKit
 import PureLayout
 
 /**
- * This is a cell that can optionally be displayed at the top of a UICollectionView (section 0).
- * It has an accessoryView:UIView property which will simply be displayed entirely in this cell.
- * This is great for UIViewControllers that need to display a message or ad to a user as the first item of the UICollectionView.
+ * This is a cell that can optionally be displayed at the top of a UICollectionView (section 0) or anywhere...
+ * It has a containedView:UIView property which will simply be displayed entirely in this cell.
+ * This is great for UIViewControllers that need to display a message or ad to a user.
  * MITVideoCollectionViewAdapter has an optional accessoryView:UIView? property and when this is set, this cell will be displayed,
  * containing the view at the top of the collectionView in section 0, item 0...
  */
@@ -26,7 +26,7 @@ class ContainerCell: UICollectionViewCell
         didSet {
             
             if self.contentView.subviews.count > 0 {
-                self.contentView.subviews.forEach({ $0.removeFromSuperview() })
+                self.contentView.subviews.forEach { $0.removeFromSuperview() }
             }
             
             if let newView = self.containedView {
