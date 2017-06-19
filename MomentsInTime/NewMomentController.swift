@@ -650,6 +650,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.updateUI()
         
         //if we have a contact, then prompt contact invitation flow:
+        //see if you can make this happen tin tableView update completions above...
         if let selectedContact = contact {
             self.promptInvite(withContact: selectedContact)
         }
@@ -701,9 +702,13 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.newMomentWasModified = true
     }
     
+    //we need to retain this
+    private let contactInviteAlertView = ContactInviteAlert()
+    
     private func promptInvite(withContact contact: CNContact)
     {
-        print("\nwe have a contact we need to invite!")
+        self.contactInviteAlertView.showFrom(presenter: self, withContact: contact, name: "TEST", topic: nil)
+        //no completion for now...
     }
     
     private func handleVideoCamera()
