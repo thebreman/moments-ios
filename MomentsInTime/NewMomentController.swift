@@ -107,16 +107,25 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
 //MARK: Actions
     
+    private let uploadConfirmationAlertView = UploadConfirmationAlertView()
+    
     @IBAction func handleSubmit(_ sender: BouncingButton)
     {
-        let justCreated = self.moment.momentStatus == .new
-        
-        if justCreated {
-            self.persistMoment()
-        }
-        
-        self.presentingViewController?.dismiss(animated: true) {
-            self.completion?(self.moment, justCreated, true)
+        //confirm:
+        self.uploadConfirmationAlertView.showFrom(presenter: self) { shouldSubmit in
+            
+            if shouldSubmit {
+                
+                let justCreated = self.moment.momentStatus == .new
+                
+                if justCreated {
+                    self.persistMoment()
+                }
+                
+                self.presentingViewController?.dismiss(animated: true) {
+                    self.completion?(self.moment, justCreated, true)
+                }
+            }
         }
     }
     
@@ -166,6 +175,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             momentToPersist.subject = self.moment.subject
             momentToPersist.video = self.moment.video
             momentToPersist.notes.append(objectsIn: self.moment.notes)
+            momentToPersist.video?.name = momentToPersist.canonicalTitle
             
             if let topic = self.moment.topic {
                 momentToPersist.topic = topic

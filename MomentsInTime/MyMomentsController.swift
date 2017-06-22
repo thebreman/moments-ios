@@ -284,11 +284,11 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool, shouldSubmit: Bool)
     {
+        Moment.writeToRealm {
+            moment.video?.name = moment.canonicalTitle
+        }
+        
         if justCreated {
-            Moment.writeToRealm {
-                moment.video?.name = moment.canonicalTitle
-            }
-            
             self.adapter.insertNewMoment(moment)
         }
         
@@ -304,10 +304,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     private func handleSubmit(forMoment moment: Moment, completion: @escaping () -> Void)
     {
-        Moment.writeToRealm {
-            moment.video?.name = moment.canonicalTitle
-        }
-        
         self.vimeoConnector.checkForPendingUploads { alreadyUploading in
             DispatchQueue.main.async {
                 
