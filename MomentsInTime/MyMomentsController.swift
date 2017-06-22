@@ -285,6 +285,10 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     private func handleNewMomentCompletion(withMoment moment: Moment, justCreated: Bool, shouldSubmit: Bool)
     {
         if justCreated {
+            Moment.writeToRealm {
+                moment.video?.name = moment.canonicalTitle
+            }
+            
             self.adapter.insertNewMoment(moment)
         }
         
