@@ -140,7 +140,7 @@ class ContactInviteAlert: NSObject
             recipients.append(selectedNumber.stringValue)
         }
         
-        let smsMessage = self.contactInviteMessage + "\n" + appURL
+        let smsMessage = self.contactInviteMessage
         
         self.assistant.handleSMS(toRecipients: recipients, body: smsMessage, presenter: presenter) {
             self.completionHandler?()
