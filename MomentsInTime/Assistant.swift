@@ -53,6 +53,7 @@ class Assistant: NSObject, MFMailComposeViewControllerDelegate, MFMessageCompose
             
             do {
                 try FileManager.default.removeItem(at: pathToRemove)
+                print("removed image!")
             }
             catch let error {
                 print("unable to remove image from disk: \(error)")
@@ -68,6 +69,7 @@ class Assistant: NSObject, MFMailComposeViewControllerDelegate, MFMessageCompose
             
             do {
                 try FileManager.default.removeItem(at: pathToRemove)
+                print("removed video!")
                 completion?(true)
             }
             catch let error {

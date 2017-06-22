@@ -35,9 +35,6 @@ private let COPY_BUTTON_TITLE_MANUAL_ENTRY = "Enter Manually"
 private let COPY_BUTTON_TITLE_FACEBOOK_ENTRY = "Select from Contacts"
 
 private let COPY_TITLE_EDIT_VIDEO = "Edit Video"
-private let COPY_TITLE_EDIT_VIDEO_ALERT = "Edit until your heart is content"
-private let COPY_MESSAGE_EDIT_VIDEO_ALERT = "The video has been saved to your camera roll. You can edit the video with your favorite tools and update this Moment with the new video when you're ready. Nothing will be uploaded until you say so."
-private let COPY_TITLE_BUTTON_REMOVE_VIDEO = "Delete Video"
 
 typealias InterviewingCompletion = (UIImage?, _ name: String?, _ role: String?) -> Void
 typealias TopicCompletion = (_ videoTitle: String, _ videoDescription: String, _ isCustom: Bool) -> Void
@@ -488,7 +485,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             self.handleNoteCreation()
             
         case COPY_TITLE_EDIT_VIDEO:
-            self.handleEditVideo()
+            self.handleEditVideo(fromView: activeLinkCell.activeLabel)
             
         default:
             break
@@ -578,6 +575,8 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func deleteVideo(_ video: Video)
     {
+        var shouldModifyUI = false
+        
         Moment.writeToRealm {
             
             //delete local thumbnailImage:
@@ -585,6 +584,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 Assistant.removeImageFromDisk(atRelativeURLString: localRelativeImageURLString)
                 video.localThumbnailImageURL = nil
                 video.localThumbnailImage = nil
+                shouldModifyUI = true
             }
             
             //delete local video:
@@ -600,14 +600,18 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             video.isLocal = false
         }
         
-        let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
-        let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
-        self.tableView.beginUpdates()
-        self.tableView.reloadRows(at: [videoPath], with: .fade)
-        self.tableView.deleteRows(at: [editVideoPath], with: .fade)
-        self.tableView.endUpdates()
-        
-        self.updateUI()
+        if shouldModifyUI {
+            
+            //update UI:
+            let videoPath = IndexPath(row: 0, section: NewMomentSetting.video.rawValue)
+            let editVideoPath = IndexPath(row: 1, section: NewMomentSetting.video.rawValue)
+            self.tableView.beginUpdates()
+            self.tableView.reloadRows(at: [videoPath], with: .fade)
+            self.tableView.deleteRows(at: [editVideoPath], with: .fade)
+            self.tableView.endUpdates()
+            
+            self.updateUI()
+        }
     }
     
     //MARK: CNContactPickerDelegate
@@ -634,7 +638,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
 //MARK: Utilities:
-    
+
     private func handleInterviewingSubjectCompletion(withImage image: UIImage?, name: String?, role: String?, contact: CNContact?, isUpdating: Bool)
     {
         if let newProfileImage = image {
@@ -802,25 +806,15 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         self.performSegue(withIdentifier: Identifiers.Segues.ENTER_NEW_NOTE, sender: nil)
     }
     
-    private func handleEditVideo()
+    private let editVideoAlertView = EditVideoAlertView()
+    
+    private func handleEditVideo(fromView presentingView: UIView)
     {
         guard self.moment.momentStatus != .live && self.moment.momentStatus != .uploading else { return }
         
-        let controller = UIAlertController(title: COPY_TITLE_EDIT_VIDEO_ALERT, message: COPY_MESSAGE_EDIT_VIDEO_ALERT, preferredStyle: .alert)
-        
-        let deleteAction = UIAlertAction(title: COPY_TITLE_BUTTON_REMOVE_VIDEO, style: .destructive) { action in
-            
-            guard let video = self.moment.video, video.isLocal else { return }
-            
-            self.deleteVideo(video)
+        self.editVideoAlertView.showFrom(presenter: self) {
+            self.handlePhotos(fromView: presentingView)
         }
-        controller.addAction(deleteAction)
-        
-        let okAction = UIAlertAction(title: COPY_TITLE_BUTTON_OK, style: .cancel, handler: nil)
-        controller.addAction(okAction)
-        
-        self.present(controller, animated: true, completion: nil)
-        
     }
     
     private func interviewingSubjectCell(forSubject subject: Subject, withTableView tableView: UITableView) -> ImageTitleSubtitleCell
@@ -931,6 +925,9 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     private func updateWithVideoURL(_ url: URL)
     {
         guard let video = self.moment.video else { return }
+        
+        //delete video if we already have one:
+        self.deleteVideo(video)
         
         Moment.writeToRealm {
             video.isLocal = true
