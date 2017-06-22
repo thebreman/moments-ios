@@ -142,7 +142,7 @@ class MomentCell: BouncingCollectionViewCell
         // we could have only a title, no description
         // or neither, but we will never have a description and no title
         // so collapse the constraints accordingly:
-        if let title = self.moment?.video?.name {
+        if let title = self.moment?.video?.name, title != "" {
             self.titleTopConstraint.constant = SPACING_LABEL_MARGIN
             self.subtitleBottomConstraint.constant = SPACING_LABEL_MARGIN
             self.titleLabel.text = title
@@ -156,7 +156,7 @@ class MomentCell: BouncingCollectionViewCell
         }
         
         //if we dont have a description, then just collapse the middle space b/c we might have a title:
-        if let description = self.moment?.video?.videoDescription {
+        if let description = self.moment?.video?.videoDescription, description != "" {
             self.subtitleTopContraint.constant = SPACING_TITLE_SUBTITLE
             self.subtitleLabel.text = description
         }

@@ -9,7 +9,7 @@
 import UIKit
 
 private let COPY_TITLE_ASK_TO_INTERVIEW = "Make a Moment"
-private let COPY_MESSAGE_ASK_TO_INTERVIEW = "Who do you know that has a story to tell?"
+private let COPY_MESSAGE_ASK_TO_INTERVIEW = "Nominate someone to tell their story. You can even nominate yourself!"
 private let COPY_TITLE_BUTTON_ASK_TO_INTERVIEW = "Let's make a moment"
 
 private let COPY_TITLE_EMPTY_STATE = "Where are all the moments?"
