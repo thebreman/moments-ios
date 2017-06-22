@@ -17,7 +17,6 @@ private let FILTER_CREATE_VIDEO_VALUE = "ticket_id,upload_link_secure,complete_u
 private let FILTER_READ_VIDEO_VALUE = "name,description,link,pictures,sizes,files,status"
 private let FILTER_UPDATE_VIDEO_VALUE = "link"
 
-
 protocol VideoRouterCompliant
 {
     static func from(parameters: [String: Any]) -> Video?

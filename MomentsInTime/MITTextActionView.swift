@@ -19,7 +19,7 @@ private let COPY_TITLE_BUTTON_EMPTY_STATE = "Let's make a moment"
 private let COPY_LET_MESSAGE_COMMUNITY_EMPTY_STATE = "Uh Oh. There are no moments yet."
 
 private let COPY_TITLE_WELCOME = "Welcome to Moments in Time!"
-private let COPY_MESSAGE_WELCOME = "Watch Moments from the community and get inspired to share your own Moments. Scroll down to start."
+private let COPY_MESSAGE_WELCOME = "Watch stories from the community and get inspired to share your own Moments. Scroll down to start."
 private let COPY_TITLE_BUTTON_WELCOME = "Ok, Let's go!"
 
 private let COPY_TITLE_SHARE_LIVE_MOMENT = "You made a Moment!"

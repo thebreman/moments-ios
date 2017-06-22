@@ -139,7 +139,7 @@
 		680BE07E1E8E2C9500A5D339 /* Views.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 		680BE0801E8E2C9D00A5D339 /* ViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllers.swift; sourceTree = "<group>"; };
 		680BE0831E8E2D7200A5D339 /* Video.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Video.swift; sourceTree = "<group>"; };
-		680BE0871E8E2E9B00A5D339 /* VideoRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoRouter.swift; sourceTree = "<group>"; };
+		680BE0871E8E2E9B00A5D339 /* VideoRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoRouter.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		680BE0881E8E2E9B00A5D339 /* UploadRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadRouter.swift; sourceTree = "<group>"; };
 		680BE08C1E8E2FE700A5D339 /* BouncingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BouncingButton.swift; sourceTree = "<group>"; };
 		680BE08E1E8E301D00A5D339 /* CachedImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedImageView.swift; sourceTree = "<group>"; };
@@ -737,7 +737,7 @@
 				TargetAttributes = {
 					D332E6421E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 8Y75VLF66U;
+						DevelopmentTeam = 6M96U28V8B;
 						ProvisioningStyle = Automatic;
 					};
 					D332E6561E80BE6C00778462 = {
@@ -1091,7 +1091,7 @@
 			baseConfigurationReference = FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8Y75VLF66U;
+				DEVELOPMENT_TEAM = 6M96U28V8B;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
@@ -1105,7 +1105,7 @@
 			baseConfigurationReference = 5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8Y75VLF66U;
+				DEVELOPMENT_TEAM = 6M96U28V8B;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
