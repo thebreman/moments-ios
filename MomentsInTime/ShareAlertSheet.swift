@@ -13,7 +13,7 @@ private let TITLE_MESSAGE_ACTION = "Message..."
 private let TITLE_CANCEL = "Cancel"
 private let MESSAGE_SHARE = "Check out this story on Moments in Time!"
 private let MESSAGE_SHARE_LOCAL = "Check out the story I'm making for Moments in Time!"
-private let MESSAGE_SHARE_APP = "Check out the app: "
+private let MESSAGE_DOWNLOAD = "Download the Moments In Time app from any app store."
 
 class ShareAlertSheet: NSObject
 {
@@ -62,8 +62,7 @@ class ShareAlertSheet: NSObject
 
         let videoURL : URL
         var message = MESSAGE_SHARE
-        let appMessage = MESSAGE_SHARE_APP + appURL
-
+        let downloadPrompt = MESSAGE_DOWNLOAD
         
         // check if we have a video link
         if let videoLinkString = self.moment?.video?.videoLink, let videoLink = URL(string: videoLinkString)
@@ -83,7 +82,7 @@ class ShareAlertSheet: NSObject
         
         //present UIActivityViewController,
         //must be popover for iPad:
-        let controller = UIActivityViewController(activityItems: [message, videoURL, appMessage], applicationActivities: nil)
+        let controller = UIActivityViewController(activityItems: [message, videoURL, downloadPrompt], applicationActivities: nil)
         
         controller.popoverPresentationController?.sourceView = sender
         controller.popoverPresentationController?.sourceRect = sender.bounds
