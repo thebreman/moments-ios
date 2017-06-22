@@ -25,6 +25,8 @@ private let FREQUENCY_ACCESSORY_VIEW = 5
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 private let INDEX_TAB_MY_MOMENTS = 1
 
+private let HEIGHT_ACCESSORY_VIEW: CGFloat = 108
+
 class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate, MITHeaderViewDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
@@ -167,7 +169,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     {
         let textActionView = MITTextActionView.mitAskToInterviewView()
         textActionView.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
-        textActionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 108).isActive = true
+        textActionView.heightAnchor.constraint(greaterThanOrEqualToConstant: HEIGHT_ACCESSORY_VIEW).isActive = true
         
         let containerView = UIView()
         containerView.translatesAutoresizingMaskIntoConstraints = false

@@ -45,8 +45,8 @@ class Moment: Object
     
     var canonicalTitle : String {
         let name = self.subject?.name ?? "" // assuming these are trimmed
-        let separator = name != "" ? " - " : "" // only show the separator when there's something to separate
         let topicTitle = self.topic?.title ?? ""
+        let separator = (name != "" && topicTitle != "") ? " - " : "" // only show the separator when there's something to separate
         
         return "\(name.trimmed())\(separator)\(topicTitle.trimmed())"
     }

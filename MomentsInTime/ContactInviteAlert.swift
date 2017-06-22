@@ -21,7 +21,7 @@ private let COPY_TITLE_EMAIL = "Email"
 private let COPY_TITLE_SMS = "Text"
 private let COPY_TITLE_CANCEL_INVITE = "Cancel"
 
-private let COPY_MESSAGE_INVITE = "Hey I want to interview you for Moments in Time{about_subject}. What's your availability?"
+private let COPY_MESSAGE_INVITE = "Hi, I think you’d be a great candidate to interview for the Moments in Time Project. The videos are short 1-4 minute videos telling stories. It’s quick and easy. When would you be available? \nYou can check out the app at {store_url}"
 private let COPY_SUBJECT_EMAIL = "Moments In Time Interview"
 
 class ContactInviteAlert: NSObject
@@ -52,9 +52,9 @@ class ContactInviteAlert: NSObject
     }
     
     //MARK: Private
-    
+
     private var contactInviteMessage: String {
-        return COPY_MESSAGE_INVITE.replacingOccurrences(of: "{about_subject}", with: self.topic != nil ? " about \(self.topic!.title)" : "")
+        return COPY_MESSAGE_INVITE.replacingOccurrences(of: "{store_url}", with: appURL)
     }
     
     private func contactInviteTitle(forName name: String) -> String
@@ -99,7 +99,7 @@ class ContactInviteAlert: NSObject
             }
         }
         
-        let emailMessage = self.contactInviteMessage + "\n" + appURL + "\n"
+        let emailMessage = self.contactInviteMessage
         
         self.assistant.handleEmail(toRecipients: emails, subject: COPY_SUBJECT_EMAIL, message: emailMessage, presenter: presenter) {
             self.completionHandler?()
@@ -140,7 +140,7 @@ class ContactInviteAlert: NSObject
             recipients.append(selectedNumber.stringValue)
         }
         
-        let smsMessage = self.contactInviteMessage + "\n" + appURL
+        let smsMessage = self.contactInviteMessage
         
         self.assistant.handleSMS(toRecipients: recipients, body: smsMessage, presenter: presenter) {
             self.completionHandler?()
