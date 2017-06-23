@@ -26,6 +26,7 @@ class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDel
 {
     var moment: Moment?
     var allowsSharing = false
+    var allowsRelatedVideos = true
     weak var delegate: CommunityOptionsDelegate? // really most of the handling should be done by the dele' and the moment stay out of here
     
     private let assistant = Assistant()
@@ -39,7 +40,7 @@ class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDel
         controller.popoverPresentationController?.sourceRect = sender.bounds
         controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
         
-        // feature flag for sharing from alert sheet
+        // feature flag for sharing from alert sheet:
         if self.allowsSharing {
             let shareAction = UIAlertAction(title: TITLE_SHARE_ACTION, style: .default) { _ in
                 self.handleShare(withViewController: viewController, sender: sender)
@@ -47,24 +48,24 @@ class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDel
             controller.addAction(shareAction)
         }
         
-        // option for "more by this user"
-        // @ANDY
-        if let inferredName = self.moment?.video?.titleInferredName()
+        // option for "more by this user":
+        if let inferredName = self.moment?.video?.titleInferredName(), self.allowsRelatedVideos
         {
             let moreVideosOption = TITLE_MORE_VIDEOS.replacingOccurrences(of: "{name}", with: inferredName)
+            
             let moreUserVideos = UIAlertAction(title: moreVideosOption, style: .default) { _ in
                 self.handleMoreUserVideos(name: inferredName)
             }
             controller.addAction(moreUserVideos)
         }
         
-        // moderation action
+        // moderation action:
         let reportAction = UIAlertAction(title: TITLE_REPORT_ACTION, style: .destructive) { _ in
             self.handleReport(withViewController: viewController, sender: sender, forMoment: moment)
         }
         controller.addAction(reportAction)
         
-        // cancel
+        // cancel:
         let cancelAction = UIAlertAction(title: TITLE_CANCEL, style: .cancel, handler: nil)
         controller.addAction(cancelAction)
         
