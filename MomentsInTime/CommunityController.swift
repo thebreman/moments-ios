@@ -32,9 +32,13 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
+    //if we are displaying search results, we will have a name and flag will be set to true...
+    var searchName: String?
+    var isDisplayingSearchResults = false
+    
     lazy var momentList = MomentList()
     
-    private lazy var refreshControl: UIRefreshControl = {
+    private lazy var refreshControl: UIRefreshControl? = {
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         return refreshControl
@@ -231,9 +235,13 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     func communityOptionsSelectedMoreUserVideos(name: String)
     {
-        //TODO: show a new controller with the results from the vimeo search
+        print("\nname to search: \(name)")
+        
         let communityController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CommunityController") as! CommunityController
         communityController.title = name
+        communityController.searchName = name
+        communityController.isDisplayingSearchResults = true
+        communityController.refreshControl = nil
         
         self.navigationController!.pushViewController(communityController, animated: true)
     }
@@ -246,20 +254,43 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.fetchCommunityMoments()
     }
     
+    //TODO: might need to factor out some of this code:
     private func fetchCommunityMoments()
     {
-        self.momentList.fetchCommunityMoments { list, error in
+        //check if we are displaying video results or all community videos:
+        if self.isDisplayingSearchResults {
             
-            self.refreshControl.endRefreshing()
+            guard let nameToSearch = self.searchName else { return }
             
-            if let error = error {
-                print(error)
+            //get just the search result list:
+            self.momentList.fetchCommunityMoments(forUsername: nameToSearch) { (list, error) in
+                
+                if let error = error {
+                    print(error)
+                }
+                
+                self.spinner.stopAnimating()
+                self.adapter.moments = self.momentList.moments
+                self.adapter.refreshData(shouldReload: true)
+                self.adapter.allowsInfiniteScrolling = self.momentList.hasNextPage
             }
+        }
+        else {
             
-            self.spinner.stopAnimating()
-            self.adapter.moments = self.momentList.moments
-            self.adapter.refreshData(shouldReload: true)
-            self.adapter.allowsInfiniteScrolling = self.momentList.hasNextPage
+            //get the all community list:
+            self.momentList.fetchCommunityMoments { list, error in
+                
+                self.refreshControl?.endRefreshing()
+                
+                if let error = error {
+                    print(error)
+                }
+                
+                self.spinner.stopAnimating()
+                self.adapter.moments = self.momentList.moments
+                self.adapter.refreshData(shouldReload: true)
+                self.adapter.allowsInfiniteScrolling = self.momentList.hasNextPage
+            }
         }
     }
     
@@ -346,7 +377,10 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         }
         
         self.collectionView.contentInset.top = 12
-        self.collectionView?.addSubview(self.refreshControl)
+        
+        if let pullToRefresh = self.refreshControl {
+            self.collectionView?.addSubview(pullToRefresh)
+        }
     }
     
     private func handleTermsOfService(completion: TermsOfServiceSuccessCompletion? = nil)
