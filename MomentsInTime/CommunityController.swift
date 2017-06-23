@@ -231,7 +231,6 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     func communityOptionsSelectedMoreUserVideos(name: String)
     {
-        //@ANDY
         //TODO: show a new controller with the results from the vimeo search
         let communityController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CommunityController") as! CommunityController
         communityController.title = name

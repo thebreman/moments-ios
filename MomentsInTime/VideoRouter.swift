@@ -9,13 +9,17 @@
 import Alamofire
 
 //for requests where we don't care about the response, we still need to use the json filter for rate limits:
-let FILTER_VALUE_DEFAULT = "uri"
 let FILTER_KEY = "fields"
+let QUERY_KEY = "query"
+let SORT_KEY = "sort"
 
+let FILTER_VALUE_DEFAULT = "uri"
 private let FILTER_ALL_VIDEOS_VALUE = "uri,name,description,link,pictures.sizes,status"
 private let FILTER_CREATE_VIDEO_VALUE = "ticket_id,upload_link_secure,complete_uri"
 private let FILTER_READ_VIDEO_VALUE = "name,description,link,pictures,sizes,files,status"
 private let FILTER_UPDATE_VIDEO_VALUE = "link"
+
+private let PATH_VIDEOS = "/me/videos"
 
 protocol VideoRouterCompliant
 {
@@ -26,6 +30,7 @@ protocol VideoRouterCompliant
 enum VideoRouter: URLRequestConvertible
 {
     case all(String) //pageURL
+    case search(String)
     case create
     case read(Video)
     case update(Video)
@@ -34,6 +39,7 @@ enum VideoRouter: URLRequestConvertible
     var method: Alamofire.HTTPMethod {
         switch self {
         case .all: return .get
+        case .search: return .get
         case .create: return .post
         case .read: return .get
         case .update: return .patch
@@ -44,7 +50,8 @@ enum VideoRouter: URLRequestConvertible
     var path: String {
         switch self {
         case .all(let pagePath): return pagePath
-        case .create: return "/me/videos"
+        case .search: return PATH_VIDEOS
+        case .create: return PATH_VIDEOS
         case .read(let video): return video.uri ?? ""
         case .update(let video): return video.uri ?? ""
         case .destroy(let video): return video.uri ?? ""
@@ -65,13 +72,20 @@ enum VideoRouter: URLRequestConvertible
         urlRequest.setValue(VimeoConnector.accessTokenValue, forHTTPHeaderField: VimeoConnector.accessTokenKey)
         
         //add any necessary params:
+        //One way or another, EVERY request must use the JSON filter otherwise our rate limit is significantly dropped...
+        //if we don't care about the response, we will just filter for the uri...
         switch self {
             
         case .all:
             let urlString = VimeoConnector.baseAPIEndpoint + self.path
             let url = try urlString.asURL()
             urlRequest.url = url
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, "sort": "manual"])
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, SORT_KEY: "manual"])
+            
+        case .search(let query):
+            //send along query and sort results by date:
+            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, QUERY_KEY: query, SORT_KEY: "date"])
+            
             
         case .read:
             urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_READ_VIDEO_VALUE])
