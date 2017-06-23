@@ -228,3 +228,36 @@ extension Video: VideoRouterCompliant
         return imageURL
     }
 }
+
+extension Video // conveniences for title parsing
+{
+    //@ANDY
+    func titleInferredName() -> String?
+    {
+        if let fullTitle = self.name
+        {
+            let regex = try! NSRegularExpression(pattern: "([A-Za-z\\s?]+)\\s*-\\s*([A-Za-z\\s?]+)", options: [])
+            // look for matches globally (will match the whole title if formatted correctly)
+            let matches = regex.matches(in: fullTitle, options: [], range: NSRange(location: 0, length: fullTitle.utf16.count))
+            
+            print("number of matches: \(matches.count)")
+            
+            if matches.count >= 1
+            {
+                let fullMatch = matches[0]
+                // range at index 0: full match
+                // range at index 1: first capture group (name)
+                // range at index 2: first capture group (topic)
+                let name = (fullTitle as NSString).substring(with: fullMatch.rangeAt(1))
+                print("name: \(name)")
+                let topic = (fullTitle as NSString).substring(with: fullMatch.rangeAt(2))
+                print("topic: \(topic)")
+                
+                return name.trimmed()
+            }
+
+        }
+        
+        return nil
+    }
+}

@@ -27,7 +27,7 @@ private let INDEX_TAB_MY_MOMENTS = 1
 
 private let HEIGHT_ACCESSORY_VIEW: CGFloat = 108
 
-class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate, MITHeaderViewDelegate
+class CommunityController: UIViewController, MITMomentCollectionViewAdapterDelegate, MITMomentCollectionViewAdapterMomentDelegate, MITMomentCollectionViewAdapterInfiniteScrollDelegate, MITHeaderViewDelegate, CommunityOptionsDelegate
 {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
@@ -202,6 +202,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
 
     func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
     {
+        self.optionsSheet.delegate = self
         self.optionsSheet.allowsSharing = OPTIONS_ALLOWS_SHARE
         self.optionsSheet.showFrom(viewController: self, sender: sender, forMoment: moment)
     }
@@ -225,6 +226,19 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             completion()
         }
     }
+    
+//MARK: CommunityOptionsDelegate
+    
+    func communityOptionsSelectedMoreUserVideos(name: String)
+    {
+        //@ANDY
+        //TODO: show a new controller with the results from the vimeo search
+        let communityController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CommunityController") as! CommunityController
+        communityController.title = name
+        
+        self.navigationController!.pushViewController(communityController, animated: true)
+    }
+    
     
     // MARK: Refresh
     
