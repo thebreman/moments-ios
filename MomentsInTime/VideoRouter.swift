@@ -67,10 +67,6 @@ enum VideoRouter: URLRequestConvertible
         var urlRequest = URLRequest(url: url.appendingPathComponent(self.path))
         urlRequest.httpMethod = self.method.rawValue
         
-        //api version header and auth token header:
-        urlRequest.setValue(VimeoConnector.versionAPIHeaderValue, forHTTPHeaderField: VimeoConnector.versionAPIHeaderKey)
-        urlRequest.setValue(VimeoConnector.accessTokenValue, forHTTPHeaderField: VimeoConnector.accessTokenKey)
-        
         //add any necessary params:
         //One way or another, EVERY request must use the JSON filter otherwise our rate limit is significantly dropped...
         //if we don't care about the response, we will just filter for the uri...
@@ -80,7 +76,6 @@ enum VideoRouter: URLRequestConvertible
             let urlString = VimeoConnector.baseAPIEndpoint + self.path
             let url = try urlString.asURL()
             urlRequest.url = url
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, SORT_KEY: "manual"])
             
         case .search(let query):
             //send along query and sort results by date:
@@ -100,6 +95,10 @@ enum VideoRouter: URLRequestConvertible
         default:
             break
         }
+        
+        //api version header and auth token header:
+        urlRequest.setValue(VimeoConnector.versionAPIHeaderValue, forHTTPHeaderField: VimeoConnector.versionAPIHeaderKey)
+        urlRequest.setValue(VimeoConnector.accessTokenValue, forHTTPHeaderField: VimeoConnector.accessTokenKey)
         
         return urlRequest
     }
