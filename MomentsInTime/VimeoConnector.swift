@@ -40,32 +40,7 @@ class VimeoConnector: NSObject
     func getMomentsForCommunity(forPagePath pagePath: String, completion: @escaping MomentListCompletion)
     {
         self.request(router: VideoRouter.all(pagePath)) { (response, error) in
-            
-            guard error == nil else {
-                completion(nil, error)
-                return
-            }
-            
-            if let result = response as? [String: Any],
-                let paging = result["paging"] as? [String: Any],
-                let data = result["data"] as? [[String: Any]] {
-                
-                let moments = self.moments(fromData: data)
-                let nextPagePath = self.nextPagePath(fromPaging: paging)
-                
-                if moments.count == 0 {
-                    print("No videos made it through - something probably went wrong.")
-                }
-                
-                let momentList = MomentList(moments: moments, nextPagePath: nextPagePath)
-                
-                completion(momentList, nil)
-                return
-            }
-            
-            //catch all parsing errors:
-            let error = NSError(domain: "VimeoConnector.getMomentsForCommunity:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
-            completion(nil, error)
+            self.handleVideoResponse(withResponse: response, error: error, completion: completion)
         }
     }
     
@@ -75,6 +50,13 @@ class VimeoConnector: NSObject
     func getCommunityMoments(forPagePath pagePath: String, completion: @escaping MomentListCompletion)
     {
         self.getMomentsForCommunity(forPagePath: pagePath, completion: completion)
+    }
+    
+    func getCommunityMoments(forUserName name: String, completion: @escaping MomentListCompletion)
+    {
+        self.request(router: VideoRouter.search(name)) { (response, error) in
+            self.handleVideoResponse(withResponse: response, error: error, completion: completion)
+        }
     }
     
     /**
@@ -216,6 +198,38 @@ class VimeoConnector: NSObject
     }
     
     // MARK: Utilities
+    
+    /**
+     * handles result of self.request for list of videos (communty fetch and search fetch):
+     */
+    private func handleVideoResponse(withResponse response: Any?, error: Error?, completion: @escaping MomentListCompletion)
+    {
+        guard error == nil else {
+            completion(nil, error)
+            return
+        }
+        
+        if let result = response as? [String: Any],
+            let paging = result["paging"] as? [String: Any],
+            let data = result["data"] as? [[String: Any]] {
+            
+            let moments = self.moments(fromData: data)
+            let nextPagePath = self.nextPagePath(fromPaging: paging)
+            
+            if moments.count == 0 {
+                print("No videos made it through - something probably went wrong.")
+            }
+            
+            let momentList = MomentList(moments: moments, nextPagePath: nextPagePath)
+            
+            completion(momentList, nil)
+            return
+        }
+        
+        //catch all parsing errors:
+        let error = NSError(domain: "VimeoConnector.getMomentsForCommunity:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't understand HTTP response"])
+        completion(nil, error)
+    }
     
     /**
      * request utitily function for requests with JSON responses:

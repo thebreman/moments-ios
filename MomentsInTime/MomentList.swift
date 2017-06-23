@@ -18,6 +18,8 @@ class MomentList: NSObject
 {
     var moments = [Moment]()
     
+    //for fetching the community list:
+    //for search, we will still update nextPagePath, but use a different mechanism for the initial fetch...
     private static let firstPagePath: String = "/me/albums/\(ID_ALBUM_COMMUNITY)/videos"
     private(set) var nextPagePath: String?
     
@@ -46,23 +48,17 @@ class MomentList: NSObject
         return self.moments
     }
     
+    func fetchCommunityMoments(forUsername name: String, completion: @escaping MomentListCompletion)
+    {
+        VimeoConnector().getCommunityMoments(forUserName: name) { (momentList, error) in
+            self.handleMomentListResponse(forFetchedList: momentList, error: error, completion: completion)
+        }
+    }
+    
     func fetchCommunityMoments(completion: MomentListCompletion?)
     {
         VimeoConnector().getCommunityMoments(forPagePath: MomentList.firstPagePath) { (momentList, error) in
-            
-            guard error == nil else {
-                completion?(nil, error)
-                return
-            }
-            
-            if let fetchedMomentList = momentList {
-                
-                DispatchQueue.main.async {
-                    self.moments = fetchedMomentList.moments
-                    self.nextPagePath = fetchedMomentList.nextPagePath
-                    completion?(self, nil)
-                }
-            }
+            self.handleMomentListResponse(forFetchedList: momentList, error: error, completion: completion)
         }
     }
     
@@ -93,6 +89,23 @@ class MomentList: NSObject
     }
     
     //MARK: Utilities
+    
+    private func handleMomentListResponse(forFetchedList momentList: MomentList?, error: Error?, completion: MomentListCompletion?)
+    {
+        guard error == nil else {
+            completion?(nil, error)
+            return
+        }
+        
+        if let fetchedMomentList = momentList {
+            
+            DispatchQueue.main.async {
+                self.moments = fetchedMomentList.moments
+                self.nextPagePath = fetchedMomentList.nextPagePath
+                completion?(self, nil)
+            }
+        }
+    }
     
     private func getSavedMoments() -> Results<Moment>?
     {
