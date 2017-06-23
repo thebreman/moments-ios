@@ -26,6 +26,7 @@ class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDel
 {
     var moment: Moment?
     var allowsSharing = false
+    var allowsRelatedVideos = true
     weak var delegate: CommunityOptionsDelegate? // really most of the handling should be done by the dele' and the moment stay out of here
     
     private let assistant = Assistant()
@@ -48,7 +49,7 @@ class CommunityMomentOptionsAlertSheet: NSObject, MFMailComposeViewControllerDel
         }
         
         // option for "more by this user":
-        if let inferredName = self.moment?.video?.titleInferredName()
+        if let inferredName = self.moment?.video?.titleInferredName(), self.allowsRelatedVideos
         {
             let moreVideosOption = TITLE_MORE_VIDEOS.replacingOccurrences(of: "{name}", with: inferredName)
             

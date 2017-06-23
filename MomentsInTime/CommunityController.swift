@@ -208,6 +208,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     {
         self.optionsSheet.delegate = self
         self.optionsSheet.allowsSharing = OPTIONS_ALLOWS_SHARE
+        self.optionsSheet.allowsRelatedVideos = !self.isDisplayingSearchResults
         self.optionsSheet.showFrom(viewController: self, sender: sender, forMoment: moment)
     }
     
