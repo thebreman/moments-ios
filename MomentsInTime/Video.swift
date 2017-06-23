@@ -235,7 +235,7 @@ extension Video // conveniences for title parsing
     {
         if let fullTitle = self.name
         {
-            let regex = try! NSRegularExpression(pattern: "([A-Za-z\\s?]+)\\s*-\\s*([A-Za-z\\s?]+)", options: .caseInsensitive)
+            let regex = try! NSRegularExpression(pattern: "([A-Za-z\\s\\.&\\-\\(\\)]+)\\s+-\\s+([A-Za-z\\s?]+)", options: .caseInsensitive)
             
             // look for matches globally (will match the whole title if formatted correctly):
             let matches = regex.matches(in: fullTitle, options: [], range: NSRange(location: 0, length: fullTitle.utf16.count))
