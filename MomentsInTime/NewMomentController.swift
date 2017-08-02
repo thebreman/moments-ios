@@ -787,6 +787,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     {
         let contactPickerController = CNContactPickerViewController()
         contactPickerController.delegate = self
+        contactPickerController.modalPresentationStyle = .currentContext
         
         self.present(contactPickerController, animated: true, completion: nil)
     }
