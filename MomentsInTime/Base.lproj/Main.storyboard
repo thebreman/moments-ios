@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l76-jv-uF1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l76-jv-uF1">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -70,7 +70,7 @@
                         <outlet property="collectionView" destination="HFt-ze-xZN" id="OTK-jw-bap"/>
                         <outlet property="spinner" destination="SRf-yi-611" id="fRz-yw-ShW"/>
                         <segue destination="e3s-4x-RTz" kind="presentation" identifier="myMomentsToPlayer" modalPresentationStyle="fullScreen" id="ibu-DI-7Ln"/>
-                        <segue destination="hLJ-EC-isI" kind="presentation" identifier="NewMoment" id="9IS-QR-A0U"/>
+                        <segue destination="hLJ-EC-isI" kind="presentation" identifier="NewMoment" modalPresentationStyle="formSheet" id="9IS-QR-A0U"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Gc6-67-h1v" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -172,11 +172,11 @@
                         <outlet property="cancelButton" destination="fAU-z6-1by" id="MaD-0G-VKY"/>
                         <outlet property="submitButton" destination="bFu-MX-Ugj" id="Ksm-aP-c7B"/>
                         <outlet property="tableView" destination="TYd-KS-ATk" id="zWp-4g-Q6y"/>
-                        <segue destination="tMY-Ml-CZK" kind="presentation" identifier="newMomentToInterviewing" id="8pJ-IV-bfk"/>
-                        <segue destination="9RF-7C-mDN" kind="presentation" identifier="newMomentToNote" id="NOG-fl-7Zg"/>
+                        <segue destination="tMY-Ml-CZK" kind="presentation" identifier="newMomentToInterviewing" modalPresentationStyle="currentContext" id="8pJ-IV-bfk"/>
+                        <segue destination="9RF-7C-mDN" kind="presentation" identifier="newMomentToNote" modalPresentationStyle="currentContext" id="NOG-fl-7Zg"/>
                         <segue destination="e3s-4x-RTz" kind="presentation" identifier="newMomentToPlayer" id="Lb7-be-TB6"/>
-                        <segue destination="HhE-lt-dH3" kind="presentation" identifier="newMomentToTopic" id="7eG-Fs-ZNX"/>
-                        <segue destination="eLY-2x-A2x" kind="presentation" identifier="newMomentToCreateTopic" id="Q56-P5-VKI"/>
+                        <segue destination="HhE-lt-dH3" kind="presentation" identifier="newMomentToTopic" modalPresentationStyle="currentContext" id="7eG-Fs-ZNX"/>
+                        <segue destination="eLY-2x-A2x" kind="presentation" identifier="newMomentToCreateTopic" modalPresentationStyle="currentContext" id="Q56-P5-VKI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="di5-tN-qqt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -304,7 +304,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="XSv-fL-YHp" id="jwa-7T-FwN"/>
-                        <segue destination="eLY-2x-A2x" kind="presentation" identifier="createTopic" id="52o-6V-7hN"/>
+                        <segue destination="eLY-2x-A2x" kind="presentation" identifier="createTopic" modalPresentationStyle="currentContext" id="52o-6V-7hN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11b-FG-Fil" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -840,7 +840,7 @@ If you have any questions about these Terms, please contact us.
         <image name="StarOfDavid" width="21" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="o7j-gd-ln6"/>
         <segue reference="Q56-P5-VKI"/>
+        <segue reference="Lb7-be-TB6"/>
     </inferredMetricsTieBreakers>
 </document>
