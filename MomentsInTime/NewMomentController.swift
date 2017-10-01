@@ -924,6 +924,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func updateUI()
     {
+        print("updating ui")
         self.submitButton.isEnabled = self.moment.isReadyToSubmit
     }
     
@@ -939,30 +940,33 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         Moment.writeToRealm {
             video.isLocal = true
         }
-        
+
         self.assistant.copyVideo(withURL: url) { newURL in
+            
             Moment.writeToRealm {
                 video.localURL = newURL
             }
-        }
         
-        //generate video preview thumbnail image asynchronously:
-        self.getThumbnailImage(forVideoURL: url) { thumbnailImage in
-            
-            video.localThumbnailImage = thumbnailImage
-            
-            if let videoPreviewImage = video.localThumbnailImage,
-                let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
-                Moment.writeToRealm {
-                    video.localThumbnailImageURL = imageURL
+            //generate video preview thumbnail image asynchronously:
+            self.getThumbnailImage(forVideoURL: url) { thumbnailImage in
+                
+                video.localThumbnailImage = thumbnailImage
+                
+                if let videoPreviewImage = video.localThumbnailImage,
+                    let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
+                    
+                    Moment.writeToRealm {
+                        video.localThumbnailImageURL = imageURL
+                    }
+                    
+                    self.updateVideoSection()
+                    self.updateUI()
                 }
-                self.updateVideoSection()
-                self.updateUI()
             }
+            
+            self.newMomentWasModified = true
+            self.updateUI()
         }
-        
-        self.newMomentWasModified = true
-        self.updateUI()
     }
 
     private func getThumbnailImage(forVideoURL url: URL, completion: @escaping (UIImage?) -> Void)

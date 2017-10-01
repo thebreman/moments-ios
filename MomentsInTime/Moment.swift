@@ -33,9 +33,11 @@ class Moment: Object
     }
     
     var isReadyToSubmit: Bool {
+        
         guard self.momentStatus != .uploading || self.momentStatus != .processing || self.momentStatus != .live else {
             return false
         }
+        
         let readyToSubmit = self.subject?.name != nil
             && self.video?.name != nil
             && self.video?.videoDescription != nil
