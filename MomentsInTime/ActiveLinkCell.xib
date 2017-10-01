@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,7 +41,7 @@
                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="DHY-gs-XnJ" firstAttribute="top" secondItem="Yjc-aW-qsE" secondAttribute="topMargin" id="6dz-o3-z5d"/>
-                    <constraint firstItem="DHY-gs-XnJ" firstAttribute="leading" secondItem="Yjc-aW-qsE" secondAttribute="leadingMargin" constant="8" id="WL3-Hs-Zfw"/>
+                    <constraint firstItem="DHY-gs-XnJ" firstAttribute="leading" secondItem="Yjc-aW-qsE" secondAttribute="leading" constant="16" id="8jG-J6-Cd6"/>
                     <constraint firstItem="ZBy-Xp-KwX" firstAttribute="centerY" secondItem="DHY-gs-XnJ" secondAttribute="centerY" id="azq-pq-n52"/>
                     <constraint firstItem="ZBy-Xp-KwX" firstAttribute="leading" secondItem="DHY-gs-XnJ" secondAttribute="trailing" constant="12" id="fex-xX-y2u"/>
                     <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="ZBy-Xp-KwX" secondAttribute="trailing" constant="8" id="g2n-Ii-0Dt"/>
@@ -53,7 +53,7 @@
             <connections>
                 <outlet property="activeLabel" destination="DHY-gs-XnJ" id="JOb-gc-smF"/>
                 <outlet property="activeLabelCenterXConstraint" destination="ixI-WP-gYK" id="tEu-Dr-NEA"/>
-                <outlet property="activeLabelLeadingConstraint" destination="WL3-Hs-Zfw" id="cxu-Dr-Oh8"/>
+                <outlet property="activeLabelLeadingConstraint" destination="8jG-J6-Cd6" id="avb-EQ-upm"/>
                 <outlet property="activeLabelTrailingConstraint" destination="fex-xX-y2u" id="hca-Q7-xPG"/>
                 <outlet property="detailDisclosureButton" destination="ZBy-Xp-KwX" id="SYN-qb-bGd"/>
             </connections>

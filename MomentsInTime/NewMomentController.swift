@@ -311,6 +311,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.tableView.estimatedRowHeight = 44
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        //ios 11 adjustsContentInset is deprecated, user this scrollView property,
+        //to prevent offset push/pop transitions:
+        if #available(iOS 11.0, *) {
+            self.tableView.contentInsetAdjustmentBehavior = .never
+        }
     }
     
     //In NewMomentSetting.notes, cell at row 0 is not a note cell (activeLinkCell) we need to subtract 1 from the index:
@@ -918,6 +924,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func updateUI()
     {
+        print("updating ui")
         self.submitButton.isEnabled = self.moment.isReadyToSubmit
     }
     
@@ -933,30 +940,33 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         Moment.writeToRealm {
             video.isLocal = true
         }
-        
+
         self.assistant.copyVideo(withURL: url) { newURL in
+            
             Moment.writeToRealm {
                 video.localURL = newURL
             }
-        }
         
-        //generate video preview thumbnail image asynchronously:
-        self.getThumbnailImage(forVideoURL: url) { thumbnailImage in
-            
-            video.localThumbnailImage = thumbnailImage
-            
-            if let videoPreviewImage = video.localThumbnailImage,
-                let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
-                Moment.writeToRealm {
-                    video.localThumbnailImageURL = imageURL
+            //generate video preview thumbnail image asynchronously:
+            self.getThumbnailImage(forVideoURL: url) { thumbnailImage in
+                
+                video.localThumbnailImage = thumbnailImage
+                
+                if let videoPreviewImage = video.localThumbnailImage,
+                    let imageURL = Assistant.persistImage(videoPreviewImage, compressionQuality: 0.5, atRelativeURLString: video.localThumbnailImageURL) {
+                    
+                    Moment.writeToRealm {
+                        video.localThumbnailImageURL = imageURL
+                    }
+                    
+                    self.updateVideoSection()
+                    self.updateUI()
                 }
-                self.updateVideoSection()
-                self.updateUI()
             }
+            
+            self.newMomentWasModified = true
+            self.updateUI()
         }
-        
-        self.newMomentWasModified = true
-        self.updateUI()
     }
 
     private func getThumbnailImage(forVideoURL url: URL, completion: @escaping (UIImage?) -> Void)

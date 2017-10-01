@@ -10,6 +10,7 @@ import UIKit
 import RealmSwift
 import AVKit
 import AVFoundation
+import PureLayout
 
 private let COPY_TITLE_MOMENT_DETAIL = "Moment"
 private let COPY_TITLE_UPLOAD_FAILED = "Oh No!"
@@ -36,9 +37,10 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     
     lazy var momentList = MomentList()
     
-    private var emptyStateView: MITTextActionView = {
+    private lazy var emptyStateView: MITTextActionView = {
         let view = MITTextActionView.mitEmptyStateView()
         view.actionButton.addTarget(self, action: #selector(createNewMomentAnimated), for: .touchUpInside)
+        view.autoSetDimension(.width, toSize: 320.0)
         return view
     }()
     
@@ -90,6 +92,8 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         
         if self.collectionView != nil {
             self.collectionView.collectionViewLayout.invalidateLayout()
+            self.emptyStateView.layoutIfNeeded()
+            self.collectionView.reloadEmptyDataSet()
         }
     }
     
@@ -253,6 +257,12 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         }
         
         self.collectionView.contentInset.top = 12
+        
+        //ios 11 adjustsContentInset is deprecated, user this scrollView property,
+        //to prevent offset push/pop transitions:
+        if #available(iOS 11.0, *) {
+            self.collectionView.contentInsetAdjustmentBehavior = .never
+        }
     }
     
     //MARK: Utilities

@@ -53,6 +53,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     private var emptyStateView: MITTextActionView = {
         let view = MITTextActionView.communityEmptyStateView()
         view.actionButton.addTarget(self, action: #selector(handleNewMoment), for: .touchUpInside)
+        view.autoSetDimension(.width, toSize: 320.0)
         return view
     }()
     
@@ -381,6 +382,12 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         
         if let pullToRefresh = self.refreshControl {
             self.collectionView?.addSubview(pullToRefresh)
+        }
+        
+        //ios 11 adjustsContentInset is deprecated, user this scrollView property,
+        //to prevent offset push/pop 
+        if #available(iOS 11.0, *) {
+            self.collectionView.contentInsetAdjustmentBehavior = .never
         }
     }
     

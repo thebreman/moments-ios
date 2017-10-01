@@ -71,10 +71,12 @@ class Assistant: NSObject, MFMailComposeViewControllerDelegate, MFMessageCompose
                 try FileManager.default.removeItem(at: pathToRemove)
                 print("removed video!")
                 completion?(true)
+                return
             }
             catch let error {
                 print("unable to remove video from disk: \(error)")
                 completion?(false)
+                return
             }
         }
     }
@@ -154,22 +156,24 @@ class Assistant: NSObject, MFMailComposeViewControllerDelegate, MFMessageCompose
             
             //copy file asynchronously:
             DispatchQueue.global(qos: .userInitiated).async {
+                
                 do {
                     try FileManager.default.copyItem(at: url, to: videoDirectory.appendingPathComponent(relativeVideoName))
                     
                     DispatchQueue.main.async {
-                        self.endBackgroundTask()
                         completion(relativeVideoName)
+                        self.endBackgroundTask()
+                        return
                     }
                 }
                 catch let error {
                     print("\nunable to copy video to disk: \(error)")
+                    completion(nil)
+                    self.endBackgroundTask()
+                    return
                 }
             }
         }
-        
-        self.endBackgroundTask()
-        completion(nil)
     }
     
     //MARK: Email
@@ -246,9 +250,12 @@ class Assistant: NSObject, MFMailComposeViewControllerDelegate, MFMessageCompose
     {
         //end the backgroundTask:
         if let currentBackgroundID = self.backgroundID {
+            
             self.backgroundID = UIBackgroundTaskInvalid
+            
             if currentBackgroundID != UIBackgroundTaskInvalid {
                 UIApplication.shared.endBackgroundTask(currentBackgroundID)
+                self.backgroundID = nil
             }
         }
     }
