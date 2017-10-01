@@ -311,6 +311,12 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.tableView.estimatedRowHeight = 44
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        //ios 11 adjustsContentInset is deprecated, user this scrollView property,
+        //to prevent offset push/pop transitions:
+        if #available(iOS 11.0, *) {
+            self.tableView.contentInsetAdjustmentBehavior = .never
+        }
     }
     
     //In NewMomentSetting.notes, cell at row 0 is not a note cell (activeLinkCell) we need to subtract 1 from the index:

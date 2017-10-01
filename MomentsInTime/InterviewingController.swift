@@ -16,6 +16,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
 {
     @IBOutlet weak var saveButton: BouncingButton!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableViewBottom: NSLayoutConstraint!
     
     var profileImage: UIImage?
     var name: String?
@@ -35,6 +36,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     private lazy var nameFieldView: TextFieldView = {
         let view = TextFieldView()
+        view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textField.textColor = UIColor.mitText
         view.textField.font = UIFont.systemFont(ofSize: 16.0)
@@ -48,6 +50,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     private lazy var roleFieldView: TextFieldView = {
         let view = TextFieldView()
+        view.backgroundColor = UIColor.white
         view.translatesAutoresizingMaskIntoConstraints = false
         view.textField.textColor = UIColor.gray
         view.textField.font = UIFont.systemFont(ofSize: 16.0)
@@ -75,6 +78,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        self.automaticallyAdjustsScrollViewInsets = false 
         
         self.saveButton.isEnabled = false
         self.setupTableView()
@@ -160,7 +164,8 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
             self.currentEditingSection = InterviewingSection.relation
         }
         
-        self.tableView.scrollRectToVisible(textField.frame, animated: true)
+        let pathToScroll = IndexPath(row: 0, section: self.currentEditingSection.rawValue)
+        self.tableView.scrollToRow(at: pathToScroll, at: .top, animated: true)
         return true
     }
     
@@ -231,6 +236,10 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         
         self.tableView.estimatedRowHeight = 64
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        if #available(iOS 11.0, *) {
+            self.tableView.contentInsetAdjustmentBehavior = .never
+        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int
@@ -297,6 +306,9 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     {
         if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_MIT_CONTAINER) as? MITContainerTableViewCell {
             cell.containedView = view
+            cell.lowerSeparatorColor = .lightGray
+            cell.upperSeparatorColor = .lightGray
+            cell.backgroundColor = .white
             return cell
         }
         

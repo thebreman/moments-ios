@@ -39,9 +39,7 @@ class MITTextActionView: TextActionView
         self.messageColor = UIColor.darkGray
         
         self.actionFont = UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightSemibold)
-        self.setActionColor(UIColor.mitActionblue, forState: .normal)
-        
-        self.translatesAutoresizingMaskIntoConstraints = false
+        self.setActionColor(UIColor.mitActionblue, forState: .normal)        
     }
     
     class func mitEmptyStateView() -> MITTextActionView

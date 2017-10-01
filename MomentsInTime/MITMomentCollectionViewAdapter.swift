@@ -107,7 +107,6 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         
         // ensure the empty state has a static height
         self.emptyStateView.autoSetDimension(ALDimension.height, toSize: 120)
-        self.emptyStateView.autoSetDimension(ALDimension.width, toSize: UIScreen.main.bounds.size.width)
     }
     
     func insertBanner(withView newBannerView: UIView)
@@ -143,14 +142,14 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     
     func insertNewMoment(_ newMoment: Moment)
     {
-        self.moments.insert(newMoment, at: 0)
-        self.populateData()
-        
         let newPath = IndexPath(item: 0, section: SECTION_MOMENT_FEED)
         
         self.collectionView.performBatchUpdates({
+            self.moments.insert(newMoment, at: 0)
+            self.populateData()
             self.collectionView.insertItems(at: [newPath])
             self.collectionView.reloadEmptyDataSet()
+        
         }, completion: { success in
             if success {
                 self.collectionView.scrollToItem(at: newPath, at: .top, animated: true)
@@ -182,13 +181,14 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         guard self.accessoryViewDelegate == nil else { return }
         
         if let indexToRemove = self.moments.index(of: moment) {
-            self.moments.remove(at: indexToRemove)
-            self.populateData()
             
             let pathToRemove = IndexPath(item: indexToRemove, section: SECTION_MOMENT_FEED)
             
             self.collectionView.performBatchUpdates({
+                self.moments.remove(at: indexToRemove)
+                self.populateData()
                 self.collectionView.deleteItems(at: [pathToRemove])
+            
             }) { _ in
                 self.collectionView.reloadEmptyDataSet()
             }

@@ -1,6 +1,6 @@
 PODS:
   - ActiveLabel (0.7.1)
-  - Alamofire (4.5.0)
+  - Alamofire (4.5.1)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
@@ -16,20 +16,20 @@ PODS:
     - FacebookCore (~> 0.2)
     - FBSDKCoreKit (~> 4.15)
     - FBSDKLoginKit (~> 4.15)
-  - FBSDKCoreKit (4.23.0):
+  - FBSDKCoreKit (4.27.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.23.0):
+  - FBSDKLoginKit (4.27.0):
     - FBSDKCoreKit
-  - Pulsator (0.3.0)
+  - Pulsator (0.4.0)
   - PureLayout (3.0.2)
-  - Realm (2.8.3):
-    - Realm/Headers (= 2.8.3)
-  - Realm/Headers (2.8.3)
-  - RealmSwift (2.8.3):
-    - Realm (= 2.8.3)
-  - SDWebImage (4.0.0):
-    - SDWebImage/Core (= 4.0.0)
-  - SDWebImage/Core (4.0.0)
+  - Realm (2.10.2):
+    - Realm/Headers (= 2.10.2)
+  - Realm/Headers (2.10.2)
+  - RealmSwift (2.10.2):
+    - Realm (= 2.10.2)
+  - SDWebImage (4.1.0):
+    - SDWebImage/Core (= 4.1.0)
+  - SDWebImage/Core (4.1.0)
   - UITextView+Placeholder (1.2.0)
 
 DEPENDENCIES:
@@ -46,20 +46,20 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   ActiveLabel: 68625f22775f51c31bb691ca8de20f1e5a3bc825
-  Alamofire: f28cdffd29de33a7bfa022cbd63ae95a27fae140
+  Alamofire: 2d95912bf4c34f164fdfc335872e8c312acaea4a
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   FacebookCore: 2cb3f0fbff218e9d3119cec84bae983b232412de
   FacebookLogin: c9d606504735780a9e3002465a615512e0a691a5
-  FBSDKCoreKit: d7829f5a69901cd7296105328e4c3c3fc7da6518
-  FBSDKLoginKit: 6b92bd65f319d669d2b0730e49db495ef1660566
-  Pulsator: 0191f14f7ab82d6dbde6fdbde42036f07a4450e3
+  FBSDKCoreKit: ebc6c5f5b3f0e72396041050e2266781a38ac587
+  FBSDKLoginKit: 887be4b7452e1c5a3cc4485ce152529965a0c41e
+  Pulsator: a0e7c006790a576de63280b2f0552ea1c1b83ce0
   PureLayout: 4d550abe49a94f24c2808b9b95db9131685fe4cd
-  Realm: 3601ef091c8c499a31101d8563b991e75546cdce
-  RealmSwift: 8183818515471b01a99abdd2970f8e4fd52b6f4a
-  SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
+  Realm: 0ef72b837fb67e9f4b098bac771ddd72c7fdbb69
+  RealmSwift: 07a9ae0505091eda6b2ee7c190c3786d6e90a7b0
+  SDWebImage: 0e435c14e402a6730315a0fb79f95e68654d55a4
   UITextView+Placeholder: 77680995fcdd07c3f52ec92fe1150874a2ac89ff
 
 PODFILE CHECKSUM: e1e0d56923dc3b3e1639c53af03408f2b9c50f92
 
-COCOAPODS: 1.2.1
+COCOAPODS: 1.3.1
