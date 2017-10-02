@@ -748,13 +748,13 @@
 					};
 					D332E6561E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = L46LSX2XUR;
+						DevelopmentTeam = 8Y75VLF66U;
 						ProvisioningStyle = Automatic;
 						TestTargetID = D332E6421E80BE6C00778462;
 					};
 					D332E6611E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = L46LSX2XUR;
+						DevelopmentTeam = 8Y75VLF66U;
 						ProvisioningStyle = Automatic;
 						TestTargetID = D332E6421E80BE6C00778462;
 					};
@@ -1159,7 +1159,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = L46LSX2XUR;
+				DEVELOPMENT_TEAM = 8Y75VLF66U;
 				INFOPLIST_FILE = MomentsInTimeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTimeTests;
@@ -1174,7 +1174,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = L46LSX2XUR;
+				DEVELOPMENT_TEAM = 8Y75VLF66U;
 				INFOPLIST_FILE = MomentsInTimeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTimeTests;
@@ -1188,7 +1188,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = L46LSX2XUR;
+				DEVELOPMENT_TEAM = 8Y75VLF66U;
 				INFOPLIST_FILE = MomentsInTimeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTimeUITests;
@@ -1202,7 +1202,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				DEVELOPMENT_TEAM = L46LSX2XUR;
+				DEVELOPMENT_TEAM = 8Y75VLF66U;
 				INFOPLIST_FILE = MomentsInTimeUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTimeUITests;

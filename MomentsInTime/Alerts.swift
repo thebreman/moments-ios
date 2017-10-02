@@ -36,7 +36,7 @@ extension UIAlertController
         presenter.present(controller, animated: true, completion: nil)
     }
     
-    static func confirm(withPresenter presenter: UIViewController, message: String?, completion: @escaping (Void) -> Void)
+    static func confirm(withPresenter presenter: UIViewController, message: String?, completion: @escaping () -> Void)
     {
         let title = "Just making sure"
         let affirmative = "do it"
@@ -45,7 +45,7 @@ extension UIAlertController
         self.ask(withPresenter: presenter, title: title, message: message, affirmative: affirmative, negative: negative, completion: completion)
     }
     
-    static func ask(withPresenter presenter: UIViewController?, title: String?, message: String?, affirmative: String, negative: String, completion: @escaping (Void) -> Void)
+    static func ask(withPresenter presenter: UIViewController?, title: String?, message: String?, affirmative: String, negative: String, completion: @escaping () -> Void)
     {
         guard presenter != nil else { return }
         
