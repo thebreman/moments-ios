@@ -188,13 +188,28 @@ class VimeoConnector: NSObject
     //true if there is an active upload already:
     func checkForPendingUploads(completion: @escaping (Bool) -> Void)
     {
-        if BackgroundUploadSessionManager.shared.moment == nil && BackgroundUploadCompleteSessionManager.shared.moment == nil && BackgroundUploadVideoMetadataSessionManager.shared.moment == nil {
-            completion(false)
+        //if moment is not nil and also not live then we are uploading:
+        if let moment = BackgroundUploadSessionManager.shared.moment, moment.momentStatus != .live {
+            completion(true)
             return
         }
         
-        completion(true)
-        return
+        if let moment = BackgroundUploadCompleteSessionManager.shared.moment, moment.momentStatus != .live {
+            completion(true)
+            return
+        }
+        
+        if let moment = BackgroundUploadVideoMetadataSessionManager.shared.moment, moment.momentStatus != .live {
+            completion(true)
+            return
+        }
+        
+        //nil out any that didn't already get niled out:
+        BackgroundUploadSessionManager.shared.moment = nil
+        BackgroundUploadCompleteSessionManager.shared.moment = nil
+        BackgroundUploadVideoMetadataSessionManager.shared.moment = nil
+        
+        completion(false)
     }
     
     // MARK: Utilities

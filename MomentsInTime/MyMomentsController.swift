@@ -40,7 +40,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     private lazy var emptyStateView: MITTextActionView = {
         let view = MITTextActionView.mitEmptyStateView()
         view.actionButton.addTarget(self, action: #selector(createNewMomentAnimated), for: .touchUpInside)
-        view.autoSetDimension(.width, toSize: 320.0)
+//        view.autoSetDimension(.width, toSize: 320.0)
         return view
     }()
     
@@ -486,7 +486,9 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         guard let video = moment.video, !moment.isInvalidated else { return }
         
         if !video.addedToUploadAlbum {
+            
             print("adding video to album since it wasn't already done")
+            
             BackgroundUploadAlbumSessionManager.shared.addToUploadAlbum(moment: moment) {
                 guard !moment.isInvalidated else { return }
                 self.updateLiveVerifiedStatus(forMoment: moment)
