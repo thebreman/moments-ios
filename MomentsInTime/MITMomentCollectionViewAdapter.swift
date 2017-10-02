@@ -135,6 +135,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         self.collectionView.performBatchUpdates({
             self.bannerView = nil
             self.collectionView.deleteItems(at: [pathToRemove])
+        
         }) { _ in
             self.collectionView.reloadEmptyDataSet()
         }

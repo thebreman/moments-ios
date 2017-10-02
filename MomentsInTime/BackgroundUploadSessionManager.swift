@@ -105,6 +105,7 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
                     response.statusCode >= 200,
                     response.statusCode < 300,
                     error == nil else {
+                        
                     print(error ?? "")
                     self.moment?.handleFailedUpload()
                     self.uploadCompletion?(nil, error)

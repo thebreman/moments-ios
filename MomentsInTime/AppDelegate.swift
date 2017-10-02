@@ -25,6 +25,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UIView.appearance().tintColor = UIColor.mitActionblue
         
+        //find out if there are any pending tasks:
+        self.checkPendingTasks()
+        
         return true
     }
     
@@ -100,6 +103,53 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         BackgroundUploadAlbumSessionManager.shared.session.invalidateAndCancel()
         BackgroundUploadAlbumSessionManager.shared.moment = nil
+    }
+    
+    private func checkPendingTasks()
+    {
+        BackgroundUploadSessionManager.shared.session.getTasksWithCompletionHandler { (dataTasks, uploadTasks, downloadTasks) in
+            
+            print("\ndataTasks: \(dataTasks.count)")
+            print("uploadTasks: \(uploadTasks.count)")
+            print("downloadTasks: \(downloadTasks.count)")
+            
+            if dataTasks.count == 0 && uploadTasks.count == 0 && downloadTasks.count == 0 {
+                BackgroundUploadSessionManager.shared.moment = nil
+            }
+        }
+        
+        BackgroundUploadCompleteSessionManager.shared.session.getTasksWithCompletionHandler { (dataTasks, uploadTasks, downloadTasks) in
+            
+            print("\ndataTasks: \(dataTasks.count)")
+            print("uploadTasks: \(uploadTasks.count)")
+            print("downloadTasks: \(downloadTasks.count)")
+            
+            if dataTasks.count == 0 && uploadTasks.count == 0 && downloadTasks.count == 0 {
+                BackgroundUploadCompleteSessionManager.shared.moment = nil
+            }
+        }
+        
+        BackgroundUploadVideoMetadataSessionManager.shared.session.getTasksWithCompletionHandler { (dataTasks, uploadTasks, downloadTasks) in
+            
+            print("\ndataTasks: \(dataTasks.count)")
+            print("uploadTasks: \(uploadTasks.count)")
+            print("downloadTasks: \(downloadTasks.count)")
+            
+            if dataTasks.count == 0 && uploadTasks.count == 0 && downloadTasks.count == 0 {
+                BackgroundUploadVideoMetadataSessionManager.shared.moment = nil
+            }
+        }
+        
+        BackgroundUploadAlbumSessionManager.shared.session.getTasksWithCompletionHandler { (dataTasks, uploadTasks, downloadTasks) in
+            
+            print("\ndataTasks: \(dataTasks.count)")
+            print("uploadTasks: \(uploadTasks.count)")
+            print("downloadTasks: \(downloadTasks.count)\n")
+            
+            if dataTasks.count == 0 && uploadTasks.count == 0 && downloadTasks.count == 0 {
+                BackgroundUploadAlbumSessionManager.shared.moment = nil
+            }
+        }
     }
 }
 

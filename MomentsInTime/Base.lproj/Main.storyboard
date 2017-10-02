@@ -22,7 +22,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HFt-ze-xZN">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="253" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" contentInsetAdjustmentBehavior="never" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="HFt-ze-xZN">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                                 <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -44,11 +44,11 @@
                         <constraints>
                             <constraint firstItem="h5K-2H-Tkd" firstAttribute="top" secondItem="HFt-ze-xZN" secondAttribute="bottom" id="8Pp-1i-Nqa"/>
                             <constraint firstItem="SRf-yi-611" firstAttribute="centerY" secondItem="vun-7s-oyp" secondAttribute="centerY" id="DRc-TU-wCM"/>
+                            <constraint firstItem="HFt-ze-xZN" firstAttribute="centerX" secondItem="vun-7s-oyp" secondAttribute="centerX" id="FlJ-Db-r4B"/>
                             <constraint firstItem="SRf-yi-611" firstAttribute="centerX" secondItem="vun-7s-oyp" secondAttribute="centerX" id="HdV-2L-oOI"/>
-                            <constraint firstItem="HFt-ze-xZN" firstAttribute="leading" secondItem="vun-7s-oyp" secondAttribute="leading" priority="750" id="MSk-Uo-dSz"/>
-                            <constraint firstAttribute="trailing" secondItem="HFt-ze-xZN" secondAttribute="trailing" priority="750" id="bYk-uL-scT"/>
+                            <constraint firstItem="HFt-ze-xZN" firstAttribute="leading" secondItem="vun-7s-oyp" secondAttribute="leading" priority="999" id="MSk-Uo-dSz"/>
+                            <constraint firstAttribute="trailing" secondItem="HFt-ze-xZN" secondAttribute="trailing" priority="999" id="bYk-uL-scT"/>
                             <constraint firstItem="HFt-ze-xZN" firstAttribute="top" secondItem="d88-Ky-hRH" secondAttribute="bottom" id="f4h-Ou-WnH"/>
-                            <constraint firstItem="HFt-ze-xZN" firstAttribute="centerX" secondItem="vun-7s-oyp" secondAttribute="centerX" id="oXe-ge-k9h"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="My Moments" id="M2w-s3-x2y">

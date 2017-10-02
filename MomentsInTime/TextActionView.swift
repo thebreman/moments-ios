@@ -146,8 +146,8 @@ class TextActionView: UIView
         self.titleLabel.autoAlignAxis(toSuperviewAxis: ALAxis.vertical)
         
         self.messageLabel.autoCenterInSuperview()
-        self.messageLabel.autoPinEdge(toSuperviewEdge: ALEdge.left, withInset: 8, relation: .greaterThanOrEqual)
-        self.messageLabel.autoPinEdge(toSuperviewEdge: ALEdge.right, withInset: 8, relation: .greaterThanOrEqual)
+        self.messageLabel.autoPinEdge(toSuperviewEdge: ALEdge.left, withInset: 20, relation: .greaterThanOrEqual)
+        self.messageLabel.autoPinEdge(toSuperviewEdge: ALEdge.right, withInset: 20, relation: .greaterThanOrEqual)
         
         self.actionButton.autoPinEdge(ALEdge.top, to: ALEdge.bottom, of: self.messageLabel, withOffset: 8)
         self.actionButton.autoAlignAxis(toSuperviewAxis: ALAxis.vertical)

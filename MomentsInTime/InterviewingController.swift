@@ -43,6 +43,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         view.textField.placeholder = InterviewingSection.name.cellContentText
         view.textField.tintColor = UIColor.mitActionblue
         view.textField.delegate = self
+        view.textField.autocorrectionType = .no
         view.textField.autocapitalizationType = UITextAutocapitalizationType.words
         view.textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         return view
@@ -57,6 +58,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         view.textField.placeholder = InterviewingSection.relation.cellContentText
         view.textField.tintColor = UIColor.mitActionblue
         view.textField.delegate = self
+        view.textField.autocorrectionType = .no
         return view
     }()
     
