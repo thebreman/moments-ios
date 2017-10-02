@@ -743,7 +743,7 @@
 				TargetAttributes = {
 					D332E6421E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 6M96U28V8B;
+						DevelopmentTeam = 8Y75VLF66U;
 						ProvisioningStyle = Automatic;
 					};
 					D332E6561E80BE6C00778462 = {
@@ -1131,7 +1131,7 @@
 			baseConfigurationReference = FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6M96U28V8B;
+				DEVELOPMENT_TEAM = 8Y75VLF66U;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
@@ -1145,7 +1145,7 @@
 			baseConfigurationReference = 5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6M96U28V8B;
+				DEVELOPMENT_TEAM = 8Y75VLF66U;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
