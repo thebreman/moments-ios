@@ -13,13 +13,13 @@ typealias MomentCompletion = (Moment?, Error?) -> Void
 
 class Moment: Object
 {
-    dynamic var momentID = UUID().uuidString
-    dynamic var subject: Subject?
-    dynamic var video: Video?
-    dynamic var topic: Topic?
-    dynamic var createdAt = Date()
-    dynamic var existsInRealm = false
-    dynamic var _momentStatus = MomentStatus.new.rawValue
+    @objc dynamic var momentID = UUID().uuidString
+    @objc dynamic var subject: Subject?
+    @objc dynamic var video: Video?
+    @objc dynamic var topic: Topic?
+    @objc dynamic var createdAt = Date()
+    @objc dynamic var existsInRealm = false
+    @objc dynamic var _momentStatus = MomentStatus.new.rawValue
     
     let notes = List<Note>()
     

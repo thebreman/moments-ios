@@ -8,7 +8,6 @@
 
 import UIKit
 import AVFoundation
-import FacebookCore
 import Alamofire
 
 @UIApplicationMain
@@ -19,9 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
         self.configureAudioSession()
-        
-        //Facebook, Track App Installs and App Opens:
-        SDKApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         UIView.appearance().tintColor = UIColor.mitActionblue
         
@@ -49,18 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         else {
             assert(false, "background ids didn't match")
         }
-    }
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool
-    {
-        //Facebook, Track App Installs and App Opens:
-        return SDKApplicationDelegate.shared.application(app, open: url, options: options)
-    }
-
-    func applicationDidBecomeActive(_ application: UIApplication)
-    {
-        //Facebook, Track App Installs and App Opens:
-        AppEventsLogger.activate()
     }
     
     //MARK: Utilities

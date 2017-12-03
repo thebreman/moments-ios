@@ -53,7 +53,7 @@ class CreateTopicController: UIViewController, UITableViewDelegate, UITableViewD
         view.textView.placeholder = CreateTopicSection.description.placeholderText
         view.textView.tintColor = UIColor.mitActionblue
         view.textView.delegate = self
-        NSLayoutConstraint.autoSetPriority(999, forConstraints: {
+        NSLayoutConstraint.autoSetPriority(UILayoutPriority(rawValue: 999), forConstraints: {
             view.textView.autoSetDimension(.height, toSize: 160.0)
         })
         return view

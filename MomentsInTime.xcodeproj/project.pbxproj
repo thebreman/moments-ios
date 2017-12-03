@@ -73,8 +73,6 @@
 		687E238E1EC9709600BDF987 /* BackgroundUploadSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687E238D1EC9709600BDF987 /* BackgroundUploadSessionManager.swift */; };
 		687E23901EC970EE00BDF987 /* BackgroundUploadCompleteSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687E238F1EC970EE00BDF987 /* BackgroundUploadCompleteSessionManager.swift */; };
 		687E23921EC9718200BDF987 /* BackgroundUploadVideoMetadataSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687E23911EC9718200BDF987 /* BackgroundUploadVideoMetadataSessionManager.swift */; };
-		688133BF1EAF22DF00696D58 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688133BE1EAF22DF00696D58 /* LoginController.swift */; };
-		688133C31EAF26AC00696D58 /* FacebookConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688133C21EAF26AC00696D58 /* FacebookConnector.swift */; };
 		688E5D0B1EA7152A00BF258F /* NewMomentSetting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E5D0A1EA7152A00BF258F /* NewMomentSetting.swift */; };
 		688E5D0D1EA74A2C00BF258F /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E5D0C1EA74A2C00BF258F /* Note.swift */; };
 		688E5D0F1EA883BA00BF258F /* Alerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E5D0E1EA883BA00BF258F /* Alerts.swift */; };
@@ -188,8 +186,6 @@
 		687E238D1EC9709600BDF987 /* BackgroundUploadSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundUploadSessionManager.swift; sourceTree = "<group>"; };
 		687E238F1EC970EE00BDF987 /* BackgroundUploadCompleteSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundUploadCompleteSessionManager.swift; sourceTree = "<group>"; };
 		687E23911EC9718200BDF987 /* BackgroundUploadVideoMetadataSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundUploadVideoMetadataSessionManager.swift; sourceTree = "<group>"; };
-		688133BE1EAF22DF00696D58 /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
-		688133C21EAF26AC00696D58 /* FacebookConnector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookConnector.swift; sourceTree = "<group>"; };
 		688E5D0A1EA7152A00BF258F /* NewMomentSetting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMomentSetting.swift; sourceTree = "<group>"; };
 		688E5D0C1EA74A2C00BF258F /* Note.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
 		688E5D0E1EA883BA00BF258F /* Alerts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alerts.swift; sourceTree = "<group>"; };
@@ -459,7 +455,6 @@
 		681B453F1ED0086100C18893 /* Connectors */ = {
 			isa = PBXGroup;
 			children = (
-				688133C21EAF26AC00696D58 /* FacebookConnector.swift */,
 				680CEB981E9F670E009ED223 /* VimeoConnector.swift */,
 			);
 			name = Connectors;
@@ -507,14 +502,6 @@
 				6818D45E1EEE0292005862E6 /* BackgroundUploadAlbumSessionManager.swift */,
 			);
 			name = BackgroundSessionManagers;
-			sourceTree = "<group>";
-		};
-		688133BD1EAF22C300696D58 /* Login Flow */ = {
-			isa = PBXGroup;
-			children = (
-				688133BE1EAF22DF00696D58 /* LoginController.swift */,
-			);
-			name = "Login Flow";
 			sourceTree = "<group>";
 		};
 		688E99891EB07CC500AEF2F7 /* Interviewing Flow */ = {
@@ -573,7 +560,6 @@
 				D332E64F1E80BE6C00778462 /* LaunchScreen.storyboard */,
 				D332E64A1E80BE6C00778462 /* Main.storyboard */,
 				6812B6D31ED64A52003E3862 /* Terms of Service Flow */,
-				688133BD1EAF22C300696D58 /* Login Flow */,
 				6811A1E31E826E63006362E8 /* Community Flow */,
 				6811A1E41E826E6C006362E8 /* My Moments Flow */,
 				687145A91EA0919A00773E1F /* New Moment Flow */,
@@ -744,17 +730,20 @@
 					D332E6421E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 8Y75VLF66U;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
 					D332E6561E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 8Y75VLF66U;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 						TestTargetID = D332E6421E80BE6C00778462;
 					};
 					D332E6611E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
 						DevelopmentTeam = 8Y75VLF66U;
+						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 						TestTargetID = D332E6421E80BE6C00778462;
 					};
@@ -894,7 +883,6 @@
 				6849EADF1EBD50E700B2E751 /* Assistant.swift in Sources */,
 				680BE08A1E8E2E9B00A5D339 /* VideoRouter.swift in Sources */,
 				68EB8FF51E825A3C00C1B320 /* MITTabBar.swift in Sources */,
-				688133C31EAF26AC00696D58 /* FacebookConnector.swift in Sources */,
 				680CA52F1EA5FD3A006A735E /* MITNoteCell.swift in Sources */,
 				688E998F1EB07D2E00AEF2F7 /* CreateTopicController.swift in Sources */,
 				680D81981EEF1F770019AC4F /* Strings.swift in Sources */,
@@ -928,7 +916,6 @@
 				6808D9E31EC59E20005B341B /* MomentStatus.swift in Sources */,
 				6811AE1F1EAC763E004386E4 /* SpinnerCell.swift in Sources */,
 				680BE07F1E8E2C9500A5D339 /* Views.swift in Sources */,
-				688133BF1EAF22DF00696D58 /* LoginController.swift in Sources */,
 				680BE08F1E8E301D00A5D339 /* CachedImageView.swift in Sources */,
 				688E5D0F1EA883BA00BF258F /* Alerts.swift in Sources */,
 				6809BF1C1EB7566300A9E942 /* ImageTitleSubtitleCell.swift in Sources */,
@@ -1126,7 +1113,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -1140,7 +1128,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -1154,7 +1143,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTimeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MomentsInTime.app/MomentsInTime";
 			};
 			name = Debug;
@@ -1169,7 +1159,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTimeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MomentsInTime.app/MomentsInTime";
 			};
 			name = Release;
@@ -1183,7 +1174,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTimeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = MomentsInTime;
 			};
 			name = Debug;
@@ -1197,7 +1189,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTimeUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				TEST_TARGET_NAME = MomentsInTime;
 			};
 			name = Release;

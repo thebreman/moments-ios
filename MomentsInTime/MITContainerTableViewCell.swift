@@ -11,7 +11,7 @@ import PureLayout
 
 class MITContainerTableViewCell: ContainerTableViewCell
 {
-    dynamic var upperSeparatorColor: UIColor? {
+    @objc dynamic var upperSeparatorColor: UIColor? {
         get {
             return self.upperSeparatorView.backgroundColor
         }
@@ -20,7 +20,7 @@ class MITContainerTableViewCell: ContainerTableViewCell
         }
     }
     
-    dynamic var lowerSeparatorColor: UIColor? {
+    @objc dynamic var lowerSeparatorColor: UIColor? {
         get {
             return self.lowerSeparatorView.backgroundColor
         }

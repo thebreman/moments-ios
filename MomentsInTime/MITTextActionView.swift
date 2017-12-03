@@ -32,13 +32,13 @@ class MITTextActionView: TextActionView
     {
         super.setup()
         
-        self.titleFont = UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightSemibold)
+        self.titleFont = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.semibold)
         self.titleColor = UIColor.mitText
         
         self.messageFont = UIFont.systemFont(ofSize: 14.0)
         self.messageColor = UIColor.darkGray
         
-        self.actionFont = UIFont.systemFont(ofSize: 16.0, weight: UIFontWeightSemibold)
+        self.actionFont = UIFont.systemFont(ofSize: 16.0, weight: UIFont.Weight.semibold)
         self.setActionColor(UIColor.mitActionblue, forState: .normal)        
     }
     

@@ -33,7 +33,7 @@ class WelcomeHeaderView: MITHeaderView
         self.closeButton.isHidden = true
         self.addSubview(self.textActionView)
         self.textActionView.heightAnchor.constraint(greaterThanOrEqualToConstant: 120).isActive = true
-        NSLayoutConstraint.autoSetPriority(999) { 
+        NSLayoutConstraint.autoSetPriority(UILayoutPriority(rawValue: 999)) { 
             self.textActionView.autoPinEdgesToSuperviewEdges(with: UIEdgeInsets(top: 20, left: 0, bottom: 22, right: 0))
         }
     }

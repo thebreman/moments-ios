@@ -14,9 +14,9 @@ private let DEFAULT_TOPICS_KEY_TOP = "topics"
 
 class Topic: Object
 {
-    dynamic var title: String = ""
-    dynamic var topicDescription: String = ""
-    dynamic var isCustom: Bool = false
+    @objc dynamic var title: String = ""
+    @objc dynamic var topicDescription: String = ""
+    @objc dynamic var isCustom: Bool = false
     
     convenience init(title: String, description: String)
     {

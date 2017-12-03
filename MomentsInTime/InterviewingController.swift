@@ -238,10 +238,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         
         self.tableView.estimatedRowHeight = 64
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        
-        if #available(iOS 11.0, *) {
-            self.tableView.contentInsetAdjustmentBehavior = .never
-        }
     }
     
     func numberOfSections(in tableView: UITableView) -> Int

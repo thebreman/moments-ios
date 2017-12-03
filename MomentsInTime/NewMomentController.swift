@@ -311,12 +311,6 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         
         self.tableView.estimatedRowHeight = 44
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        
-        //ios 11 adjustsContentInset is deprecated, user this scrollView property,
-        //to prevent offset push/pop transitions:
-        if #available(iOS 11.0, *) {
-            self.tableView.contentInsetAdjustmentBehavior = .never
-        }
     }
     
     //In NewMomentSetting.notes, cell at row 0 is not a note cell (activeLinkCell) we need to subtract 1 from the index:
@@ -370,67 +364,67 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
             return UITableViewCell()
         }
         
-        switch indexPath.section {
-            
-        case NewMomentSetting.interviewing.rawValue:
-            
-            if let interviewingSubject = self.moment.subject, interviewingSubject.isValid {
-                return self.interviewingSubjectCell(forSubject: interviewingSubject, withTableView: tableView)
-            }
-            
-            return self.activeLinkCell(forSetting: setting, withTableView: tableView)
-            
-        case NewMomentSetting.topic.rawValue:
-            
-            if let videoName = self.moment.video?.name, let videoDescription = self.moment.video?.videoDescription {
-                return self.descriptionCell(forName: videoName, description: videoDescription, withTableView: tableView)
-            }
-            
-            return self.activeLinkCell(forSetting: setting, withTableView: tableView)
-            
-        case NewMomentSetting.video.rawValue:
-            
-            //first cell is videoPreview or activeLink
-            if indexPath.row == 0 {
-                if let video = self.moment.video, video.isLocal {
-                    return self.videoPreviewCell(forVideo: video, withTableView: tableView)
+        switch indexPath.section
+        {
+            case NewMomentSetting.interviewing.rawValue:
+                
+                if let interviewingSubject = self.moment.subject, interviewingSubject.isValid {
+                    return self.interviewingSubjectCell(forSubject: interviewingSubject, withTableView: tableView)
                 }
                 
                 return self.activeLinkCell(forSetting: setting, withTableView: tableView)
-            }
-            else if indexPath.row == 1 {
+            
+            case NewMomentSetting.topic.rawValue:
                 
-                //if we have a second row it must be the editVideo activeLinkCell:
-                if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
-                    cell.shouldCenterLabel = true
-                    cell.activeLabel.text = COPY_TITLE_EDIT_VIDEO
-                    cell.activeLinks = [COPY_TITLE_EDIT_VIDEO]
-                    cell.delegate = self
-                    cell.detailDisclosureButton.isHidden = true
-                    return cell
+                if let videoName = self.moment.video?.name, let videoDescription = self.moment.video?.videoDescription {
+                    return self.descriptionCell(forName: videoName, description: videoDescription, withTableView: tableView)
                 }
                 
-                assert(false, "unknown cell dequeued")
+                return self.activeLinkCell(forSetting: setting, withTableView: tableView)
+            
+            case NewMomentSetting.video.rawValue:
+                
+                //first cell is videoPreview or activeLink
+                if indexPath.row == 0 {
+                    if let video = self.moment.video, video.isLocal {
+                        return self.videoPreviewCell(forVideo: video, withTableView: tableView)
+                    }
+                    
+                    return self.activeLinkCell(forSetting: setting, withTableView: tableView)
+                }
+                else if indexPath.row == 1 {
+                    
+                    //if we have a second row it must be the editVideo activeLinkCell:
+                    if let cell = tableView.dequeueReusableCell(withIdentifier: Identifiers.IDENTIFIER_CELL_ACTIVE_LINK) as? ActiveLinkCell {
+                        cell.shouldCenterLabel = true
+                        cell.activeLabel.text = COPY_TITLE_EDIT_VIDEO
+                        cell.activeLinks = [COPY_TITLE_EDIT_VIDEO]
+                        cell.delegate = self
+                        cell.detailDisclosureButton.isHidden = true
+                        return cell
+                    }
+                    
+                    assert(false, "unknown cell dequeued")
+                    return UITableViewCell()
+                }
+                
+                assert(false, "unknown row in Video section")
                 return UITableViewCell()
-            }
             
-            assert(false, "unknown row in Video section")
-            return UITableViewCell()
+            case NewMomentSetting.notes.rawValue:
+                
+                //first cell is activeLinkCell:
+                if indexPath.row == 0 {
+                    return self.activeLinkCell(forSetting: setting, withTableView: tableView)
+                }
+                
+                //the rest of the cells are MITNoteCells:
+                let note = self.note(forIndexPath: indexPath)
+                return self.noteCell(forNote: note, withTableView: tableView)
             
-        case NewMomentSetting.notes.rawValue:
-            
-            //first cell is activeLinkCell:
-            if indexPath.row == 0 {
-                return self.activeLinkCell(forSetting: setting, withTableView: tableView)
-            }
-            
-            //the rest of the cells are MITNoteCells:
-            let note = self.note(forIndexPath: indexPath)
-            return self.noteCell(forNote: note, withTableView: tableView)
-            
-        default:
-            assert(false, "indexPath section is unknown")
-            return UITableViewCell()
+            default:
+                assert(false, "indexPath section is unknown")
+                return UITableViewCell()
         }
     }
     
@@ -525,7 +519,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
         if self.moment.notes.contains(note), let indexToDelete = self.moment.notes.index(of: note) {
             
             Moment.writeToRealm {
-                self.moment.notes.remove(objectAtIndex: indexToDelete)
+                self.moment.notes.remove(at: indexToDelete)
                 let pathToDelete = IndexPath(row: indexToDelete + 1, section: NewMomentSetting.notes.rawValue)
                 self.tableView.removeRows(forIndexPaths: [pathToDelete])
             }
@@ -545,7 +539,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
                 guard error == nil else {
                     if video.uri != nil {
                         
-                        //inform user that their video uploaded successfully (.live and uri != nil) but is still processing
+                        //inform user that their video uploaded successfully (.live and uri != nil) but is still processing:
                         UIAlertController.explain(withPresenter: self, title: COPY_TITLE_NETWORK_ERROR, message: COPY_MESSAGE_LIVE_MOMENT_NETWORK_ERROR)
                     }
                     return

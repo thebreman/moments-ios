@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l76-jv-uF1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l76-jv-uF1">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -42,7 +42,7 @@
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="h5K-2H-Tkd" firstAttribute="top" secondItem="HFt-ze-xZN" secondAttribute="bottom" id="8Pp-1i-Nqa"/>
+                            <constraint firstAttribute="bottom" secondItem="HFt-ze-xZN" secondAttribute="bottom" id="8Pp-1i-Nqa"/>
                             <constraint firstItem="SRf-yi-611" firstAttribute="centerY" secondItem="vun-7s-oyp" secondAttribute="centerY" id="DRc-TU-wCM"/>
                             <constraint firstItem="HFt-ze-xZN" firstAttribute="centerX" secondItem="vun-7s-oyp" secondAttribute="centerX" id="FlJ-Db-r4B"/>
                             <constraint firstItem="SRf-yi-611" firstAttribute="centerX" secondItem="vun-7s-oyp" secondAttribute="centerX" id="HdV-2L-oOI"/>
@@ -126,7 +126,7 @@
                             <constraint firstItem="TYd-KS-ATk" firstAttribute="centerX" secondItem="Dnc-cO-o1K" secondAttribute="centerX" id="7ge-jt-B1o"/>
                             <constraint firstItem="TYd-KS-ATk" firstAttribute="leading" secondItem="Dnc-cO-o1K" secondAttribute="leading" priority="750" id="D0i-YN-2W9"/>
                             <constraint firstAttribute="trailing" secondItem="TYd-KS-ATk" secondAttribute="trailing" priority="750" id="YfS-kp-EyV"/>
-                            <constraint firstItem="o8Z-rn-88W" firstAttribute="top" secondItem="TYd-KS-ATk" secondAttribute="bottom" id="Zm0-UB-HSd"/>
+                            <constraint firstAttribute="bottom" secondItem="TYd-KS-ATk" secondAttribute="bottom" id="Zm0-UB-HSd"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="New Moment" id="Q6x-tD-0m5">
@@ -205,7 +205,7 @@
                         <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="RHO-Bm-5FM" firstAttribute="leading" secondItem="GOb-D2-iXN" secondAttribute="leading" id="Hvh-h2-pL5"/>
-                            <constraint firstItem="qe9-n0-jKR" firstAttribute="top" secondItem="RHO-Bm-5FM" secondAttribute="bottom" id="IXK-V9-pzI"/>
+                            <constraint firstAttribute="bottom" secondItem="RHO-Bm-5FM" secondAttribute="bottom" id="IXK-V9-pzI"/>
                             <constraint firstItem="RHO-Bm-5FM" firstAttribute="top" secondItem="GOb-D2-iXN" secondAttribute="topMargin" id="Zmn-gc-YNT"/>
                             <constraint firstAttribute="trailing" secondItem="RHO-Bm-5FM" secondAttribute="trailing" id="f5X-aH-5w3"/>
                         </constraints>
@@ -281,7 +281,7 @@
                         <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="XSv-fL-YHp" secondAttribute="trailing" id="HGW-cU-tmX"/>
-                            <constraint firstItem="cK7-HQ-mea" firstAttribute="top" secondItem="XSv-fL-YHp" secondAttribute="bottom" id="YVg-bY-ans"/>
+                            <constraint firstAttribute="bottom" secondItem="XSv-fL-YHp" secondAttribute="bottom" id="YVg-bY-ans"/>
                             <constraint firstItem="XSv-fL-YHp" firstAttribute="top" secondItem="27m-Bk-QNR" secondAttribute="top" id="eRX-oP-bh6"/>
                             <constraint firstItem="XSv-fL-YHp" firstAttribute="leading" secondItem="27m-Bk-QNR" secondAttribute="leading" id="nHQ-Ge-Veu"/>
                         </constraints>
@@ -490,7 +490,7 @@ If you have any questions about these Terms, please contact us.
                             <constraint firstItem="xzF-qz-0gc" firstAttribute="leading" secondItem="Hfw-TY-Rnm" secondAttribute="leading" priority="750" id="VCr-J5-4xt"/>
                             <constraint firstItem="OHd-NN-at6" firstAttribute="centerY" secondItem="Hfw-TY-Rnm" secondAttribute="centerY" id="cEc-nO-EoC"/>
                             <constraint firstItem="xzF-qz-0gc" firstAttribute="centerX" secondItem="Hfw-TY-Rnm" secondAttribute="centerX" id="dNw-Eu-dvt"/>
-                            <constraint firstItem="7Pn-KE-l7C" firstAttribute="top" secondItem="xzF-qz-0gc" secondAttribute="bottom" id="fN7-Uu-Ysc"/>
+                            <constraint firstAttribute="bottom" secondItem="xzF-qz-0gc" secondAttribute="bottom" id="fN7-Uu-Ysc"/>
                             <constraint firstItem="xzF-qz-0gc" firstAttribute="top" secondItem="nIw-MW-iby" secondAttribute="bottom" id="pYY-lz-q0a"/>
                             <constraint firstAttribute="trailing" secondItem="xzF-qz-0gc" secondAttribute="trailing" priority="750" id="x6D-za-GOX"/>
                         </constraints>
@@ -597,7 +597,7 @@ If you have any questions about these Terms, please contact us.
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Mdd-h1-Hiz" firstAttribute="top" secondItem="UEi-Nx-Mws" secondAttribute="bottom" id="DSv-OV-byd"/>
+                            <constraint firstAttribute="bottom" secondItem="UEi-Nx-Mws" secondAttribute="bottom" id="DSv-OV-byd"/>
                             <constraint firstItem="UEi-Nx-Mws" firstAttribute="top" secondItem="t4K-HN-mkN" secondAttribute="bottom" id="SEO-1L-g71"/>
                             <constraint firstItem="UEi-Nx-Mws" firstAttribute="leading" secondItem="pfv-Lb-6So" secondAttribute="leading" id="dhG-rg-G2J"/>
                             <constraint firstAttribute="trailing" secondItem="UEi-Nx-Mws" secondAttribute="trailing" id="sue-zO-ZA0"/>
@@ -842,6 +842,6 @@ If you have any questions about these Terms, please contact us.
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="Q56-P5-VKI"/>
-        <segue reference="ibu-DI-7Ln"/>
+        <segue reference="Lb7-be-TB6"/>
     </inferredMetricsTieBreakers>
 </document>

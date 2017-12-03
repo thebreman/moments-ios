@@ -29,7 +29,7 @@ class ProfileImageView: UIView
         return button
     }()
     
-    dynamic var actionFont: UIFont? {
+    @objc dynamic var actionFont: UIFont? {
         get {
             return self.actionButton.titleLabel?.font
         }
@@ -76,7 +76,7 @@ class ProfileImageView: UIView
         self.containerView.addSubview(self.imageView)
         self.containerView.addSubview(self.actionButton)
         
-        NSLayoutConstraint.autoSetPriority(999) { 
+        NSLayoutConstraint.autoSetPriority(UILayoutPriority(rawValue: 999)) { 
             self.imageView.autoSetDimension(.height, toSize: WIDTH_IMAGE_VIEW)
             self.imageView.autoSetDimension(.width, toSize: WIDTH_IMAGE_VIEW)
         }

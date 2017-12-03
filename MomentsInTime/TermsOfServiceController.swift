@@ -15,7 +15,7 @@ class TermsOfServiceController: UIViewController
     //called after we dismiss after successful agreement to terms:
     var successCompletionHandler: TermsOfServiceSuccessCompletion?
     
-    //MARK: Actions
+//MARK: Actions
 
     @IBAction func handleAgree(_ sender: UIBarButtonItem)
     {
@@ -24,7 +24,7 @@ class TermsOfServiceController: UIViewController
         //only dismiss if user agrees to Terms and Conditions:
         acceptAlertView.showFrom(viewController: self) { success in
             if success {
-                self.presentingViewController?.dismiss(animated: true) { _ in
+                self.presentingViewController?.dismiss(animated: true) {
                     self.successCompletionHandler?()
                 }
             }
