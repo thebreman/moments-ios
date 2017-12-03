@@ -5,8 +5,6 @@ target 'MomentsInTime' do
 pod 'PureLayout'
 pod 'Alamofire'
 pod 'SDWebImage'
-pod 'FacebookCore'
-pod 'FacebookLogin'
 pod 'DZNEmptyDataSet'
 pod 'ActiveLabel'
 pod 'UITextView+Placeholder'

@@ -123,7 +123,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         
         //save role if we have one:
         if let role = self.roleFieldView.textField.text {
-            self.role = role.characters.count > 0 ? role : nil
+            self.role = role.count > 0 ? role : nil
         }
         
         // add the image to the model:
@@ -176,7 +176,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         let currentText = textField.text as NSString?
         let newText = currentText?.replacingCharacters(in: range, with: string)
         
-        guard let count = newText?.characters.count else { return true }
+        guard let count = newText?.count else { return true }
         
         return count <= MAX_CHARACTERS
     }
@@ -188,7 +188,7 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
     
     private func updateSaveButton()
     {
-        if let nameFieldCount = self.nameFieldView.textField.text?.characters.count {
+        if let nameFieldCount = self.nameFieldView.textField.text?.count {
             self.saveButton.isEnabled = nameFieldCount >= MIN_CHARACTERS_NAME
         }
     }

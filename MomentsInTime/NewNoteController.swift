@@ -49,7 +49,7 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
     @IBAction func handleSave(_ sender: BouncingButton)
     {
         if let noteText = self.textView.text {
-            if noteText.characters.count > 0 {
+            if noteText.count > 0 {
                 self.text = noteText
             }
         }
@@ -71,7 +71,7 @@ class NewNoteController: UIViewController, UITextViewDelegate, KeyboardMover
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
     {
-        let totalPotentialCharacters = textView.text.characters.count + (text.characters.count - range.length)
+        let totalPotentialCharacters = textView.text.count + (text.count - range.length)
         self.saveButton.isEnabled = totalPotentialCharacters > 0
         return totalPotentialCharacters <= MAX_CHARACTERS_NOTE
     }

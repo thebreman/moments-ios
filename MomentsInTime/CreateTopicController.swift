@@ -141,7 +141,7 @@ class CreateTopicController: UIViewController, UITableViewDelegate, UITableViewD
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
     {
-        let totalPotentialCharacters = textView.text.characters.count + (text.characters.count - range.length)
+        let totalPotentialCharacters = textView.text.count + (text.count - range.length)
         return totalPotentialCharacters <= MAX_CHARACTERS_DESCRIPTION
     }
     
@@ -168,7 +168,7 @@ class CreateTopicController: UIViewController, UITableViewDelegate, UITableViewD
         let currentText = textField.text as NSString?
         let newText = currentText?.replacingCharacters(in: range, with: string)
         
-        guard let count = newText?.characters.count else { return true }
+        guard let count = newText?.count else { return true }
         
         return count <= MAX_CHARACTERS_TITLE
     }
@@ -274,7 +274,7 @@ class CreateTopicController: UIViewController, UITableViewDelegate, UITableViewD
         var readyToSave = false
         
         if let titleText = self.titleFieldView.textField.text, let descriptionText = self.descriptionFieldView.textView.text {
-            if titleText.characters.count >= MIN_CHARACTERS_TITLE && descriptionText.characters.count >= MIN_CHARACTERS_DESCRIPTION {
+            if titleText.count >= MIN_CHARACTERS_TITLE && descriptionText.count >= MIN_CHARACTERS_DESCRIPTION {
                 readyToSave = true
             }
         }
