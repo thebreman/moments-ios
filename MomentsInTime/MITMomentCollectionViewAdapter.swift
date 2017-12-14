@@ -25,12 +25,17 @@ protocol MITMomentCollectionViewAdapterDelegate: class
 }
 
 //delegate to pass which moment needs to be played after user taps playButton:
-@objc protocol MITMomentCollectionViewAdapterMomentDelegate: class
+protocol MITMomentCollectionViewAdapterMomentDelegate: class
 {
     func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
     func adapter(adapter:  MITMomentCollectionViewAdapter, handleShareForMoment moment: Moment, sender: UIButton)
     func adapter(adapter: MITMomentCollectionViewAdapter, handleOptionsForMoment moment: Moment, sender: UIButton)
-    @objc optional func didSelectMoment(_ moment: Moment)
+    func didSelectMoment(_ moment: Moment)
+}
+
+extension MITMomentCollectionViewAdapterMomentDelegate
+{
+    func didSelectMoment(_ moment: Moment) {}
 }
 
 //delegate for fetch/ infinite scroll provides view to be displayed while fetching and handles fetching more content:
@@ -215,64 +220,60 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        switch section {
+        switch section
+        {
+            case SECTION_BANNER_TOP:
+                let count = self.bannerView != nil && !self.moments.isEmpty ? 1 : 0
+                return count
             
-        case SECTION_BANNER_TOP:
-            let count = self.bannerView != nil && !self.moments.isEmpty ? 1 : 0
-            return count
-        
-        case SECTION_MOMENT_FEED:
-            return self.momentsAndAccessoryViews.count
+            case SECTION_MOMENT_FEED:
+                return self.momentsAndAccessoryViews.count
             
-        case SECTION_MOMENT_FETCH:
-            let count = self.infiniteScrollDelegate != nil && self.allowsInfiniteScrolling ? 1 : 0
-            return count
+            case SECTION_MOMENT_FETCH:
+                let count = self.infiniteScrollDelegate != nil && self.allowsInfiniteScrolling ? 1 : 0
+                return count
             
-        default:
-            assert(false, "unknown section in collectionView!")
-            return 0
+            default:
+                assert(false, "unknown section in collectionView!")
+                return 0
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        switch indexPath.section {
+        switch indexPath.section
+        {
+            case SECTION_BANNER_TOP:
+                if let bannerView = self.bannerView {
+                    return self.containerCell(forView: bannerView, atIndexPath: indexPath, withCollectionView: collectionView)
+                }
+                
+                return UICollectionViewCell()
             
-        case SECTION_BANNER_TOP:
+            case SECTION_MOMENT_FEED:
+                if let moment = self.momentsAndAccessoryViews[indexPath.item] as? Moment {
+                    return self.momentCell(forMoment: moment, atIndexPath: indexPath, withCollectionView: collectionView)
+                }
+                else if let accessoryView = self.momentsAndAccessoryViews[indexPath.item] as? UIView {
+                    return self.containerCell(forView: accessoryView, atIndexPath: indexPath, withCollectionView: collectionView)
+                }
+                
+                assert(false, "unknown object in dataSource")
+                return UICollectionViewCell()
             
-            if let bannerView = self.bannerView {
-                return self.containerCell(forView: bannerView, atIndexPath: indexPath, withCollectionView: collectionView)
-            }
+            case SECTION_MOMENT_FETCH:
+                if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_SPINNER_CELL, for: indexPath) as? SpinnerCell {
+                    cell.spinner.startAnimating()
+                    cell.rasterizeShadow()
+                    return cell
+                }
+                
+                assert(false, "dequeued cell was of an unknown type!")
+                return UICollectionViewCell()
             
-            return UICollectionViewCell()
-            
-        case SECTION_MOMENT_FEED:
-            
-            if let moment = self.momentsAndAccessoryViews[indexPath.item] as? Moment {
-                return self.momentCell(forMoment: moment, atIndexPath: indexPath, withCollectionView: collectionView)
-            }
-            else if let accessoryView = self.momentsAndAccessoryViews[indexPath.item] as? UIView {
-                return self.containerCell(forView: accessoryView, atIndexPath: indexPath, withCollectionView: collectionView)
-            }
-            
-            assert(false, "unknown object in dataSource")
-            return UICollectionViewCell()
-            
-        case SECTION_MOMENT_FETCH:
-            
-            if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifiers.IDENTIFIER_REUSE_SPINNER_CELL, for: indexPath) as? SpinnerCell {
-                cell.spinner.startAnimating()
-                cell.rasterizeShadow()
-                return cell
-            }
-            
-            assert(false, "dequeued cell was of an unknown type!")
-            return UICollectionViewCell()
-            
-        default:
-            
-            assert(false, "unknown section in collectionView!")
-            return UICollectionViewCell()
+            default:
+                assert(false, "unknown section in collectionView!")
+                return UICollectionViewCell()
         }
     }
     
@@ -287,6 +288,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
             self.fetching = true
             self.infiniteScrollDelegate?.fetchNewMoments(for: self) {
                 self.fetching = false
+                
                 if let spinnerCell = cell as? SpinnerCell {
                     spinnerCell.spinner.stopAnimating()
                 }
@@ -296,52 +298,48 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
     {
-        switch indexPath.section {
-        
-        case SECTION_BANNER_TOP:
-            
-            if let viewToDisplay = self.bannerView {
-                let size = ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: viewToDisplay)
-                return size
-            }
-            
-            return .zero
-            
-        case SECTION_MOMENT_FEED:
-            
-            if let moment = self.momentsAndAccessoryViews[indexPath.item] as? Moment {
-                
-                var height = CGFloat(0)
-                
-                if let cachedHeight = momentCellHeightCache.object(forKey: moment.momentID as NSString) as? CGFloat {
-                    height = cachedHeight
+        switch indexPath.section
+        {
+            case SECTION_BANNER_TOP:
+                if let viewToDisplay = self.bannerView {
+                    let size = ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: viewToDisplay)
+                    return size
                 }
-                else {
-                    let fittedSize = MomentCell.sizeForMoment(moment, width: collectionView.bounds.width)
-                    height = fittedSize.height
-                    momentCellHeightCache.setObject(height as NSNumber, forKey: moment.momentID as NSString)
-                }
+                
+                return .zero
+            
+            case SECTION_MOMENT_FEED:
+                if let moment = self.momentsAndAccessoryViews[indexPath.item] as? Moment {
+                    
+                    var height = CGFloat(0)
+                    
+                    if let cachedHeight = momentCellHeightCache.object(forKey: moment.momentID as NSString) as? CGFloat {
+                        height = cachedHeight
+                    }
+                    else {
+                        let fittedSize = MomentCell.sizeForMoment(moment, width: collectionView.bounds.width)
+                        height = fittedSize.height
+                        momentCellHeightCache.setObject(height as NSNumber, forKey: moment.momentID as NSString)
+                    }
 
-                return CGSize(width: self.collectionView.bounds.width, height: height)
-            }
-            else if let accessoryView = self.momentsAndAccessoryViews[indexPath.item] as? UIView {
-                let size = ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
-                print("accessory view height: \(size.height)")
+                    return CGSize(width: self.collectionView.bounds.width, height: height)
+                }
+                else if let accessoryView = self.momentsAndAccessoryViews[indexPath.item] as? UIView {
+                    let size = ContainerCell.sizeForCell(withWidth: collectionView.bounds.width, containedView: accessoryView)
+                    print("accessory view height: \(size.height)")
+                    return size
+                }
+                
+                assert(false, "unknown object in dataSource")
+                return .zero
+            
+            case SECTION_MOMENT_FETCH:
+                let size = SpinnerCell.sizeForSpinnerCell(withWidth: collectionView.bounds.width)
                 return size
-            }
             
-            assert(false, "unknown object in dataSource")
-            return .zero
-            
-        case SECTION_MOMENT_FETCH:
-            
-            let size = SpinnerCell.sizeForSpinnerCell(withWidth: collectionView.bounds.width)
-            return size
-            
-        default:
-            
-            assert(false, "unknown section in collectionView!")
-            return .zero
+            default:
+                assert(false, "unknown section in collectionView!")
+                return .zero
         }
     }
     
@@ -350,7 +348,7 @@ class MITMomentCollectionViewAdapter: NSObject, DZNEmptyDataSetSource, DZNEmptyD
         guard indexPath.section == SECTION_MOMENT_FEED else { return }
         
         if let selectedMoment = self.momentsAndAccessoryViews[indexPath.item] as? Moment {
-            self.momentDelegate?.didSelectMoment?(selectedMoment)
+            self.momentDelegate?.didSelectMoment(selectedMoment)
         }
     }
     

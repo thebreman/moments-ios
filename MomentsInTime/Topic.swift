@@ -14,9 +14,9 @@ private let DEFAULT_TOPICS_KEY_TOP = "topics"
 
 class Topic: Object
 {
-    dynamic var title: String = ""
-    dynamic var topicDescription: String = ""
-    dynamic var isCustom: Bool = false
+    @objc dynamic var title: String = ""
+    @objc dynamic var topicDescription: String = ""
+    @objc dynamic var isCustom: Bool = false
     
     convenience init(title: String, description: String)
     {
@@ -29,7 +29,7 @@ class Topic: Object
     class func topicsFromJSON() -> [Topic]?
     {
         // grab the file url
-        if let path = Bundle.main.path(forResource:FILE_DEFAULT_TOPICS, ofType: "json") {
+        if let path = Bundle.main.path(forResource: FILE_DEFAULT_TOPICS, ofType: "json") {
             
             // file:// scheme is required
             let fullPath = "file://\(path)"
@@ -58,4 +58,5 @@ class Topic: Object
         return nil
     }
 }
+
 

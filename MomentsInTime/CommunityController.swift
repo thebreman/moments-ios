@@ -10,15 +10,14 @@ import UIKit
 import PureLayout
 import AVKit
 import AVFoundation
-import FacebookCore
-import FacebookLogin
 
 private let KEY_ACCEPTED_TERMS_OF_SERVICE = "didAcceptTermsOfService"
 private let IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER = "TermsOfServiceStoryboardID"
+private let IDENTIFIER_SEGUE_TERMS_TO_PRIVACY = "TermsToPrivacyPolicy"
+private let IDENTIFIER_STORYBOARD_PRIVACY_CONTROLLER = "PrivacyPolicyControllerStoryboardID"
 
 private let KEY_CLOSED_WELCOME_HEADER = "didCloseWelcomeHeader"
 
-private let REQUIRE_FB_LOGIN_ON_LAUNCH = false 
 private let OPTIONS_ALLOWS_SHARE = false
 
 private let FREQUENCY_ACCESSORY_VIEW = 5
@@ -84,12 +83,28 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
+        print("viewWillAppear")
         
         //need this in case we rotate, switch tabs, then rotate back...
         //when we come back to this screen, the layout will be where we left it
         //even though viewWilTransition: gets called on all VCs in the tab bar controller,
         //when we come back on screen the collectinView width is no longer valid.
         self.collectionView.collectionViewLayout.invalidateLayout()
+        
+        //update navBar:
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: UIColor.mitText
+        ]
+        
+        if #available(iOS 11.0, *) {
+            UIApplication.shared.keyWindow?.backgroundColor = UIColor.mitBackground
+            self.navigationController?.navigationBar.prefersLargeTitles = true
+            self.navigationItem.largeTitleDisplayMode = self.isDisplayingSearchResults ? .never : .always
+            
+            self.navigationController?.navigationBar.largeTitleTextAttributes = [
+                NSAttributedStringKey.foregroundColor: UIColor.mitText
+            ]
+        }
     }
     
     private var didVerifyTerms = false
@@ -125,7 +140,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         }
     }
     
-    //MARK: Actions
+//MARK: Actions
     
     @objc private func handleNewMoment(_ sender: BouncingButton)
     {
@@ -149,7 +164,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.ratingsAlert.showFrom(viewController: self)
     }
     
-    //MARK: WelcomeHeaderViewDelegate
+//MARK: WelcomeHeaderViewDelegate
     
     //For both cases we will just close the header so user can browse through Community Moments:
     
@@ -163,7 +178,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.closeWelcomeHeaderView()
     }
     
-    //MARK: MITMomentCollectionViewAdapterDelegate
+//MARK: MITMomentCollectionViewAdapterDelegate
     
     func accessoryViewFrequency(forAdaptor adapter: MITMomentCollectionViewAdapter) -> Int
     {
@@ -184,7 +199,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         return containerView
     }
     
-    //MARK: MITMomentCollectionViewAdapterMomentDelegate
+//MARK: MITMomentCollectionViewAdapterMomentDelegate
     
     func adapter(adapter: MITMomentCollectionViewAdapter, handlePlayForMoment moment: Moment, sender: UIButton)
     {
@@ -213,7 +228,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.optionsSheet.showFrom(viewController: self, sender: sender, forMoment: moment)
     }
     
-    //MARK: MITMomentCollectionViewAdapterInfiniteScrollDelegate
+//MARK: MITMomentCollectionViewAdapterInfiniteScrollDelegate
     
     func fetchNewMoments(for adapter: MITMomentCollectionViewAdapter, completion: @escaping () -> Void)
     {
@@ -247,9 +262,8 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         
         self.navigationController!.pushViewController(communityController, animated: true)
     }
-    
-    
-    // MARK: Refresh
+
+// MARK: Refresh
     
     @objc private func refresh()
     {
@@ -296,7 +310,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         }
     }
     
-    //MARK: Utilities
+//MARK: Utilities
     
     private func verifyTermsOfService()
     {
@@ -306,13 +320,6 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
             //successful terms agreement, so indicate in UserDefaults:
             UserDefaults.standard.set(true, forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
             UserDefaults.standard.synchronize()
-            
-            //check FB login:
-            if REQUIRE_FB_LOGIN_ON_LAUNCH {
-                self.checkForUser {
-                    print("We have a user!")
-                }
-            }
         }
     }
     
@@ -345,31 +352,6 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         }
     }
     
-    private func checkForUser(completion: @escaping () -> Void)
-    {
-        guard AccessToken.current != nil else {
-            
-            if let loginController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginController") as? LoginController {
-                
-                loginController.loginCompletionHandler = {
-                    loginController.presentingViewController?.dismiss(animated: true) {
-                        completion()
-                    }
-                }
-                
-                self.present(loginController, animated: true, completion: nil)
-            }
-            
-            return
-        }
-        
-        /**
-         * LoginController will only call completion upon successful login, so at this point,
-         * we are all set with a current user (AccessToken.current is no longer nil...)
-         */
-        completion()
-    }
-    
     private func setupCollectionView()
     {
         if let flowLayout = self.collectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -381,13 +363,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         self.collectionView.contentInset.top = 12
         
         if let pullToRefresh = self.refreshControl {
-            self.collectionView?.addSubview(pullToRefresh)
-        }
-        
-        //ios 11 adjustsContentInset is deprecated, user this scrollView property,
-        //to prevent offset push/pop 
-        if #available(iOS 11.0, *) {
-            self.collectionView.contentInsetAdjustmentBehavior = .never
+            self.collectionView.refreshControl = pullToRefresh
         }
     }
     
@@ -408,12 +384,23 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         if let termsNavController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER) as? UINavigationController,
             let termsOfServiceController = termsNavController.viewControllers.first as? TermsOfServiceController {
             
-            termsOfServiceController.successCompletionHandler = completion
+            termsOfServiceController.successCompletionHandler = {
+                self.showPrivacyPolicy(navigationController: termsNavController, completion: completion)
+            }
             
             //need to ensure that we wait until next run loop to display in case self is not finished being animated yet:
             DispatchQueue.main.async {
                 self.tabBarController?.present(termsNavController, animated: true, completion: nil)
             }
+        }
+    }
+    
+    private func showPrivacyPolicy(navigationController: UINavigationController, completion: TermsOfServiceSuccessCompletion? = nil)
+    {
+        if let privacyPolicyController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: IDENTIFIER_STORYBOARD_PRIVACY_CONTROLLER) as? PrivacyPolicyController {
+            
+            privacyPolicyController.successCompletionHandler = completion
+            navigationController.pushViewController(privacyPolicyController, animated: true)
         }
     }
 }

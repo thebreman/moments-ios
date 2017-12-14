@@ -12,6 +12,6 @@ extension UIFont
 {
     class func mitNavigationTextFont() -> UIFont
     {
-        return UIFont.systemFont(ofSize: 24.0, weight: UIFontWeightRegular)
+        return UIFont.systemFont(ofSize: 24.0, weight: UIFont.Weight.regular)
     }
 }

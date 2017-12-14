@@ -10,12 +10,20 @@ import UIKit
 
 typealias TermsOfServiceSuccessCompletion = () -> Void
 
-class TermsOfServiceController: UIViewController
+class TermsOfServiceController: WebViewController
 {
-    //called after we dismiss after successful agreement to terms:
     var successCompletionHandler: TermsOfServiceSuccessCompletion?
     
-    //MARK: Actions
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+        
+        if let termsOfUseFileURL = MITDocuments.termsOfUse.localURL {
+            self.loadLocalURL(url: termsOfUseFileURL)
+        }
+    }
+    
+//MARK: Actions
 
     @IBAction func handleAgree(_ sender: UIBarButtonItem)
     {
@@ -23,10 +31,9 @@ class TermsOfServiceController: UIViewController
        
         //only dismiss if user agrees to Terms and Conditions:
         acceptAlertView.showFrom(viewController: self) { success in
+            
             if success {
-                self.presentingViewController?.dismiss(animated: true) { _ in
-                    self.successCompletionHandler?()
-                }
+                self.successCompletionHandler?()
             }
         }
     }

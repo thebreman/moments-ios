@@ -58,27 +58,25 @@ class MomentCell: BouncingCollectionViewCell
     
     class func sizeForMoment(_ moment: Moment, width: CGFloat) -> CGSize
     {
-        if let cell = _sizingCell as? MomentCell {
-            cell.bounds = CGRect(x: 0, y: 0, width: width, height: 1000)
-            cell.moment = moment
-            
-            // the system fitting does not honor the bounded width^ from above (it sizes the label as wide as possible)
-            // we'll set a manual width constraint so we fully autolayout when asking for a fitted size:
-            cell.contentView.removeConstraint(_sizingWidth)
-            _sizingWidth = cell.contentView.autoSetDimension(ALDimension.width, toSize: width)
-            
-            cell.setNeedsUpdateConstraints()
-            cell.updateConstraintsIfNeeded()
-            cell.setNeedsLayout()
-            cell.layoutIfNeeded()
-            
-            let autoSize = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
-            let height = autoSize.height
-            
-            return CGSize(width: width, height: height)
-        }
+        guard let cell = _sizingCell as? MomentCell else { return .zero }
         
-        return .zero
+        cell.bounds = CGRect(x: 0, y: 0, width: width, height: 1000)
+        cell.moment = moment
+        
+        // the system fitting does not honor the bounded width^ from above (it sizes the label as wide as possible)
+        // we'll set a manual width constraint so we fully autolayout when asking for a fitted size:
+        cell.contentView.removeConstraint(_sizingWidth)
+        _sizingWidth = cell.contentView.autoSetDimension(ALDimension.width, toSize: width)
+        
+        cell.setNeedsUpdateConstraints()
+        cell.updateConstraintsIfNeeded()
+        cell.setNeedsLayout()
+        cell.layoutIfNeeded()
+        
+        let autoSize = cell.contentView.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        let height = autoSize.height
+        
+        return CGSize(width: width, height: height)
     }
 
     // MARK: Actions

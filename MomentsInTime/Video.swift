@@ -14,17 +14,17 @@ class Video: Object
 {
     //these will be persisted with Realm for user's MyMoments 
     //everything else will come from Vimeo JSON objects
-    dynamic var videoID = UUID().uuidString
-    dynamic var uri: String? = nil
-    dynamic var name: String? = nil
-    dynamic var videoDescription: String? = nil
-    dynamic var localURL: String? = nil //file path for videos that are being uploaded:
-    dynamic var localThumbnailImageURL: String? = nil
-    dynamic var videoLink: String?
-    dynamic var isLocal: Bool = false
-    dynamic var liveVerified: Bool = false
-    dynamic var addedToUploadAlbum: Bool = false
-    dynamic var playbackURL: String?
+    @objc dynamic var videoID = UUID().uuidString
+    @objc dynamic var uri: String? = nil
+    @objc dynamic var name: String? = nil
+    @objc dynamic var videoDescription: String? = nil
+    @objc dynamic var localURL: String? = nil //file path for videos that are being uploaded:
+    @objc dynamic var localThumbnailImageURL: String? = nil
+    @objc dynamic var videoLink: String?
+    @objc dynamic var isLocal: Bool = false
+    @objc dynamic var liveVerified: Bool = false
+    @objc dynamic var addedToUploadAlbum: Bool = false
+    @objc dynamic var playbackURL: String?
     
     var thumbnailImageURL: String?
     var status: String?
@@ -249,9 +249,9 @@ extension Video // conveniences for title parsing
                 // range at index 0: full match
                 // range at index 1: first capture group (name)
                 // range at index 2: first capture group (topic)
-                let name = (fullTitle as NSString).substring(with: fullMatch.rangeAt(1))
+                let name = (fullTitle as NSString).substring(with: fullMatch.range(at: 1))
                 print("name: \(name)")
-                let topic = (fullTitle as NSString).substring(with: fullMatch.rangeAt(2))
+                let topic = (fullTitle as NSString).substring(with: fullMatch.range(at: 2))
                 print("topic: \(topic)")
                 
                 return name.trimmed()

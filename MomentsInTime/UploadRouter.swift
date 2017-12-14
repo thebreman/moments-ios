@@ -42,19 +42,20 @@ enum UploadRouter: URLRequestConvertible
         var url: URL
         var urlRequest: URLRequest
         
-        switch self {
-        case .create(ticketID: let ticketID, uploadLink: _):
-            url = try self.path.asURL()
-            urlRequest = URLRequest(url: url)
-            urlRequest = try URLEncoding.httpBody.encode(urlRequest, with: ["ticket_id": ticketID])
+        switch self
+        {
+            case .create(ticketID: let ticketID, uploadLink: _):
+                url = try self.path.asURL()
+                urlRequest = URLRequest(url: url)
+                urlRequest = try URLEncoding.httpBody.encode(urlRequest, with: ["ticket_id": ticketID])
             
-        case .complete:
-            url = try self.path.asURL()
-            urlRequest = URLRequest(url: url)
+            case .complete:
+                url = try self.path.asURL()
+                urlRequest = URLRequest(url: url)
             
-        default:
-            url = try VimeoConnector.baseAPIEndpoint.asURL()
-            urlRequest = URLRequest(url: url.appendingPathComponent(self.path))
+            default:
+                url = try VimeoConnector.baseAPIEndpoint.asURL()
+                urlRequest = URLRequest(url: url.appendingPathComponent(self.path))
         }
         
         urlRequest.httpMethod = self.method.rawValue
@@ -67,7 +68,6 @@ enum UploadRouter: URLRequestConvertible
         urlRequest.setValue(VimeoConnector.accessTokenValue, forHTTPHeaderField: VimeoConnector.accessTokenKey)
         
         print(urlRequest)
-        
         return urlRequest
     }
 }

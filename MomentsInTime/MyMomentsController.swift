@@ -40,7 +40,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     private lazy var emptyStateView: MITTextActionView = {
         let view = MITTextActionView.mitEmptyStateView()
         view.actionButton.addTarget(self, action: #selector(createNewMomentAnimated), for: .touchUpInside)
-//        view.autoSetDimension(.width, toSize: 320.0)
         return view
     }()
     
@@ -84,6 +83,20 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         //even though viewWilTransition: gets called on all VCs in the tab bar controller,
         //when we come back on screen the collectinView width is no longer valid.
         self.collectionView.collectionViewLayout.invalidateLayout()
+        
+        //update navBar:
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedStringKey.foregroundColor: UIColor.mitText
+        ]
+        
+        if #available(iOS 11.0, *) {
+            self.navigationController?.navigationBar.prefersLargeTitles = true
+            self.navigationItem.largeTitleDisplayMode = .always
+            
+            self.navigationController?.navigationBar.largeTitleTextAttributes = [
+                NSAttributedStringKey.foregroundColor: UIColor.mitText
+            ]
+        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator)
@@ -101,30 +114,29 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
     {
         guard let id = segue.identifier else { return }
         
-        switch id {
-            
-        case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
-            if let newMomentController = segue.destination.contentViewController as? NewMomentController {
-                
-                newMomentController.completion = { moment, justCreated, shouldSubmit in
-                    self.handleNewMomentCompletion(withMoment: moment, justCreated: justCreated, shouldSubmit: shouldSubmit)
+        switch id
+        {
+            case Identifiers.IDENTIFIER_SEGUE_NEW_MOMENT:
+                if let newMomentController = segue.destination.contentViewController as? NewMomentController {
+                    
+                    newMomentController.completion = { moment, justCreated, shouldSubmit in
+                        self.handleNewMomentCompletion(withMoment: moment, justCreated: justCreated, shouldSubmit: shouldSubmit)
+                    }
+                    
+                    //pass along moment if we have one:
+                    if let selectedMoment = sender as? Moment {
+                        newMomentController.moment = selectedMoment
+                        newMomentController.title = COPY_TITLE_MOMENT_DETAIL
+                    }
                 }
-                
-                //pass along moment if we have one:
-                if let selectedMoment = sender as? Moment {
-                    newMomentController.moment = selectedMoment
-                    newMomentController.title = COPY_TITLE_MOMENT_DETAIL
+            
+            case Identifiers.IDENTIFIER_SEGUE_PLAYER:
+                if let playerController = segue.destination.contentViewController as? AVPlayerViewController, let videoURL = sender as? URL {
+                    playerController.player = AVPlayer(url: videoURL)
+                    playerController.player?.play()
                 }
-            }
             
-        case Identifiers.IDENTIFIER_SEGUE_PLAYER:
-            if let playerController = segue.destination.contentViewController as? AVPlayerViewController, let videoURL = sender as? URL {
-                playerController.player = AVPlayer(url: videoURL)
-                playerController.player?.play()
-            }
-            
-        default:
-            break
+            default: break
         }
     }
     
@@ -137,7 +149,7 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
 //MARK: Public
     
     /// to be used when called from outside (highlights the plus button before pushing)
-    func createNewMomentAnimated()
+    @objc func createNewMomentAnimated()
     {
         let pulsar = Pulsar()
         
@@ -257,12 +269,6 @@ class MyMomentsController: UIViewController, MITMomentCollectionViewAdapterMomen
         }
         
         self.collectionView.contentInset.top = 12
-        
-        //ios 11 adjustsContentInset is deprecated, user this scrollView property,
-        //to prevent offset push/pop transitions:
-        if #available(iOS 11.0, *) {
-            self.collectionView.contentInsetAdjustmentBehavior = .never
-        }
     }
     
     //MARK: Utilities

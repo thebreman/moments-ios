@@ -24,7 +24,7 @@ class TextActionView: UIView
         
     }
     
-    dynamic var titleFont: UIFont? {
+    @objc dynamic var titleFont: UIFont? {
         get {
             return self.titleLabel.font
         }
@@ -51,7 +51,7 @@ class TextActionView: UIView
         }
     }
     
-    dynamic var messageFont: UIFont? {
+    @objc dynamic var messageFont: UIFont? {
         get {
             return self.messageLabel.font
         }
@@ -77,7 +77,7 @@ class TextActionView: UIView
         return button
     }()
     
-    dynamic var actionFont: UIFont? {
+    @objc dynamic var actionFont: UIFont? {
         get {
             return self.actionButton.titleLabel?.font
         }

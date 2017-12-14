@@ -77,7 +77,7 @@ class ImageTitleSubtitleCell: BouncingTableViewCell
     
     private func configureLabels()
     {
-        if let subText = self.subtitleLabel.text, subText.characters.count > 0 {
+        if let subText = self.subtitleLabel.text, subText.count > 0 {
             self.subtitleLabelTopConstraint.constant = SPACING_NAME_ROLE
         }
         else {

@@ -291,7 +291,7 @@ extension AVCaptureDevice
     {
         //first verify camera authorization:
         //only proceed to audio verification if we have camera authorized:
-        switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
+        switch AVCaptureDevice.authorizationStatus(for: AVMediaType.video) {
         
         case .authorized:
             
@@ -299,7 +299,7 @@ extension AVCaptureDevice
             AVCaptureDevice.verifyAudioAuthorization(authorizedHandler: authorizedHandler, notAuthorizedHandler: notAuthorizedHandler)
         
         case .notDetermined:
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo) { granted in
+            AVCaptureDevice.requestAccess(for: AVMediaType.video) { granted in
                 
                 guard granted == true else {
                     
@@ -325,7 +325,7 @@ extension AVCaptureDevice
      */
     class func verifyVideoAuthorization(authorizedHandler: @escaping () -> Void, notAuthorizedHandler: @escaping () -> Void)
     {
-        switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) {
+        switch AVCaptureDevice.authorizationStatus(for: AVMediaType.video) {
             
         case .authorized:
             DispatchQueue.main.async {
@@ -333,7 +333,7 @@ extension AVCaptureDevice
             }
             
         case .notDetermined:
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeVideo) { granted in
+            AVCaptureDevice.requestAccess(for: AVMediaType.video) { granted in
                 
                 guard granted == true else {
                     
@@ -360,13 +360,13 @@ extension AVCaptureDevice
      */
     private class func verifyAudioAuthorization(authorizedHandler: @escaping () -> Void, notAuthorizedHandler: @escaping () -> Void)
     {
-        switch AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeAudio) {
+        switch AVCaptureDevice.authorizationStatus(for: AVMediaType.audio) {
             
         case .authorized:
             authorizedHandler()
             
         case .notDetermined:
-            AVCaptureDevice.requestAccess(forMediaType: AVMediaTypeAudio) { granted in
+            AVCaptureDevice.requestAccess(for: AVMediaType.audio) { granted in
                 
                 guard granted == true else {
                     

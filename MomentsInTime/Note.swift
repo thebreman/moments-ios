@@ -11,7 +11,7 @@ import RealmSwift
 
 class Note: Object
 {
-    dynamic var text: String? = nil
+    @objc dynamic var text: String? = nil
     
     convenience init(withText text: String)
     {

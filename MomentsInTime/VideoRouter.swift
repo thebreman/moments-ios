@@ -70,30 +70,29 @@ enum VideoRouter: URLRequestConvertible
         //add any necessary params:
         //One way or another, EVERY request must use the JSON filter otherwise our rate limit is significantly dropped...
         //if we don't care about the response, we will just filter for the uri...
-        switch self {
+        switch self
+        {
+            case .all:
+                let urlString = VimeoConnector.baseAPIEndpoint + self.path
+                let url = try urlString.asURL()
+                urlRequest.url = url
+                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE])
             
-        case .all:
-            let urlString = VimeoConnector.baseAPIEndpoint + self.path
-            let url = try urlString.asURL()
-            urlRequest.url = url
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE])
+            case .search(let query):
+                //send along query and sort results by date:
+                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, QUERY_KEY: query, SORT_KEY: "date"])
             
-        case .search(let query):
-            //send along query and sort results by date:
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, QUERY_KEY: query, SORT_KEY: "date"])
+            case .read:
+                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_READ_VIDEO_VALUE])
             
-        case .read:
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_READ_VIDEO_VALUE])
+            case .create:
+                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: ["type": "streaming", FILTER_KEY: FILTER_CREATE_VIDEO_VALUE])
             
-        case .create:
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: ["type": "streaming", FILTER_KEY: FILTER_CREATE_VIDEO_VALUE])
+            case .update(let video):
+                urlRequest = try URLEncoding.default.encode(urlRequest, with: video.videoParameters())
+                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_UPDATE_VIDEO_VALUE])
             
-        case .update(let video):
-            urlRequest = try URLEncoding.default.encode(urlRequest, with: video.videoParameters())
-            urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_UPDATE_VIDEO_VALUE])
-            
-        default:
-            break
+            default: break
         }
         
         //api version header and auth token header:

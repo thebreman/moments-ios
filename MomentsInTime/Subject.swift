@@ -12,10 +12,10 @@ import RealmSwift
 
 class Subject: Object
 {
-    dynamic var subjectID = UUID().uuidString
-    dynamic var name: String? = nil
-    dynamic var role: String? = nil
-    dynamic var profileImageURL: String? = nil
+    @objc dynamic var subjectID = UUID().uuidString
+    @objc dynamic var name: String? = nil
+    @objc dynamic var role: String? = nil
+    @objc dynamic var profileImageURL: String? = nil
     
     private var _profileImage: UIImage?
     
