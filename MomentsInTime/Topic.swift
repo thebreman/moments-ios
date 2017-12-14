@@ -29,7 +29,7 @@ class Topic: Object
     class func topicsFromJSON() -> [Topic]?
     {
         // grab the file url
-        if let path = Bundle.main.path(forResource:FILE_DEFAULT_TOPICS, ofType: "json") {
+        if let path = Bundle.main.path(forResource: FILE_DEFAULT_TOPICS, ofType: "json") {
             
             // file:// scheme is required
             let fullPath = "file://\(path)"
@@ -58,4 +58,5 @@ class Topic: Object
         return nil
     }
 }
+
 

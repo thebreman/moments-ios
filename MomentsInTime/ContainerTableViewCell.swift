@@ -21,6 +21,7 @@ class ContainerTableViewCell: UITableViewCell
             if let newView = self.containedView {
                 self.contentView.addSubview(newView)
                 newView.autoPinEdgesToSuperviewEdges()
+                newView.autoCenterInSuperview()
                 self.layoutIfNeeded()
             }
         }

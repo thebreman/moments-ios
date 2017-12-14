@@ -230,8 +230,6 @@ class InterviewingController: UIViewController, UITableViewDelegate, UITableView
         //setup sectionHeaderViews:
         self.tableView.register(UINib(nibName: String(describing: MITSectionHeaderView.self), bundle: nil), forHeaderFooterViewReuseIdentifier: Identifiers.IDENTIFIER_VIEW_SECTION_HEADER)
         self.tableView.estimatedSectionHeaderHeight = 64
-        //self.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        self.tableView.sectionFooterHeight = 16
         
         //setup ContainerCells:
         self.tableView.register(MITContainerTableViewCell.self, forCellReuseIdentifier: Identifiers.IDENTIFIER_CELL_MIT_CONTAINER)

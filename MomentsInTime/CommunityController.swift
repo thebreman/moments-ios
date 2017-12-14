@@ -13,6 +13,8 @@ import AVFoundation
 
 private let KEY_ACCEPTED_TERMS_OF_SERVICE = "didAcceptTermsOfService"
 private let IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER = "TermsOfServiceStoryboardID"
+private let IDENTIFIER_SEGUE_TERMS_TO_PRIVACY = "TermsToPrivacyPolicy"
+private let IDENTIFIER_STORYBOARD_PRIVACY_CONTROLLER = "PrivacyPolicyControllerStoryboardID"
 
 private let KEY_CLOSED_WELCOME_HEADER = "didCloseWelcomeHeader"
 
@@ -81,6 +83,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     override func viewWillAppear(_ animated: Bool)
     {
         super.viewWillAppear(animated)
+        print("viewWillAppear")
         
         //need this in case we rotate, switch tabs, then rotate back...
         //when we come back to this screen, the layout will be where we left it
@@ -94,6 +97,7 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         ]
         
         if #available(iOS 11.0, *) {
+            UIApplication.shared.keyWindow?.backgroundColor = UIColor.mitBackground
             self.navigationController?.navigationBar.prefersLargeTitles = true
             self.navigationItem.largeTitleDisplayMode = self.isDisplayingSearchResults ? .never : .always
             
@@ -380,12 +384,23 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         if let termsNavController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER) as? UINavigationController,
             let termsOfServiceController = termsNavController.viewControllers.first as? TermsOfServiceController {
             
-            termsOfServiceController.successCompletionHandler = completion
+            termsOfServiceController.successCompletionHandler = {
+                self.showPrivacyPolicy(navigationController: termsNavController, completion: completion)
+            }
             
             //need to ensure that we wait until next run loop to display in case self is not finished being animated yet:
             DispatchQueue.main.async {
                 self.tabBarController?.present(termsNavController, animated: true, completion: nil)
             }
+        }
+    }
+    
+    private func showPrivacyPolicy(navigationController: UINavigationController, completion: TermsOfServiceSuccessCompletion? = nil)
+    {
+        if let privacyPolicyController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: IDENTIFIER_STORYBOARD_PRIVACY_CONTROLLER) as? PrivacyPolicyController {
+            
+            privacyPolicyController.successCompletionHandler = completion
+            navigationController.pushViewController(privacyPolicyController, animated: true)
         }
     }
 }
