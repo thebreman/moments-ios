@@ -41,6 +41,12 @@ class MITTabBar: UITabBar
         self.separatorView.autoCenterInSuperview()
         self.separatorView.autoSetDimension(ALDimension.width, toSize: 1)
         self.separatorView.autoPinEdge(toSuperviewEdge: ALEdge.top, withInset: 8)
-        self.separatorView.autoPinEdge(toSuperviewEdge: ALEdge.bottom, withInset: 8)
+        
+        if #available(iOS 11.0, *) {
+            self.separatorView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        }
+        else {
+            self.separatorView.autoPinEdge(toSuperviewEdge: ALEdge.bottom, withInset: 8)
+        }
     }
 }
