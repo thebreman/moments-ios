@@ -9,6 +9,8 @@
 import UIKit
 import AVFoundation
 import Alamofire
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -23,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //find out if there are any pending tasks:
         self.checkPendingTasks()
+        
+        Fabric.with([Crashlytics.self])
         
         return true
     }

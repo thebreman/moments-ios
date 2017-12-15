@@ -691,6 +691,7 @@
 				D332E6411E80BE6C00778462 /* Resources */,
 				463527AAB406E0086407BA19 /* [CP] Embed Pods Frameworks */,
 				C945930B3B39762B3A867934 /* [CP] Copy Pods Resources */,
+				68D6F9121FE268D8007B9A8D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -860,6 +861,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MomentsInTime/Pods-MomentsInTime-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		68D6F9121FE268D8007B9A8D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 878a6364802d8fa959cebd9c063dc4676bdf4320 1d87ae58350694248ae9278298eabf1aba081c844010db06e7fd653f96172c00";
 		};
 		95EB6E8D95BF928FC7F5877F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
