@@ -360,7 +360,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Qn0-3m-VIi"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="68x-Xf-tUL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -758,7 +758,7 @@
         <!--Navigation Controller-->
         <scene sceneID="6Tt-Em-XbV">
             <objects>
-                <navigationController storyboardIdentifier="TermsOfServiceStoryboardID" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="59W-2M-ikK" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="TermsOfServiceStoryboardID" automaticallyAdjustsScrollViewInsets="NO" id="59W-2M-ikK" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="F39-T6-uti">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -771,12 +771,6 @@
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <toolbar key="toolbar" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="l7s-Yw-8bq">
-                        <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </toolbar>
                     <connections>
                         <segue destination="M3l-8r-0OQ" kind="relationship" relationship="rootViewController" id="R5A-xB-2jg"/>
                     </connections>
@@ -794,19 +788,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Ikx-tF-2qd"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="c5g-FE-wEL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="vSD-Bb-oPK"/>
-                        <barButtonItem title="Agree" id="lrW-F0-6tE">
-                            <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <action selector="handleAgree:" destination="TNM-ZJ-Dyk" id="r9e-bJ-O7B"/>
-                            </connections>
-                        </barButtonItem>
-                    </toolbarItems>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Privacy Policy" id="auT-uj-DUd"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Iwt-BW-t6Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -816,7 +802,7 @@
         <!--Navigation Controller-->
         <scene sceneID="ybh-Yy-aLf">
             <objects>
-                <navigationController storyboardIdentifier="PrivacyPolicyStoryboardID" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="nr9-H5-KXz" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="PrivacyPolicyStoryboardID" automaticallyAdjustsScrollViewInsets="NO" id="nr9-H5-KXz" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="LOt-u2-Bfi">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -829,12 +815,6 @@
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
-                    <toolbar key="toolbar" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="zzM-q0-ekJ">
-                        <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </toolbar>
                     <connections>
                         <segue destination="TNM-ZJ-Dyk" kind="relationship" relationship="rootViewController" id="lXh-rX-Da4"/>
                     </connections>
@@ -842,6 +822,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ma8-IM-Z3U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1055" y="2284"/>
+        </scene>
+        <!--Terms Page Container Controller-->
+        <scene sceneID="iFr-OF-hVB">
+            <objects>
+                <viewController storyboardIdentifier="TermsPageContainerController" id="jNN-h9-CGi" customClass="TermsPageContainerController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9V0-R3-KUC"/>
+                        <viewControllerLayoutGuide type="bottom" id="yfp-yS-vUf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Peu-VF-e8I">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xPk-yE-6Xd">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="vSD-Bb-oPK"/>
+                                    <barButtonItem title="Agree" id="lrW-F0-6tE">
+                                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <connections>
+                                            <action selector="handleAgree:" destination="jNN-h9-CGi" id="ERe-hm-OWv"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </toolbar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="xPk-yE-6Xd" firstAttribute="bottom" secondItem="yfp-yS-vUf" secondAttribute="top" id="GvQ-aX-W9f"/>
+                            <constraint firstAttribute="trailing" secondItem="xPk-yE-6Xd" secondAttribute="trailing" id="ZB1-dV-jMi"/>
+                            <constraint firstItem="xPk-yE-6Xd" firstAttribute="leading" secondItem="Peu-VF-e8I" secondAttribute="leading" id="eAx-vu-Dev"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="toolBar" destination="xPk-yE-6Xd" id="Xw8-eg-PjV"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JVQ-mS-TLa" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1026" y="3162"/>
         </scene>
     </scenes>
     <resources>

@@ -1,5 +1,5 @@
 //
-//  TermsPageViewController.swift
+//  TermsPageContainerController.swift
 //  MomentsInTime
 //
 //  Created by Andrew Ferrarone on 12/18/17.
@@ -16,8 +16,12 @@ protocol TermsPrivacyHandler
     var successCompletionHandler: TermsOfServiceSuccessCompletion? { get set }
 }
 
-class TermsPageViewController: UIPageViewController, UIPageViewControllerDataSource, TermsPrivacyHandler
+class TermsPageContainerController: UIViewController, UIPageViewControllerDataSource, TermsPrivacyHandler
 {
+    @IBOutlet weak var toolBar: UIToolbar!
+    
+    var pageController: UIPageViewController!
+    
     var successCompletionHandler: TermsOfServiceSuccessCompletion?
     
     private lazy var orderedViewControllers: [UIViewController] = {
@@ -27,26 +31,33 @@ class TermsPageViewController: UIPageViewController, UIPageViewControllerDataSou
         ]
     }()
     
-    convenience init()
-    {
-        self.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-    }
-    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.mitBackground
-        self.dataSource = self
+        
+        // setup pageController:
+        self.pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        pageController.dataSource = self
         
         if let firstController = self.orderedViewControllers.first {
+            self.pageController.setViewControllers([firstController], direction: .forward, animated: true, completion: nil)
+        }
+        
+        self.view.addSubview(self.pageController.view)
+        self.view.bringSubview(toFront: self.toolBar)
+    }
+    
+    @IBAction func handleAgree(_ sender: UIBarButtonItem)
+    {
+        //confirm with user before calling successCompletion:
+        let acceptAlertView = TermsOfServiceAcceptAlertView()
+        
+        //only dismiss if user agrees to Terms and Conditions:
+        acceptAlertView.showFrom(viewController: self) { success in
             
-            self.setViewControllers([firstController], direction: .forward, animated: true, completion: nil)
-            
-            // all contained controllers should use us as their delegate:
-            self.orderedViewControllers.forEach {
-                if var handler = $0 as? TermsPrivacyHandler {
-                    handler.successCompletionHandler = self.successCompletionHandler
-                }
+            if success {
+                self.successCompletionHandler?()
             }
         }
     }
@@ -81,15 +92,3 @@ class TermsPageViewController: UIPageViewController, UIPageViewControllerDataSou
         return nil
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-

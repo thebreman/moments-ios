@@ -313,9 +313,12 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         //on first launch display modal terms of service:
         self.handleTermsOfService {
             
-            //successful terms agreement, so indicate in UserDefaults:
-            UserDefaults.standard.set(true, forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
-            UserDefaults.standard.synchronize()
+            self.tabBarController?.dismiss(animated: true, completion: {
+                
+                //successful terms agreement, so indicate in UserDefaults:
+                UserDefaults.standard.set(true, forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
+                UserDefaults.standard.synchronize()
+            })
         }
     }
     
@@ -377,12 +380,14 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     private func showTermsOfService(completion: TermsOfServiceSuccessCompletion? = nil)
     {
-        let termsPageController = TermsPageViewController()
-        termsPageController.successCompletionHandler = completion
-        
-        //need to ensure that we wait until next run loop to display in case self is not finished being animated yet:
-        DispatchQueue.main.async {
-            self.tabBarController?.present(termsPageController, animated: true, completion: nil)
+        if let termsPageController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TermsPageContainerController") as? TermsPageContainerController {
+            
+            termsPageController.successCompletionHandler = completion
+            
+            //need to ensure that we wait until next run loop to display in case self is not finished being animated yet:
+            DispatchQueue.main.async {
+                self.tabBarController?.present(termsPageController, animated: true, completion: nil)
+            }
         }
     }
 }
