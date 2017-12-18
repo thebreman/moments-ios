@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PrivacyPolicyController: WebViewController
+class PrivacyPolicyController: WebViewController, TermsPrivacyHandler
 {
     var successCompletionHandler: TermsOfServiceSuccessCompletion?
     

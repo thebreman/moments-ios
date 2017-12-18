@@ -96,7 +96,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yUS-Gr-Zeg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1849" y="1818"/>
+            <point key="canvasLocation" x="2188" y="1817.5412293853076"/>
         </scene>
         <!--New Moment-->
         <scene sceneID="74a-UX-Qjj">
@@ -181,7 +181,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="di5-tN-qqt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2783" y="1818"/>
+            <point key="canvasLocation" x="3120.8000000000002" y="1817.5412293853076"/>
         </scene>
         <!--Create a Topic-->
         <scene sceneID="QiY-GO-5Kb">
@@ -257,7 +257,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y9b-tJ-VdU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7788" y="1738"/>
+            <point key="canvasLocation" x="8127.1999999999998" y="1737.481259370315"/>
         </scene>
         <!--Topic-->
         <scene sceneID="hkA-NF-lKX">
@@ -374,9 +374,6 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Terms and Conditions" id="sOW-ab-bSr"/>
-                    <connections>
-                        <segue destination="55h-F2-jme" kind="show" identifier="TermsToPrivacyPolicy" id="i62-98-Ryc"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZmD-0E-4XV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -630,7 +627,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VVp-P0-Fo7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6882" y="1739"/>
+            <point key="canvasLocation" x="7220" y="1738.3808095952024"/>
         </scene>
         <!--Note-->
         <scene sceneID="cfJ-U8-CIV">
@@ -710,7 +707,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sci-6F-vfs" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5902" y="2391"/>
+            <point key="canvasLocation" x="6240.8000000000002" y="2390.5547226386807"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="koX-No-pxd">
@@ -733,7 +730,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9xb-2G-kJB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4785" y="2391"/>
+            <point key="canvasLocation" x="5124" y="2390.5547226386807"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="FSq-Oi-CU5">
@@ -789,32 +786,62 @@
             <point key="canvasLocation" x="-1055" y="1516"/>
         </scene>
         <!--Privacy Policy-->
-        <scene sceneID="rO0-4U-eNX">
+        <scene sceneID="0Ci-6L-cof">
             <objects>
-                <viewController storyboardIdentifier="PrivacyPolicyControllerStoryboardID" id="55h-F2-jme" customClass="PrivacyPolicyController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="TNM-ZJ-Dyk" customClass="PrivacyPolicyController" customModule="MomentsInTime" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="mmh-vX-I4e"/>
-                        <viewControllerLayoutGuide type="bottom" id="t7g-Do-MuN"/>
+                        <viewControllerLayoutGuide type="top" id="UAC-l4-P03"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ikx-tF-2qd"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="uXb-Aj-TcO">
+                    <view key="view" contentMode="scaleToFill" id="c5g-FE-wEL">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="559"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="Lao-VY-Q0h"/>
-                        <barButtonItem title="Agree" id="355-Oy-gjP">
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="vSD-Bb-oPK"/>
+                        <barButtonItem title="Agree" id="lrW-F0-6tE">
                             <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <action selector="handleAgree:" destination="55h-F2-jme" id="qWj-qR-HaZ"/>
+                                <action selector="handleAgree:" destination="TNM-ZJ-Dyk" id="r9e-bJ-O7B"/>
                             </connections>
                         </barButtonItem>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="Privacy Policy" id="6Qe-9l-v13"/>
+                    <navigationItem key="navigationItem" title="Privacy Policy" id="auT-uj-DUd"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="29o-3C-jkR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Iwt-BW-t6Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="532" y="1515"/>
+            <point key="canvasLocation" x="-244" y="2284"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="ybh-Yy-aLf">
+            <objects>
+                <navigationController storyboardIdentifier="PrivacyPolicyStoryboardID" automaticallyAdjustsScrollViewInsets="NO" toolbarHidden="NO" id="nr9-H5-KXz" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="LOt-u2-Bfi">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                            <color key="textColor" red="0.34509803919999998" green="0.34509803919999998" blue="0.34509803919999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="zzM-q0-ekJ">
+                        <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="TNM-ZJ-Dyk" kind="relationship" relationship="rootViewController" id="lXh-rX-Da4"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ma8-IM-Z3U" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1055" y="2284"/>
         </scene>
     </scenes>
     <resources>

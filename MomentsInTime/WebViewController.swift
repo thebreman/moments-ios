@@ -12,17 +12,13 @@ import PureLayout
 
 class WebViewController: UIViewController
 {
-    fileprivate lazy var webView: WKWebView = {
+    lazy var webView: WKWebView = {
         let webView = WKWebView()
         webView.backgroundColor = UIColor.clear
         webView.scrollView.backgroundColor = UIColor.clear
         webView.scrollView.alwaysBounceHorizontal = false
         return webView
     }()
-    
-    //flag for updating title w/ webView page title
-    //keep false if manually setting the title:
-    var shouldUpdateTitle = false
     
     override func viewDidLoad()
     {

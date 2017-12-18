@@ -10,7 +10,7 @@ import UIKit
 
 typealias TermsOfServiceSuccessCompletion = () -> Void
 
-class TermsOfServiceController: WebViewController
+class TermsOfServiceController: WebViewController, TermsPrivacyHandler
 {
     var successCompletionHandler: TermsOfServiceSuccessCompletion?
     
