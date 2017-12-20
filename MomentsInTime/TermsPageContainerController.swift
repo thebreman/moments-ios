@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import PureLayout
 
 private let IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER = "TermsOfServiceStoryboardID"
-private let IDENTIFIER_STORYBOARD_PRIVACY_CONTROLLER = "PrivacyPolicyStoryboardID"
+private let IDENTIFIER_STORYBOARD_PRIVACY_NAV_CONTROLLER = "PrivacyPolicyStoryboardID"
 
 protocol TermsPrivacyHandler
 {
@@ -27,7 +28,7 @@ class TermsPageContainerController: UIViewController, UIPageViewControllerDataSo
     private lazy var orderedViewControllers: [UIViewController] = {
         return [
             UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER),
-            UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: IDENTIFIER_STORYBOARD_PRIVACY_CONTROLLER)
+            UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: IDENTIFIER_STORYBOARD_PRIVACY_NAV_CONTROLLER)
         ]
     }()
     
@@ -35,16 +36,17 @@ class TermsPageContainerController: UIViewController, UIPageViewControllerDataSo
     {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.mitBackground
+        self.setupPageController()
         
-        // setup pageController:
-        self.pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        pageController.dataSource = self
-        
-        if let firstController = self.orderedViewControllers.first {
-            self.pageController.setViewControllers([firstController], direction: .forward, animated: true, completion: nil)
+        self.orderedViewControllers.forEach {
+            $0.loadViewIfNeeded()
+            $0.childViewControllers.forEach { $0.loadViewIfNeeded() }
         }
-        
-        self.view.addSubview(self.pageController.view)
+    }
+    
+    override func viewDidLayoutSubviews()
+    {
+        super.viewDidLayoutSubviews()
         self.view.bringSubview(toFront: self.toolBar)
     }
     
@@ -90,5 +92,29 @@ class TermsPageContainerController: UIViewController, UIPageViewControllerDataSo
         
         // there are no additional controllers:
         return nil
+    }
+    
+// MARK: - Utilities
+    
+    func setupPageController()
+    {
+        // setup pageController:
+        self.pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
+        pageController.dataSource = self
+        
+        if let firstController = self.orderedViewControllers.first {
+            self.pageController.setViewControllers([firstController], direction: .forward, animated: true, completion: nil)
+        }
+        
+        // UIPageViewController is fickle and not meant to be customized or subclasses really,
+        // so we'll use view controller containment to hold onto it and add other views like out tabBar:
+        self.addChildViewController(self.pageController)
+        self.view.addSubview(self.pageController.view)
+        self.pageController.view.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
+        self.pageController.view.autoPinEdge(.bottom, to: .top, of: self.toolBar)
+        self.pageController.didMove(toParentViewController: self)
+        
+        // keep toolBar on top:
+        self.view.bringSubview(toFront: self.toolBar)
     }
 }

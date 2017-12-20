@@ -14,6 +14,8 @@ class PrivacyPolicyController: WebViewController
     {
         super.viewDidLoad()
         
+        print("PrivacyPolicyController viewDidLoad")
+        
         if let privacyPolicyFileURL = MITDocuments.privacyPolicy.localURL {
             self.loadLocalURL(url: privacyPolicyFileURL)
         }

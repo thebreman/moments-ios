@@ -180,7 +180,7 @@
 		681549C31EDA467700FE0639 /* ShareLiveMomentHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareLiveMomentHeaderView.swift; sourceTree = "<group>"; };
 		6818D45E1EEE0292005862E6 /* BackgroundUploadAlbumSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundUploadAlbumSessionManager.swift; sourceTree = "<group>"; };
 		681B45301ED0045E00C18893 /* HowAreWeDoingAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HowAreWeDoingAlertView.swift; sourceTree = "<group>"; };
-		6821AE201FE7DEC800A40F36 /* TermsPageContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsPageContainerController.swift; sourceTree = "<group>"; };
+		6821AE201FE7DEC800A40F36 /* TermsPageContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsPageContainerController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITMomentCollectionViewAdapter.swift; sourceTree = "<group>"; };
 		6825E1381EA20525003DEF20 /* ContainerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerCell.swift; sourceTree = "<group>"; };
 		6825E13C1EA2119F003DEF20 /* MITTextActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITTextActionView.swift; sourceTree = "<group>"; };
