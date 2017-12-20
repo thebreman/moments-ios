@@ -17,11 +17,17 @@ protocol TermsPrivacyHandler
     var successCompletionHandler: TermsOfServiceSuccessCompletion? { get set }
 }
 
-class TermsPageContainerController: UIViewController, UIPageViewControllerDataSource, TermsPrivacyHandler
+class TermsPageContainerController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, TermsPrivacyHandler
 {
-    @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var toolBar: UIView!
+    @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var agreeButton: UIButton!
     
     var pageController: UIPageViewController!
+    
+    // Track the current index
+    var currentIndex: Int?
+    private var pendingIndex: Int?
     
     var successCompletionHandler: TermsOfServiceSuccessCompletion?
     
@@ -35,9 +41,9 @@ class TermsPageContainerController: UIViewController, UIPageViewControllerDataSo
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.mitBackground
-        self.setupPageController()
+        self.setupViews()
         
+        //We want to have each view loaded and ready to go so when we swipe there is no delay:
         self.orderedViewControllers.forEach {
             $0.loadViewIfNeeded()
             $0.childViewControllers.forEach { $0.loadViewIfNeeded() }
@@ -50,12 +56,12 @@ class TermsPageContainerController: UIViewController, UIPageViewControllerDataSo
         self.view.bringSubview(toFront: self.toolBar)
     }
     
-    @IBAction func handleAgree(_ sender: UIBarButtonItem)
+    @IBAction func handleAgree(_ sender: UIButton)
     {
-        //confirm with user before calling successCompletion:
+        // confirm with user before calling successCompletion:
         let acceptAlertView = TermsOfServiceAcceptAlertView()
         
-        //only dismiss if user agrees to Terms and Conditions:
+        // only dismiss if user agrees to Terms and Conditions:
         acceptAlertView.showFrom(viewController: self) { success in
             
             if success {
@@ -94,13 +100,34 @@ class TermsPageContainerController: UIViewController, UIPageViewControllerDataSo
         return nil
     }
     
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController])
+    {
+        self.pendingIndex = self.orderedViewControllers.index(of: pendingViewControllers.first!)
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool)
+    {
+        if completed {
+            
+            self.currentIndex = self.pendingIndex
+            
+            if let index = currentIndex {
+                self.pageControl.currentPage = index
+            }
+        }
+    }
+    
 // MARK: - Utilities
     
-    func setupPageController()
+    func setupViews()
     {
+        self.view.backgroundColor = UIColor.white
+        self.agreeButton.setTitleColor(UIColor.mitActionblue, for: .normal)
+
         // setup pageController:
         self.pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         pageController.dataSource = self
+        pageController.delegate = self
         
         if let firstController = self.orderedViewControllers.first {
             self.pageController.setViewControllers([firstController], direction: .forward, animated: true, completion: nil)
@@ -113,6 +140,12 @@ class TermsPageContainerController: UIViewController, UIPageViewControllerDataSo
         self.pageController.view.autoPinEdgesToSuperviewEdges(with: .zero, excludingEdge: .bottom)
         self.pageController.view.autoPinEdge(.bottom, to: .top, of: self.toolBar)
         self.pageController.didMove(toParentViewController: self)
+        
+        // add pageControl to toolBar:
+        self.toolBar.addSubview(self.pageControl)
+        self.pageControl.autoCenterInSuperview()
+        self.pageControl.currentPageIndicatorTintColor = UIColor.mitActionblue
+        self.pageControl.pageIndicatorTintColor = UIColor.lightGray
         
         // keep toolBar on top:
         self.view.bringSubview(toFront: self.toolBar)

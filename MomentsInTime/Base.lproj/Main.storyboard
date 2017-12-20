@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l76-jv-uF1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l76-jv-uF1">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -835,35 +835,47 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xPk-yE-6Xd">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kiL-6x-0l9">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="vSD-Bb-oPK"/>
-                                    <barButtonItem title="Agree" id="lrW-F0-6tE">
-                                        <color key="tintColor" red="0.46274509800000002" green="0.6705882353" blue="0.91372549020000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKS-jU-foP">
+                                        <rect key="frame" x="312" y="6" width="43" height="32"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <state key="normal" title="Agree"/>
                                         <connections>
-                                            <action selector="handleAgree:" destination="jNN-h9-CGi" id="ERe-hm-OWv"/>
+                                            <action selector="handleAgree:" destination="jNN-h9-CGi" eventType="touchUpInside" id="I23-w2-au2"/>
                                         </connections>
-                                    </barButtonItem>
-                                </items>
-                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </toolbar>
+                                    </button>
+                                    <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="vsm-GA-foz">
+                                        <rect key="frame" x="176" y="4" width="23" height="37"/>
+                                    </pageControl>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="OKS-jU-foP" firstAttribute="centerY" secondItem="kiL-6x-0l9" secondAttribute="centerY" id="6zb-ue-QjQ"/>
+                                    <constraint firstItem="vsm-GA-foz" firstAttribute="centerY" secondItem="OKS-jU-foP" secondAttribute="centerY" id="Duw-pl-FYl"/>
+                                    <constraint firstAttribute="trailingMargin" secondItem="OKS-jU-foP" secondAttribute="trailing" constant="12" id="Shh-76-puq"/>
+                                    <constraint firstAttribute="height" constant="44" id="e4D-Ke-ICh"/>
+                                    <constraint firstItem="vsm-GA-foz" firstAttribute="centerX" secondItem="kiL-6x-0l9" secondAttribute="centerX" id="r4p-cD-lxL"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="xPk-yE-6Xd" firstAttribute="bottom" secondItem="yfp-yS-vUf" secondAttribute="top" id="GvQ-aX-W9f"/>
-                            <constraint firstAttribute="trailing" secondItem="xPk-yE-6Xd" secondAttribute="trailing" id="ZB1-dV-jMi"/>
-                            <constraint firstItem="xPk-yE-6Xd" firstAttribute="leading" secondItem="Peu-VF-e8I" secondAttribute="leading" id="eAx-vu-Dev"/>
+                            <constraint firstItem="yfp-yS-vUf" firstAttribute="top" secondItem="kiL-6x-0l9" secondAttribute="bottom" id="46p-25-hhU"/>
+                            <constraint firstItem="kiL-6x-0l9" firstAttribute="leading" secondItem="Peu-VF-e8I" secondAttribute="leading" id="Dlx-5h-lbI"/>
+                            <constraint firstAttribute="trailing" secondItem="kiL-6x-0l9" secondAttribute="trailing" id="SEi-s5-bVe"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="toolBar" destination="xPk-yE-6Xd" id="Xw8-eg-PjV"/>
+                        <outlet property="agreeButton" destination="OKS-jU-foP" id="Roc-hR-YZb"/>
+                        <outlet property="pageControl" destination="vsm-GA-foz" id="6BI-RA-Xck"/>
+                        <outlet property="toolBar" destination="kiL-6x-0l9" id="wEu-dH-uyQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JVQ-mS-TLa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1026" y="3162"/>
+            <point key="canvasLocation" x="-1026.4000000000001" y="3161.4692653673164"/>
         </scene>
     </scenes>
     <resources>
