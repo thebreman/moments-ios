@@ -12,10 +12,6 @@ import AVKit
 import AVFoundation
 
 private let KEY_ACCEPTED_TERMS_OF_SERVICE = "didAcceptTermsOfService"
-private let IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER = "TermsOfServiceStoryboardID"
-private let IDENTIFIER_SEGUE_TERMS_TO_PRIVACY = "TermsToPrivacyPolicy"
-private let IDENTIFIER_STORYBOARD_PRIVACY_CONTROLLER = "PrivacyPolicyControllerStoryboardID"
-
 private let KEY_CLOSED_WELCOME_HEADER = "didCloseWelcomeHeader"
 
 private let OPTIONS_ALLOWS_SHARE = false
@@ -317,9 +313,12 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
         //on first launch display modal terms of service:
         self.handleTermsOfService {
             
-            //successful terms agreement, so indicate in UserDefaults:
-            UserDefaults.standard.set(true, forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
-            UserDefaults.standard.synchronize()
+            self.tabBarController?.dismiss(animated: true, completion: {
+                
+                //successful terms agreement, so indicate in UserDefaults:
+                UserDefaults.standard.set(true, forKey: KEY_ACCEPTED_TERMS_OF_SERVICE)
+                UserDefaults.standard.synchronize()
+            })
         }
     }
     
@@ -381,26 +380,14 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     
     private func showTermsOfService(completion: TermsOfServiceSuccessCompletion? = nil)
     {
-        if let termsNavController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: IDENTIFIER_STORYBOARD_TERMS_NAV_CONTROLLER) as? UINavigationController,
-            let termsOfServiceController = termsNavController.viewControllers.first as? TermsOfServiceController {
+        if let termsPageController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TermsPageContainerController") as? TermsPageContainerController {
             
-            termsOfServiceController.successCompletionHandler = {
-                self.showPrivacyPolicy(navigationController: termsNavController, completion: completion)
-            }
+            termsPageController.successCompletionHandler = completion
             
             //need to ensure that we wait until next run loop to display in case self is not finished being animated yet:
             DispatchQueue.main.async {
-                self.tabBarController?.present(termsNavController, animated: true, completion: nil)
+                self.tabBarController?.present(termsPageController, animated: true, completion: nil)
             }
-        }
-    }
-    
-    private func showPrivacyPolicy(navigationController: UINavigationController, completion: TermsOfServiceSuccessCompletion? = nil)
-    {
-        if let privacyPolicyController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: IDENTIFIER_STORYBOARD_PRIVACY_CONTROLLER) as? PrivacyPolicyController {
-            
-            privacyPolicyController.successCompletionHandler = completion
-            navigationController.pushViewController(privacyPolicyController, animated: true)
         }
     }
 }

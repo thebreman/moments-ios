@@ -60,6 +60,7 @@
 		681549C41EDA467700FE0639 /* ShareLiveMomentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681549C31EDA467700FE0639 /* ShareLiveMomentHeaderView.swift */; };
 		6818D45F1EEE0292005862E6 /* BackgroundUploadAlbumSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6818D45E1EEE0292005862E6 /* BackgroundUploadAlbumSessionManager.swift */; };
 		681B45311ED0045F00C18893 /* HowAreWeDoingAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681B45301ED0045E00C18893 /* HowAreWeDoingAlertView.swift */; };
+		6821AE211FE7DEC900A40F36 /* TermsPageContainerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6821AE201FE7DEC800A40F36 /* TermsPageContainerController.swift */; };
 		6825E1371EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */; };
 		6825E1391EA20525003DEF20 /* ContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E1381EA20525003DEF20 /* ContainerCell.swift */; };
 		6825E13D1EA2119F003DEF20 /* MITTextActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6825E13C1EA2119F003DEF20 /* MITTextActionView.swift */; };
@@ -179,6 +180,7 @@
 		681549C31EDA467700FE0639 /* ShareLiveMomentHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareLiveMomentHeaderView.swift; sourceTree = "<group>"; };
 		6818D45E1EEE0292005862E6 /* BackgroundUploadAlbumSessionManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundUploadAlbumSessionManager.swift; sourceTree = "<group>"; };
 		681B45301ED0045E00C18893 /* HowAreWeDoingAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HowAreWeDoingAlertView.swift; sourceTree = "<group>"; };
+		6821AE201FE7DEC800A40F36 /* TermsPageContainerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsPageContainerController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITMomentCollectionViewAdapter.swift; sourceTree = "<group>"; };
 		6825E1381EA20525003DEF20 /* ContainerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerCell.swift; sourceTree = "<group>"; };
 		6825E13C1EA2119F003DEF20 /* MITTextActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITTextActionView.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 		6812B6D31ED64A52003E3862 /* Terms of Service Flow */ = {
 			isa = PBXGroup;
 			children = (
+				6821AE201FE7DEC800A40F36 /* TermsPageContainerController.swift */,
 				6812B6D41ED64A71003E3862 /* TermsOfServiceController.swift */,
 				6829C5ED1FE22C4F008B8D08 /* PrivacyPolicyController.swift */,
 			);
@@ -750,7 +753,7 @@
 				TargetAttributes = {
 					D332E6421E80BE6C00778462 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 8Y75VLF66U;
+						DevelopmentTeam = 6M96U28V8B;
 						LastSwiftMigration = 0910;
 						ProvisioningStyle = Automatic;
 					};
@@ -956,6 +959,7 @@
 				680BE08F1E8E301D00A5D339 /* CachedImageView.swift in Sources */,
 				688E5D0F1EA883BA00BF258F /* Alerts.swift in Sources */,
 				6809BF1C1EB7566300A9E942 /* ImageTitleSubtitleCell.swift in Sources */,
+				6821AE211FE7DEC900A40F36 /* TermsPageContainerController.swift in Sources */,
 				680FC6781EBC07C600FED470 /* CreateTopicSection.swift in Sources */,
 				686079591ED9014500FD7260 /* WelcomeHeaderView.swift in Sources */,
 				6829C5F31FE233CB008B8D08 /* PrivacyPolicyAcceptAlertView.swift in Sources */,
@@ -1148,7 +1152,7 @@
 			baseConfigurationReference = FE516C52A6259895083808ED /* Pods-MomentsInTime.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8Y75VLF66U;
+				DEVELOPMENT_TEAM = 6M96U28V8B;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
@@ -1163,7 +1167,7 @@
 			baseConfigurationReference = 5AF90A00C1ADFC15EA716E9A /* Pods-MomentsInTime.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 8Y75VLF66U;
+				DEVELOPMENT_TEAM = 6M96U28V8B;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;

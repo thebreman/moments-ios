@@ -9,32 +9,15 @@
 import UIKit
 
 class PrivacyPolicyController: WebViewController
-{
-    var successCompletionHandler: TermsOfServiceSuccessCompletion?
-    
+{    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
+        print("PrivacyPolicyController viewDidLoad")
+        
         if let privacyPolicyFileURL = MITDocuments.privacyPolicy.localURL {
             self.loadLocalURL(url: privacyPolicyFileURL)
-        }
-    }
-    
-//MARK: Actions
-    
-    @IBAction func handleAgree(_ sender: UIBarButtonItem)
-    {
-        let acceptAlertView = PrivacyPolicyAcceptAlertView()
-        
-        //only dismiss uf user agrees to Privacy Policy:
-        acceptAlertView.showFrom(viewController: self) { success in
-            
-            if success {
-                self.presentingViewController?.dismiss(animated: true) {
-                    self.successCompletionHandler?()
-                }
-            }
         }
     }
 }

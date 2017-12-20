@@ -9,7 +9,7 @@
 import UIKit
 
 private let COPY_TITLE_TERMS = "Terms and Conditions"
-private let COPY_MESSAGE_TERMS = "I have read and agree to the Moments In Time Terms and Conditions"
+private let COPY_MESSAGE_TERMS = "I have read and agree to the Moments In Time Privacy Policy and Terms and Conditions."
 private let COPY_TITLE_BUTTON_ACCEPT = "Agree"
 private let COPY_TITLE_TERMS_BUTTON_CANCEL = "Cancel"
 

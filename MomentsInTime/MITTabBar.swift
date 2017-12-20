@@ -38,11 +38,12 @@ class MITTabBar: UITabBar
     {
         self.addSubview(self.separatorView)
         
-        self.separatorView.autoCenterInSuperview()
+        self.separatorView.autoAlignAxis(toSuperviewAxis: .vertical)
         self.separatorView.autoSetDimension(ALDimension.width, toSize: 1)
         self.separatorView.autoPinEdge(toSuperviewEdge: ALEdge.top, withInset: 8)
         
         if #available(iOS 11.0, *) {
+            self.separatorView.translatesAutoresizingMaskIntoConstraints = false
             self.separatorView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
         }
         else {

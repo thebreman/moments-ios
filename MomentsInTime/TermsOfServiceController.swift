@@ -12,29 +12,12 @@ typealias TermsOfServiceSuccessCompletion = () -> Void
 
 class TermsOfServiceController: WebViewController
 {
-    var successCompletionHandler: TermsOfServiceSuccessCompletion?
-    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
         if let termsOfUseFileURL = MITDocuments.termsOfUse.localURL {
             self.loadLocalURL(url: termsOfUseFileURL)
-        }
-    }
-    
-//MARK: Actions
-
-    @IBAction func handleAgree(_ sender: UIBarButtonItem)
-    {
-        let acceptAlertView = TermsOfServiceAcceptAlertView()
-       
-        //only dismiss if user agrees to Terms and Conditions:
-        acceptAlertView.showFrom(viewController: self) { success in
-            
-            if success {
-                self.successCompletionHandler?()
-            }
         }
     }
 }
