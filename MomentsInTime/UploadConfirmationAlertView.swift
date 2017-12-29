@@ -9,7 +9,7 @@
 import UIKit
 
 private let COPY_TITLE_CONFIRM_UPLOAD = "Show the world?"
-private let COPY_MESSAGE_CONFIRM_UPLOAD = "By submitting this video you’re allowing Moments In Time to share this video to the public. Is that okay?"
+private let COPY_MESSAGE_CONFIRM_UPLOAD = "By submitting this video, you're allowing Moments in Time to publish your video on this app, Vimeo, and Facebook. Is that okay?"
 private let COPY_TITLE_YES = "Yes"
 private let COPY_TITLE_NO = "No"
 
