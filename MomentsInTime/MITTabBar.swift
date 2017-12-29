@@ -44,7 +44,7 @@ class MITTabBar: UITabBar
         
         if #available(iOS 11.0, *) {
             self.separatorView.translatesAutoresizingMaskIntoConstraints = false
-            self.separatorView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor).isActive = true
+            self.separatorView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor, constant: -8).isActive = true
         }
         else {
             self.separatorView.autoPinEdge(toSuperviewEdge: ALEdge.bottom, withInset: 8)
