@@ -20,6 +20,7 @@ protocol TermsPrivacyHandler
 class TermsPageContainerController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate, TermsPrivacyHandler
 {
     @IBOutlet weak var toolBar: UIView!
+    @IBOutlet weak var toolBarTopSeparatorHeight: NSLayoutConstraint!
     @IBOutlet weak var pageControl: UIPageControl!
     @IBOutlet weak var agreeButton: UIButton!
     
@@ -146,6 +147,9 @@ class TermsPageContainerController: UIViewController, UIPageViewControllerDataSo
         self.pageControl.autoCenterInSuperview()
         self.pageControl.currentPageIndicatorTintColor = UIColor.mitActionblue
         self.pageControl.pageIndicatorTintColor = UIColor.lightGray
+        
+        // update the height of the top separator:
+        self.toolBarTopSeparatorHeight.constant = 1.0 / UIScreen.main.scale
         
         // keep toolBar on top:
         self.view.bringSubview(toFront: self.toolBar)

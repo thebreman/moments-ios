@@ -12,6 +12,11 @@ import Alamofire
 let FILTER_KEY = "fields"
 let QUERY_KEY = "query"
 let SORT_KEY = "sort"
+let UPLOAD_TYPE_KEY = "type"
+
+let SORT_VALUE_MANUAL = "manual"
+let SORT_VALUE_DATE = "date"
+let UPLOAD_TYPE_VALUE = "streaming"
 
 let FILTER_VALUE_DEFAULT = "uri"
 private let FILTER_ALL_VIDEOS_VALUE = "uri,name,description,link,pictures.sizes,status"
@@ -76,17 +81,17 @@ enum VideoRouter: URLRequestConvertible
                 let urlString = VimeoConnector.baseAPIEndpoint + self.path
                 let url = try urlString.asURL()
                 urlRequest.url = url
-                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE])
+                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, SORT_KEY: SORT_VALUE_MANUAL])
             
             case .search(let query):
                 //send along query and sort results by date:
-                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, QUERY_KEY: query, SORT_KEY: "date"])
+                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, QUERY_KEY: query, SORT_KEY: SORT_VALUE_DATE])
             
             case .read:
                 urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_READ_VIDEO_VALUE])
             
             case .create:
-                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: ["type": "streaming", FILTER_KEY: FILTER_CREATE_VIDEO_VALUE])
+                urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [UPLOAD_TYPE_KEY: UPLOAD_TYPE_VALUE, FILTER_KEY: FILTER_CREATE_VIDEO_VALUE])
             
             case .update(let video):
                 urlRequest = try URLEncoding.default.encode(urlRequest, with: video.videoParameters())

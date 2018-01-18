@@ -838,6 +838,13 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kiL-6x-0l9">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rvd-gl-XPp">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="1"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="FdV-hg-txc"/>
+                                        </constraints>
+                                    </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OKS-jU-foP">
                                         <rect key="frame" x="312" y="6" width="43" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -853,9 +860,12 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="OKS-jU-foP" firstAttribute="centerY" secondItem="kiL-6x-0l9" secondAttribute="centerY" id="6zb-ue-QjQ"/>
+                                    <constraint firstItem="Rvd-gl-XPp" firstAttribute="top" secondItem="kiL-6x-0l9" secondAttribute="top" id="A9e-9E-SwR"/>
                                     <constraint firstItem="vsm-GA-foz" firstAttribute="centerY" secondItem="OKS-jU-foP" secondAttribute="centerY" id="Duw-pl-FYl"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="OKS-jU-foP" secondAttribute="trailing" constant="12" id="Shh-76-puq"/>
+                                    <constraint firstAttribute="trailing" secondItem="Rvd-gl-XPp" secondAttribute="trailing" id="aQo-Kd-hrz"/>
                                     <constraint firstAttribute="height" constant="44" id="e4D-Ke-ICh"/>
+                                    <constraint firstItem="Rvd-gl-XPp" firstAttribute="leading" secondItem="kiL-6x-0l9" secondAttribute="leading" id="gaC-wN-z0Z"/>
                                     <constraint firstItem="vsm-GA-foz" firstAttribute="centerX" secondItem="kiL-6x-0l9" secondAttribute="centerX" id="r4p-cD-lxL"/>
                                 </constraints>
                             </view>
@@ -871,6 +881,7 @@
                         <outlet property="agreeButton" destination="OKS-jU-foP" id="Roc-hR-YZb"/>
                         <outlet property="pageControl" destination="vsm-GA-foz" id="6BI-RA-Xck"/>
                         <outlet property="toolBar" destination="kiL-6x-0l9" id="wEu-dH-uyQ"/>
+                        <outlet property="toolBarTopSeparatorHeight" destination="FdV-hg-txc" id="yS8-qF-5tj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JVQ-mS-TLa" userLabel="First Responder" sceneMemberID="firstResponder"/>
