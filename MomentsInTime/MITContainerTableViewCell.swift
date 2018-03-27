@@ -61,14 +61,16 @@ class MITContainerTableViewCell: ContainerTableViewCell
         self.addSubview(self.upperSeparatorView)
         self.addSubview(self.lowerSeparatorView)
         
+        let separatorSize = 1.0 / UIScreen.main.scale
+        
         self.upperSeparatorView.autoPinEdge(toSuperviewEdge: .leading)
         self.upperSeparatorView.autoPinEdge(toSuperviewEdge: .trailing)
         self.upperSeparatorView.autoPinEdge(toSuperviewEdge: .top)
-        self.upperSeparatorView.autoSetDimension(.height, toSize: 0.5)
+        self.upperSeparatorView.autoSetDimension(.height, toSize: separatorSize)
         
         self.lowerSeparatorView.autoPinEdge(toSuperviewEdge: .leading)
         self.lowerSeparatorView.autoPinEdge(toSuperviewEdge: .trailing)
         self.lowerSeparatorView.autoPinEdge(toSuperviewEdge: .bottom)
-        self.lowerSeparatorView.autoSetDimension(.height, toSize: 0.5)
+        self.lowerSeparatorView.autoSetDimension(.height, toSize: separatorSize)
     }
 }

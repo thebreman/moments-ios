@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -27,17 +28,17 @@
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="KF9-vC-nm8" secondAttribute="bottom" constant="2" id="4Ne-ib-nwU"/>
-                        <constraint firstAttribute="trailing" secondItem="KF9-vC-nm8" secondAttribute="trailing" constant="16" id="Nup-qT-xhx"/>
+                        <constraint firstAttribute="trailingMargin" secondItem="KF9-vC-nm8" secondAttribute="trailing" constant="8" id="Nup-qT-xhx"/>
                         <constraint firstItem="KF9-vC-nm8" firstAttribute="top" secondItem="qY8-0s-Lid" secondAttribute="top" constant="2" id="aeC-Y9-kOw"/>
-                        <constraint firstItem="KF9-vC-nm8" firstAttribute="leading" secondItem="qY8-0s-Lid" secondAttribute="leading" constant="16" id="uoc-DD-kbQ"/>
+                        <constraint firstItem="KF9-vC-nm8" firstAttribute="leading" secondItem="qY8-0s-Lid" secondAttribute="leadingMargin" constant="8" id="uoc-DD-kbQ"/>
                     </constraints>
                 </view>
             </subviews>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="qY8-0s-Lid" secondAttribute="trailing" id="PeD-UE-l9X"/>
+                <constraint firstAttribute="trailingMargin" secondItem="qY8-0s-Lid" secondAttribute="trailing" constant="-16" id="PeD-UE-l9X"/>
                 <constraint firstItem="qY8-0s-Lid" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="exr-o8-EsM"/>
                 <constraint firstAttribute="bottom" secondItem="qY8-0s-Lid" secondAttribute="bottom" id="lLO-ZH-tx1"/>
-                <constraint firstItem="qY8-0s-Lid" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="vH5-Bh-k3t"/>
+                <constraint firstItem="qY8-0s-Lid" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="-16" id="vH5-Bh-k3t"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
