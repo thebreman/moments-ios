@@ -25,7 +25,11 @@ enum MITDocuments
     }
     
     var fileExtension: String {
-        return "docx"
+        switch self
+        {
+            case .privacyPolicy: return "pages"
+            case .termsOfUse: return "docx"
+        }
     }
     
     var localURL: URL? {

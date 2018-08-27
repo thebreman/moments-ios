@@ -42,7 +42,7 @@ class MomentList: NSObject
     func getLocalMoments() -> [Moment]
     {
         if let savedMoments = self.getSavedMoments() {
-            self.moments = savedMoments.flatMap { $0 }
+            self.moments = savedMoments.compactMap { $0 }
         }
         
         return self.moments
