@@ -516,7 +516,7 @@ class NewMomentController: UIViewController, UITableViewDelegate, UITableViewDat
     
     private func deleteNote(_ note: Note)
     {
-        if self.moment.notes.contains(note), let indexToDelete = self.moment.notes.index(of: note) {
+        if let indexToDelete = self.moment.notes.index(of: note) {
             
             Moment.writeToRealm {
                 self.moment.notes.remove(at: indexToDelete)
