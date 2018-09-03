@@ -43,7 +43,7 @@ class Topic: Object
                     if let jsonTopics = jsonResult?[DEFAULT_TOPICS_KEY_TOP] as? [[String: String]] {
                         
                         // map the dictionary topic to actual Topics
-                        let topics = jsonTopics.flatMap({ jsonTopic -> Topic in
+                        let topics = jsonTopics.compactMap({ jsonTopic -> Topic in
                             let topic = Topic(title: Array(jsonTopic.keys)[0], description: Array(jsonTopic.values)[0])
                             return topic
                         })

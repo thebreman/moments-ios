@@ -33,24 +33,28 @@ class VimeoConnector: NSObject
     static var versionAPIHeaderKey: String { return VERSION_ACCEPT_HEADER_KEY }
     
     /**
-     * Fetches all the videos from our vimeo account (me/videos).
-     * page is path to get videos from Vimeo API, in the response we update our static pagePath w/ the next page,
-     * so that the next call can use this var to fetch the next page:
+     * Fetches all the videos from our vimeo account (me/videos), more specifically from the app community videos album.
      */
-    func getMomentsForCommunity(forPagePath pagePath: String, completion: @escaping MomentListCompletion)
+    func getCommunityMoments(completion: @escaping MomentListCompletion)
     {
-        self.request(router: VideoRouter.all(pagePath)) { (response, error) in
+        self.request(router: VideoRouter.all) { (response, error) in
             self.handleVideoResponse(withResponse: response, error: error, completion: completion)
         }
     }
     
     /**
-     * Wrapper for getVideosForCommunity:forPage:completion:, using VimeoConnector.initialPagePath as the first path to fetch:
+     * Fetches next page of videos for the specifiec pagePath. This comes from Vimeo,
+     * MomentList will have the next page path if there is one and this is handled w/ the video response utility method.
      */
-    func getCommunityMoments(forPagePath pagePath: String, completion: @escaping MomentListCompletion)
+    func getMoreVideos(forPagePath pagePath: String, completion: @escaping MomentListCompletion)
     {
-        self.getMomentsForCommunity(forPagePath: pagePath, completion: completion)
+        self.request(router: VideoRouter.nextPage(pagePath)) { (response, error) in
+            self.handleVideoResponse(withResponse: response, error: error, completion: completion)
+        }
     }
+    
+    // TODO: make the above function just an initial fetch call
+    // Add a new function to fetch an arbitrary page expecting a video response for search and community feed paging
     
     func getCommunityMoments(forUserName name: String, completion: @escaping MomentListCompletion)
     {

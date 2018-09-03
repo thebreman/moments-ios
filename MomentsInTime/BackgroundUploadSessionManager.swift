@@ -79,7 +79,9 @@ class BackgroundUploadSessionManager: Alamofire.SessionManager
         
         guard let uploadURL = moment.video?.localPlaybackURL else {
             DispatchQueue.main.async {
-                let error = NSError(domain: "BackgroundUploadManager.upload:", code: 400, userInfo: [NSLocalizedDescriptionKey: "Couldn't create valid video file url"])
+                let error = NSError(domain: "BackgroundUploadManager.upload:",
+                                    code: 400,
+                                    userInfo: [NSLocalizedDescriptionKey: "Couldn't create valid video file url"])
                 self.moment?.handleFailedUpload()
                 uploadCompletion(nil, error)
                 self.moment = nil

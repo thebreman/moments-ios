@@ -27,7 +27,10 @@ class CommunityController: UIViewController, MITMomentCollectionViewAdapterDeleg
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
-    //if we are displaying search results, we will have a name and flag will be set to true...
+    //if we are displaying search results, we will have a name and flag will be set to true,
+    //this controller is overloaded to display search results or just fetch the community feed,
+    //should be a subclass but was a last min feature request we did as a favor and storyboard controllers don't subclass so,
+    //if time later this should be handled in a subclass.
     var searchName: String?
     var isDisplayingSearchResults = false
     
