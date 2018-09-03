@@ -13,7 +13,7 @@ private let TITLE_MORE_VIDEOS = "{name}'s videos"
 private let TITLE_SHARE_ACTION = "Share"
 private let TITLE_REPORT_ACTION = "Contact a moderator"
 private let TITLE_CANCEL = "Cancel"
-let EMAIL_FEEDBACK = "justinmilrad@gmail.com"
+let EMAIL_FEEDBACK = "momentsintimeproj@gmail.com"
 private let EMAIL_FEEDBACK_SUBJECT = "Reporting a video"
 private let EMAIL_FEEDBACK_BODY = "I am reporting this video {url} ({title}) because "
 

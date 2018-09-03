@@ -68,12 +68,12 @@
 		6829C5EE1FE22C4F008B8D08 /* PrivacyPolicyController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6829C5ED1FE22C4F008B8D08 /* PrivacyPolicyController.swift */; };
 		6829C5F11FE22E2E008B8D08 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6829C5F01FE22E2E008B8D08 /* WebViewController.swift */; };
 		6829C5F31FE233CB008B8D08 /* PrivacyPolicyAcceptAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6829C5F21FE233CB008B8D08 /* PrivacyPolicyAcceptAlertView.swift */; };
-		6829C5F41FE23F95008B8D08 /* terms_of_use.docx in Resources */ = {isa = PBXBuildFile; fileRef = 6829C5E91FE22564008B8D08 /* terms_of_use.docx */; };
-		6829C5F51FE23FA4008B8D08 /* privacy_policy.docx in Resources */ = {isa = PBXBuildFile; fileRef = 6829C5EA1FE2258A008B8D08 /* privacy_policy.docx */; };
 		683B361E1EC6F67300F68A8C /* InterviewInviteAlertSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B361D1EC6F67300F68A8C /* InterviewInviteAlertSheet.swift */; };
 		683B36201EC6F96F00F68A8C /* CommunityMomentOptionsAlertSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B361F1EC6F96F00F68A8C /* CommunityMomentOptionsAlertSheet.swift */; };
 		6849EADF1EBD50E700B2E751 /* Assistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6849EADE1EBD50E700B2E751 /* Assistant.swift */; };
 		686079591ED9014500FD7260 /* WelcomeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686079581ED9014500FD7260 /* WelcomeHeaderView.swift */; };
+		6870F3492134B7C400DBFD6B /* privacy_policy.pages in Resources */ = {isa = PBXBuildFile; fileRef = 6870F3482134B4D300DBFD6B /* privacy_policy.pages */; };
+		6870F34B2135FD9F00DBFD6B /* terms_of_use.pages in Resources */ = {isa = PBXBuildFile; fileRef = 6870F34A2135FD9F00DBFD6B /* terms_of_use.pages */; };
 		687145A81EA082C800773E1F /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687145A71EA082C800773E1F /* Delay.swift */; };
 		6876033D1EBEFF7100B04729 /* BouncingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876033C1EBEFF7100B04729 /* BouncingCollectionViewCell.swift */; };
 		68780FF31EAC76EE009DBF34 /* SpinnerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68780FF21EAC76EE009DBF34 /* SpinnerCell.xib */; };
@@ -184,8 +184,6 @@
 		6825E1361EA1F9B7003DEF20 /* MITMomentCollectionViewAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITMomentCollectionViewAdapter.swift; sourceTree = "<group>"; };
 		6825E1381EA20525003DEF20 /* ContainerCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerCell.swift; sourceTree = "<group>"; };
 		6825E13C1EA2119F003DEF20 /* MITTextActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MITTextActionView.swift; sourceTree = "<group>"; };
-		6829C5E91FE22564008B8D08 /* terms_of_use.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = terms_of_use.docx; sourceTree = "<group>"; };
-		6829C5EA1FE2258A008B8D08 /* privacy_policy.docx */ = {isa = PBXFileReference; lastKnownFileType = file; path = privacy_policy.docx; sourceTree = "<group>"; };
 		6829C5EB1FE22968008B8D08 /* MITDocuments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MITDocuments.swift; sourceTree = "<group>"; };
 		6829C5ED1FE22C4F008B8D08 /* PrivacyPolicyController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyController.swift; sourceTree = "<group>"; };
 		6829C5EF1FE22C7E008B8D08 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -195,6 +193,8 @@
 		683B361F1EC6F96F00F68A8C /* CommunityMomentOptionsAlertSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityMomentOptionsAlertSheet.swift; sourceTree = "<group>"; };
 		6849EADE1EBD50E700B2E751 /* Assistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assistant.swift; sourceTree = "<group>"; };
 		686079581ED9014500FD7260 /* WelcomeHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeHeaderView.swift; sourceTree = "<group>"; };
+		6870F3482134B4D300DBFD6B /* privacy_policy.pages */ = {isa = PBXFileReference; lastKnownFileType = file; path = privacy_policy.pages; sourceTree = "<group>"; };
+		6870F34A2135FD9F00DBFD6B /* terms_of_use.pages */ = {isa = PBXFileReference; lastKnownFileType = file; path = terms_of_use.pages; sourceTree = "<group>"; };
 		687145A71EA082C800773E1F /* Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
 		6876033C1EBEFF7100B04729 /* BouncingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BouncingCollectionViewCell.swift; sourceTree = "<group>"; };
 		68780FF21EAC76EE009DBF34 /* SpinnerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpinnerCell.xib; sourceTree = "<group>"; };
@@ -592,8 +592,8 @@
 				D332E6461E80BE6C00778462 /* AppDelegate.swift */,
 				6829C5EB1FE22968008B8D08 /* MITDocuments.swift */,
 				D332E6521E80BE6C00778462 /* Info.plist */,
-				6829C5E91FE22564008B8D08 /* terms_of_use.docx */,
-				6829C5EA1FE2258A008B8D08 /* privacy_policy.docx */,
+				6870F34A2135FD9F00DBFD6B /* terms_of_use.pages */,
+				6870F3482134B4D300DBFD6B /* privacy_policy.pages */,
 				D34A94181EC5310A008A77F1 /* default_topics.json */,
 			);
 			name = "Supporting Files";
@@ -748,7 +748,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Tikkun Olam";
 				TargetAttributes = {
 					D332E6421E80BE6C00778462 = {
@@ -798,8 +798,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6829C5F51FE23FA4008B8D08 /* privacy_policy.docx in Resources */,
-				6829C5F41FE23F95008B8D08 /* terms_of_use.docx in Resources */,
+				6870F3492134B7C400DBFD6B /* privacy_policy.pages in Resources */,
 				D332E6511E80BE6C00778462 /* LaunchScreen.storyboard in Resources */,
 				680BE07B1E8E204000A5D339 /* MomentCell.xib in Resources */,
 				6809BF1A1EB7564000A9E942 /* ImageTitleSubtitleCell.xib in Resources */,
@@ -807,6 +806,7 @@
 				D332E64E1E80BE6C00778462 /* Assets.xcassets in Resources */,
 				680CA52D1EA5FCAA006A735E /* MITNoteCell.xib in Resources */,
 				680C20661EA5C9F400757608 /* ActiveLinkCell.xib in Resources */,
+				6870F34B2135FD9F00DBFD6B /* terms_of_use.pages in Resources */,
 				680929CC1EB7C90200542D1D /* VideoPreviewCell.xib in Resources */,
 				D332E64C1E80BE6C00778462 /* Main.storyboard in Resources */,
 				68780FF31EAC76EE009DBF34 /* SpinnerCell.xib in Resources */,
@@ -1063,15 +1063,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -1113,15 +1121,23 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

@@ -25,6 +25,8 @@ private let FILTER_READ_VIDEO_VALUE = "name,description,link,pictures,sizes,file
 private let FILTER_UPDATE_VIDEO_VALUE = "link"
 
 private let PATH_VIDEOS = "/me/videos"
+private let ID_ALBUM_COMMUNITY = "4626849"
+private let PATH_COMMUNITY_VIDEOS = "/me/albums/\(ID_ALBUM_COMMUNITY)/videos"
 
 protocol VideoRouterCompliant
 {
@@ -34,7 +36,8 @@ protocol VideoRouterCompliant
 
 enum VideoRouter: URLRequestConvertible
 {
-    case all(String) //pageURL
+    case all
+    case nextPage(String) // next page path w/out host ex /me/videos/...
     case search(String)
     case create
     case read(Video)
@@ -44,6 +47,7 @@ enum VideoRouter: URLRequestConvertible
     var method: Alamofire.HTTPMethod {
         switch self {
         case .all: return .get
+        case .nextPage: return .get
         case .search: return .get
         case .create: return .post
         case .read: return .get
@@ -54,7 +58,8 @@ enum VideoRouter: URLRequestConvertible
     
     var path: String {
         switch self {
-        case .all(let pagePath): return pagePath
+        case .all: return PATH_COMMUNITY_VIDEOS
+        case .nextPage(let pagePath): return pagePath
         case .search: return PATH_VIDEOS
         case .create: return PATH_VIDEOS
         case .read(let video): return video.uri ?? ""
@@ -78,10 +83,12 @@ enum VideoRouter: URLRequestConvertible
         switch self
         {
             case .all:
-                let urlString = VimeoConnector.baseAPIEndpoint + self.path
-                let url = try urlString.asURL()
-                urlRequest.url = url
                 urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, SORT_KEY: SORT_VALUE_MANUAL])
+            
+            case .nextPage(let path):
+                // The path comes from Vimeo already encoded so just append it to the host manually to avoid encoding:
+                let urlString = VimeoConnector.baseAPIEndpoint + path
+                urlRequest.url = try urlString.asURL()
             
             case .search(let query):
                 //send along query and sort results by date:
