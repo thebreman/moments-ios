@@ -46,7 +46,7 @@ class VimeoConnector: NSObject
      * Fetches next page of videos for the specifiec pagePath. This comes from Vimeo,
      * MomentList will have the next page path if there is one and this is handled w/ the video response utility method.
      */
-    func getNextPageOfVideos(forPagePath pagePath: String, completion: @escaping MomentListCompletion)
+    func getMoreVideos(forPagePath pagePath: String, completion: @escaping MomentListCompletion)
     {
         self.request(router: VideoRouter.nextPage(pagePath)) { (response, error) in
             self.handleVideoResponse(withResponse: response, error: error, completion: completion)

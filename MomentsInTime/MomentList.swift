@@ -71,7 +71,7 @@ class MomentList: NSObject
             return
         }
         
-        VimeoConnector().getNextPageOfVideos(forPagePath: nextPage) { (momentList, error) in
+        VimeoConnector().getMoreVideos(forPagePath: nextPage) { (momentList, error) in
             
             guard error == nil else {
                 completion?(nil, nil, error)

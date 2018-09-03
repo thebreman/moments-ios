@@ -37,7 +37,7 @@ protocol VideoRouterCompliant
 enum VideoRouter: URLRequestConvertible
 {
     case all
-    case nextPage(String) // absolute page path
+    case nextPage(String) // next page path w/out host ex /me/videos/...
     case search(String)
     case create
     case read(Video)
@@ -83,13 +83,12 @@ enum VideoRouter: URLRequestConvertible
         switch self
         {
             case .all:
-                let urlString = VimeoConnector.baseAPIEndpoint + self.path
-                let url = try urlString.asURL()
-                urlRequest.url = url
                 urlRequest = try URLEncoding.queryString.encode(urlRequest, with: [FILTER_KEY: FILTER_ALL_VIDEOS_VALUE, SORT_KEY: SORT_VALUE_MANUAL])
             
             case .nextPage(let path):
-                urlRequest.url = try path.asURL() // just the path as is, httpMethod already set
+                // The path comes from Vimeo already encoded so just append it to the host manually to avoid encoding:
+                let urlString = VimeoConnector.baseAPIEndpoint + path
+                urlRequest.url = try urlString.asURL()
             
             case .search(let query):
                 //send along query and sort results by date:
