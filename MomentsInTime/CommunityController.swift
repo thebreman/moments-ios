@@ -16,7 +16,7 @@ private let KEY_CLOSED_WELCOME_HEADER = "didCloseWelcomeHeader"
 
 private let OPTIONS_ALLOWS_SHARE = false
 
-private let FREQUENCY_ACCESSORY_VIEW = 5
+private let FREQUENCY_ACCESSORY_VIEW = 10
 private let IDENTIFIER_SEGUE_PLAYER = "communityToPlayer"
 private let INDEX_TAB_MY_MOMENTS = 1
 
