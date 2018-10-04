@@ -13,12 +13,15 @@ class PrivacyPolicyController: WebViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
         print("PrivacyPolicyController viewDidLoad")
         
         if let privacyPolicyFileURL = MITDocuments.privacyPolicy.localURL {
             self.loadLocalURL(url: privacyPolicyFileURL)
         }
+    }
+    
+    deinit {
+        print("DEINIT privacy controller")
     }
 }
 

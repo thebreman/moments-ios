@@ -11,6 +11,7 @@ import Foundation
 private let FILE_PRIVACY_POLICY = "privacy_policy"
 private let FILE_TERMS_OF_USE = "terms_of_use"
 private let EXT_PAGES = "pages"
+private let EXT_PDF = "pdf"
 
 enum MITDocuments
 {
@@ -26,7 +27,10 @@ enum MITDocuments
     }
     
     var fileExtension: String {
-        return EXT_PAGES
+        switch self {
+            case .privacyPolicy: return EXT_PAGES
+            case .termsOfUse: return EXT_PDF
+        }
     }
     
     var localURL: URL? {

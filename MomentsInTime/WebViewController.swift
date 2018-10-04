@@ -14,6 +14,7 @@ class WebViewController: UIViewController
 {
     lazy var webView: WKWebView = {
         let webView = WKWebView()
+        webView.allowsBackForwardNavigationGestures = false
         webView.backgroundColor = UIColor.clear
         webView.scrollView.backgroundColor = UIColor.clear
         webView.scrollView.alwaysBounceHorizontal = false

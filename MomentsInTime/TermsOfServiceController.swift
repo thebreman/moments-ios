@@ -15,9 +15,14 @@ class TermsOfServiceController: WebViewController
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        print("TermsController view did load")
         
         if let termsOfUseFileURL = MITDocuments.termsOfUse.localURL {
             self.loadLocalURL(url: termsOfUseFileURL)
         }
+    }
+    
+    deinit {
+        print("DEINIT Terms Controller")
     }
 }

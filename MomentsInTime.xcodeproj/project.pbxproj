@@ -86,6 +86,7 @@
 		688E998D1EB07D1200AEF2F7 /* NewNoteController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E998C1EB07D1200AEF2F7 /* NewNoteController.swift */; };
 		688E998F1EB07D2E00AEF2F7 /* CreateTopicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E998E1EB07D2E00AEF2F7 /* CreateTopicController.swift */; };
 		688E99911EB07D3B00AEF2F7 /* InterviewingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E99901EB07D3B00AEF2F7 /* InterviewingController.swift */; };
+		689E2EA92166BC7B00CF8189 /* terms_of_use.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 689E2EA82166BC7B00CF8189 /* terms_of_use.pdf */; };
 		68C0682A1EA0924B0037D4A3 /* NewMomentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C068291EA0924B0037D4A3 /* NewMomentController.swift */; };
 		68E580591EA37504002E8C6A /* TextActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E580581EA37504002E8C6A /* TextActionView.swift */; };
 		68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FED1E824DE100C1B320 /* Fonts.swift */; };
@@ -207,6 +208,7 @@
 		688E998C1EB07D1200AEF2F7 /* NewNoteController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewNoteController.swift; sourceTree = "<group>"; };
 		688E998E1EB07D2E00AEF2F7 /* CreateTopicController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTopicController.swift; sourceTree = "<group>"; };
 		688E99901EB07D3B00AEF2F7 /* InterviewingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterviewingController.swift; sourceTree = "<group>"; };
+		689E2EA82166BC7B00CF8189 /* terms_of_use.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = terms_of_use.pdf; sourceTree = "<group>"; };
 		68C068291EA0924B0037D4A3 /* NewMomentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMomentController.swift; sourceTree = "<group>"; };
 		68E580581EA37504002E8C6A /* TextActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextActionView.swift; sourceTree = "<group>"; };
 		68EB8FED1E824DE100C1B320 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -593,6 +595,7 @@
 				6829C5EB1FE22968008B8D08 /* MITDocuments.swift */,
 				D332E6521E80BE6C00778462 /* Info.plist */,
 				6870F34A2135FD9F00DBFD6B /* terms_of_use.pages */,
+				689E2EA82166BC7B00CF8189 /* terms_of_use.pdf */,
 				6870F3482134B4D300DBFD6B /* privacy_policy.pages */,
 				D34A94181EC5310A008A77F1 /* default_topics.json */,
 			);
@@ -803,6 +806,7 @@
 				680BE07B1E8E204000A5D339 /* MomentCell.xib in Resources */,
 				6809BF1A1EB7564000A9E942 /* ImageTitleSubtitleCell.xib in Resources */,
 				680CA52B1EA5F36E006A735E /* MITSectionHeaderView.xib in Resources */,
+				689E2EA92166BC7B00CF8189 /* terms_of_use.pdf in Resources */,
 				D332E64E1E80BE6C00778462 /* Assets.xcassets in Resources */,
 				680CA52D1EA5FCAA006A735E /* MITNoteCell.xib in Resources */,
 				680C20661EA5C9F400757608 /* ActiveLinkCell.xib in Resources */,
