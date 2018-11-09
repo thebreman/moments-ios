@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l76-jv-uF1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="l76-jv-uF1">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -433,7 +432,7 @@
                                 <cells/>
                             </collectionView>
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OHd-NN-at6">
-                                <rect key="frame" x="178" y="267" width="20" height="20"/>
+                                <rect key="frame" x="177.5" y="267" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -854,12 +853,13 @@
                                         </connections>
                                     </button>
                                     <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="vsm-GA-foz">
-                                        <rect key="frame" x="176" y="4" width="23" height="37"/>
+                                        <rect key="frame" x="176" y="3.5" width="23" height="37"/>
                                     </pageControl>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="OKS-jU-foP" firstAttribute="centerY" secondItem="kiL-6x-0l9" secondAttribute="centerY" id="6zb-ue-QjQ"/>
+                                    <constraint firstItem="OKS-jU-foP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vsm-GA-foz" secondAttribute="trailing" constant="8" symbolic="YES" id="8Qr-3T-fWM"/>
                                     <constraint firstItem="Rvd-gl-XPp" firstAttribute="top" secondItem="kiL-6x-0l9" secondAttribute="top" id="A9e-9E-SwR"/>
                                     <constraint firstItem="vsm-GA-foz" firstAttribute="centerY" secondItem="OKS-jU-foP" secondAttribute="centerY" id="Duw-pl-FYl"/>
                                     <constraint firstAttribute="trailingMargin" secondItem="OKS-jU-foP" secondAttribute="trailing" constant="12" id="Shh-76-puq"/>
