@@ -18,6 +18,7 @@ class WebViewController: UIViewController
         webView.backgroundColor = UIColor.clear
         webView.scrollView.backgroundColor = UIColor.clear
         webView.scrollView.alwaysBounceHorizontal = false
+        webView.translatesAutoresizingMaskIntoConstraints = false
         return webView
     }()
     
@@ -26,7 +27,7 @@ class WebViewController: UIViewController
         super.viewDidLoad()
         self.setupViews()
         
-        //no large title for iOS 11:
+        // no large title for iOS 11:
         if #available(iOS 11.0, *) {
             self.navigationItem.largeTitleDisplayMode = .never
         }

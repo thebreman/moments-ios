@@ -10,15 +10,19 @@ import UIKit
 
 typealias TermsOfServiceSuccessCompletion = () -> Void
 
-class TermsOfServiceController: WebViewController
+class TermsOfServiceController: PDFViewController
 {
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        print("TermsController view did load")
-        
+        self.loadContent()
+    }
+
+    
+    func loadContent()
+    {
         if let termsOfUseFileURL = MITDocuments.termsOfUse.localURL {
-            self.loadLocalURL(url: termsOfUseFileURL)
+            self.loadDocument(url: termsOfUseFileURL)
         }
     }
     
@@ -26,3 +30,5 @@ class TermsOfServiceController: WebViewController
         print("DEINIT Terms Controller")
     }
 }
+
+

@@ -72,8 +72,6 @@
 		683B36201EC6F96F00F68A8C /* CommunityMomentOptionsAlertSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683B361F1EC6F96F00F68A8C /* CommunityMomentOptionsAlertSheet.swift */; };
 		6849EADF1EBD50E700B2E751 /* Assistant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6849EADE1EBD50E700B2E751 /* Assistant.swift */; };
 		686079591ED9014500FD7260 /* WelcomeHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686079581ED9014500FD7260 /* WelcomeHeaderView.swift */; };
-		6870F3492134B7C400DBFD6B /* privacy_policy.pages in Resources */ = {isa = PBXBuildFile; fileRef = 6870F3482134B4D300DBFD6B /* privacy_policy.pages */; };
-		6870F34B2135FD9F00DBFD6B /* terms_of_use.pages in Resources */ = {isa = PBXBuildFile; fileRef = 6870F34A2135FD9F00DBFD6B /* terms_of_use.pages */; };
 		687145A81EA082C800773E1F /* Delay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687145A71EA082C800773E1F /* Delay.swift */; };
 		6876033D1EBEFF7100B04729 /* BouncingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6876033C1EBEFF7100B04729 /* BouncingCollectionViewCell.swift */; };
 		68780FF31EAC76EE009DBF34 /* SpinnerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 68780FF21EAC76EE009DBF34 /* SpinnerCell.xib */; };
@@ -87,6 +85,8 @@
 		688E998F1EB07D2E00AEF2F7 /* CreateTopicController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E998E1EB07D2E00AEF2F7 /* CreateTopicController.swift */; };
 		688E99911EB07D3B00AEF2F7 /* InterviewingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688E99901EB07D3B00AEF2F7 /* InterviewingController.swift */; };
 		689E2EA92166BC7B00CF8189 /* terms_of_use.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 689E2EA82166BC7B00CF8189 /* terms_of_use.pdf */; };
+		68A2E0312195040E002AA857 /* PDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A2E0302195040E002AA857 /* PDFViewController.swift */; };
+		68A2E03321950B00002AA857 /* privacy_policy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 68A2E03221950B00002AA857 /* privacy_policy.pdf */; };
 		68C0682A1EA0924B0037D4A3 /* NewMomentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68C068291EA0924B0037D4A3 /* NewMomentController.swift */; };
 		68E580591EA37504002E8C6A /* TextActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E580581EA37504002E8C6A /* TextActionView.swift */; };
 		68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68EB8FED1E824DE100C1B320 /* Fonts.swift */; };
@@ -194,8 +194,6 @@
 		683B361F1EC6F96F00F68A8C /* CommunityMomentOptionsAlertSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommunityMomentOptionsAlertSheet.swift; sourceTree = "<group>"; };
 		6849EADE1EBD50E700B2E751 /* Assistant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Assistant.swift; sourceTree = "<group>"; };
 		686079581ED9014500FD7260 /* WelcomeHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeHeaderView.swift; sourceTree = "<group>"; };
-		6870F3482134B4D300DBFD6B /* privacy_policy.pages */ = {isa = PBXFileReference; lastKnownFileType = file; path = privacy_policy.pages; sourceTree = "<group>"; };
-		6870F34A2135FD9F00DBFD6B /* terms_of_use.pages */ = {isa = PBXFileReference; lastKnownFileType = file; path = terms_of_use.pages; sourceTree = "<group>"; };
 		687145A71EA082C800773E1F /* Delay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Delay.swift; sourceTree = "<group>"; };
 		6876033C1EBEFF7100B04729 /* BouncingCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BouncingCollectionViewCell.swift; sourceTree = "<group>"; };
 		68780FF21EAC76EE009DBF34 /* SpinnerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpinnerCell.xib; sourceTree = "<group>"; };
@@ -209,6 +207,8 @@
 		688E998E1EB07D2E00AEF2F7 /* CreateTopicController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateTopicController.swift; sourceTree = "<group>"; };
 		688E99901EB07D3B00AEF2F7 /* InterviewingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterviewingController.swift; sourceTree = "<group>"; };
 		689E2EA82166BC7B00CF8189 /* terms_of_use.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = terms_of_use.pdf; sourceTree = "<group>"; };
+		68A2E0302195040E002AA857 /* PDFViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFViewController.swift; sourceTree = "<group>"; };
+		68A2E03221950B00002AA857 /* privacy_policy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = privacy_policy.pdf; sourceTree = "<group>"; };
 		68C068291EA0924B0037D4A3 /* NewMomentController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewMomentController.swift; sourceTree = "<group>"; };
 		68E580581EA37504002E8C6A /* TextActionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextActionView.swift; sourceTree = "<group>"; };
 		68EB8FED1E824DE100C1B320 /* Fonts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -390,6 +390,7 @@
 			children = (
 				680BE0801E8E2C9D00A5D339 /* ViewControllers.swift */,
 				6829C5F01FE22E2E008B8D08 /* WebViewController.swift */,
+				68A2E0302195040E002AA857 /* PDFViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -594,9 +595,8 @@
 				D332E6461E80BE6C00778462 /* AppDelegate.swift */,
 				6829C5EB1FE22968008B8D08 /* MITDocuments.swift */,
 				D332E6521E80BE6C00778462 /* Info.plist */,
-				6870F34A2135FD9F00DBFD6B /* terms_of_use.pages */,
 				689E2EA82166BC7B00CF8189 /* terms_of_use.pdf */,
-				6870F3482134B4D300DBFD6B /* privacy_policy.pages */,
+				68A2E03221950B00002AA857 /* privacy_policy.pdf */,
 				D34A94181EC5310A008A77F1 /* default_topics.json */,
 			);
 			name = "Supporting Files";
@@ -801,16 +801,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6870F3492134B7C400DBFD6B /* privacy_policy.pages in Resources */,
 				D332E6511E80BE6C00778462 /* LaunchScreen.storyboard in Resources */,
 				680BE07B1E8E204000A5D339 /* MomentCell.xib in Resources */,
 				6809BF1A1EB7564000A9E942 /* ImageTitleSubtitleCell.xib in Resources */,
 				680CA52B1EA5F36E006A735E /* MITSectionHeaderView.xib in Resources */,
 				689E2EA92166BC7B00CF8189 /* terms_of_use.pdf in Resources */,
+				68A2E03321950B00002AA857 /* privacy_policy.pdf in Resources */,
 				D332E64E1E80BE6C00778462 /* Assets.xcassets in Resources */,
 				680CA52D1EA5FCAA006A735E /* MITNoteCell.xib in Resources */,
 				680C20661EA5C9F400757608 /* ActiveLinkCell.xib in Resources */,
-				6870F34B2135FD9F00DBFD6B /* terms_of_use.pages in Resources */,
 				680929CC1EB7C90200542D1D /* VideoPreviewCell.xib in Resources */,
 				D332E64C1E80BE6C00778462 /* Main.storyboard in Resources */,
 				68780FF31EAC76EE009DBF34 /* SpinnerCell.xib in Resources */,
@@ -952,6 +951,7 @@
 				68EC740C1EB2DA330048DAD2 /* KeyboardMover.swift in Sources */,
 				6812B6D51ED64A71003E3862 /* TermsOfServiceController.swift in Sources */,
 				D34A941D1EC6919B008A77F1 /* ComingSoonAlertView.swift in Sources */,
+				68A2E0312195040E002AA857 /* PDFViewController.swift in Sources */,
 				681B45311ED0045F00C18893 /* HowAreWeDoingAlertView.swift in Sources */,
 				68EB8FEE1E824DE100C1B320 /* Fonts.swift in Sources */,
 				683B361E1EC6F67300F68A8C /* InterviewInviteAlertSheet.swift in Sources */,
@@ -1174,6 +1174,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 8Y75VLF66U;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1189,6 +1190,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 8Y75VLF66U;
 				INFOPLIST_FILE = MomentsInTime/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = TikkunOlam.MomentsInTime;
 				PRODUCT_NAME = "$(TARGET_NAME)";

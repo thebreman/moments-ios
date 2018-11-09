@@ -8,15 +8,18 @@
 
 import UIKit
 
-class PrivacyPolicyController: WebViewController
+class PrivacyPolicyController: PDFViewController
 {    
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        print("PrivacyPolicyController viewDidLoad")
-        
+        self.loadContent()
+    }
+    
+    func loadContent()
+    {
         if let privacyPolicyFileURL = MITDocuments.privacyPolicy.localURL {
-            self.loadLocalURL(url: privacyPolicyFileURL)
+            self.loadDocument(url: privacyPolicyFileURL)
         }
     }
     

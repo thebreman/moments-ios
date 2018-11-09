@@ -44,7 +44,7 @@ class TermsPageContainerController: UIViewController, UIPageViewControllerDataSo
         super.viewDidLoad()
         self.setupViews()
         
-        //We want to have each view loaded and ready to go so when we swipe there is no delay:
+        // We want to have each view loaded and ready to go so when we swipe there is no delay:
         self.orderedViewControllers.forEach {
             $0.loadViewIfNeeded()
             $0.childViewControllers.forEach { $0.loadViewIfNeeded() }
